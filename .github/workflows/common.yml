@@ -44,12 +44,6 @@ jobs:
     if: github.event_name == 'pull_request'
     with:
       r-version: "4.3"
-  spellcheck:
-    name: Spelling
-    uses: pharmaverse/admiralci/.github/workflows/spellcheck.yml@main
-    if: github.event_name == 'pull_request'
-    with:
-      r-version: "4.3"
   readme:
     name: Render README
     uses: pharmaverse/admiralci/.github/workflows/readme-render.yml@main

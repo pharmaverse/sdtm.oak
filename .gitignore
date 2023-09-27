@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 .Rdata
+.Renviron
 .httr-oauth
 .DS_Store
 .quarto
+docs
