@@ -22,11 +22,7 @@ Sys.setenv("RENV_CONFIG_AUTO_SNAPSHOT" = FALSE)
 
 # Do not load renv by default
 
-if (identical(Sys.getenv("RENV_AUTOLOADER_ENABLED"), "")) {
-  Sys.setenv("RENV_AUTOLOADER_ENABLED" = FALSE)
-}
-
-if (!isFALSE(Sys.getenv("RENV_AUTOLOADER_ENABLED"))) {
+if (!(Sys.getenv("RENV_AUTOLOADER_ENABLED") %in% c("false", "FALSE"))) {
   .renv_profile <- paste(R.version$major, substr(R.version$minor, 1, 1), sep = ".")
   if (!file.exists("./renv/profile")) {
     if (.renv_profile %in% c("4.1", "4.2", "4.3")) {
