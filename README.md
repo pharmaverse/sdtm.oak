@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # sdtm.oak
@@ -7,6 +6,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/sdtm.oak)](https://CRAN.R-project.org/package=sdtm.oak)
+
 <!-- badges: end -->
 
 An EDC and Data Standard agnostic SDTM data transformation engine that
@@ -18,7 +18,7 @@ based on standard mapping algorithms
 You can install the development version of `{sdtm.oak}` from
 [GitHub](https://github.com/pharmaverse/oak/) with:
 
-``` r
+```
 # install.packages("remotes")
 remotes::install_github("pharmaverse/oak")
 ```
