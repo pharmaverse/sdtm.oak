@@ -98,7 +98,7 @@ jobs:
           options("repos" = c("RSPM" = cran_r_release))
 
           renv::install("openpharma/staged.dependencies", repos = options("repos"))
-          renv::install("devtools")
+          renv::install("devtools", repos = options("repos"))
 
           # Packages from stage dependencies to ignore
           renv::settings$ignored.packages(c("admiraldev"))
