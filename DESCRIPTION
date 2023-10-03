@@ -21,7 +21,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: R (>= 4.1)
 Imports: 
-    rlang
+    rlang (>= 1.0.0)
 Suggests:
     knitr,
     rmarkdown,

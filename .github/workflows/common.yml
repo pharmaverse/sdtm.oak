@@ -92,11 +92,11 @@ jobs:
     if: >
       github.event_name != 'release'
     with:
-      r-version: "4.3"
+      r-version: "4.1"
       # Whether to skip code coverage badge creation
       # Setting to 'false' will require you to create
       # an orphan branch called 'badges' in your repository
-      skip-coverage-badges: false
+      skip-coverage-badges: true
   man-pages:
     name: Man Pages
     uses: pharmaverse/admiralci/.github/workflows/man-pages.yml@main

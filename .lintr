@@ -2,7 +2,6 @@ linters: linters_with_defaults(
     any_duplicated_linter(),
     any_is_na_linter(),
     backport_linter("oldrel-4"),
-    consecutive_assertion_linter(),
     expect_comparison_linter(),
     expect_identical_linter(),
     expect_length_linter(),
