@@ -83,7 +83,7 @@ jobs:
           echo "renv_lock_path=$renv" >> $GITHUB_OUTPUT
 
       - name: Call deploy docker image action for every renv
-        uses: insightsengineering/r-image-creator@v1
+        uses: galachad/r-image-creator@linux/arm64
         with:
           image-name: "${{ steps.image_specs.outputs.image_name }}"
           tag-latest: true
