@@ -10,13 +10,14 @@
 		"RENV_AUTOLOADER_ENABLED": "false"
 	},
 	"features": {
-	  "ghcr.io/rocker-org/devcontainer-features/renv-cache:latest": {},
 		"ghcr.io/rocker-org/devcontainer-features/r-rig:1": {
 			"version": "none",
 			"vscodeRSupport": "full",
 			"installRadian": true,
-			"installVscDebugger": true
+			"installVscDebugger": true,
+			"installAfter": [ "ghcr.io/rocker-org/devcontainer-features/renv-cache:latest" ]
 		},
+		"ghcr.io/rocker-org/devcontainer-features/renv-cache:latest": {},
 		"ghcr.io/devcontainers/features/common-utils:2": {
 			"installZsh": true,
 			"configureZshAsDefaultShell": false,
