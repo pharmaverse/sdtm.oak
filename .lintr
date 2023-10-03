@@ -20,14 +20,12 @@ linters: linters_with_defaults(
     numeric_leading_zero_linter(),
     outer_negation_linter(),
     paste_linter(),
-    redundant_equals_linter(),
     redundant_ifelse_linter(),
     sort_linter(),
     sprintf_linter(),
     strings_as_factors_linter(),
     undesirable_function_linter(c(Sys.setenv = NA_character_, mapply = NA_character_)),
     unnecessary_nested_if_linter(),
-    unnecessary_lambda_linter(),
     unnecessary_concatenation_linter(allow_single_expression = FALSE),
     yoda_test_linter()
   )
