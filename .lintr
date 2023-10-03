@@ -23,8 +23,6 @@ linters: linters_with_defaults(
     redundant_ifelse_linter(),
     sprintf_linter(),
     strings_as_factors_linter(),
-    undesirable_function_linter(c(Sys.setenv = NA_character_, mapply = NA_character_)),
-    unnecessary_concatenation_linter(allow_single_expression = FALSE),
-    yoda_test_linter()
+    undesirable_function_linter(c(Sys.setenv = NA_character_, mapply = NA_character_))
   )
 encoding: "UTF-8"
