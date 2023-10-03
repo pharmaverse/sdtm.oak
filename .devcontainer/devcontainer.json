@@ -14,8 +14,7 @@
 			"version": "none",
 			"vscodeRSupport": "full",
 			"installRadian": true,
-			"installVscDebugger": true,
-			"installAfter": [ "ghcr.io/rocker-org/devcontainer-features/renv-cache" ]
+			"installVscDebugger": true
 		},
 		"ghcr.io/rocker-org/devcontainer-features/renv-cache:latest": {},
 		"ghcr.io/devcontainers/features/common-utils:2": {
@@ -27,6 +26,12 @@
 		},
 		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:1": {}
 	},
+	"overrideFeatureInstallOrder": [
+		"ghcr.io/rocker-org/devcontainer-features/renv-cache",
+		"ghcr.io/rocker-org/devcontainer-features/r-rig",
+		"ghcr.io/devcontainers/features/common-utils",
+		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils"
+	],
 	"init": true,
 	"overrideCommand": false,
 
