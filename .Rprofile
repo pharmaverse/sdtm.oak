@@ -4,12 +4,16 @@
 
   c(
     project_dir,
-    dependencies
+    dependencies,
+    "devtools",
+    "staged.dependencies",
+    "styler"
   ) |>
     unique() |>
     renv:::renv_package_dependencies() |>
     names()
 }
+
 
 options(renv.snapshot.filter = .get_dependencies)
 

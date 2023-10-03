@@ -85,7 +85,10 @@ jobs:
 
             c(
               project_dir,
-              dependencies
+              dependencies,
+              "devtools",
+              "staged.dependencies",
+              "styler"
             ) |>
               unique() |>
               renv:::renv_package_dependencies() |>
@@ -132,10 +135,6 @@ jobs:
 
           renv::settings$snapshot.type("custom")
           renv::snapshot(force = TRUE, prompt = FALSE)
-          renv::record("roxygen2@7.2.3")
-          renv::record("devtools")
-          renv::record("styler@1.10.2")
-          renv::record("openpharma/staged.dependencies")
 
           if (identical(renv_profile, "4.3")) {
             file.copy(renv::paths$lockfile(), "renv.lock", overwrite = TRUE)
