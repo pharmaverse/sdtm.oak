@@ -116,7 +116,7 @@ jobs:
           # Install latest remotes version
           renv::install("remotes", repos = cran_latest)
 
-          renv::install("R.cache", dependencies = "none")
+          renv::install("R.cache", dependencies = "Imports")
           renv::install("styler@1.10.2", dependencies = "none")
           renv::install("roxygen2@7.2.3", dependencies = "none")
 
