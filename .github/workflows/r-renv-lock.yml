@@ -121,7 +121,7 @@ jobs:
 
           renv::settings$snapshot.type("custom")
           renv::snapshot(force = TRUE, prompt = FALSE)
-          renv::record("roxygen@7.2.3")
+          renv::record("roxygen2@7.2.3")
           renv::record("devtools")
           renv::record("styler@1.10.2")
           renv::record("openpharma/staged.dependencies")
