@@ -25,7 +25,7 @@ of overall issues.
 
  * Familiarize yourself with our [programming strategy](https://pharmaverse.github.io/admiraldev/main/articles/programming_strategy.html), guidance for [GitHub usage](https://pharmaverse.github.io/admiraldev/main/articles/git_usage.html) and [unit testing](https://pharmaverse.github.io/admiraldev/main/articles/unit_test_guidance.html).
 
- * All newly [created issues](https://github.com/pharmaverse/aok/issues) will be
+ * All newly [created issues](https://github.com/pharmaverse/oak/issues) will be
 reviewed within the next backlog meeting and the creator will receive an
 initial feedback via a comment. Someone from the core development team will
 then triage new issues by assigning the appropriate labels (such as “user

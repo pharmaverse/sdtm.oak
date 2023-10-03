@@ -3,3 +3,10 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
+^\.lycheeignore$
+^README\.Rmd$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^LICENSE\.md$
+^\.lintr$
