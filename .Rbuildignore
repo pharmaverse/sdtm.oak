@@ -3,6 +3,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.github$
+^\.devcontainer$
 ^\.lycheeignore$
 ^README\.Rmd$
 ^_pkgdown\.yml$

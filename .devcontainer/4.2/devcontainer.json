@@ -1,0 +1,95 @@
+{
+	// https://containers.dev/implementors/json_reference/
+	"name": "sdtm.oak R-4.2 (RStudio) container",
+	"image": "ghcr.io/pharmaverse/sdtm.oak-4.2:latest",
+	// Install Dev Container Features. More info: https://containers.dev/features
+	"containerEnv": {
+		"ROOT": "true",
+		"PASSWORD": "rstudio",
+		"DISABLE_AUTH": "true",
+		"RENV_AUTOLOADER_ENABLED": "false"
+	},
+	"features": {
+		"./ca-cert": {},
+		"ghcr.io/rocker-org/devcontainer-features/r-rig:1": {
+			"version": "none",
+			"vscodeRSupport": "full",
+			"installRadian": true,
+			"installVscDebugger": true
+		},
+		"ghcr.io/rocker-org/devcontainer-features/renv-cache:latest": {},
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"configureZshAsDefaultShell": false,
+			"installOhMyZsh": true,
+			"username": "rstudio",
+			"upgradePackages": false
+		},
+		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:1": {}
+	},
+	"overrideFeatureInstallOrder": [
+		"./ca-cert",
+		"./arm64-repos",
+		"ghcr.io/devcontainers/features/common-utils",
+		"ghcr.io/rocker-org/devcontainer-features/renv-cache",
+		"ghcr.io/rocker-org/devcontainer-features/r-rig",
+		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils"
+	],
+	"init": true,
+	"overrideCommand": false,
+
+	"postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
+
+	"postAttachCommand": "rstudio || true",
+
+	"customizations": {
+		"codespaces": {
+			"repositories": {
+			  "pharmaverse/mint": {
+				"permissions": "write-all"
+			  },
+			  "pharmaverse/raw.synthetic.data": {
+				"permissions": "write-all"
+			  }
+			}
+		},
+		"vscode": {
+			"settings": {
+				"r.rterm.linux": "/usr/local/bin/radian",
+				"r.bracketedPaste": true,
+				"editor.bracketPairColorization.enabled": true,
+				"editor.guides.bracketPairs": "active"
+			},
+			"extensions": [
+				"vsls-contrib.codetour",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				// R extensions
+				"ikuyadeu.r",
+				"REditorSupport.r-lsp",
+				// Extra extension
+				"streetsidesoftware.code-spell-checker",
+				"eamodio.gitlens",
+				"cweijan.vscode-office",
+				"donjayamanne.githistory",
+				"GitHub.vscode-github-actions",
+				"GitHub.vscode-pull-request-github",
+				"GitHub.remotehub",
+				"alefragnani.Bookmarks",
+				"vscode-icons-team.vscode-icons"
+			]
+		}
+	},
+
+	// RStudio ports
+	"forwardPorts": [8787],
+	"portsAttributes": {
+		"8787": {
+			"label": "Rstudio",
+			"requireLocalPort": true,
+			"onAutoForward": "openBrowser"
+		}
+	},
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root
+	"remoteUser": "rstudio"
+}

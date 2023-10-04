@@ -1,0 +1,7 @@
+{
+	"name": "arm64 repos",
+	"id": "arm64-repos",
+	"version": "0.1.0",
+	"description": "Fix repos for arm64.",
+	"options": {}
+}
