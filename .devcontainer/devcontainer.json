@@ -49,7 +49,7 @@
 			  "pharmaverse/mint": {
 				"permissions": "read-all"
 			  },
-			  "pharmaverse/raw.syntetic.data": {
+			  "pharmaverse/raw.synthetic.data": {
 				"permissions": "read-all"
 			  }
 			}

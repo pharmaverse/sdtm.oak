@@ -48,7 +48,7 @@
 			  "pharmaverse/mint": {
 				"permissions": "write-all"
 			  },
-			  "pharmaverse/raw.syntetic.data": {
+			  "pharmaverse/raw.synthetic.data": {
 				"permissions": "write-all"
 			  }
 			}
