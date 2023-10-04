@@ -10,6 +10,7 @@
 		"RENV_AUTOLOADER_ENABLED": "false"
 	},
 	"features": {
+		"./ca-cert": {},
 		"ghcr.io/rocker-org/devcontainer-features/r-rig:1": {
 			"version": "none",
 			"vscodeRSupport": "full",
@@ -27,6 +28,7 @@
 		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils:1": {}
 	},
 	"overrideFeatureInstallOrder": [
+		"./ca-cert",
 		"ghcr.io/rocker-org/devcontainer-features/renv-cache",
 		"ghcr.io/rocker-org/devcontainer-features/r-rig",
 		"ghcr.io/devcontainers/features/common-utils",

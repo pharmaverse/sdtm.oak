@@ -1,0 +1,7 @@
+{
+	"name": "CA cert",
+	"id": "ca-cert",
+	"version": "0.1.0",
+	"description": "Copy CA cert into the container.",
+	"options": {}
+}
