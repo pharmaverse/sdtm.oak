@@ -24,12 +24,6 @@
 <li class="nav-item">
   <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
-<!-- start dropdown for versions --> <li class="nav-item dropdown">
-        <a href="#" class="nav-link dropdown-toggle"
-          data-bs-toggle="dropdown" role="button"
-          aria-expanded="false" aria-haspopup="true"
-          id="dropdown-versions">Versions</a> <div class="dropdown-menu" aria-labelledby="dropdown-versions"> <a class="dropdown-item" data-toggle="tooltip" title="" href="https://pharmaverse.github.io/oak/main">main</a> </div></li>
-<!-- end dropdown for versions -->
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
 
@@ -77,6 +71,84 @@
 <li>The <code>{oak}</code> core development team will contact the issue creator as soon as possible to discuss further details.</li>
 </ul><p>See <a href="https://pharmaverse.github.io/admiral/cran-release/articles/contribution_model.html" class="external-link">Contribution to {admiral}</a> for additional details.</p>
 </div>
+</div>
+<div class="section level1">
+<h1 id="containers-guideline">Containers guideline<a class="anchor" aria-label="anchor" href="#containers-guideline"></a></h1>
+<p>This guideline will walk you through the process of setting up and using the Oak image in both GitHub Codespaces and Visual Studio Code’s devcontainer functionality.</p>
+<div class="section level2">
+<h2 id="use-github-codespaces">Use GitHub Codespaces<a class="anchor" aria-label="anchor" href="#use-github-codespaces"></a></h2>
+<ol style="list-style-type: decimal"><li>
+<strong>Prerequisites</strong> :</li>
+</ol><ul><li>Have a GitHub account.</li>
+<li>The repository you want to open in Codespaces must be under your account or you must have appropriate permissions.</li>
+</ul><ol start="2" style="list-style-type: decimal"><li>
+<strong>Open the Repository</strong> :</li>
+</ol><ul><li>Navigate to the desired GitHub repository on GitHub’s website.</li>
+</ul><ol start="3" style="list-style-type: decimal"><li>
+<strong>Start Codespaces</strong> :</li>
+</ol><ul><li>Click on the “Code” button (it has a green color most of the times).</li>
+<li>In the dropdown, you’ll find an option named “Open with Codespaces”. Click on it.</li>
+</ul><ol start="4" style="list-style-type: decimal"><li>
+<strong>Choose or Create a Codespace</strong> :</li>
+</ol><ul><li>If you’ve already created a Codespace for this repository, you’ll see it listed. You can click on it to open.</li>
+<li>If not, click on the “+ New codespace” button.</li>
+</ul><ol start="5" style="list-style-type: decimal"><li>
+<strong>Configure the Environment (If needed)</strong> :</li>
+</ol><ul><li>Depending on the repository, you might have a <code>.devcontainer</code> folder which will define the environment. GitHub Codespaces will use the settings defined here to set up the environment.</li>
+<li>If you need to customize or install additional tools, you can do so once the Codespace is launched.</li>
+</ul><ol start="6" style="list-style-type: decimal"><li>
+<strong>Use Codespaces</strong> :</li>
+</ol><ul><li>Once your environment is set up, you’ll have an instance of Visual Studio Code running in your browser, connected to the repository.</li>
+<li>You can now edit, run, and debug your code just like you would in a local environment.</li>
+</ul><ol start="7" style="list-style-type: decimal"><li>
+<strong>Close the Codespace</strong> :</li>
+</ol><ul><li>When you’re done, you can close the browser tab/window.</li>
+<li>Remember, you’ll be billed (if you’re on a paid plan) for the time your Codespace is running, so it’s a good idea to stop or delete it if you’re not using it. You can do this from the Codespaces tab in your GitHub repository.</li>
+</ul></div>
+<div class="section level2">
+<h2 id="use-visual-code-devcontainer">Use Visual Code devcontainer<a class="anchor" aria-label="anchor" href="#use-visual-code-devcontainer"></a></h2>
+<ol style="list-style-type: decimal"><li>
+<strong>Prerequisites</strong> :</li>
+</ol><ul><li>Have a Docker and VS Code installed</li>
+<li>linux/arm64 is supported only for R 4.3</li>
+</ul><ol start="2" style="list-style-type: decimal"><li>
+<strong>Install devcontainer extension</strong> :</li>
+</ol><ul><li>In the left sidebar, click on the extensions icon (it looks like square blocks or a Lego piece).</li>
+<li>In the search bar, type “Dev Containers” to search for the extension.</li>
+<li>From the search results, locate the “Dev Containers” extension provided by Microsoft and click the ‘Install’ button.</li>
+</ul><ol start="3" style="list-style-type: decimal"><li>
+<strong>Open in Container</strong> :</li>
+</ol><ul><li>In VS Code, use the command palette (<code>Ctrl+Shift+P</code> or <code>Cmd+Shift+P</code> on macOS) and run the “Dev Containers: Rebuild and Reopen in Container” command. VS Code will then set up the devcontainer using the Oak image.</li>
+</ul><ol start="4" style="list-style-type: decimal"><li>
+<strong>Using the Devcontainer</strong> :</li>
+</ol><ul><li>Once the environment is set up, you can start coding in VS Code as if you were in a local environment, but with the capabilities and tools provided by the Oak image.</li>
+</ul></div>
+<div class="section level2">
+<h2 id="use-docker-run">Use docker run<a class="anchor" aria-label="anchor" href="#use-docker-run"></a></h2>
+<ol style="list-style-type: decimal"><li>
+<strong>Prerequisites</strong> :</li>
+</ol><ul><li>Have a docker installed</li>
+</ul><ol start="2" style="list-style-type: decimal"><li>
+<strong>Example command</strong> :</li>
+</ol><pre><code>docker run --rm -d \
+  --name oak-dev \
+  -p 127.0.0.1:8888:8787 \
+  -e ROOT=true -e DISABLE_AUTH=true \
+  -v "$(pwd):/home/rstudio/oak" \
+  ghcr.io/pharmaverse/sdtm.oak-4.3:latest</code></pre>
+<p>This command is used to start a new container from a Docker image. Here’s a breakdown of the parameters used:</p>
+<ul><li>docker run: This is the basic command to start a new container from a Docker image.</li>
+<li>–rm: This option ensures that the container is removed automatically when it’s stopped. This is useful if you don’t want to keep the container around once you’re done with it, helping to save storage space.</li>
+<li>-d: This option runs the container in detached mode, which means the container runs in the background and doesn’t attach to your command line session.</li>
+<li>–name oak-dev: This assigns the name oak-dev to the container. Naming your containers makes them easier to identify and manage.</li>
+<li>-p 127.0.0.1:8888:8787: This maps port 8787 inside the container to port 8888 on the host machine, and binds it to the localhost IP (127.0.0.1). The format is -p <host_ip>:<host_port>:<container_port>. This means any traffic directed at port 8888 on your host machine will be forwarded to port 8787 in the container.</container_port></host_port></host_ip></li>
+<li>-e ROOT=true -e DISABLE_AUTH=true: These are environment variables being passed into the container. -e denotes that an environment variable is being set. In this case, two environment variables are being set:
+<ul><li>ROOT=true: This likely grants root permissions inside the container.</li>
+<li>DISABLE_AUTH=true: This likely disables authentication when opening RStudio.</li>
+</ul></li>
+<li>-v “$(pwd):/home/rstudio/oak”: This maps a volume (essentially a directory) from the host machine into the container. The $(pwd) is a command that returns the current directory you’re in on the host machine. This current directory is then mapped to /home/rstudio/oak inside the container. This is useful for sharing files between your host machine and the container.</li>
+<li>ghcr.io/pharmaverse/sdtm.oak-4.3:latest: This is the name of the Docker image that the container will be created from. It’s pulled from the GitHub Container Registry (ghcr.io) and the image belongs to the pharmaverse repository. The image name is sdtm.oak-4.3 and the tag being used is latest. There are image for three versions available.</li>
+</ul></div>
 </div>
 
 
