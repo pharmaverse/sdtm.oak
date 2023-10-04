@@ -11,6 +11,7 @@
 	},
 	"features": {
 		"./ca-cert": {},
+		"./arm64-repos": {},
 		"ghcr.io/rocker-org/devcontainer-features/r-rig:1": {
 			"version": "none",
 			"vscodeRSupport": "full",
@@ -29,9 +30,10 @@
 	},
 	"overrideFeatureInstallOrder": [
 		"./ca-cert",
+		"./arm64-repos",
+		"ghcr.io/devcontainers/features/common-utils",
 		"ghcr.io/rocker-org/devcontainer-features/renv-cache",
 		"ghcr.io/rocker-org/devcontainer-features/r-rig",
-		"ghcr.io/devcontainers/features/common-utils",
 		"ghcr.io/mikaello/devcontainer-features/modern-shell-utils"
 	],
 	"init": true,
