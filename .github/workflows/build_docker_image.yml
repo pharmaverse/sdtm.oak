@@ -99,7 +99,7 @@ jobs:
           repository-owner: ${{ github.repository_owner }}
           repo-user: ${{ github.actor }}
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          platforms: "${{ steps.image_specs.outputs.platforms }}
+          platforms: "${{ steps.image_specs.outputs.platforms }}"
 
 # note: in case of 403 error when pushing to ghcr : link current repo to the given package registry - https://github.com/docker/build-push-action/issues/687
 # (got to https://github.com/<user name>?tab=packages to go to packages settings) and there https://github.com/users/<user name>/packages/container/admiralci-4.0/settings
