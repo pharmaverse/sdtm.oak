@@ -89,7 +89,7 @@ jobs:
           
 
       - name: Call deploy docker image action for every renv
-        uses: galachad/r-image-creator@main
+        uses: insightsengineering/r-image-creator@v1
         with:
           image-name: "${{ steps.image_specs.outputs.image_name }}"
           tag-latest: true
