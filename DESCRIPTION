@@ -3,18 +3,27 @@ Type: Package
 Title: SDTM Data Transformation Engine
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Omar", "Garcia", email = "ogcalderon@cdisc.org", role = c("aut", "cre")),
-    person("Rammprasad", "Ganapathy", role = "aut"),
+    person("Rammprasad", "Ganapathy", role = "aut" , "cre"),
+    person("Adam", "Forys", role = "aut"),
+    person("Edgar", "Manukyan", role = "aut"),
+    person("Rosemary", "Li", role = "aut"),
+    person("Preetesh", "Parikh", role = "aut"),
+    person("Lisa", "Houterloot", role = "aut"),
+    person("Yogesh", "Gupta", role = "aut"),
+    person("Ramiro", "Magno", role = "aut"),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")),
     person("Pfizer Inc", role = c("cph", "fnd"))
     )
-Description: An EDC and Data Standard agnostic SDTM data transformation engine 
-    that automates the transformation of raw clinical data in ODM format to SDTM
-    based on standard mapping algorithms.
+Description: An EDC and Data Standard-agnostic SDTM data transformation engine 
+designed for SDTM programming in R. Powered by metadata {sdtm.oak} can automate
+the conversion of raw clinical data to SDTM through standardized mapping 
+algorithms. SDTM is one of the required standards for data submission to 
+FDA (U.S.) and PMDA (Japan). SDTM standards are implemented in accordance with the
+SDTM Implemetation guide as defined by CDISC <https://www.cdisc.org/standards/foundational/sdtmig<
 Language: en-US
 License: Apache License (>= 2)
 BugReports: https://github.com/pharmaverse/oak/issues
-URL: https://pharmaverse.github.io/oak/, https://github.com/pharmaverse/oak
+URL: https://pharmaverse.github.io/sdtm.oak/, https://github.com/pharmaverse/sdtm.oak
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
