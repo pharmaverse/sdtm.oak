@@ -11,3 +11,4 @@
 ^pkgdown$
 ^LICENSE\.md$
 ^\.lintr$
+^data-raw$
