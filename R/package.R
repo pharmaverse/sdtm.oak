@@ -5,6 +5,7 @@
 #' @name sdtm.oak
 #'
 #' @import rlang
+#' @importFrom tibble tibble
 NULL
 
 #' onLoad function
