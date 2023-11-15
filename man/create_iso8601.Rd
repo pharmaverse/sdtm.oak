@@ -8,7 +8,7 @@ create_iso8601(
   ...,
   .format,
   .na = NULL,
-  .cutoff_2000 = 68,
+  .cutoff_2000 = 68L,
   .check_format = TRUE
 )
 }

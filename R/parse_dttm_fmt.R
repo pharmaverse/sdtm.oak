@@ -28,11 +28,11 @@ find_int_gap <- function(x, xmin = min(x), xmax = max(x)) {
   admiraldev::assert_integer_scalar(xmax)
 
   x <- sort(unique(x))
-  x <- c(xmin - 1, x, xmax + 1)
-  gaps <- which(diff(x) > 1)
-  start <- x[gaps] + 1
-  end <- x[gaps + 1] - 1
-  tibble::tibble(start = x[gaps] + 1, end = x[gaps + 1] - 1)
+  x <- c(xmin - 1L, x, xmax + 1L)
+  gaps <- which(diff(x) > 1L)
+  start <- x[gaps] + 1L
+  end <- x[gaps + 1L] - 1L
+  tibble::tibble(start = start, end = end)
 }
 
 #' `regmatches()` with `NA`
@@ -67,17 +67,9 @@ reg_matches <- function(x, m, invert = FALSE) {
 #' @returns An integer vector.
 #'
 #' @keywords internal
-pseq <-
-  function(from,
-           to) {
-    mapply(
-      `:`,
-      from = from,
-      to = to,
-      SIMPLIFY = FALSE
-    ) |>
-      unlist()
-  }
+pseq <- function(from, to) {
+  unlist(purrr::map2(.x = from, .y = to, .f = `:`))
+}
 
 #' Generate case insensitive regexps
 #'
@@ -91,7 +83,7 @@ pseq <-
 #' @keywords internal
 str_to_anycase <- function(x) {
 
-  lst <- stringr::str_split(x, "")
+  lst <- stringr::str_split(x, stringr::boundary("character"))
   purrr::map(lst, ~ stringr::str_c(stringr::str_to_upper(.x), stringr::str_to_lower(.x))) |>
     purrr::map(~ sprintf("[%s]", .x)) |>
     purrr::map(~ stringr::str_flatten(.x)) |>
@@ -131,11 +123,12 @@ months_abb_regex <- function(x = month.abb, case = c("any", "upper", "lower", "t
 # change the regexp for one specific dttm component
 # while keeping the other defaults.
 fmt_c <- function(sec = "S+",
-                   min = "M+",
-                   hour = "H+",
-                   mday = "d+",
-                   mon = "m+",
-                   year = "y+") {
+                  min = "M+",
+                  hour = "H+",
+                  mday = "d+",
+                  mon = "m+",
+                  year = "y+") {
+
   c(
     sec = sec,
     min = min,
@@ -159,38 +152,44 @@ regex_or <- function(x, .open = FALSE, .close = FALSE) {
   stringr::str_flatten(x, collapse = "|")
 }
 
-fmt_rg <-
-  function(sec = "(\\b\\d|\\d{2})(\\.\\d*)?",
-           min = "(\\b\\d|\\d{2})",
-           hour = "\\d?\\d",
-           mday = "\\b\\d|\\d{2}",
-           mon = stringr::str_glue("\\d\\d|{months_abb_regex()}"),
-           year = "(\\d{2})?\\d{2}",
-           na = NULL,
-           sec_na = na,
-           min_na = na,
-           hour_na = na,
-           mday_na = na,
-           mon_na = na,
-           year_na = na
-           ) {
+fmt_rg <- function(
+    sec = "(\\b\\d|\\d{2})(\\.\\d*)?",
+    min = "(\\b\\d|\\d{2})",
+    hour = "\\d?\\d",
+    mday = "\\b\\d|\\d{2}",
+    mon = stringr::str_glue("\\d\\d|{months_abb_regex()}"),
+    year = "(\\d{2})?\\d{2}",
+    na = NULL,
+    sec_na = na,
+    min_na = na,
+    hour_na = na,
+    mday_na = na,
+    mon_na = na,
+    year_na = na) {
 
-    sec_na <- ifelse(!is.null(sec_na), regex_or(sec_na, .open = TRUE), "")
-    min_na <- ifelse(!is.null(min_na), regex_or(min_na, .open = TRUE), "")
-    hour_na <- ifelse(!is.null(hour_na), regex_or(hour_na, .open = TRUE), "")
-    mday_na <- ifelse(!is.null(mday_na), regex_or(mday_na, .open = TRUE), "")
-    mon_na <- ifelse(!is.null(mon_na), regex_or(mon_na, .open = TRUE), "")
-    year_na <- ifelse(!is.null(year_na), regex_or(year_na, .open = TRUE), "")
+  sec_na <-
+    ifelse(!is.null(sec_na), regex_or(sec_na, .open = TRUE), "")
+  min_na <-
+    ifelse(!is.null(min_na), regex_or(min_na, .open = TRUE), "")
+  hour_na <-
+    ifelse(!is.null(hour_na), regex_or(hour_na, .open = TRUE), "")
+  mday_na <-
+    ifelse(!is.null(mday_na), regex_or(mday_na, .open = TRUE), "")
+  mon_na <-
+    ifelse(!is.null(mon_na), regex_or(mon_na, .open = TRUE), "")
+  year_na <-
+    ifelse(!is.null(year_na), regex_or(year_na, .open = TRUE), "")
 
-    c(
-      sec = stringr::str_glue("(?<sec>{sec}{sec_na})"),
-      min = stringr::str_glue("(?<min>{min}{min_na})"),
-      hour = stringr::str_glue("(?<hour>{hour}{hour_na})"),
-      mday = stringr::str_glue("(?<mday>{mday}{mday_na})"),
-      mon = stringr::str_glue("(?<mon>{mon}{mon_na})"),
-      year = stringr::str_glue("(?<year>{year}{year_na})")
-    )
-  }
+
+  c(
+    sec = stringr::str_glue("(?<sec>{sec}{sec_na})"),
+    min = stringr::str_glue("(?<min>{min}{min_na})"),
+    hour = stringr::str_glue("(?<hour>{hour}{hour_na})"),
+    mday = stringr::str_glue("(?<mday>{mday}{mday_na})"),
+    mon = stringr::str_glue("(?<mon>{mon}{mon_na})"),
+    year = stringr::str_glue("(?<year>{year}{year_na})")
+  )
+}
 
 # Scalar version of `parse_dttm_fmt()`.
 parse_dttm_fmt_ <- function(x, pattern) {
@@ -217,12 +216,11 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
   fmt_dttmc$ord <- dplyr::row_number(fmt_dttmc$start)
 
   fmt_len <- nchar(fmt)
-  fmt_pos <- seq_len(fmt_len)
 
   start <- end <- NULL # To avoid a "no visible binding for global variable" NOTE.
   dttmc_pos <- with(fmt_dttmc, pseq(from = start[!is.na(start)], to = end[!is.na(end)]))
   # `delim_pos`: delimiter positions, i.e. positions in `fmt` in-between dttm components.
-  delim_pos <- find_int_gap(dttmc_pos, xmin = 1, xmax = fmt_len)
+  delim_pos <- find_int_gap(dttmc_pos, xmin = 1L, xmax = fmt_len)
 
   delim <- with(delim_pos, stringr::str_sub(fmt, start = start, end = end))
   fmt_delim <-
@@ -253,5 +251,3 @@ dttm_fmt_to_regex <- function(tbl_fmt_c, fmt_regex = fmt_rg(), anchored = TRUE) 
 
   fmt_regex
 }
-
-

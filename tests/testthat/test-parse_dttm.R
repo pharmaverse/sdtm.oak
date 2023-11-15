@@ -13,7 +13,7 @@ test_that("`months_abb_regex()`: default behavior (case insensitive)", {
     "[Nn][Oo][Vv]|",
     "[Dd][Ee][Cc]"
   )
-  expect_equal(months_abb_regex(), x)
+  expect_identical(months_abb_regex(), x)
 })
 
 test_that("`months_abb_regex()`: uppercase", {
@@ -31,7 +31,7 @@ test_that("`months_abb_regex()`: uppercase", {
     "NOV|",
     "DEC"
   )
-  expect_equal(months_abb_regex(case = "upper"), x)
+  expect_identical(months_abb_regex(case = "upper"), x)
 })
 
 test_that("`months_abb_regex()`: lowercase", {
@@ -49,5 +49,5 @@ test_that("`months_abb_regex()`: lowercase", {
     "nov|",
     "dec"
   )
-  expect_equal(months_abb_regex(case = "lower"), x)
+  expect_identical(months_abb_regex(case = "lower"), x)
 })

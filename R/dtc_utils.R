@@ -75,9 +75,9 @@ assert_dtc_format <- function(.format) {
 
   abort_msg <- "`.format` must be either a character vector of formats of a list thereof."
 
-  switch (
+  switch(
     typeof(.format),
-    character = assert_dtc_fmt(.format) ,
+    character = assert_dtc_fmt(.format),
     list = purrr::map(.format, assert_dtc_format),
     rlang::abort(abort_msg)
   )
@@ -127,7 +127,7 @@ assert_capture_matrix <- function(m) {
 
   col_names <- c("year", "mon", "mday", "hour", "min", "sec")
   if (!all(colnames(m) %in% col_names))
-      rlang::abort("`m` must have the following colnames: `year`, `mon`, `mday`, `hour`, `min` and `sec`.")
+    rlang::abort("`m` must have the following colnames: `year`, `mon`, `mday`, `hour`, `min` and `sec`.")
 
   invisible(m)
 }

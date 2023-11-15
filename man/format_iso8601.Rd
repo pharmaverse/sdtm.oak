@@ -4,7 +4,7 @@
 \alias{format_iso8601}
 \title{Convert date/time components into ISO8601 format}
 \usage{
-format_iso8601(m, .cutoff_2000 = 68)
+format_iso8601(m, .cutoff_2000 = 68L)
 }
 \arguments{
 \item{m}{A character matrix of date/time components. It must have six

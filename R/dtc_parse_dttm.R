@@ -1,14 +1,15 @@
 #' @rdname parse_dttm
 #' @order 2
 parse_dttm_ <- function(dttm,
-                       fmt,
-                       na = NULL,
-                       sec_na = na,
-                       min_na = na,
-                       hour_na = na,
-                       mday_na = na,
-                       mon_na = na,
-                       year_na = na) {
+                        fmt,
+                        na = NULL,
+                        sec_na = na,
+                        min_na = na,
+                        hour_na = na,
+                        mday_na = na,
+                        mon_na = na,
+                        year_na = na) {
+
 
   admiraldev::assert_character_scalar(fmt)
 

@@ -45,10 +45,10 @@ zero_pad_whole_number <- function(x, n = 2L) {
 
   # Check `n`
   admiraldev::assert_integer_scalar(n)
-  if (n < 1) rlang::abort("`n` must be positive.")
+  if (n < 1L) rlang::abort("`n` must be positive.")
 
   # Negative numbers are not allowed, and hence get converted to NA.
-  x[x < 0] <- NA_integer_
+  x[x < 0L] <- NA_integer_
 
   # Numbers that do not fit within the padding width are converted to NA
   x[floor(log10(x)) >= n] <- NA_integer_
@@ -88,11 +88,11 @@ yy_to_yyyy <- function(x, cutoff_2000 = 68L) {
   # Check `x`
   if (!rlang::is_integerish(x)) rlang::abort("`x` must be integerish.")
 
-  if (any(x < 0, na.rm = TRUE))
+  if (any(x < 0L, na.rm = TRUE))
     rlang::abort("`x` cannot have negative years.")
 
   x <- dplyr::if_else(x <= cutoff_2000, x + 2000L, x)
-  x <- dplyr::if_else(x <= 99, x + 1900L, x)
+  x <- dplyr::if_else(x <= 99L, x + 1900L, x)
   x
 }
 
@@ -114,7 +114,7 @@ yy_to_yyyy <- function(x, cutoff_2000 = 68L) {
 iso8601_two_digits <- function(x) {
   admiraldev::assert_character_vector(x)
   x_int <- as.integer(stringr::str_match(x, "^\\d?\\d$"))
-  zero_pad_whole_number(x_int, n = 2)
+  zero_pad_whole_number(x_int, n = 2L)
 }
 
 iso8601_mday <- iso8601_two_digits
@@ -150,7 +150,7 @@ iso8601_year <- function(x, cutoff_2000 = 68L) {
   admiraldev::assert_integer_scalar(cutoff_2000, subset = "non-negative")
   x_int <- as.integer(stringr::str_match(x, "^\\d{1,4}$"))
   x_int <- yy_to_yyyy(x_int, cutoff_2000 = cutoff_2000)
-  zero_pad_whole_number(x_int, n = 4)
+  zero_pad_whole_number(x_int, n = 4L)
 }
 
 #' Format as a ISO8601 month
@@ -180,7 +180,7 @@ iso8601_mon <- function(x) {
   num_mon_chr <- num_mon
   num_mon_chr[is.na(num_mon)] <- iso8601_two_digits(x[is.na(num_mon)])
   mon_int <- as.integer(num_mon_chr)
-  zero_pad_whole_number(mon_int, n = 2)
+  zero_pad_whole_number(mon_int, n = 2L)
 }
 
 #' Format as ISO8601 seconds
@@ -284,31 +284,31 @@ iso8601_truncate <- function(x, empty_as_na = TRUE) {
 #' sdtm.oak:::format_iso8601(m)
 #'
 #' @keywords internal
-format_iso8601 <- function(m, .cutoff_2000 = 68) {
+format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 
   admiraldev::assert_integer_scalar(.cutoff_2000)
 
-  m[, 'year'] <- iso8601_year(m[, 'year'], cutoff_2000 = .cutoff_2000)
-  m[, 'mon'] <- iso8601_mon(m[, 'mon'])
-  m[, 'mday'] <- iso8601_mday(m[, 'mday'])
-  m[, 'hour'] <- iso8601_hour(m[, 'hour'])
-  m[, 'min'] <- iso8601_min(m[, 'min'])
-  m[, 'sec'] <- iso8601_sec(m[, 'sec'])
+  m[, "year"] <- iso8601_year(m[, "year"], cutoff_2000 = .cutoff_2000)
+  m[, "mon"] <- iso8601_mon(m[, "mon"])
+  m[, "mday"] <- iso8601_mday(m[, "mday"])
+  m[, "hour"] <- iso8601_hour(m[, "hour"])
+  m[, "min"] <- iso8601_min(m[, "min"])
+  m[, "sec"] <- iso8601_sec(m[, "sec"])
 
   m <- iso8601_na(m)
 
   x <-
-    paste0(m[, 'year'],
+    paste0(m[, "year"],
            "-",
-           m[, 'mon'],
+           m[, "mon"],
            "-",
-           m[, 'mday'],
+           m[, "mday"],
            "T",
-           m[, 'hour'],
+           m[, "hour"],
            ":",
-           m[, 'min'],
+           m[, "min"],
            ":",
-           m[, 'sec'])
+           m[, "sec"])
 
   iso8601_truncate(x)
 }
@@ -376,7 +376,7 @@ format_iso8601 <- function(m, .cutoff_2000 = 68) {
 #' # Fractional seconds
 #' create_iso8601("2019-120602:20:13.1230001", .format = "y-mdH:M:S", .check_format = FALSE)
 #' @export
-create_iso8601 <- function(..., .format, .na = NULL, .cutoff_2000 = 68, .check_format = TRUE) {
+create_iso8601 <- function(..., .format, .na = NULL, .cutoff_2000 = 68L, .check_format = TRUE) {
 
   dots <- rlang::dots_list(...)
 
@@ -389,7 +389,7 @@ create_iso8601 <- function(..., .format, .na = NULL, .cutoff_2000 = 68, .check_f
   # Check if all vectors in `dots` are of the same length.
   n <- unique(lengths(dots))
   if (!identical(length(n), 1L))
-      rlang::abort("All vectors in `...` must be of the same length.")
+    rlang::abort("All vectors in `...` must be of the same length.")
 
   if (!identical(length(dots), length(.format)))
     rlang::abort("Number of vectors in `...` should match length of `.format`.")

@@ -10,11 +10,11 @@ test_that("`format_iso8601()`: basic usage", {
       "00", "59", "10",
       "42", "5.15", NA
     ),
-    ncol = 6,
+    ncol = 6L,
     dimnames = list(c(), cols)
   )
 
-  expect_equal(
+  expect_identical(
     format_iso8601(m),
     c(
       "1999-01-01T00:00:42",
