@@ -205,7 +205,6 @@ parse_dttm_fmt_ <- function(x, pattern) {
   tibble::tibble(pat = pattern, cap = match, start = start, end = end, len = len)
 }
 
-#' @importFrom rlang .data
 parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
 
   fmt_dttmc <-
@@ -238,7 +237,6 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
 
 }
 
-#' @importFrom rlang .data
 dttm_fmt_to_regex <- function(tbl_fmt_c, fmt_regex = fmt_rg(), anchored = TRUE) {
   fmt_regex <-
     tbl_fmt_c |>
