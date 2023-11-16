@@ -7,7 +7,7 @@
 assert_capture_matrix(m)
 }
 \arguments{
-\item{.format}{The argument of \code{\link[=create_iso8601]{create_iso8601()}}'s \code{.format} parameter.}
+\item{m}{A character matrix.}
 }
 \value{
 This function throws an error if \code{m} is not either:
@@ -17,7 +17,7 @@ This function throws an error if \code{m} is not either:
 \code{min} and \code{sec}.
 }
 
-Otherwise, it returns \code{.format} invisibly.
+Otherwise, it returns \code{m} invisibly.
 }
 \description{
 \code{\link[=assert_capture_matrix]{assert_capture_matrix()}} is an internal helper function aiding with the
@@ -28,14 +28,15 @@ This function checks that the capture matrix is a matrix and that it contains
 six columns: \code{year}, \code{mon}, \code{mday}, \code{hour}, \code{min} and \code{sec}.
 }
 \examples{
-sdtm.oak:::assert_dtc_format("ymd")
-sdtm.oak:::assert_dtc_format(c("ymd", "y-m-d"))
-sdtm.oak:::assert_dtc_format(list(c("ymd", "y-m-d"), "H:M:S"))
+cols <- c("year", "mon", "mday", "hour", "min", "sec")
+m <- matrix(NA_character_, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
+sdtm.oak:::assert_capture_matrix(m)
 
 # These commands should throw an error
 if (FALSE) {
-# Note that `"year, month, day"` is not a supported format.
-  sdtm.oak:::assert_dtc_format("year, month, day")
+  sdtm.oak:::assert_capture_matrix(character())
+  sdtm.oak:::assert_capture_matrix(matrix(data = NA_character_, nrow = 0, ncol = 0))
+  sdtm.oak:::assert_capture_matrix(matrix(data = NA_character_, nrow = 1))
 }
 
 }
