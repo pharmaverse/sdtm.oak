@@ -172,13 +172,53 @@ regex_or <- function(x, .open = FALSE, .close = FALSE) {
   stringr::str_flatten(x, collapse = "|")
 }
 
+#' Regexps for date/time components
+#'
+#' [fmt_rg()] creates a character vector of named patterns to match individual
+#' date/time components.
+#'
+#' @param sec Regexp for the second component.
+#' @param min Regexp for the minute component.
+#' @param hour Regexp for the hour component.
+#' @param mday Regexp for the month day component.
+#' @param mon Regexp for the month component.
+#' @param year Regexp for the year component.
+#' @param na Regexp of alternatives, useful to match special values coding for
+#' missingness.
+#' @param sec_na Same as `na` but specifically for the second component.
+#' @param min_na Same as `na` but specifically for the minute component.
+#' @param hour_na Same as `na` but specifically for the hour component.
+#' @param mday_na Same as `na` but specifically for the month day component.
+#' @param mon_na Same as `na` but specifically for the month component.
+#' @param year_na Same as `na` but specifically for the year component.
+#'
+#' @returns A named character vector of named patterns (regexps) for matching
+#'   each date/time component.
+#'
+#' @examples
+#' # Default regexps
+#' sdtm.oak:::fmt_rg()
+#'
+#' # You may change the way months are matched, e.g. you might not want to match
+#' # month abbreviations, i.e. only numerical months. So pass an explicity regex
+#' # for numerical months:
+#' sdtm.oak:::fmt_rg(mon = r"[\b\d|\d{2}]")
+#'
+#' # Make date/time components accept `"UNK"` as a possible pattern (useful
+#' # to match funny codes for `NA`).
+#' sdtm.oak:::fmt_rg(na = "UNK")
+#'
+#' # Or be more specific and use `"UNK"` for the year component only.
+#' sdtm.oak:::fmt_rg(year_na = "UNK")
+#'
+#' @keywords internal
 fmt_rg <- function(
-    sec = "(\\b\\d|\\d{2})(\\.\\d*)?",
-    min = "(\\b\\d|\\d{2})",
-    hour = "\\d?\\d",
-    mday = "\\b\\d|\\d{2}",
-    mon = stringr::str_glue("\\d\\d|{months_abb_regex()}"),
-    year = "(\\d{2})?\\d{2}",
+    sec = r"[(\b\d|\d{2})(\.\d*)?]",
+    min = r"[(\b\d|\d{2})]",
+    hour = r"[\d?\d]",
+    mday = r"[\b\d|\d{2}]",
+    mon = stringr::str_glue(r"[\d\d|{months_abb_regex()}]"),
+    year = r"[(\d{2})?\d{2}]",
     na = NULL,
     sec_na = na,
     min_na = na,
