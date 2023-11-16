@@ -140,6 +140,26 @@ fmt_c <- function(sec = "S+",
 
 }
 
+#' Utility function to assemble a regex of alternative patterns
+#'
+#' [regex_or()] takes a set of patterns and binds them with the Or (`"|"`)
+#' pattern for an easy regex of alternative patterns.
+#'
+#' @param x A character vector of alternative patterns.
+#' @param .open Whether the resulting regex should start with `"|"`.
+#' @param .close Whether the resulting regex should end with `"|"`.
+#'
+#' @returns A character scalar of the resulting regex.
+#'
+#' @examples
+#' # A regex for matching either "jan" or "feb"
+#' sdtm.oak:::regex_or(c("jan", "feb"))
+#'
+#' # Setting `.open` and/or `.close` to `TRUE` can be handy if this regex
+#' # is to be combined into a larger regex.
+#' paste0(sdtm.oak:::regex_or(c("jan", "feb"), .close = TRUE), r"{\d{2}}")
+#'
+#' @keywords internal
 regex_or <- function(x, .open = FALSE, .close = FALSE) {
 
   admiraldev::assert_character_vector(x)
