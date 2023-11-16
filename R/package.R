@@ -17,9 +17,3 @@ NULL
 #' @noRd
 .onLoad <- function(libname, pkgname) { # nolint
 }
-
-#' Temporary dummy function
-#' @noRd
-dummy <- function() {
-  rlang::as_list
-}
