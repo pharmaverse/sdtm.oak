@@ -8,12 +8,3 @@
 #' @importFrom tibble tibble
 NULL
 
-#' onLoad function
-#'
-#' This function is called automatically during package loading.
-#'
-#' @param libname lib name
-#' @param pkgname package name
-#' @noRd
-.onLoad <- function(libname, pkgname) { # nolint
-}
