@@ -122,6 +122,27 @@ months_abb_regex <- function(x = month.abb, case = c("any", "upper", "lower", "t
 # utility function that allows you to easily
 # change the regexp for one specific dttm component
 # while keeping the other defaults.
+
+#' Regexps for date/time format components
+#'
+#' [fmt_c()] creates a character vector of patterns to match individual
+#' format date/time components.
+#'
+#' @param sec A string pattern for matching the second format component.
+#' @param min A string pattern for matching the minute format component.
+#' @param hour A string pattern for matching the hour format component.
+#' @param mday A string pattern for matching the month day format component.
+#' @param mon A string pattern for matching the month format component.
+#' @param year A string pattern for matching the year format component.
+#'
+#' @returns A named character vector of date/time format patterns. This a vector
+#' of six elements, one for each date/time component.
+#'
+#' @examples
+#' # Default patterns
+#' sdtm.oak:::fmt_c()
+#'
+#' @keywords internal
 fmt_c <- function(sec = "S+",
                   min = "M+",
                   hour = "H+",
@@ -200,7 +221,7 @@ regex_or <- function(x, .open = FALSE, .close = FALSE) {
 #' sdtm.oak:::fmt_rg()
 #'
 #' # You may change the way months are matched, e.g. you might not want to match
-#' # month abbreviations, i.e. only numerical months. So pass an explicity regex
+#' # month abbreviations, i.e. only numerical months. So pass an explicit regex
 #' # for numerical months:
 #' sdtm.oak:::fmt_rg(mon = r"[\b\d|\d{2}]")
 #'

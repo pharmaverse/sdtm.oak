@@ -61,7 +61,7 @@ date/time components.
 sdtm.oak:::fmt_rg()
 
 # You may change the way months are matched, e.g. you might not want to match
-# month abbreviations, i.e. only numerical months. So pass an explicity regex
+# month abbreviations, i.e. only numerical months. So pass an explicit regex
 # for numerical months:
 sdtm.oak:::fmt_rg(mon = r"[\b\d|\d{2}]")
 
