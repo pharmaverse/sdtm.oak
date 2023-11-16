@@ -299,7 +299,7 @@ parse_dttm_fmt_ <- function(fmt, pattern) {
 #'   date/time components. Default value is that of [fmt_c()]. Use this function
 #'   if you plan on passing a different set of patterns.
 #'
-#' @returns A matrix of seven columns:
+#' @returns A [tibble][tibble::tibble-package] of seven columns:
 #' - `fmt_c`: date/time format component. Values are either `"year"`, `"mon"`, `"mday"`,
 #' `"hour"`, `"min"`, `"sec"`, or `NA`.
 #' - `pat`: Regexp used to parse the date/time component.
@@ -365,6 +365,7 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
     dplyr::arrange(.data$start)
 
 }
+
 
 dttm_fmt_to_regex <- function(tbl_fmt_c, fmt_regex = fmt_rg(), anchored = TRUE) {
   fmt_regex <-

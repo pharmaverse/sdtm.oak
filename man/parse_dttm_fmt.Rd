@@ -18,7 +18,7 @@ date/time components. Default value is that of \code{\link[=fmt_c]{fmt_c()}}. Us
 if you plan on passing a different set of patterns.}
 }
 \value{
-A matrix of seven columns:
+A \link[tibble:tibble-package]{tibble} of seven columns:
 \itemize{
 \item \code{fmt_c}: date/time format component. Values are either \code{"year"}, \code{"mon"}, \code{"mday"},
 \code{"hour"}, \code{"min"}, \code{"sec"}, or \code{NA}.
