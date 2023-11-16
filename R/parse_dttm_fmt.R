@@ -272,11 +272,11 @@ fmt_rg <- function(
   )
 }
 
-# Scalar version of `parse_dttm_fmt()`.
-parse_dttm_fmt_ <- function(x, pattern) {
+#' @rdname parse_dttm_fmt
+parse_dttm_fmt_ <- function(fmt, pattern) {
 
-  match_data <- regexpr(pattern, x)
-  match <- reg_matches(x, match_data)
+  match_data <- regexpr(pattern, fmt)
+  match <- reg_matches(fmt, match_data)
 
   is_match <- !is.na(match)
 
@@ -286,7 +286,55 @@ parse_dttm_fmt_ <- function(x, pattern) {
   tibble::tibble(pat = pattern, cap = match, start = start, end = end, len = len)
 }
 
+#' Parse a date/time format
+#'
+#' [parse_dttm_fmt()] parses a date/time formats, meaning it will try to parse
+#' the components of the format `fmt` that refer to date/time components.
+#' [parse_dttm_fmt_()] is similar to [parse_dttm_fmt()] but is not vectorized
+#' over `fmt`.
+#'
+#' @param fmt A format string (scalar) to be parsed by `patterns`.
+#' @param pattern,patterns A string (in the case of `pattern`), or a character
+#'   vector (in the case of `patterns`) of regexps for each of the individual
+#'   date/time components. Default value is that of [fmt_c()]. Use this function
+#'   if you plan on passing a different set of patterns.
+#'
+#' @returns A matrix of seven columns:
+#' - `fmt_c`: date/time format component. Values are either `"year"`, `"mon"`, `"mday"`,
+#' `"hour"`, `"min"`, `"sec"`, or `NA`.
+#' - `pat`: Regexp used to parse the date/time component.
+#' - `cap`: The captured substring from the format.
+#' - `start`: Start position in the format string for this capture.
+#' - `end`: End position in the format string for this capture.
+#' - `len`: Length of the capture (number of chars).
+#' - `ord`: Ordinal of this date/time component in the format string.
+#'
+#' Each row is for either a date/time format component or a "delimiter" string
+#' or pattern in-between format components.
+#'
+#' @examples
+#' sdtm.oak:::parse_dttm_fmt("ymd")
+#' sdtm.oak:::parse_dttm_fmt("H:M:S")
+#'
+#' sdtm.oak:::parse_dttm_fmt("ymd HMS")
+#'
+#' # Repeating the same special patterns, e.g. "yy" still counts as one pattern
+#' # only.
+#' sdtm.oak:::parse_dttm_fmt("yymmdd HHMMSS")
+#'
+#' # Note that `"y"`, `"m"`, `"d"`, `"H"`, `"M"` or `"S"` are reserved patterns
+#' # that are matched first and interpreted as format components. # Example: the
+#' # first "y" in "year" is parsed as meaning year followed by # "ear y". The
+#' # second "y" is not longer matched because a first match already # succeded.
+#' sdtm.oak:::parse_dttm_fmt("year y")
+#'
+#' # Specify custom patterns
+#' sdtm.oak:::parse_dttm_fmt("year month day", fmt_c(year = "year", mon = "month", mday = "day"))
+#'
+#' @keywords internal
 parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
+
+  admiraldev::assert_character_scalar(fmt)
 
   fmt_dttmc <-
     purrr::map(patterns, ~ parse_dttm_fmt_(fmt, .x)) |>
