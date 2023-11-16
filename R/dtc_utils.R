@@ -154,9 +154,42 @@ complete_capture_matrix <-
 
   }
 
+#' Coalesce capture matrices
+#'
+#' [coalesce_capture_matrices()] combines several capture matrices into one.
+#' Each argument of `...` should be a capture matrix in the sense of the output
+#' by [complete_capture_matrix()], meaning a character matrix of six columns
+#' whose names are: `year`, `mon`, `mday`, `hour`, `min` or `sec`.
+#'
+#' @param ... A sequence of capture matrices.
+#'
+#' @returns A single capture matrix whose values have been coalesced in the
+#' sense of [coalesce()][dplyr::coalesce].
+#'
+#' @examples
+#' cols <- c("year", "mon", "mday", "hour", "min", "sec")
+#' dates <- c("2020", "01", "01", "20", NA, NA)
+#' times <- c(NA, NA, NA, "10", "00", "05")
+#' m_dates <- matrix(dates, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
+#' m_times <- matrix(times, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
+#'
+#' # Note how the hour "20" takes precedence over "10"
+#' sdtm.oak:::coalesce_capture_matrices(m_dates, m_times)
+#'
+#' # Reverse the order of the inputs and now hour "10" takes precedence
+#' sdtm.oak:::coalesce_capture_matrices(m_times, m_dates)
+#'
+#' # Single inputs should result in the same output as the input
+#' sdtm.oak:::coalesce_capture_matrices(m_dates)
+#' sdtm.oak:::coalesce_capture_matrices(m_times)
+#'
+#' @keywords internal
 coalesce_capture_matrices <- function(...) {
 
   dots <- rlang::list2(...)
+
+  if (rlang::is_empty(dots))
+    rlang::abort("At least one input must be passed.")
 
   # Assert that every argument in `...` is a capture matrix
   purrr::walk(dots, assert_capture_matrix)
