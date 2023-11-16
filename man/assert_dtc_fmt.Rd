@@ -10,8 +10,8 @@ assert_dtc_fmt(fmt)
 \item{fmt}{A character vector.}
 }
 \description{
-\code{\link[=assert_dtc_fmt]{assert_dtc_fmt()}} takes a character vector of date/time formats and check if
-the formats are supported, meaning it check if they are one of the formats
+\code{\link[=assert_dtc_fmt]{assert_dtc_fmt()}} takes a character vector of date/time formats and checks if
+the formats are supported, meaning it checks if they are one of the formats
 listed in column \code{fmt} of \link{dtc_formats}, failing with an error otherwise.
 }
 \examples{
