@@ -1,27 +1,3 @@
-#' Is it one of the supported formats?
-#'
-#' [is_dtc_fmt()] takes a character vector of date/time formats and returns
-#' a logical indicating which are supported.
-#'
-#' @details
-#' This function works by checking if the values of `x` are one of the formats
-#' listed in column `fmt` of [dtc_formats].
-#'
-#' @param fmt A character vector.
-#'
-#' @returns A [logical][base::logical] vector of the same size of `fmt`.
-#'
-#' @examples
-#' sdtm.oak:::is_dtc_fmt(c("ymd", "y m d", "dmy", "HM", "H:M:S", "y-m-d H:M:S"))
-#'
-#' sdtm.oak:::is_dtc_fmt("y years m months d days")
-#'
-#' @keywords internal
-is_dtc_fmt <- function(fmt) {
-  admiraldev::assert_character_vector(fmt)
-  fmt %in% sdtm.oak::dtc_formats$fmt
-}
-
 #' Assert date time character formats
 #'
 #' [assert_dtc_fmt()] takes a character vector of date/time formats and check if
