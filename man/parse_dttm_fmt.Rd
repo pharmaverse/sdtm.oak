@@ -56,7 +56,8 @@ sdtm.oak:::parse_dttm_fmt("yymmdd HHMMSS")
 sdtm.oak:::parse_dttm_fmt("year y")
 
 # Specify custom patterns
-sdtm.oak:::parse_dttm_fmt("year month day", fmt_c(year = "year", mon = "month", mday = "day"))
+sdtm.oak:::parse_dttm_fmt("year month day",
+                         sdtm.oak:::fmt_c(year = "year", mon = "month", mday = "day"))
 
 }
 \keyword{internal}

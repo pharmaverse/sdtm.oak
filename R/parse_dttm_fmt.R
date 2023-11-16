@@ -329,7 +329,8 @@ parse_dttm_fmt_ <- function(fmt, pattern) {
 #' sdtm.oak:::parse_dttm_fmt("year y")
 #'
 #' # Specify custom patterns
-#' sdtm.oak:::parse_dttm_fmt("year month day", fmt_c(year = "year", mon = "month", mday = "day"))
+#' sdtm.oak:::parse_dttm_fmt("year month day",
+#'                          sdtm.oak:::fmt_c(year = "year", mon = "month", mday = "day"))
 #'
 #' @keywords internal
 parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
@@ -366,7 +367,38 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
 
 }
 
-
+#' Convert a parsed date/time format to regex
+#'
+#' [dttm_fmt_to_regex()] takes a [tibble][tibble::tibble-package] of parsed
+#' date/time format components (as returned by [parse_dttm_fmt()]), and a
+#' mapping of date/time component formats to regexps and generates a single
+#' regular expression with groups for matching each of the date/time components.
+#'
+#' @param tbl_fmt_c A [tibble][tibble::tibble-package] of parsed date/time
+#'   format components as returned by [parse_dttm_fmt()].
+#' @param fmt_regex A named character vector of regexps, one for each date/time
+#' component.
+#' @param anchored Whether the final regex should be anchored, i.e. bounded by
+#' `"^"` and `"$"` for a whole match.
+#'
+#' @returns A string containing a regular expression for matching date/time
+#' components according to a format.
+#'
+#' @examples
+#' tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("y")
+#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
+#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c, anchored = FALSE)
+#'
+#' tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("m")
+#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
+#'
+#' tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("ymd")
+#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
+#'
+#' tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("ymd HH:MM:SS")
+#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
+#'
+#' @keywords internal
 dttm_fmt_to_regex <- function(tbl_fmt_c, fmt_regex = fmt_rg(), anchored = TRUE) {
   fmt_regex <-
     tbl_fmt_c |>
