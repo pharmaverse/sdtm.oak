@@ -24,8 +24,8 @@ is_dtc_fmt <- function(fmt) {
 
 #' Assert date time character formats
 #'
-#' [assert_dtc_fmt()] takes a character vector of date/time formats and check if
-#' the formats are supported, meaning it check if they are one of the formats
+#' [assert_dtc_fmt()] takes a character vector of date/time formats and checks if
+#' the formats are supported, meaning it checks if they are one of the formats
 #' listed in column `fmt` of [dtc_formats], failing with an error otherwise.
 #'
 #' @param fmt A character vector.
