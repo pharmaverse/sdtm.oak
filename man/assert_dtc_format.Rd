@@ -29,7 +29,7 @@ sdtm.oak:::assert_dtc_format(list(c("ymd", "y-m-d"), "H:M:S"))
 
 # These commands should throw an error
 if (FALSE) {
-# Note that `"year, month, day"` is not a supported format.
+  # Note that `"year, month, day"` is not a supported format.
   sdtm.oak:::assert_dtc_format("year, month, day")
 }
 
