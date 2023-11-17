@@ -81,6 +81,12 @@ jobs:
           echo "image_name=$package_name-$r_version" >> $GITHUB_OUTPUT
           renv=$(echo "${{ matrix.value }}" | tr -d '"')
           echo "renv_lock_path=$renv" >> $GITHUB_OUTPUT
+          if [ "$r_version" = "4.3" ]; then
+              echo "platforms=linux/amd64,linux/arm64" >> $GITHUB_OUTPUT
+          else
+              echo "platforms=linux/amd64" >> $GITHUB_OUTPUT
+          fi
+          
 
       - name: Call deploy docker image action for every renv
         uses: insightsengineering/r-image-creator@v1
@@ -93,6 +99,7 @@ jobs:
           repository-owner: ${{ github.repository_owner }}
           repo-user: ${{ github.actor }}
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          platforms: "${{ steps.image_specs.outputs.platforms }}"
 
 # note: in case of 403 error when pushing to ghcr : link current repo to the given package registry - https://github.com/docker/build-push-action/issues/687
 # (got to https://github.com/<user name>?tab=packages to go to packages settings) and there https://github.com/users/<user name>/packages/container/admiralci-4.0/settings
