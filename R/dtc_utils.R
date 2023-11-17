@@ -18,8 +18,9 @@
 assert_dtc_fmt <- function(fmt) {
   admiraldev::assert_character_vector(fmt)
   rlang::arg_match(fmt,
-                   values = sdtm.oak::dtc_formats$fmt,
-                   multiple = TRUE)
+    values = sdtm.oak::dtc_formats$fmt,
+    multiple = TRUE
+  )
 }
 
 #' Assert dtc format
@@ -42,17 +43,15 @@ assert_dtc_fmt <- function(fmt) {
 #'
 #' # These commands should throw an error
 #' if (FALSE) {
-#' # Note that `"year, month, day"` is not a supported format.
+#'   # Note that `"year, month, day"` is not a supported format.
 #'   sdtm.oak:::assert_dtc_format("year, month, day")
 #' }
 #'
 #' @keywords internal
 assert_dtc_format <- function(.format) {
-
   abort_msg <- "`.format` must be either a character vector of formats of a list thereof."
 
-  switch(
-    typeof(.format),
+  switch(typeof(.format),
     character = assert_dtc_fmt(.format),
     list = purrr::map(.format, assert_dtc_format),
     rlang::abort(abort_msg)
@@ -95,17 +94,18 @@ assert_dtc_format <- function(.format) {
 #'
 #' @keywords internal
 assert_capture_matrix <- function(m) {
-
   # `m` must be of character type.
   admiraldev::assert_character_vector(m)
 
-  if (!is.matrix(m))
+  if (!is.matrix(m)) {
     rlang::abort("`m` must be a matrix.")
+  }
 
   col_names <- c("year", "mon", "mday", "hour", "min", "sec")
   m_col_names <- colnames(m)
-  if (is.null(m_col_names) || !all(m_col_names %in% col_names))
+  if (is.null(m_col_names) || !all(m_col_names %in% col_names)) {
     rlang::abort("`m` must have the following colnames: `year`, `mon`, `mday`, `hour`, `min` and `sec`.")
+  }
 
   invisible(m)
 }
@@ -140,8 +140,9 @@ complete_capture_matrix <-
   function(m) {
     col_names <- c("year", "mon", "mday", "hour", "min", "sec")
 
-    if (setequal(col_names, colnames(m)))
+    if (setequal(col_names, colnames(m))) {
       return(m)
+    }
 
     miss_cols <- setdiff(col_names, colnames(m))
     miss_n_cols <- length(miss_cols)
@@ -151,7 +152,6 @@ complete_capture_matrix <-
 
     m3 <- cbind(m, m2)[, col_names, drop = FALSE]
     assert_capture_matrix(m3)
-
   }
 
 #' Coalesce capture matrices
@@ -185,11 +185,11 @@ complete_capture_matrix <-
 #'
 #' @keywords internal
 coalesce_capture_matrices <- function(...) {
-
   dots <- rlang::list2(...)
 
-  if (rlang::is_empty(dots))
+  if (rlang::is_empty(dots)) {
     rlang::abort("At least one input must be passed.")
+  }
 
   # Assert that every argument in `...` is a capture matrix
   purrr::walk(dots, assert_capture_matrix)

@@ -9,8 +9,6 @@ parse_dttm_ <- function(dttm,
                         mday_na = na,
                         mon_na = na,
                         year_na = na) {
-
-
   admiraldev::assert_character_scalar(fmt)
 
   tbl_fmt_c <- parse_dttm_fmt(fmt)
@@ -115,5 +113,4 @@ parse_dttm <- function(dttm,
     )
 
   coalesce_capture_matrices(!!!lst)
-
 }

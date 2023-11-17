@@ -39,7 +39,6 @@ iso8601_na <- function(x) {
 #'
 #' @keywords internal
 zero_pad_whole_number <- function(x, n = 2L) {
-
   # Check `x`
   if (!rlang::is_integerish(x)) rlang::abort("`x` must be integerish.")
 
@@ -84,12 +83,12 @@ zero_pad_whole_number <- function(x, n = 2L) {
 #'
 #' @keywords internal
 yy_to_yyyy <- function(x, cutoff_2000 = 68L) {
-
   # Check `x`
   if (!rlang::is_integerish(x)) rlang::abort("`x` must be integerish.")
 
-  if (any(x < 0L, na.rm = TRUE))
+  if (any(x < 0L, na.rm = TRUE)) {
     rlang::abort("`x` cannot have negative years.")
+  }
 
   x <- dplyr::if_else(x <= cutoff_2000, x + 2000L, x)
   x <- dplyr::if_else(x <= 99L, x + 1900L, x)
@@ -285,7 +284,6 @@ iso8601_truncate <- function(x, empty_as_na = TRUE) {
 #'
 #' @keywords internal
 format_iso8601 <- function(m, .cutoff_2000 = 68L) {
-
   admiraldev::assert_integer_scalar(.cutoff_2000)
 
   m[, "year"] <- iso8601_year(m[, "year"], cutoff_2000 = .cutoff_2000)
@@ -298,17 +296,19 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
   m <- iso8601_na(m)
 
   x <-
-    paste0(m[, "year"],
-           "-",
-           m[, "mon"],
-           "-",
-           m[, "mday"],
-           "T",
-           m[, "hour"],
-           ":",
-           m[, "min"],
-           ":",
-           m[, "sec"])
+    paste0(
+      m[, "year"],
+      "-",
+      m[, "mon"],
+      "-",
+      m[, "mday"],
+      "T",
+      m[, "hour"],
+      ":",
+      m[, "min"],
+      ":",
+      m[, "sec"]
+    )
 
   iso8601_truncate(x)
 }
@@ -377,22 +377,26 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #' create_iso8601("2019-120602:20:13.1230001", .format = "y-mdH:M:S", .check_format = FALSE)
 #' @export
 create_iso8601 <- function(..., .format, .na = NULL, .cutoff_2000 = 68L, .check_format = TRUE) {
-
   dots <- rlang::dots_list(...)
 
-  if (rlang::is_empty(dots)) return(character())
+  if (rlang::is_empty(dots)) {
+    return(character())
+  }
 
   # Check if all vectors in `dots` are of character type.
-  if (!identical(unique(sapply(dots, typeof)), "character"))
+  if (!identical(unique(sapply(dots, typeof)), "character")) {
     rlang::abort("All vectors in `...` must be of type character.")
+  }
 
   # Check if all vectors in `dots` are of the same length.
   n <- unique(lengths(dots))
-  if (!identical(length(n), 1L))
+  if (!identical(length(n), 1L)) {
     rlang::abort("All vectors in `...` must be of the same length.")
+  }
 
-  if (!identical(length(dots), length(.format)))
+  if (!identical(length(dots), length(.format))) {
     rlang::abort("Number of vectors in `...` should match length of `.format`.")
+  }
 
   # Check that the `.format` is either a character vector or a list of
   # character vectors, and that each string is one of the possible formats.
