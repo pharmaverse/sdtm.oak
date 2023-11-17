@@ -1,5 +1,4 @@
 test_that("`format_iso8601()`: basic usage", {
-
   cols <- c("year", "mon", "mday", "hour", "min", "sec")
   m <- matrix(
     c(
@@ -22,5 +21,4 @@ test_that("`format_iso8601()`: basic usage", {
       "2001-03-31T23:10"
     )
   )
-
 })
