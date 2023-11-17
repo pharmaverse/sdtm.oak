@@ -22,10 +22,14 @@ test_that("`zero_pad_whole_number()`: ensure `x` is integerish", {
 
 test_that("`zero_pad_whole_number()`: basic usage", {
   expect_identical(zero_pad_whole_number(c(-1L, 0L, 1L)), c(NA, "00", "01"))
-  expect_identical(zero_pad_whole_number(c(-1L, 0L, 1L, 10L, 99L, 100L), n = 2L),
-                   c(NA, "00", "01", "10", "99", NA))
-  expect_identical(zero_pad_whole_number(c(-1L, 0L, 1L, 10L, 99L, 100L), n = 3L),
-                   c(NA, "000", "001", "010", "099", "100"))
+  expect_identical(
+    zero_pad_whole_number(c(-1L, 0L, 1L, 10L, 99L, 100L), n = 2L),
+    c(NA, "00", "01", "10", "99", NA)
+  )
+  expect_identical(
+    zero_pad_whole_number(c(-1L, 0L, 1L, 10L, 99L, 100L), n = 3L),
+    c(NA, "000", "001", "010", "099", "100")
+  )
 })
 
 test_that("`zero_pad_whole_number()`: ensure `n` is scalar integer", {
