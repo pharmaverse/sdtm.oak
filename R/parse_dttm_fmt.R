@@ -17,12 +17,13 @@
 #'
 #' @keywords internal
 find_int_gap <- function(x, xmin = min(x), xmax = max(x)) {
-
-  if (!rlang::is_integerish(x))
+  if (!rlang::is_integerish(x)) {
     rlang::abort("`x` must be integer-ish")
+  }
 
-  if (rlang::is_empty(x))
+  if (rlang::is_empty(x)) {
     return(tibble::tibble(start = integer(), end = integer()))
+  }
 
   admiraldev::assert_integer_scalar(xmin)
   admiraldev::assert_integer_scalar(xmax)
@@ -82,7 +83,6 @@ pseq <- function(from, to) {
 #'
 #' @keywords internal
 str_to_anycase <- function(x) {
-
   lst <- stringr::str_split(x, stringr::boundary("character"))
   purrr::map(lst, ~ stringr::str_c(stringr::str_to_upper(.x), stringr::str_to_lower(.x))) |>
     purrr::map(~ sprintf("[%s]", .x)) |>
@@ -105,13 +105,12 @@ str_to_anycase <- function(x) {
 #'
 #' @keywords internal
 months_abb_regex <- function(x = month.abb, case = c("any", "upper", "lower", "title")) {
-
   admiraldev::assert_character_vector(x)
   case <- match.arg(case)
 
   if (identical(case, "any")) x <- str_to_anycase(x)
   if (identical(case, "upper")) x <- stringr::str_to_upper(x)
-  if (identical(case, "lower")) x <-  stringr::str_to_lower(x)
+  if (identical(case, "lower")) x <- stringr::str_to_lower(x)
   if (identical(case, "title")) x <- stringr::str_to_title(x)
 
   stringr::str_flatten(x, collapse = "|")
@@ -149,7 +148,6 @@ fmt_c <- function(sec = "S+",
                   mday = "d+",
                   mon = "m+",
                   year = "y+") {
-
   c(
     sec = sec,
     min = min,
@@ -158,7 +156,6 @@ fmt_c <- function(sec = "S+",
     mon = mon,
     year = year
   )
-
 }
 
 #' Utility function to assemble a regex of alternative patterns
@@ -182,7 +179,6 @@ fmt_c <- function(sec = "S+",
 #'
 #' @keywords internal
 regex_or <- function(x, .open = FALSE, .close = FALSE) {
-
   admiraldev::assert_character_vector(x)
   admiraldev::assert_logical_scalar(.open)
   admiraldev::assert_logical_scalar(.close)
@@ -247,7 +243,6 @@ fmt_rg <- function(
     mday_na = na,
     mon_na = na,
     year_na = na) {
-
   sec_na <-
     ifelse(!is.null(sec_na), regex_or(sec_na, .open = TRUE), "")
   min_na <-
@@ -274,7 +269,6 @@ fmt_rg <- function(
 
 #' @rdname parse_dttm_fmt
 parse_dttm_fmt_ <- function(fmt, pattern) {
-
   match_data <- regexpr(pattern, fmt)
   match <- reg_matches(fmt, match_data)
 
@@ -329,12 +323,13 @@ parse_dttm_fmt_ <- function(fmt, pattern) {
 #' sdtm.oak:::parse_dttm_fmt("year y")
 #'
 #' # Specify custom patterns
-#' sdtm.oak:::parse_dttm_fmt("year month day",
-#'                          sdtm.oak:::fmt_c(year = "year", mon = "month", mday = "day"))
+#' sdtm.oak:::parse_dttm_fmt(
+#'   "year month day",
+#'   sdtm.oak:::fmt_c(year = "year", mon = "month", mday = "day")
+#' )
 #'
 #' @keywords internal
 parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
-
   admiraldev::assert_character_scalar(fmt)
 
   fmt_dttmc <-
@@ -364,7 +359,6 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
 
   dplyr::bind_rows(fmt_dttmc, fmt_delim) |>
     dplyr::arrange(.data$start)
-
 }
 
 #' Convert a parsed date/time format to regex

@@ -1,5 +1,4 @@
 test_that("`create_iso8601()`: individual date components", {
-
   x <- c("0", "50", "1950", "80", "1980", "2000")
   y0 <- create_iso8601(x, .format = "y", .check_format = FALSE)
   y1 <- c(NA, "2050", "1950", "1980", "1980", "2000")
@@ -14,11 +13,9 @@ test_that("`create_iso8601()`: individual date components", {
   y0 <- create_iso8601(x, .format = "d", .check_format = FALSE)
   y1 <- c("----00", "----00", "----01", "----01", "----10", "----31")
   expect_identical(y0, y1)
-
 })
 
 test_that("`create_iso8601()`: dates", {
-
   y1 <- c("1999-01-01", "2000-01-01", "1999-01-01", "1999-12-31")
 
   x <- c("19990101", "20000101", "990101", "991231")
@@ -32,11 +29,9 @@ test_that("`create_iso8601()`: dates", {
   x <- c("1999 01 01", "2000 01 01", "99 01 01", "99 12 31")
   y0 <- create_iso8601(x, .format = "y m d", .check_format = FALSE)
   expect_identical(y0, y1)
-
 })
 
 test_that("`create_iso8601()`: times: hours and minutes", {
-
   y1 <- c("-----T15:20", "-----T00:10", "-----T23:01", "-----T00:00")
 
   x <- c("1520", "0010", "2301", "0000")
@@ -50,11 +45,9 @@ test_that("`create_iso8601()`: times: hours and minutes", {
   x <- c("15h20", "00h10", "23h01", "00h00")
   y0 <- create_iso8601(x, .format = "HhM", .check_format = FALSE)
   expect_identical(y0, y1)
-
 })
 
 test_that("`create_iso8601()`: times: hours, minutes and seconds", {
-
   x <- c("152000", "001059", "230112.123", "00002.")
   y0 <- create_iso8601(x, .format = "HMS", .check_format = FALSE)
   y1 <- c("-----T15:20:00", "-----T00:10:59", "-----T23:01:12.123", "-----T00:00:02")
@@ -64,20 +57,19 @@ test_that("`create_iso8601()`: times: hours, minutes and seconds", {
   y0 <- create_iso8601(x, .format = "H:M:S", .check_format = FALSE)
   y1 <- c(y1, "-----T05:01:04")
   expect_identical(y0, y1)
-
 })
 
 
 test_that("`create_iso8601()`: dates and times", {
-
   dates <- c("1999-01-01", "2000-01-01", "99-01-01", "99-12-31")
   times <- c("1520", "0010", "2301", "0000")
   iso8601_dttm <- create_iso8601(dates, times, .format = c("y-m-d", "HM"), .check_format = FALSE)
   expectation <-
-    c("1999-01-01T15:20",
+    c(
+      "1999-01-01T15:20",
       "2000-01-01T00:10",
       "1999-01-01T23:01",
-      "1999-12-31T00:00")
+      "1999-12-31T00:00"
+    )
   expect_identical(iso8601_dttm, expectation)
-
 })
