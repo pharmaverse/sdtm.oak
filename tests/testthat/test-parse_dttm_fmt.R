@@ -131,16 +131,6 @@ test_that("`parse_dttm_fmt_`: only the first match is returned", {
 
 test_that("`parse_dttm_fmt`: empty fmt", {
 
-  x <-
-    tibble::tibble(
-      fmt_c = character(),
-      pat = character(),
-      cap = character(),
-      start = integer(),
-      end = integer(),
-      len = integer(),
-      ord = integer()
-    )
-  expect_identical(x, parse_dttm_fmt("", pattern = "y"))
+  expect_identical(fmt_dttmc(), parse_dttm_fmt("", pattern = "y"))
   expect_error(parse_dttm_fmt_(character(), pattern = "y"))
 })
