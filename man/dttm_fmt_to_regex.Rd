@@ -4,11 +4,10 @@
 \alias{dttm_fmt_to_regex}
 \title{Convert a parsed date/time format to regex}
 \usage{
-dttm_fmt_to_regex(tbl_fmt_c, fmt_regex = fmt_rg(), anchored = TRUE)
+dttm_fmt_to_regex(fmt, fmt_regex = fmt_rg(), anchored = TRUE)
 }
 \arguments{
-\item{tbl_fmt_c}{A \link[tibble:tibble-package]{tibble} of parsed date/time
-format components as returned by \code{\link[=parse_dttm_fmt]{parse_dttm_fmt()}}.}
+\item{fmt}{A format string (scalar) to be parsed by \code{patterns}.}
 
 \item{fmt_regex}{A named character vector of regexps, one for each date/time
 component.}
@@ -27,18 +26,13 @@ mapping of date/time component formats to regexps and generates a single
 regular expression with groups for matching each of the date/time components.
 }
 \examples{
-tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("y")
-sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
-sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c, anchored = FALSE)
+sdtm.oak:::dttm_fmt_to_regex("y")
+sdtm.oak:::dttm_fmt_to_regex("y", anchored = FALSE)
 
-tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("m")
-sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
+sdtm.oak:::dttm_fmt_to_regex("m")
+sdtm.oak:::dttm_fmt_to_regex("ymd")
 
-tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("ymd")
-sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
-
-tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("ymd HH:MM:SS")
-sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
+sdtm.oak:::dttm_fmt_to_regex("ymd HH:MM:SS")
 
 }
 \keyword{internal}

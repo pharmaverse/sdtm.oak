@@ -269,10 +269,17 @@ fmt_rg <- function(
 
 #' @rdname parse_dttm_fmt
 parse_dttm_fmt_ <- function(fmt, pattern) {
+
+  admiraldev::assert_character_scalar(fmt)
+  admiraldev::assert_character_scalar(pattern)
+
+  if(identical(nchar(pattern), 0L))
+    rlang::abort("`pattern` must be a literal string of at least one char.")
+
   match_data <- regexpr(pattern, fmt)
   match <- reg_matches(fmt, match_data)
 
-  is_match <- !is.na(match)
+  is_match <- (!length(match)) || (!is.na(match))
 
   start <- ifelse(is_match, match_data, NA_integer_)
   len <- ifelse(is_match, attr(match_data, "match.length"), NA_integer_)
@@ -294,8 +301,8 @@ parse_dttm_fmt_ <- function(fmt, pattern) {
 #'   if you plan on passing a different set of patterns.
 #'
 #' @returns A [tibble][tibble::tibble-package] of seven columns:
-#' - `fmt_c`: date/time format component. Values are either `"year"`, `"mon"`, `"mday"`,
-#' `"hour"`, `"min"`, `"sec"`, or `NA`.
+#' - `fmt_c`: date/time format component. Values are either `"year"`, `"mon"`,
+#' `"mday"`, `"hour"`, `"min"`, `"sec"`, or `NA`.
 #' - `pat`: Regexp used to parse the date/time component.
 #' - `cap`: The captured substring from the format.
 #' - `start`: Start position in the format string for this capture.
@@ -368,8 +375,7 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
 #' mapping of date/time component formats to regexps and generates a single
 #' regular expression with groups for matching each of the date/time components.
 #'
-#' @param tbl_fmt_c A [tibble][tibble::tibble-package] of parsed date/time
-#'   format components as returned by [parse_dttm_fmt()].
+#' @param fmt A format string (scalar) to be parsed by `patterns`.
 #' @param fmt_regex A named character vector of regexps, one for each date/time
 #' component.
 #' @param anchored Whether the final regex should be anchored, i.e. bounded by
@@ -379,21 +385,19 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
 #' components according to a format.
 #'
 #' @examples
-#' tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("y")
-#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
-#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c, anchored = FALSE)
+#' sdtm.oak:::dttm_fmt_to_regex("y")
+#' sdtm.oak:::dttm_fmt_to_regex("y", anchored = FALSE)
 #'
-#' tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("m")
-#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
+#' sdtm.oak:::dttm_fmt_to_regex("m")
+#' sdtm.oak:::dttm_fmt_to_regex("ymd")
 #'
-#' tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("ymd")
-#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
-#'
-#' tbl_fmt_c <- sdtm.oak:::parse_dttm_fmt("ymd HH:MM:SS")
-#' sdtm.oak:::dttm_fmt_to_regex(tbl_fmt_c)
+#' sdtm.oak:::dttm_fmt_to_regex("ymd HH:MM:SS")
 #'
 #' @keywords internal
-dttm_fmt_to_regex <- function(tbl_fmt_c, fmt_regex = fmt_rg(), anchored = TRUE) {
+dttm_fmt_to_regex <- function(fmt, fmt_regex = fmt_rg(), anchored = TRUE) {
+
+  tbl_fmt_c <- parse_dttm_fmt(fmt)
+
   fmt_regex <-
     tbl_fmt_c |>
     dplyr::mutate(regex = dplyr::if_else(is.na(.data$fmt_c), .data$cap, fmt_regex[.data$fmt_c])) |>

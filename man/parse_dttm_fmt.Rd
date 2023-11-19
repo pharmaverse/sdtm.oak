@@ -20,8 +20,8 @@ if you plan on passing a different set of patterns.}
 \value{
 A \link[tibble:tibble-package]{tibble} of seven columns:
 \itemize{
-\item \code{fmt_c}: date/time format component. Values are either \code{"year"}, \code{"mon"}, \code{"mday"},
-\code{"hour"}, \code{"min"}, \code{"sec"}, or \code{NA}.
+\item \code{fmt_c}: date/time format component. Values are either \code{"year"}, \code{"mon"},
+\code{"mday"}, \code{"hour"}, \code{"min"}, \code{"sec"}, or \code{NA}.
 \item \code{pat}: Regexp used to parse the date/time component.
 \item \code{cap}: The captured substring from the format.
 \item \code{start}: Start position in the format string for this capture.

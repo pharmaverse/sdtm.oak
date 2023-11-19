@@ -11,10 +11,9 @@ parse_dttm_ <- function(dttm,
                         year_na = na) {
   admiraldev::assert_character_scalar(fmt)
 
-  tbl_fmt_c <- parse_dttm_fmt(fmt)
   regex <-
     dttm_fmt_to_regex(
-      tbl_fmt_c,
+      fmt,
       fmt_regex = fmt_rg(
         na = na,
         sec_na = sec_na,
