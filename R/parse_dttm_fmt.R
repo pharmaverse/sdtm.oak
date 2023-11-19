@@ -267,6 +267,26 @@ fmt_rg <- function(
   )
 }
 
+fmt_dttmc <-
+  function(fmt_c = character(),
+           pat = character(),
+           cap = character(),
+           start = integer(),
+           end = integer(),
+           len = integer(),
+           ord = integer()) {
+    tibble::tibble(
+      fmt_c = fmt_c,
+      pat = pat,
+      cap = cap,
+      start = start,
+      end = end,
+      len = len,
+      ord = ord
+    )
+
+  }
+
 #' @rdname parse_dttm_fmt
 parse_dttm_fmt_ <- function(fmt, pattern) {
 
@@ -346,6 +366,9 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
   # Get captures' ranks while leaving NA as NA (`rank()` won't do this.)
   fmt_dttmc$ord <- dplyr::row_number(fmt_dttmc$start)
 
+  if(identical(nrow(fmt_dttmc), 0L))
+    return(fmt_dttmc())
+
   fmt_len <- nchar(fmt)
 
   start <- end <- NULL # To avoid a "no visible binding for global variable" NOTE.
@@ -355,13 +378,14 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
 
   delim <- with(delim_pos, stringr::str_sub(fmt, start = start, end = end))
   fmt_delim <-
-    tibble::tibble(
+    fmt_dttmc(
       fmt_c = NA_character_,
       pat = NA_character_,
       cap = delim,
       start = delim_pos$start,
       end = delim_pos$end,
-      len = end - start + 1L
+      len = delim_pos$end - delim_pos$start + 1L,
+      ord = NA_integer_
     )
 
   dplyr::bind_rows(fmt_dttmc, fmt_delim) |>
