@@ -16,7 +16,6 @@
 #'
 #' @keywords internal
 assert_dtc_fmt <- function(fmt) {
-  admiraldev::assert_character_vector(fmt)
   rlang::arg_match(fmt,
     values = sdtm.oak::dtc_formats$fmt,
     multiple = TRUE
