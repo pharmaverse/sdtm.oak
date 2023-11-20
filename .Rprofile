@@ -27,7 +27,7 @@ Sys.setenv("RENV_CONFIG_AUTO_SNAPSHOT" = FALSE)
 if (!Sys.getenv("RENV_AUTOLOADER_ENABLED") %in% c("false", "FALSE")) {
   .renv_profile <- paste(R.version$major, substr(R.version$minor, 1, 1), sep = ".")
   if (!file.exists("./renv/profile")) {
-    if (.renv_profile %in% c("4.1", "4.2", "4.3")) {
+    if (.renv_profile %in% c("4.2", "4.3")) {
       message("Set renv profile to `", .renv_profile, "`")
       Sys.setenv("RENV_PROFILE" = .renv_profile)
     } else {
