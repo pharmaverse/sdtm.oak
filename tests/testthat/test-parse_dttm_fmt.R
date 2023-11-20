@@ -57,7 +57,7 @@ test_that("`parse_dttm_fmt_`: basic usage", {
   expect_identical(x3, parse_dttm_fmt_(fmt2, pattern = "d"))
 })
 
-test_that("`parse_dttm_fmt_`: patterns", {
+test_that("`parse_dttm_fmt_`: pattern variations", {
 
   fmt <- "HH:MM:SS"
 
