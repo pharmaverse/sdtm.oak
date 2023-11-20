@@ -83,6 +83,7 @@ jobs:
     with:
       r-version: "4.3"
       latest-lintr: "true"
+      install-package: "true"
   links:
     name: Links
     uses: pharmaverse/admiralci/.github/workflows/links.yml@main
