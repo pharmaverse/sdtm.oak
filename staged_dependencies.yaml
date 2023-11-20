@@ -6,5 +6,6 @@ upstream_repos:
 downstream_repos:
 
 current_repo:
-  repo: pharmaverse/admiral
+  repo: pharmaverse/sdtm.oak
   host: https://github.com
+  
