@@ -78,10 +78,11 @@ jobs:
         ^cran-release$|^main$|^v([0-9]+\\.)?([0-9]+\\.)?([0-9]+)$
   linter:
     name: Lint
-    uses: pharmaverse/admiralci/.github/workflows/lintr.yml@main
+    uses: pharmaverse/admiralci/.github/workflows/lintr.yml@lintr-latest-cran
     if: github.event_name == 'pull_request'
     with:
       r-version: "4.3"
+      latest-lintr: "true"
   links:
     name: Links
     uses: pharmaverse/admiralci/.github/workflows/links.yml@main
