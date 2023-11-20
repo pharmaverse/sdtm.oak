@@ -1,6 +1,6 @@
 Thank you for your Pull Request! We have developed this task checklist from the
 [Development Process
-Guide](https://pharmaverse.github.io/admiraldev/devel/articles/development_process.html)
+Guide](https://pharmaverse.github.io/admiraldev/articles/development_process.html)
 to help with the final steps of the process. Completing the below tasks helps to
 ensure our reviewers can maximize their time on your code as well as making sure
 the oak codebase remains robust and consistent.
@@ -18,13 +18,13 @@ Request Title (Use Edit button in top-right if you need to update)
 - [ ] Updated relevant unit tests or have written new unit tests, which should
 consider realistic data scenarios and edge cases, e.g. empty datasets, errors,
 boundary cases etc. - See 
-[Unit Test Guide](https://pharmaverse.github.io/admiraldev/devel/articles/unit_test_guidance.html#tests-should-be-robust-to-cover-realistic-data-scenarios)
+[Unit Test Guide](https://pharmaverse.github.io/admiraldev/articles/unit_test_guidance.html#tests-should-be-robust-to-cover-realistic-data-scenarios)
 - [ ] If you removed/replaced any function and/or function parameters, did you 
 fully follow the 
-[deprecation guidance](https://pharmaverse.github.io/admiraldev/devel/articles/programming_strategy.html#deprecation)?
+[deprecation guidance](https://pharmaverse.github.io/admiraldev/articles/programming_strategy.html#deprecation)?
 - [ ] Update to all relevant roxygen headers and examples, including keywords
 and families. Refer to the 
-[categorization of functions](https://pharmaverse.github.io/admiraldev/devel/articles/programming_strategy.html#categorization-of-functions) to tag appropriate keyword/family.
+[categorization of functions](https://pharmaverse.github.io/admiraldev/articles/programming_strategy.html#categorization-of-functions) to tag appropriate keyword/family.
 - [ ] Run `devtools::document()` so all `.Rd` files in the `man` folder and the
 `NAMESPACE` file in the project root are updated appropriately
 - [ ] Address any updates needed for vignettes and/or templates
