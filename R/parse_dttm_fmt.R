@@ -293,7 +293,7 @@ parse_dttm_fmt_ <- function(fmt, pattern) {
   admiraldev::assert_character_scalar(fmt)
   admiraldev::assert_character_scalar(pattern)
 
-  if(identical(nchar(pattern), 0L))
+  if (identical(nchar(pattern), 0L))
     rlang::abort("`pattern` must be a literal string of at least one char.")
 
   match_data <- regexpr(pattern, fmt)
@@ -366,13 +366,13 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
   # Get captures' ranks while leaving NA as NA (`rank()` won't do this.)
   fmt_dttmc$ord <- dplyr::row_number(fmt_dttmc$start)
 
-  if(identical(nrow(fmt_dttmc), 0L))
+  if (identical(nrow(fmt_dttmc), 0L))
     return(fmt_dttmc())
 
   fmt_len <- nchar(fmt)
 
-  start <- end <- NULL # To avoid a "no visible binding for global variable" NOTE.
-  dttmc_pos <- with(fmt_dttmc, pseq(from = start[!is.na(start)], to = end[!is.na(end)]))
+  dttmc_pos <-
+    pseq(from = fmt_dttmc$start[!is.na(fmt_dttmc$start)], to = fmt_dttmc$end[!is.na(fmt_dttmc$end)])
   # `delim_pos`: delimiter positions, i.e. positions in `fmt` in-between dttm components.
   delim_pos <- find_int_gap(dttmc_pos, xmin = 1L, xmax = fmt_len)
 
