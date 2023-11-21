@@ -2,6 +2,7 @@
 #' @order 2
 parse_dttm_ <- function(dttm,
                         fmt,
+                        fmt_c = fmt_cmp(),
                         na = NULL,
                         sec_na = na,
                         min_na = na,
@@ -22,7 +23,8 @@ parse_dttm_ <- function(dttm,
         mday_na = mday_na,
         mon_na = mon_na,
         year_na = year_na
-      )
+      ),
+      fmt_c = fmt_c
     )
 
   m <- stringr::str_match(dttm, regex)
@@ -88,6 +90,7 @@ parse_dttm_ <- function(dttm,
 #' @keywords internal
 parse_dttm <- function(dttm,
                        fmt,
+                       fmt_c = fmt_cmp(),
                        na = NULL,
                        sec_na = na,
                        min_na = na,
@@ -101,6 +104,7 @@ parse_dttm <- function(dttm,
       ~ parse_dttm_(
         dttm = dttm,
         fmt = .x,
+        fmt_c = fmt_c,
         na = na,
         sec_na = sec_na,
         min_na = min_na,

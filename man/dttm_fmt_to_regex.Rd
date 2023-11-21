@@ -4,7 +4,12 @@
 \alias{dttm_fmt_to_regex}
 \title{Convert a parsed date/time format to regex}
 \usage{
-dttm_fmt_to_regex(fmt, fmt_regex = fmt_rg(), anchored = TRUE)
+dttm_fmt_to_regex(
+  fmt,
+  fmt_regex = fmt_rg(),
+  fmt_c = fmt_cmp(),
+  anchored = TRUE
+)
 }
 \arguments{
 \item{fmt}{A format string (scalar) to be parsed by \code{patterns}.}

@@ -325,6 +325,8 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #'   provided, then each element must be a character vector of formats. The
 #'   first vector of formats is used for parsing the first vector passed in
 #'   `...`, and so on.
+#' @param .fmt_c A list of regexps to use when parsing `.format`. Use [fmt_cmp()]
+#' to create such an object to pass as argument to this parameter.
 #' @param .na A character vector of string literals to be regarded as missing
 #'   values during parsing.
 #' @param .cutoff_2000 An integer value. Two-digit years smaller or equal to
@@ -376,7 +378,10 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #' # Fractional seconds
 #' create_iso8601("2019-120602:20:13.1230001", .format = "y-mdH:M:S", .check_format = FALSE)
 #' @export
-create_iso8601 <- function(..., .format, .na = NULL, .cutoff_2000 = 68L, .check_format = TRUE) {
+create_iso8601 <- function(..., .format, .fmt_c = fmt_cmp(), .na = NULL, .cutoff_2000 = 68L, .check_format = FALSE) {
+
+  assert_fmt_c(.fmt_c)
+
   dots <- rlang::dots_list(...)
 
   if (rlang::is_empty(dots)) {
@@ -402,7 +407,7 @@ create_iso8601 <- function(..., .format, .na = NULL, .cutoff_2000 = 68L, .check_
   # character vectors, and that each string is one of the possible formats.
   if (.check_format) assert_dtc_format(.format)
 
-  cap_matrices <- purrr::map2(dots, .format, ~ parse_dttm(dttm = .x, fmt = .y, na = .na))
+  cap_matrices <- purrr::map2(dots, .format, ~ parse_dttm(dttm = .x, fmt = .y, na = .na, fmt_c = .fmt_c))
   cap_matrix <- coalesce_capture_matrices(!!!cap_matrices)
 
   format_iso8601(cap_matrix, .cutoff_2000 = .cutoff_2000)

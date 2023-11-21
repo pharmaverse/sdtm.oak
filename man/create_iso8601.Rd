@@ -7,9 +7,10 @@
 create_iso8601(
   ...,
   .format,
+  .fmt_c = fmt_cmp(),
   .na = NULL,
   .cutoff_2000 = 68L,
-  .check_format = TRUE
+  .check_format = FALSE
 )
 }
 \arguments{
@@ -21,6 +22,9 @@ taken as parsing format for each vector passed in \code{...}. If a list is
 provided, then each element must be a character vector of formats. The
 first vector of formats is used for parsing the first vector passed in
 \code{...}, and so on.}
+
+\item{.fmt_c}{A list of regexps to use when parsing \code{.format}. Use \code{\link[=fmt_cmp]{fmt_cmp()}}
+to create such an object to pass as argument to this parameter.}
 
 \item{.na}{A character vector of string literals to be regarded as missing
 values during parsing.}

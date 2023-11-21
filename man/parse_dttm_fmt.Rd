@@ -7,14 +7,14 @@
 \usage{
 parse_dttm_fmt_(fmt, pattern)
 
-parse_dttm_fmt(fmt, patterns = fmt_c())
+parse_dttm_fmt(fmt, patterns = fmt_cmp())
 }
 \arguments{
 \item{fmt}{A format string (scalar) to be parsed by \code{patterns}.}
 
 \item{pattern, patterns}{A string (in the case of \code{pattern}), or a character
 vector (in the case of \code{patterns}) of regexps for each of the individual
-date/time components. Default value is that of \code{\link[=fmt_c]{fmt_c()}}. Use this function
+date/time components. Default value is that of \code{\link[=fmt_cmp]{fmt_cmp()}}. Use this function
 if you plan on passing a different set of patterns.}
 }
 \value{
@@ -51,14 +51,14 @@ sdtm.oak:::parse_dttm_fmt("yymmdd HHMMSS")
 
 # Note that `"y"`, `"m"`, `"d"`, `"H"`, `"M"` or `"S"` are reserved patterns
 # that are matched first and interpreted as format components. # Example: the
-# first "y" in "year" is parsed as meaning year followed by # "ear y". The
+# first "y" in "year" is parsed as meaning year followed by "ear y". The
 # second "y" is not longer matched because a first match already # succeded.
 sdtm.oak:::parse_dttm_fmt("year y")
 
 # Specify custom patterns
 sdtm.oak:::parse_dttm_fmt(
   "year month day",
-  sdtm.oak:::fmt_c(year = "year", mon = "month", mday = "day")
+  fmt_cmp(year = "year", mon = "month", mday = "day")
 )
 
 }

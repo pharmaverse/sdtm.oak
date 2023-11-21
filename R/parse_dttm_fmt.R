@@ -124,7 +124,7 @@ months_abb_regex <- function(x = month.abb, case = c("any", "upper", "lower", "t
 
 #' Regexps for date/time format components
 #'
-#' [fmt_c()] creates a character vector of patterns to match individual
+#' [fmt_cmp()] creates a character vector of patterns to match individual
 #' format date/time components.
 #'
 #' @param sec A string pattern for matching the second format component.
@@ -138,24 +138,40 @@ months_abb_regex <- function(x = month.abb, case = c("any", "upper", "lower", "t
 #' of six elements, one for each date/time component.
 #'
 #' @examples
-#' # Default patterns
-#' sdtm.oak:::fmt_c()
+#' # Regexps to parse format components
+#' fmt_cmp()
 #'
-#' @keywords internal
-fmt_c <- function(sec = "S+",
+# # Supply a different pattern for the year component
+#' fmt_cmp(year = "yyyy")
+#'
+#' @export
+fmt_cmp <- function(sec = "S+",
                   min = "M+",
                   hour = "H+",
                   mday = "d+",
                   mon = "m+",
                   year = "y+") {
-  c(
-    sec = sec,
-    min = min,
-    hour = hour,
-    mday = mday,
-    mon = mon,
-    year = year
+
+  structure(
+    list(
+      sec = sec,
+      min = min,
+      hour = hour,
+      mday = mday,
+      mon = mon,
+      year = year
+    ),
+    class = "fmt_c"
   )
+
+}
+
+assert_fmt_c <- function(x) {
+  if (!inherits(x, "fmt_c")) {
+    rlang::abort("`x` must be an object created with `fmt_cmp()`.")
+  }
+
+  invisible(x)
 }
 
 #' Utility function to assemble a regex of alternative patterns
@@ -317,7 +333,7 @@ parse_dttm_fmt_ <- function(fmt, pattern) {
 #' @param fmt A format string (scalar) to be parsed by `patterns`.
 #' @param pattern,patterns A string (in the case of `pattern`), or a character
 #'   vector (in the case of `patterns`) of regexps for each of the individual
-#'   date/time components. Default value is that of [fmt_c()]. Use this function
+#'   date/time components. Default value is that of [fmt_cmp()]. Use this function
 #'   if you plan on passing a different set of patterns.
 #'
 #' @returns A [tibble][tibble::tibble-package] of seven columns:
@@ -345,23 +361,28 @@ parse_dttm_fmt_ <- function(fmt, pattern) {
 #'
 #' # Note that `"y"`, `"m"`, `"d"`, `"H"`, `"M"` or `"S"` are reserved patterns
 #' # that are matched first and interpreted as format components. # Example: the
-#' # first "y" in "year" is parsed as meaning year followed by # "ear y". The
+#' # first "y" in "year" is parsed as meaning year followed by "ear y". The
 #' # second "y" is not longer matched because a first match already # succeded.
 #' sdtm.oak:::parse_dttm_fmt("year y")
 #'
 #' # Specify custom patterns
 #' sdtm.oak:::parse_dttm_fmt(
 #'   "year month day",
-#'   sdtm.oak:::fmt_c(year = "year", mon = "month", mday = "day")
+#'   fmt_cmp(year = "year", mon = "month", mday = "day")
 #' )
 #'
 #' @keywords internal
-parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
+parse_dttm_fmt <- function(fmt, patterns = fmt_cmp()) {
   admiraldev::assert_character_scalar(fmt)
 
   fmt_dttmc <-
     purrr::map(patterns, ~ parse_dttm_fmt_(fmt, .x)) |>
     purrr::list_rbind(names_to = "fmt_c")
+
+  # Check if patterns have matching overlap, i.e. whether they are not
+  # mutually exclusive (as they should).
+  if (anyDuplicated(pseq(fmt_dttmc$start, fmt_dttmc$end)))
+    rlang::abort("Patterns in `fmt_c` have overlapping matches.")
 
   # Get captures' ranks while leaving NA as NA (`rank()` won't do this.)
   fmt_dttmc$ord <- dplyr::row_number(fmt_dttmc$start)
@@ -418,9 +439,9 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_c()) {
 #' sdtm.oak:::dttm_fmt_to_regex("ymd HH:MM:SS")
 #'
 #' @keywords internal
-dttm_fmt_to_regex <- function(fmt, fmt_regex = fmt_rg(), anchored = TRUE) {
+dttm_fmt_to_regex <- function(fmt, fmt_regex = fmt_rg(), fmt_c = fmt_cmp(), anchored = TRUE) {
 
-  tbl_fmt_c <- parse_dttm_fmt(fmt)
+  tbl_fmt_c <- parse_dttm_fmt(fmt, patterns = fmt_c)
 
   fmt_regex <-
     tbl_fmt_c |>

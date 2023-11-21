@@ -8,6 +8,7 @@
 parse_dttm_(
   dttm,
   fmt,
+  fmt_c = fmt_cmp(),
   na = NULL,
   sec_na = na,
   min_na = na,
@@ -20,6 +21,7 @@ parse_dttm_(
 parse_dttm(
   dttm,
   fmt,
+  fmt_c = fmt_cmp(),
   na = NULL,
   sec_na = na,
   min_na = na,
