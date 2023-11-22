@@ -39,8 +39,8 @@ meaning to check against a selection of validated formats in
 interpretation of the formats.}
 }
 \description{
-\code{\link[=create_iso8601]{create_iso8601()}} converts vectors of dates, times or date-times to
-\href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601} format.
+\code{\link[=create_iso8601]{create_iso8601()}} converts vectors of dates, times or date-times to \href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601} format. Learn more in
+\code{vignette("iso_8601")}.
 }
 \examples{
 # Converting dates

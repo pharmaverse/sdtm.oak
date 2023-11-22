@@ -315,8 +315,9 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 
 #' Convert date or time collected values to ISO 8601
 #'
-#' [create_iso8601()] converts vectors of dates, times or date-times to
-#' [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format.
+#' [create_iso8601()] converts vectors of dates, times or date-times to [ISO
+#' 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Learn more in
+#' `vignette("iso_8601")`.
 #'
 #' @param ... Character vectors of dates, times or date-times' components.
 #' @param .format Parsing format(s). Either a character vector or a list of

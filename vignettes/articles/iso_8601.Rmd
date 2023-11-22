@@ -139,7 +139,7 @@ create_iso8601(date, time, .format = c("yyyy-mm-dd", "HH:MM:SS"))
 create_iso8601(date, time, .format = c("yyyyyyyy-m-dddddd", "H:MMMMM:SSSS"))
 ```
 
-### Multiple alternative formats
+## Multiple alternative formats
 
 When an input vector contains values with varying formats, a single format may
 not be adequate to encompass all variations. In such situations, it's advisable
@@ -162,6 +162,9 @@ is applied first.
 create_iso8601("07 04 2000", .format = list(c("d m y", "m d y")))
 create_iso8601("07 04 2000", .format = list(c("m d y", "d m y")))
 ```
+
+Note that if you are passing alternative formats, then the `.format` argument
+must be a list whose length matches the number of inputs.
 
 ## Parsing of date or time components
 
@@ -197,3 +200,55 @@ create_iso8601(c("1", "01", "001", "10", "20", "60"), .format = "M")
 # Seconds
 create_iso8601(c("1", "01", "23.04", "001", "10", "20", "60"), .format = "S")
 ```
+
+## Allowing alternative date or time values
+
+If date or time component values include special values, e.g. values
+encoding missing values, then you can indicate those values as possible
+alternatives such that the parsing will tolerate them; use the `.na` argument:
+
+```{r}
+create_iso8601("U DEC 2019 14:00", .format = "d m y H:M")
+create_iso8601("U DEC 2019 14:00", .format = "d m y H:M", .na = "U")
+
+create_iso8601("U UNK 2019 14:00", .format = "d m y H:M")
+create_iso8601("U UNK 2019 14:00", .format = "d m y H:M", .na = c("U", "UNK"))
+```
+
+In this case you could achieve the same result using regexps:
+
+```{r}
+create_iso8601("U UNK 2019 14:00", .format = "(d|U) (m|UNK) y H:M")
+```
+
+
+## Changing reserved format characters
+
+There might be cases when the reserved characters --- `"y"`, `"m"`, `"d"`,
+`"H"`, `"M"`, `"S"` --- might get in the way of specifying an adequate format.
+For example, you might be tempted to use format `"HHMM"` to try to parse a time
+such as `"14H00M"`. You could assume that the first "H" codes for parsing the
+hour, and the second "H" to be a literal "H" but, actually, `"HH"` will be taken
+to mean parsing hours, and `"MM"` to parse minutes. You can use the function
+`fmt_cmp()` to specify alternative format regexps for the format, replacing the
+default characters.
+
+In the next example, we reassign new format strings for the hour and minute
+components, thus freeing the `"H"` and `"M"` patterns from being interpreted as
+hours and minutes, and to be taken literally:
+
+```{r}
+create_iso8601("14H00M", .format = "HHMM")
+create_iso8601("14H00M", .format = "xHwM", .fmt_c = fmt_cmp(hour = "x", min = "w"))
+```
+Note that you need to make sure that the format component regexps are mutually
+exclusive, i.e. they don't have overlapping matches; otherwise
+`create_iso8601()` will fail with an error. In the next example both months and
+minutes could be represented by an `"m"` in the format resulting in an ambiguous
+format specification.
+
+```{r}
+fmt_cmp(hour = "h", min = "m")
+try(create_iso8601("14H00M", .format = "hHmM", .fmt_c = fmt_cmp(hour = "h", min = "m")))
+```
+
