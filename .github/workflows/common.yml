@@ -74,7 +74,7 @@ jobs:
       skip-multiversion-docs: true
   linter:
     name: Lint
-    uses: pharmaverse/admiralci/.github/workflows/lintr.yml@lintr-latest-cran
+    uses: pharmaverse/admiralci/.github/workflows/lintr.yml@main
     if: github.event_name == 'pull_request'
     with:
       r-version: "4.3"
