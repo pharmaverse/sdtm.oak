@@ -23,9 +23,9 @@ An EDC and Data Standard agnostic SDTM data transformation engine that automates
 
 ## Installation
 
-You can install the development version of `{sdtm.oak}` from [GitHub](https://github.com/pharmaverse/oak/) with:
+You can install the development version of `{sdtm.oak}` from [GitHub](https://github.com/pharmaverse/sdtm.oak/) with:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("pharmaverse/oak")
+remotes::install_github("pharmaverse/sdtm.oak")
 ```
