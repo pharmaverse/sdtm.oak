@@ -88,4 +88,9 @@ create_iso8601("2019-120602:20:13.1230001", .format = "y-mdH:M:S")
 create_iso8601("14H00M", .format = "HHMM")
 create_iso8601("14H00M", .format = "xHwM", .fmt_c = fmt_cmp(hour = "x", min = "w"))
 
+# Alternative formats with unknown values
+datetimes <- c("UN UNK 201914:00", "UN JAN 2021")
+format <- list(c("dd mmm yyyy", "dd mmm yyyyHH:MM"))
+create_iso8601(datetimes, .format = format, .na = c("UN", "UNK"))
+
 }

@@ -384,6 +384,11 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #' create_iso8601("14H00M", .format = "HHMM")
 #' create_iso8601("14H00M", .format = "xHwM", .fmt_c = fmt_cmp(hour = "x", min = "w"))
 #'
+#' # Alternative formats with unknown values
+#' datetimes <- c("UN UNK 201914:00", "UN JAN 2021")
+#' format <- list(c("dd mmm yyyy", "dd mmm yyyyHH:MM"))
+#' create_iso8601(datetimes, .format = format, .na = c("UN", "UNK"))
+#'
 #' @export
 create_iso8601 <- function(..., .format, .fmt_c = fmt_cmp(), .na = NULL, .cutoff_2000 = 68L, .check_format = FALSE) {
 
