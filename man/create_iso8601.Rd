@@ -59,27 +59,33 @@ create_iso8601(c("67-01-01", "68-01-01", "69-01-01"), .format = "y-m-d")
 create_iso8601(c("79-01-01", "80-01-01", "81-01-01"), .format = "y-m-d", .cutoff_2000 = 80)
 
 # Converting times
-create_iso8601("15:10", .format = "HH:MM", .check_format = FALSE)
-create_iso8601("2:10", .format = "HH:MM", .check_format = FALSE)
-create_iso8601("2:1", .format = "HH:MM", .check_format = FALSE)
-create_iso8601("02:01:56", .format = "HH:MM:SS", .check_format = FALSE)
-create_iso8601("020156.5", .format = "HHMMSS", .check_format = FALSE)
+create_iso8601("15:10", .format = "HH:MM")
+create_iso8601("2:10", .format = "HH:MM")
+create_iso8601("2:1", .format = "HH:MM")
+create_iso8601("02:01:56", .format = "HH:MM:SS")
+create_iso8601("020156.5", .format = "HHMMSS")
 
 # Converting date-times
-create_iso8601("12 NOV 202015:15", .format = "dd mmm yyyyHH:MM", .check_format = FALSE)
+create_iso8601("12 NOV 202015:15", .format = "dd mmm yyyyHH:MM")
 
 # Indicate allowed missing values to make the parsing pass
-create_iso8601("U DEC 201914:00", .format = "dd mmm yyyyHH:MM", .check_format = FALSE)
-create_iso8601("U DEC 201914:00", .format = "dd mmm yyyyHH:MM", .check_format = FALSE, .na = "U")
+create_iso8601("U DEC 201914:00", .format = "dd mmm yyyyHH:MM")
+create_iso8601("U DEC 201914:00", .format = "dd mmm yyyyHH:MM", .na = "U")
 
-create_iso8601("NOV 2020", .format = "m y", .check_format = FALSE)
-create_iso8601(c("MAR 2019", "MaR 2020", "mar 2021"), .format = "m y", .check_format = FALSE)
+create_iso8601("NOV 2020", .format = "m y")
+create_iso8601(c("MAR 2019", "MaR 2020", "mar 2021"), .format = "m y")
 
-create_iso8601("2019-04-041045-", .format = "yyyy-mm-ddHHMM-", .check_format = FALSE)
+create_iso8601("2019-04-041045-", .format = "yyyy-mm-ddHHMM-")
 
-create_iso8601("20200507null", .format = "ymd(HH:MM:SS)", .check_format = FALSE)
-create_iso8601("20200507null", .format = "ymd((HH:MM:SS)|null)", .check_format = FALSE)
+create_iso8601("20200507null", .format = "ymd(HH:MM:SS)")
+create_iso8601("20200507null", .format = "ymd((HH:MM:SS)|null)")
 
 # Fractional seconds
-create_iso8601("2019-120602:20:13.1230001", .format = "y-mdH:M:S", .check_format = FALSE)
+create_iso8601("2019-120602:20:13.1230001", .format = "y-mdH:M:S")
+
+# Use different reserved characters in the format specification
+# Here we change "H" to "x" and "M" to "w", for hour and minute, respectively.
+create_iso8601("14H00M", .format = "HHMM")
+create_iso8601("14H00M", .format = "xHwM", .fmt_c = fmt_cmp(hour = "x", min = "w"))
+
 }
