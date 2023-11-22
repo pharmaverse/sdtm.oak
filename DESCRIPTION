@@ -16,8 +16,8 @@ Description: An EDC and Data Standard agnostic SDTM data transformation engine
     based on standard mapping algorithms.
 Language: en-US
 License: Apache License (>= 2)
-BugReports: https://github.com/pharmaverse/oak/issues
-URL: https://pharmaverse.github.io/oak/, https://github.com/pharmaverse/oak
+BugReports: https://github.com/pharmaverse/sdtm.oak/issues
+URL: https://pharmaverse.github.io/sdtm.oak/, https://github.com/pharmaverse/sdtm.oak
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

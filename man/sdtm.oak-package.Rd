@@ -11,9 +11,9 @@ An EDC and Data Standard agnostic SDTM data transformation engine that automates
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://pharmaverse.github.io/oak/}
-  \item \url{https://github.com/pharmaverse/oak}
-  \item Report bugs at \url{https://github.com/pharmaverse/oak/issues}
+  \item \url{https://pharmaverse.github.io/sdtm.oak/}
+  \item \url{https://github.com/pharmaverse/sdtm.oak}
+  \item Report bugs at \url{https://github.com/pharmaverse/sdtm.oak/issues}
 }
 
 }
