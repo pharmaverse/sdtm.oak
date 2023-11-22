@@ -27,6 +27,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Pattern Institute [copyright holder, funder]
   \item F. Hoffmann-La Roche AG [copyright holder, funder]
   \item Pfizer Inc [copyright holder, funder]
 }
