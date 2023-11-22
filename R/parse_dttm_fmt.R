@@ -146,23 +146,20 @@ months_abb_regex <- function(x = month.abb, case = c("any", "upper", "lower", "t
 #'
 #' @export
 fmt_cmp <- function(sec = "S+",
-                  min = "M+",
-                  hour = "H+",
-                  mday = "d+",
-                  mon = "m+",
-                  year = "y+") {
-
-  structure(
-    list(
-      sec = sec,
-      min = min,
-      hour = hour,
-      mday = mday,
-      mon = mon,
-      year = year
-    ),
-    class = "fmt_c"
-  )
+                    min = "M+",
+                    hour = "H+",
+                    mday = "d+",
+                    mon = "m+",
+                    year = "y+") {
+  structure(list(
+    sec = sec,
+    min = min,
+    hour = hour,
+    mday = mday,
+    mon = mon,
+    year = year
+  ),
+  class = "fmt_c")
 
 }
 
