@@ -396,7 +396,6 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #'
 #' @export
 create_iso8601 <- function(..., .format, .fmt_c = fmt_cmp(), .na = NULL, .cutoff_2000 = 68L, .check_format = FALSE) {
-
   assert_fmt_c(.fmt_c)
 
   dots <- rlang::dots_list(...)

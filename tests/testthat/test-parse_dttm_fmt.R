@@ -1,5 +1,4 @@
 test_that("`parse_dttm_fmt_`: empty fmt", {
-
   x <-
     tibble::tibble(
       pat = character(),
@@ -18,7 +17,6 @@ test_that("`parse_dttm_fmt_`: empty pattern", {
 })
 
 test_that("`parse_dttm_fmt_`: basic usage", {
-
   fmt1 <- "y m d"
   fmt2 <- "y-m-d"
 
@@ -58,7 +56,6 @@ test_that("`parse_dttm_fmt_`: basic usage", {
 })
 
 test_that("`parse_dttm_fmt_`: pattern variations", {
-
   fmt <- "HH:MM:SS"
 
   x1 <-
@@ -94,7 +91,6 @@ test_that("`parse_dttm_fmt_`: pattern variations", {
 })
 
 test_that("`parse_dttm_fmt_`: only the first match is returned", {
-
   fmt <- "H M S H"
 
   x1 <-
@@ -130,7 +126,6 @@ test_that("`parse_dttm_fmt_`: only the first match is returned", {
 })
 
 test_that("`parse_dttm_fmt`: empty fmt", {
-
   expect_identical(fmt_dttmc(), parse_dttm_fmt("", pattern = "y"))
   expect_error(parse_dttm_fmt_(character(), pattern = "y"))
 })

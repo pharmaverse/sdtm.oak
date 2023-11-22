@@ -151,16 +151,17 @@ fmt_cmp <- function(sec = "S+",
                     mday = "d+",
                     mon = "m+",
                     year = "y+") {
-  structure(list(
-    sec = sec,
-    min = min,
-    hour = hour,
-    mday = mday,
-    mon = mon,
-    year = year
-  ),
-  class = "fmt_c")
-
+  structure(
+    list(
+      sec = sec,
+      min = min,
+      hour = hour,
+      mday = mday,
+      mon = mon,
+      year = year
+    ),
+    class = "fmt_c"
+  )
 }
 
 assert_fmt_c <- function(x) {
@@ -297,17 +298,16 @@ fmt_dttmc <-
       len = len,
       ord = ord
     )
-
   }
 
 #' @rdname parse_dttm_fmt
 parse_dttm_fmt_ <- function(fmt, pattern) {
-
   admiraldev::assert_character_scalar(fmt)
   admiraldev::assert_character_scalar(pattern)
 
-  if (identical(nchar(pattern), 0L))
+  if (identical(nchar(pattern), 0L)) {
     rlang::abort("`pattern` must be a literal string of at least one char.")
+  }
 
   match_data <- regexpr(pattern, fmt)
   match <- reg_matches(fmt, match_data)
@@ -378,14 +378,16 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_cmp()) {
 
   # Check if patterns have matching overlap, i.e. whether they are not
   # mutually exclusive (as they should).
-  if (anyDuplicated(pseq(fmt_dttmc$start, fmt_dttmc$end)))
+  if (anyDuplicated(pseq(fmt_dttmc$start, fmt_dttmc$end))) {
     rlang::abort("Patterns in `fmt_c` have overlapping matches.")
+  }
 
   # Get captures' ranks while leaving NA as NA (`rank()` won't do this.)
   fmt_dttmc$ord <- dplyr::row_number(fmt_dttmc$start)
 
-  if (identical(nrow(fmt_dttmc), 0L))
+  if (identical(nrow(fmt_dttmc), 0L)) {
     return(fmt_dttmc())
+  }
 
   fmt_len <- nchar(fmt)
 
@@ -437,7 +439,6 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_cmp()) {
 #'
 #' @keywords internal
 dttm_fmt_to_regex <- function(fmt, fmt_regex = fmt_rg(), fmt_c = fmt_cmp(), anchored = TRUE) {
-
   tbl_fmt_c <- parse_dttm_fmt(fmt, patterns = fmt_c)
 
   fmt_regex <-
