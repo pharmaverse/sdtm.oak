@@ -1,5 +1,5 @@
 ---
-title: "Converting dates/times to ISO 8601"
+title: "Converting dates, times or date-times to ISO 8601"
 ---
 
 ```{r, include = FALSE}
@@ -44,6 +44,8 @@ of date-times, provided you adjust the format:
 create_iso8601("2000-01-05 22:35:05", .format = "y-m-d H:M:S")
 ```
 
+## Multiple inputs
+
 If you have dates and times in separate vectors then you will need to pass
 a format for each vector:
 
@@ -51,9 +53,8 @@ a format for each vector:
 create_iso8601("2000-01-05", "22:35:05", .format = c("y-m-d", "H:M:S"))
 ```
 
-
-
-## `create_iso8601()` is vectorized over inputs
+In addition, like most R functions that take vectors as input,
+`create_iso8601()` is vectorized:
 
 ```{r}
 date <- c("2000-01-05", "2001-12-25", "1980-06-18", "1979-09-07")
@@ -70,7 +71,27 @@ time <- "00:12:21"
 try(create_iso8601(date, time, .format = c("y-m-d", "H:M:S")))
 ```
 
-## The `.format` parameter
+You can combine individual date and time components coming
+in as separate inputs; here is a contrived example of year, month and day
+together, hour, and minute:
+
+```{r}
+year <- c("99", "84", "00", "80", "79", "1944", "1953")
+month_and_day <- c("jan 1", "apr 04", "mar 06", "jun 18", "sep 07", "sep 13", "sep 14")
+hour <- c("12", "13", "05", "23", "16", "16", "19")
+min <- c("0", "60", "59", "42", "44", "10", "13")
+create_iso8601(year, month_and_day, hour, min, .format = c("y", "m d", "H", "M"))
+```
+
+The `.format` argument must be always named; otherwise, it will be treated as if
+it were one of the inputs and interpreted as missing.
+
+```{r}
+try(create_iso8601("2000-01-05", "y-m-d"))
+```
+
+
+## Format variations
 
 The `.format` parameter can easily accommodate variations in the format of the
 inputs:
@@ -90,8 +111,8 @@ create_iso8601("05 01 2000", .format = "d m y")
 create_iso8601("01 05, 2000", .format = "m d, y")
 ```
 
-All other individual characters given in the format are taken strictly, so
-one space is different from two:
+All other individual characters given in the format are taken strictly, e.g.
+the number of spaces matters:
 
 ```{r}
 date <- c("2000 01 05", "2000  01 05", "2000 01  05", "2000   01   05")
@@ -105,6 +126,17 @@ The format can include regular expressions though:
 
 ```{r}
 create_iso8601(date, .format = "y\\s+m\\s+d")
+```
+
+By default, a streak of the reserved characters is treated as if only one was
+provided, so these formats are equivalent:
+
+```{r}
+date <- c("2000-01-05", "2001-12-25", "1980-06-18", "1979-09-07")
+time <- c("00:12:21", "22:35:05", "03:00:15", "07:09:00")
+create_iso8601(date, time, .format = c("y-m-d", "H:M:S"))
+create_iso8601(date, time, .format = c("yyyy-mm-dd", "HH:MM:SS"))
+create_iso8601(date, time, .format = c("yyyyyyyy-m-dddddd", "H:MMMMM:SSSS"))
 ```
 
 ### Multiple alternative formats
@@ -131,10 +163,15 @@ create_iso8601("07 04 2000", .format = list(c("d m y", "m d y")))
 create_iso8601("07 04 2000", .format = list(c("m d y", "d m y")))
 ```
 
-## Individual date/time components
+## Parsing of date or time components
 
-Each individual date or time component is parsed as per the indication in the
-format according to certain constraints:
+By default, date or time components are parsed as follows:
+
+- year: either parsed from a two- or four-digit year;
+- month: either as a numeric month (single or two-digit number) or as an English abbreviated month name (e.g. Jan, Jun or Dec) regardless of case;
+- month day: are parsed from two-digit numbers;
+- hour and minute: are parsed from single or two-digit numbers;
+- second: is parsed from single or two-digit numbers with an optional fractional part.
 
 ```{r}
 # Years: two-digit or four-digit numbers.
@@ -158,5 +195,5 @@ create_iso8601(c("1", "01", "001", "10", "20", "31"), .format = "H")
 create_iso8601(c("1", "01", "001", "10", "20", "60"), .format = "M")
 
 # Seconds
-create_iso8601(c("1", "01", "001", "10", "20", "60"), .format = "S")
+create_iso8601(c("1", "01", "23.04", "001", "10", "20", "60"), .format = "S")
 ```
