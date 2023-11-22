@@ -23,6 +23,7 @@ Useful links:
 Authors:
 \itemize{
   \item Rammprasad Ganapathy
+  \item Ramiro Magno \email{rmagno@pattern.institute} (\href{https://orcid.org/0000-0001-5226-3441}{ORCID})
 }
 
 Other contributors:
