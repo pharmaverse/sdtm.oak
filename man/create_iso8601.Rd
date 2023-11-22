@@ -93,4 +93,9 @@ datetimes <- c("UN UNK 201914:00", "UN JAN 2021")
 format <- list(c("dd mmm yyyy", "dd mmm yyyyHH:MM"))
 create_iso8601(datetimes, .format = format, .na = c("UN", "UNK"))
 
+# Dates and times may come in many format variations
+fmt <- "dd MMM yyyy HH nn ss"
+fmt_cmp <- fmt_cmp(mon = "MMM", min = "nn", sec = "ss")
+create_iso8601("05 feb 1985 12 55 02", .format = fmt, .fmt_c = fmt_cmp)
+
 }
