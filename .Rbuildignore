@@ -11,3 +11,6 @@
 ^pkgdown$
 ^LICENSE\.md$
 ^\.lintr$
+^data-raw$
+^staged_dependencies.yaml$
+^vignettes/articles$

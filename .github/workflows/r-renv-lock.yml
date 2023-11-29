@@ -22,7 +22,6 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: ubuntu-20.04, r: '4.1', repos: 'https://packagemanager.posit.co/cran/2022-03-10/'}
           - {os: ubuntu-20.04, r: '4.2', repos: 'https://packagemanager.posit.co/cran/2023-03-15/'}
           - {os: ubuntu-20.04, r: '4.3', repos: 'https://packagemanager.posit.co/cran/2023-04-20/'}
 
