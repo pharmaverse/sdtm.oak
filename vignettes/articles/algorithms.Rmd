@@ -152,8 +152,10 @@ algorithms <- data.frame(
       "VS.VSTEST = 'Systolic Blood Pressure'<br>",
       "VS.VSORRESU = 'mmHg'<br>"
     ),
-    paste("FA.FASCAT = 'COVID-19 PROBABLE CASE'<br>",
-          "CM.CMTRT = 'FLUIDS'"),
+    paste(
+      "FA.FASCAT = 'COVID-19 PROBABLE CASE'<br>",
+      "CM.CMTRT = 'FLUIDS'"
+    ),
     paste(
       "VS = 'Vital Signs'<br>",
       "MH.MHCAT = 'PROSTATE CANCER HISTORY'<br>"
