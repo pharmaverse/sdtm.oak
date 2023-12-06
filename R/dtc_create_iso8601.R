@@ -395,8 +395,18 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #' create_iso8601("05 feb 1985 12 55 02", .format = fmt, .fmt_c = fmt_cmp)
 #'
 #' @export
-create_iso8601 <- function(..., .format, .fmt_c = fmt_cmp(), .na = NULL, .cutoff_2000 = 68L, .check_format = FALSE) {
+create_iso8601 <-
+  function(...,
+           .format,
+           .fmt_c = fmt_cmp(),
+           .na = NULL,
+           .cutoff_2000 = 68L,
+           .check_format = FALSE,
+           .warn = TRUE) {
+
   assert_fmt_c(.fmt_c)
+  admiraldev::assert_logical_scalar(.check_format)
+  admiraldev::assert_logical_scalar(.warn)
 
   dots <- rlang::dots_list(...)
 
@@ -426,5 +436,22 @@ create_iso8601 <- function(..., .format, .fmt_c = fmt_cmp(), .na = NULL, .cutoff
   cap_matrices <- purrr::map2(dots, .format, ~ parse_dttm(dttm = .x, fmt = .y, na = .na, fmt_c = .fmt_c))
   cap_matrix <- coalesce_capture_matrices(!!!cap_matrices)
 
-  format_iso8601(cap_matrix, .cutoff_2000 = .cutoff_2000)
+  iso8601 <- format_iso8601(cap_matrix, .cutoff_2000 = .cutoff_2000)
+  iso8601 <- add_problems(iso8601, dots)
+  class(iso8601) <- "iso8601"
+
+  if (.warn) {
+    warn_problems(iso8601)
+  }
+
+  iso8601
+}
+
+#' @export
+print.iso8601 <- function(x, ...) {
+  # Here we take advantage of the subset operator `[` dropping
+  # attributes. Also, using `seq_along()` should not force a copy of `x` thus
+  # being memory-efficient.
+  print(x[seq_along(x)])
+  invisible(x)
 }

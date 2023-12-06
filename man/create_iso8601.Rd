@@ -10,7 +10,8 @@ create_iso8601(
   .fmt_c = fmt_cmp(),
   .na = NULL,
   .cutoff_2000 = 68L,
-  .check_format = FALSE
+  .check_format = FALSE,
+  .warn = TRUE
 )
 }
 \arguments{

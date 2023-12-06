@@ -141,7 +141,7 @@ complete_capture_matrix <-
 
     # If all columns are already present, and in the correct order,
     # then simply return.
-    if (all(col_names == colnames(m))) {
+    if (identical(col_names, colnames(m))) {
       return(m)
     }
 
