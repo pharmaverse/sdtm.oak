@@ -254,7 +254,7 @@ definition <- data.frame(
     "VTLS1, DEM",
     "1, 2, 3, etc",
     "Vital Signs,<br> Demographics",
-    "SYSBP, <br> BRTHDD",
+    "SEX_001, <br> BRTHDD",
     "Systolic Blood Pressure,<br>Birth Day",
     "1, 2, 3, etc",
     "Text Box,<br> Date control",

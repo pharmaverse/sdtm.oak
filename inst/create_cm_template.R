@@ -1,6 +1,6 @@
 # Name: CM domain
 #
-# Label: R program to create MH Domain
+# Label: R program to create CM Domain
 #
 # Input raw data:
 # study_sdtm_spec
@@ -74,7 +74,7 @@ cm <- MD1 |>
                condition_left_raw_dataset = MD1,
                condition_left_raw_variable = DOS,
                condition_operator = "is_numeric",
-               sub_algorithm = "assign_no_ct", #pass the function as the argument
+               sub_algorithm = assign_no_ct, #pass the function as the argument
                target_sdtm_var = CMDOSE,
                merge_to_topic_by = c(oak_id_vars,
                                      topic_var_source = MDRAW)) |>
@@ -84,7 +84,7 @@ cm <- MD1 |>
                condition_left_raw_dataset = MD1,
                condition_left_raw_variable = DOS,
                condition_operator = "is_character",
-               sub_algorithm = "assign_no_ct",
+               sub_algorithm = assign_no_ct,
                target_sdtm_var = CMDOSETXT,
                merge_to_topic_by = c(oak_id_vars,
                                      topic_var_source = MDRAW)) |>
@@ -96,7 +96,7 @@ cm <- MD1 |>
                condition_operator = "diffferent_to",
                condition_right_sdtm_variable_domain = CM,
                condition_right_sdtm_variable = CMTRT,
-               sub_algorithm = "assign_no_ct",
+               sub_algorithm = assign_no_ct,
                target_sdtm_var = CMDOSETXT,
                merge_to_topic_by = c(oak_id_vars,
                                      topic_var_source = MDRAW)) |>
@@ -120,7 +120,7 @@ cm <- MD1 |>
                condition_left_raw_dataset = MD1,
                condition_left_raw_variable = MDPRIOR,
                condition_operator = "if_checked",
-               sub_algorithm = "assign_ct",
+               sub_algorithm = assign_ct,
                target_sdtm_variable_codelist_code = "C66728",
                target_sdtm_var = CMSTRTPT,
                merge_to_topic_by = c(oak_id_vars,
@@ -131,7 +131,7 @@ cm <- MD1 |>
                condition_left_raw_dataset = MD1,
                condition_left_raw_variable = MDPRIOR,
                condition_operator = "if_checked",
-               sub_algorithm = "hardcode_no_ct",
+               sub_algorithm = hardcode_no_ct,
                target_hardcoded_value = "SCREENING",
                target_sdtm_var = CM.CMSTTPT,
                merge_to_topic_by = c(oak_id_vars,
@@ -142,7 +142,7 @@ cm <- MD1 |>
                condition_left_raw_dataset = MD1,
                condition_left_raw_variable = MDONG,
                condition_operator = "if_checked",
-               sub_algorithm = "hardcode_ct",
+               sub_algorithm = hardcode_ct,
                target_hardcoded_value = "ONGOING",
                target_sdtm_variable_codelist_code = "C66728",
                target_sdtm_var = CMENRTPT,
@@ -154,7 +154,7 @@ cm <- MD1 |>
                condition_left_raw_dataset = MD1,
                condition_left_raw_variable = MDONG,
                condition_operator = "if_checked",
-               sub_algorithm = "hardcode_no_ct",
+               sub_algorithm = hardcode_no_ct,
                target_hardcoded_value = "DATE OF LAST ASSESSMENT",
                target_sdtm_var = CMENTPT,
                merge_to_topic_by = c(oak_id_vars,
