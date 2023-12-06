@@ -134,7 +134,7 @@ definition <- data.frame(
     "groupby_keys",
     "target_resource_dataset",
     "target_resource_variable"
-      ),
+  ),
   `Description_of_the_variable` = c(
     "Study Number",
     "Data Collection model",
@@ -143,11 +143,11 @@ definition <- data.frame(
     "Label of the raw or source dataset",
     "Name of the raw variable",
     "Label of the raw variable",
-     paste(
+    paste(
       "Ordinal of the variable as defined in the eCRF or",
       "eDT specification"
     ),
-     "Type of the Raw Variable",
+    "Type of the Raw Variable",
     "Data format of the raw variable",
     paste(
       "Dictionary name which is assigned to the ",
@@ -239,13 +239,13 @@ definition <- data.frame(
     ),
     paste(
       "Raw dataset name of the raw variable. This will be used when ",
-       " values are assigned from a from a different source",
-        "other than the source the mapping is associated with"
+      " values are assigned from a from a different source",
+      "other than the source the mapping is associated with"
     ),
     paste(
       "Raw variable name. This will be used when ",
-       "values are assigned from a from a different source",
-        "other than the source the mapping is associated with"
+      "values are assigned from a from a different source",
+      "other than the source the mapping is associated with"
     )
   ),
   Example_Values = c(
@@ -280,12 +280,13 @@ definition <- data.frame(
     "1, 2, 3",
     "VTLS1",
     "POSITION",
-     "AE",
+    "AE",
     "AEENRTPT",
-     paste(
+    paste(
       "Checked<br>Not_checked<br>Is_null<br>Is_not_null",
       "<br>Equals_to<br>Different_to<br>is_numeric<br>in",
-      "<br>not_in"),
+      "<br>not_in"
+    ),
     "('Not Recovered/Not Resolved','Recovering/Resolving')<br>HOSPITALIZATION",
     "AE",
     "AETERM",
