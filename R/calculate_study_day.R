@@ -1,36 +1,90 @@
-#' `calculate_study_day` Performs the Study Day Calculation
+#' `calculate_study_day` performs study day calculation
+#' @description
+#' This function takes the an input data.frame and a reference data.frame (which
+#' is DM domain in most cases), and calculate the study day from reference date
+#' and target date. In case of unexpected conditions like reference date is not
+#' unique for each patient, or reference and input dates are not actual dates,
+#' NA will be returned for those records.
 #'
+#' @md
+#' @param ds_in input data.frame that contains the target date.
+#' @param ds_dm reference date.frame that contains the reference date.
+#' @param refdt reference date from `ds_dm` that will be used as reference to
+#' calculate the study day.
+#' @param tgdt target date from `ds_in` that will be used to calcualte the study
+#' day.
+#' @param study_day_var the new study day variable name in the output. For
+#' example, AESTDY for AE domain for CMSTDY for CM domain.
+#' @param merge_key character to represents the merging key between `ds_in` and
+#' `ds_dm`.
+#'
+#' @return a data.frame that takes all columns from `ds_in` and a new variable
+#' to represent the calculated study day.
+#'
+#' @examples
+#' \dontrun{
+#'   ae <- data.frame(
+#'     USUBJID = c("study123-123", "study123-124", "study123-125"),
+#'     AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14")
+#'   )
+#'   dm <- data.frame(
+#'     USUBJID = c("study123-123", "study123-124", "study123-125"),
+#'     RFSTDTC = c("2012-02-01", "2012-04-14", NA)
+#'   )
+#'   ae$AESTDTC <- as.Date(ae$AESTDTC)
+#'   dm$RFSTDTC <- as.Date(dm$RFSTDTC)
+#'   calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
+#' }
+#'
+#'
+
 calculate_study_day <- function(ds_in,
-                                ds_ref,
+                                ds_dm,
                                 refdt,
                                 tgdt,
+                                study_day_var,
                                 merge_key = "USUBJID") {
 
   assertthat::assert_that(is.data.frame(ds_in))
-  assertthat::assert_that(is.data.frame(ds_ref))
-  assertthat::assert_that(hasName(ds_ref, refdt))
+  assertthat::assert_that(is.data.frame(ds_dm))
+  assertthat::assert_that(hasName(ds_dm, refdt))
   assertthat::assert_that(hasName(ds_in, tgdt))
-  assertthat::assert_that(hasName(ds_ref, merge_key))
+  assertthat::assert_that(hasName(ds_dm, merge_key))
   assertthat::assert_that(hasName(ds_in, merge_key))
+  assertthat::assert_that(is.character(study_day_var))
 
-  if (!identical(ds_in, ds_ref)) {
-    ds_ref <- unique(ds_ref[c(merge_key, refdt)])
+  if (!identical(ds_in, ds_dm)) {
+    ds_dm <- unique(ds_dm[c(merge_key, refdt)])
 
-    check_refdt_uniqueness <- ds_ref %>%
+    check_refdt_uniqueness <- ds_dm %>%
       dplyr::group_by(dplyr::pick({{merge_key}})) %>%
-      dplyr::filter(n() > 1)
+      dplyr::filter(dplyr::n() > 1)
     if (nrow(check_refdt_uniqueness) > 0) {
-      stop("Reference date is not unique for each patient!")
+      warning(
+        "Reference date is not unique for each patient! ",
+        "Patient without unique reference date will be ingored. ",
+        "NA will be returned for such records."
+      )
+      ds_dm <- ds_dm[
+        !ds_dm[[merge_key]] %in% check_refdt_uniqueness[[merge_key]],
+      ]
     }
 
     ds_in <- ds_in %>%
-      dplyr::left_join(ds_ref, by = structure(names = merge_key, .Data = merge_key))
+      dplyr::left_join(
+        ds_dm, by = structure(names = merge_key, .Data = merge_key)
+      )
   }
 
   # question: should I assume that refdt/tgdt was converted to Date already?
   # If assume that refdt and tgdt are already dates
   if (!("Date" %in% class(ds_in[[refdt]]) && "Date" %in% class(ds_in[[tgdt]]))) {
-    stop("Reference and target date has to be Date objects.")
+    warning(
+      "Reference and target date has to be Date objects. ",
+      "If either is not, NA will be returned for study day."
+    )
+    ds_in[study_day_var] <- NA
+    return(ds_in)
   }
   refdt_vector <- ds_in[[refdt]]
   tgdt_vector <- ds_in[[tgdt]]
@@ -44,6 +98,7 @@ calculate_study_day <- function(ds_in,
       no = NA
     )
   )
-  return(res)
+  ds_in[study_day_var] <- res
+  return(ds_in)
 }
 
