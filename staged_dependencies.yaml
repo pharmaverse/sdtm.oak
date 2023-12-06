@@ -1,0 +1,11 @@
+---
+upstream_repos:
+- repo: pharmaverse/admiraldev
+  host: https://github.com
+
+downstream_repos:
+
+current_repo:
+  repo: pharmaverse/sdtm.oak
+  host: https://github.com
+  

@@ -3,7 +3,7 @@
 This outlines how to propose a change to the aok package. For more detailed info
 about contributing to {oak}, and other [pharmaverse
 packages](https://pharmaverse.org/), please see the [development process
-guide](https://pharmaverse.github.io/admiraldev/main/articles/development_process.html)
+guide](https://pharmaverse.github.io/admiraldev/articles/development_process.html)
 as well as other Developer Guides in the Articles section of the [{admiral}
 website](https://pharmaverse.github.io/admiral/cran-release/index.html)
 
@@ -23,7 +23,7 @@ feedback. Since we are not a 100% fully resourced software development team it
 might be that some issues will take longer to respond to depending on the amount
 of overall issues.
 
- * Familiarize yourself with our [programming strategy](https://pharmaverse.github.io/admiraldev/main/articles/programming_strategy.html), guidance for [GitHub usage](https://pharmaverse.github.io/admiraldev/main/articles/git_usage.html) and [unit testing](https://pharmaverse.github.io/admiraldev/main/articles/unit_test_guidance.html).
+ * Familiarize yourself with our [programming strategy](https://pharmaverse.github.io/admiraldev/articles/programming_strategy.html), guidance for [GitHub usage](https://pharmaverse.github.io/admiraldev/articles/git_usage.html) and [unit testing](https://pharmaverse.github.io/admiraldev/articles/unit_test_guidance.html).
 
  * All newly [created issues](https://github.com/pharmaverse/oak/issues) will be
 reviewed within the next backlog meeting and the creator will receive an
