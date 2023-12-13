@@ -3,5 +3,6 @@
 S3method(print,iso8601)
 export(create_iso8601)
 export(fmt_cmp)
+export(problems)
 importFrom(rlang,.data)
 importFrom(tibble,tibble)

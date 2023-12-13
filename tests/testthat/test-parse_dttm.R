@@ -51,4 +51,3 @@ test_that("`months_abb_regex()`: lowercase", {
   )
   expect_identical(months_abb_regex(case = "lower"), x)
 })
-
