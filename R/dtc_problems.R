@@ -70,6 +70,11 @@ add_problems <- function(x, dtc) {
 #' # So now `problems()` returns `NULL` because there are no more parsing issues.
 #' problems(iso8601_dttm2)
 #'
+#' # If you pass named arguments when calling `create_iso8601()` then they will
+#' # be used to create the problems object.
+#' iso8601_dttm3 <- create_iso8601(date = dates, .format = "y-m-d")
+#' problems(iso8601_dttm3)
+#'
 #' @export
 problems <- function(x = .Last.value) {
   probs <- attr(x, "problems")
