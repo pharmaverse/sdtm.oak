@@ -220,9 +220,12 @@ cm <- MD1 |>
   derive_usubjid() |>
   derive_sequence(keys = c(USUBJID, CMTRT)) |>
   derive_visit_visitnum() |>
-  derive_study_day(
+  calculate_study_day(
+    dm_domain = dm,
+    study_day_var = "RFSTDTS",
     var_in = CMSTDTC,
-    target_var = CMSTDY
+    target_var = CMSTDY,
+    merge_key = "USUBJID"
   ) |>
   derive_study_day(
     var_in = CMENDTC,

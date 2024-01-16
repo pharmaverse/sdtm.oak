@@ -18,7 +18,7 @@ Authors@R: c(
     person("Pfizer Inc", role = c("cph", "fnd"))
     )
 Description: An EDC and Data Standard-agnostic SDTM data transformation engine 
-designed for SDTM programming in R. Powered by metadata {sdtm.oak} can automate
+designed for SDTM programming in R. Powered by metadata `sdtm.oak` can automate
 the conversion of raw clinical data to SDTM through standardized mapping 
 algorithms. SDTM is one of the required standards for data submission to 
 FDA (U.S.) and PMDA (Japan). SDTM standards are implemented in accordance with the
