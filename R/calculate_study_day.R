@@ -7,18 +7,18 @@
 #' NA will be returned for those records.
 #'
 #' @md
-#' @param ds_in input data.frame that contains the target date.
+#' @param sdtm_in input data.frame that contains the target date.
 #' @param ds_dm reference date.frame that contains the reference date.
 #' @param refdt reference date from `ds_dm` that will be used as reference to
 #' calculate the study day.
-#' @param tgdt target date from `ds_in` that will be used to calcualte the study
+#' @param tgdt target date from `sdtm_in` that will be used to calcualte the study
 #' day.
 #' @param study_day_var the new study day variable name in the output. For
 #' example, AESTDY for AE domain for CMSTDY for CM domain.
-#' @param merge_key character to represents the merging key between `ds_in` and
+#' @param merge_key character to represents the merging key between `sdtm_in` and
 #' `ds_dm`.
 #'
-#' @return a data.frame that takes all columns from `ds_in` and a new variable
+#' @return a data.frame that takes all columns from `sdtm_in` and a new variable
 #' to represent the calculated study day.
 #'
 #' @examples
@@ -38,22 +38,22 @@
 #'
 #'
 
-calculate_study_day <- function(ds_in,
+calculate_study_day <- function(sdtm_in,
                                 ds_dm,
                                 refdt,
                                 tgdt,
                                 study_day_var,
                                 merge_key = "USUBJID") {
 
-  assertthat::assert_that(is.data.frame(ds_in))
+  assertthat::assert_that(is.data.frame(sdtm_in))
   assertthat::assert_that(is.data.frame(ds_dm))
   assertthat::assert_that(hasName(ds_dm, refdt))
-  assertthat::assert_that(hasName(ds_in, tgdt))
+  assertthat::assert_that(hasName(sdtm_in, tgdt))
   assertthat::assert_that(hasName(ds_dm, merge_key))
-  assertthat::assert_that(hasName(ds_in, merge_key))
+  assertthat::assert_that(hasName(sdtm_in, merge_key))
   assertthat::assert_that(is.character(study_day_var))
 
-  if (!identical(ds_in, ds_dm)) {
+  if (!identical(sdtm_in, ds_dm)) {
     ds_dm <- unique(ds_dm[c(merge_key, refdt)])
 
     check_refdt_uniqueness <- ds_dm %>%
@@ -70,7 +70,7 @@ calculate_study_day <- function(ds_in,
       ]
     }
 
-    ds_in <- ds_in %>%
+    sdtm_in <- sdtm_in %>%
       dplyr::left_join(
         ds_dm, by = structure(names = merge_key, .Data = merge_key)
       )
@@ -78,16 +78,16 @@ calculate_study_day <- function(ds_in,
 
   # question: should I assume that refdt/tgdt was converted to Date already?
   # If assume that refdt and tgdt are already dates
-  if (!("Date" %in% class(ds_in[[refdt]]) && "Date" %in% class(ds_in[[tgdt]]))) {
+  if (!("Date" %in% class(sdtm_in[[refdt]]) && "Date" %in% class(sdtm_in[[tgdt]]))) {
     warning(
       "Reference and target date has to be Date objects. ",
       "If either is not, NA will be returned for study day."
     )
-    ds_in[study_day_var] <- NA
-    return(ds_in)
+    sdtm_in[study_day_var] <- NA
+    return(sdtm_in)
   }
-  refdt_vector <- ds_in[[refdt]]
-  tgdt_vector <- ds_in[[tgdt]]
+  refdt_vector <- sdtm_in[[refdt]]
+  tgdt_vector <- sdtm_in[[tgdt]]
 
   res <- ifelse(
     test = refdt_vector <= tgdt_vector,
@@ -98,7 +98,7 @@ calculate_study_day <- function(ds_in,
       no = NA
     )
   )
-  ds_in[study_day_var] <- res
-  return(ds_in)
+  sdtm_in[study_day_var] <- res
+  return(sdtm_in)
 }
 
