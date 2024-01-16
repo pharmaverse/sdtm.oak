@@ -186,7 +186,8 @@ algorithms <- data.frame(
     ),
     paste("AE = 'Adverse Events' on early phase SAE form"),
     paste("EC = 'Exposure as Collected'")
-  )
+  ),
+  stringsAsFactors = TRUE
 )
 knitr::kable(algorithms)
 ```

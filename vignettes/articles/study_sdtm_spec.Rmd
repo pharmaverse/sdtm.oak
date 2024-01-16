@@ -351,16 +351,8 @@ definition <- data.frame(
     "GROUP_BY",
     "ASSIGN_NO_CT",
     "ASSIGN_NO_CT"
-  )
+  ),
+  stringsAsFactors = TRUE
 )
-# We do not want URLs to be activated since they are part of the longer API calls
-# and direct use is faulty.
-definition$Example_Values <- ifelse(
-  grepl("http", definition$Example_Values),
-  yes = paste0("`", definition$Example_Values, "`"),
-  no = definition$Example_Values
-)
-
-knitr::kable(definition, col.names = gsub("_", " ", names(definition)))
+knitr::kable(definition)
 ```
-</div>

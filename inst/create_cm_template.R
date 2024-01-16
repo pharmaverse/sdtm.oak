@@ -14,13 +14,13 @@ library(dplyr)
 
 # Read Specification
 
-# sdtm_spec <- read_sdtm_spec(filename = "~/study/study_sdtm_spec.csv")
+sdtm_spec <- read_sdtm_spec(filename = "~/study/study_sdtm_spec.csv")
 
 study_ct <- read_study_ct(filename = "~/study/study_sdtm_ct.csv")
 
 # Read in raw data
 
-MD1 <- read_raw_data_csv(filename = "~/study/MD1.csv") |>
+md1 <- read_raw_data_csv(filename = "~/study/MD1.csv") |>
   # Derive oak_id_vars
   derive_oak_id_vars()
 
