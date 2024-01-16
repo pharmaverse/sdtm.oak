@@ -3,26 +3,23 @@ Type: Package
 Title: SDTM Data Transformation Engine
 Version: 0.0.0.9001
 Authors@R: c(
-    person("Rammprasad", "Ganapathy", role = "aut" , "cre"),
+    person("Rammprasad", "Ganapathy", role = c("aut", "cre"),
+    email = "ganapathy.rammprasad@gene.com"),
     person("Adam", "Forys", role = "aut"),
     person("Edgar", "Manukyan", role = "aut"),
     person("Rosemary", "Li", role = "aut"),
     person("Preetesh", "Parikh", role = "aut"),
     person("Lisa", "Houterloot", role = "aut"),
     person("Yogesh", "Gupta", role = "aut"),
-    person("Omar", "Garcia", email = "ogcalderon@cdisc.org", role = c("aut")),
+    person("Omar", "Garcia", email = "ogcalderon@cdisc.org", role = "aut"),
     person("Ramiro", "Magno", email = "rmagno@pattern.institute",
     role = "aut", comment = c(ORCID = "0000-0001-5226-3441")),
     person("Pattern Institute", role = c("cph", "fnd")),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")),
     person("Pfizer Inc", role = c("cph", "fnd"))
     )
-Description: An EDC and Data Standard-agnostic SDTM data transformation engine 
-designed for SDTM programming in R. Powered by metadata `sdtm.oak` can automate
-the conversion of raw clinical data to SDTM through standardized mapping 
-algorithms. SDTM is one of the required standards for data submission to 
-FDA (U.S.) and PMDA (Japan). SDTM standards are implemented in accordance with the
-SDTM Implemetation guide as defined by CDISC <https://www.cdisc.org/standards/foundational/sdtmig<
+Maintainer: Rammprasad Ganapathy <ganapathy.rammprasad@gene.com>
+Description: An EDC and Data Standard-agnostic SDTM data transformation engine designed for SDTM programming in R. Powered by metadata sdtm.oak can automate the conversion of raw clinical data to SDTM through standardized mapping  algorithms. SDTM is one of the required standards for data submission to  FDA (U.S.) and PMDA (Japan). SDTM standards are implemented in accordance with the SDTM Implemetation guide as defined by CDISC <https://www.cdisc.org/standards/foundational/sdtmig>
 Language: en-US
 License: Apache License (>= 2)
 BugReports: https://github.com/pharmaverse/sdtm.oak/issues
@@ -31,7 +28,7 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Depends: R (>= 4.2)
+Depends: R (>= 4.1)
 Imports: 
     admiraldev,
     dplyr (>= 1.0.0),
