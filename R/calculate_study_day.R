@@ -40,7 +40,7 @@
 
 calculate_study_day <- function(sdtm_in,
                                 dm_domain = DM,
-                                refdt,
+                                refdt = "RFSTDTC",
                                 tgdt,
                                 study_day_var,
                                 merge_key = "USUBJID") {
