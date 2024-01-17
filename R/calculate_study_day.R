@@ -8,15 +8,15 @@
 #'
 #' @md
 #' @param sdtm_in input data.frame that contains the target date.
-#' @param ds_dm reference date.frame that contains the reference date.
-#' @param refdt reference date from `ds_dm` that will be used as reference to
+#' @param dm_domain reference date.frame that contains the reference date.
+#' @param refdt reference date from `dm_domain` that will be used as reference to
 #' calculate the study day.
 #' @param tgdt target date from `sdtm_in` that will be used to calcualte the study
 #' day.
 #' @param study_day_var the new study day variable name in the output. For
 #' example, AESTDY for AE domain for CMSTDY for CM domain.
 #' @param merge_key character to represents the merging key between `sdtm_in` and
-#' `ds_dm`.
+#' `dm_domain`.
 #'
 #' @return a data.frame that takes all columns from `sdtm_in` and a new variable
 #' to represent the calculated study day.
@@ -39,24 +39,24 @@
 #'
 
 calculate_study_day <- function(sdtm_in,
-                                ds_dm,
+                                dm_domain = DM,
                                 refdt,
                                 tgdt,
                                 study_day_var,
                                 merge_key = "USUBJID") {
 
   assertthat::assert_that(is.data.frame(sdtm_in))
-  assertthat::assert_that(is.data.frame(ds_dm))
-  assertthat::assert_that(hasName(ds_dm, refdt))
+  assertthat::assert_that(is.data.frame(dm_domain))
+  assertthat::assert_that(hasName(dm_domain, refdt))
   assertthat::assert_that(hasName(sdtm_in, tgdt))
-  assertthat::assert_that(hasName(ds_dm, merge_key))
+  assertthat::assert_that(hasName(dm_domain, merge_key))
   assertthat::assert_that(hasName(sdtm_in, merge_key))
   assertthat::assert_that(is.character(study_day_var))
 
-  if (!identical(sdtm_in, ds_dm)) {
-    ds_dm <- unique(ds_dm[c(merge_key, refdt)])
+  if (!identical(sdtm_in, dm_domain)) {
+    dm_domain <- unique(dm_domain[c(merge_key, refdt)])
 
-    check_refdt_uniqueness <- ds_dm %>%
+    check_refdt_uniqueness <- dm_domain %>%
       dplyr::group_by(dplyr::pick({{merge_key}})) %>%
       dplyr::filter(dplyr::n() > 1)
     if (nrow(check_refdt_uniqueness) > 0) {
@@ -65,14 +65,14 @@ calculate_study_day <- function(sdtm_in,
         "Patient without unique reference date will be ingored. ",
         "NA will be returned for such records."
       )
-      ds_dm <- ds_dm[
-        !ds_dm[[merge_key]] %in% check_refdt_uniqueness[[merge_key]],
+      dm_domain <- dm_domain[
+        !dm_domain[[merge_key]] %in% check_refdt_uniqueness[[merge_key]],
       ]
     }
 
     sdtm_in <- sdtm_in %>%
       dplyr::left_join(
-        ds_dm, by = structure(names = merge_key, .Data = merge_key)
+        dm_domain, by = structure(names = merge_key, .Data = merge_key)
       )
   }
 
