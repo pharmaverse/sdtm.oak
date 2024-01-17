@@ -2,8 +2,7 @@
 
 This outlines how to propose a change to the aok package. For more detailed info
 about contributing to {oak}, and other [pharmaverse
-packages](https://pharmaverse.org/), please see the [development process
-guide](https://pharmaverse.github.io/admiraldev/articles/development_process.html)
+packages](https://pharmaverse.org/), please see the [Programming Strategy](https://pharmaverse.github.io/admiraldev/articles/programming_strategy.html)
 as well as other Developer Guides in the Articles section of the [{admiral}
 website](https://pharmaverse.github.io/admiral/cran-release/index.html)
 
@@ -52,7 +51,7 @@ that they’d like to contribute code.
 as possible to discuss further details.
 
 
-See [Contribution to {admiral}](https://pharmaverse.github.io/admiral/cran-release/articles/contribution_model.html) for additional details.
+See [Contribution to {admiral}](https://pharmaverse.github.io/admiral/CONTRIBUTING.html) for additional details.
  
 # Containers guideline
 
