@@ -49,7 +49,7 @@ that they’d like to contribute code.
 as possible to discuss further details.
 
 
-See [Contribution to {admiral}](https://pharmaverse.github.io/admiral/cran-release/articles/contribution_model.html) for additional details.
+See [Contribution to {admiral}](https://pharmaverse.github.io/admiral/CONTRIBUTING.html) for additional details.
  
 # Containers guideline
 
