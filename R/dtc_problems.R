@@ -1,5 +1,5 @@
-add_problems <- function(x, dtc) {
-  is_x_na <- is.na(x)
+add_problems <- function(x, is_problem, dtc) {
+  is_x_na <- is_problem
   if (!any(is_x_na)) {
     return(x)
   }
@@ -16,11 +16,21 @@ add_problems <- function(x, dtc) {
 
   names(dtc) <- names
 
-  index <- which(is_x_na)
-  problems <- tibble::as_tibble(dtc)[is_x_na, ]
+  index <- which(is_problem)
+  problems <- tibble::as_tibble(dtc)[is_problem, ]
   problems <- tibble::add_column(problems, ..i = index, .before = 1L)
   attr(x, "problems") <- problems
   x
+}
+
+any_problems <- function(cap_matrices, .cutoff_2000 = 68L) {
+  cap_matrices |>
+    purrr::map(~ format_iso8601(.x, .cutoff_2000 = .cutoff_2000)) |>
+    unlist() |>
+    matrix(ncol = length(cap_matrices)) |>
+    is.na() |>
+    rowSums() |>
+    as.logical()
 }
 
 #' Retrieve date/time parsing problems
@@ -58,8 +68,8 @@ add_problems <- function(x, dtc) {
 #'   "20231225"
 #' )
 #'
-#' #' # By inspect the problematic dates it can be understood that
-#' # the `.format` parameter needs to update to include other variations.
+#' #' # By inspecting the problematic dates it can be understood that
+#' # the `.format` parameter needs to updated to include other variations.
 #' iso8601_dttm <- create_iso8601(dates, .format = "y-m-d")
 #' problems(iso8601_dttm)
 #'
@@ -98,7 +108,7 @@ warn_problems <- function(x) {
   n_probs <- n_problems(x)
   if (n_probs > 0L) {
     msg <- paste(
-      sprintf("There were parsing %d problems.", n_probs),
+      sprintf("There were %d parsing problems.", n_probs),
       "Run `problems()` on parsed results for details."
     )
     rlang::warn(msg)

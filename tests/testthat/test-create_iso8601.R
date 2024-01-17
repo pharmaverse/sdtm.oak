@@ -73,3 +73,32 @@ test_that("`create_iso8601()`: dates and times", {
     )
   expect_identical(as.character(iso8601_dttm), expectation)
 })
+
+# https://github.com/pharmaverse/sdtm.oak/pull/33#discussion_r1436195327
+test_that("`create_iso8601()`: expect problems", {
+  dates <- c("999999999", "2000-01-01", "99-01-01", "99-12-31")
+  times <- c("1520", "0010", "2301", "999999999999")
+  iso8601_dttm <- create_iso8601(dates, times, .format = c("y-m-d", "HM"), .check_format = FALSE)
+  expectation <-
+    structure(
+      c(
+        "-----T15:20",
+        "2000-01-01T00:10",
+        "1999-01-01T23:01",
+        "1999-12-31"
+      ),
+      problems = structure(
+        list(
+          ..i = c(1L, 4L),
+          ..var1 = c("999999999",
+                     "99-12-31"),
+          ..var2 = c("1520", "999999999999")
+        ),
+        row.names = c(NA,
+                      -2L),
+        class = c("tbl_df", "tbl", "data.frame")
+      ),
+      class = "iso8601"
+    )
+  expect_identical(iso8601_dttm, expectation)
+})

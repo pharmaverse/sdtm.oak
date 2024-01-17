@@ -446,7 +446,8 @@ create_iso8601 <-
     cap_matrix <- coalesce_capture_matrices(!!!cap_matrices)
 
     iso8601 <- format_iso8601(cap_matrix, .cutoff_2000 = .cutoff_2000)
-    iso8601 <- add_problems(iso8601, dots)
+    any_prob <- any_problems(cap_matrices, .cutoff_2000 = .cutoff_2000)
+    iso8601 <- add_problems(iso8601, any_prob, dots)
     class(iso8601) <- "iso8601"
 
     if (.warn && rlang::is_interactive()) {

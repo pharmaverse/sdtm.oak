@@ -42,8 +42,8 @@ c(
   "20231225"
 )
 
-#' # By inspect the problematic dates it can be understood that
-# the `.format` parameter needs to update to include other variations.
+#' # By inspecting the problematic dates it can be understood that
+# the `.format` parameter needs to updated to include other variations.
 iso8601_dttm <- create_iso8601(dates, .format = "y-m-d")
 problems(iso8601_dttm)
 
