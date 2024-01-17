@@ -90,12 +90,16 @@ test_that("`create_iso8601()`: expect problems", {
       problems = structure(
         list(
           ..i = c(1L, 4L),
-          ..var1 = c("999999999",
-                     "99-12-31"),
+          ..var1 = c(
+            "999999999",
+            "99-12-31"
+          ),
           ..var2 = c("1520", "999999999999")
         ),
-        row.names = c(NA,
-                      -2L),
+        row.names = c(
+          NA,
+          -2L
+        ),
         class = c("tbl_df", "tbl", "data.frame")
       ),
       class = "iso8601"

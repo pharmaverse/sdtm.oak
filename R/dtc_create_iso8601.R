@@ -431,18 +431,21 @@ create_iso8601 <-
 
     # Check that the `.format` is either a character vector or a list of
     # character vectors, and that each string is one of the possible formats.
-    if (.check_format)
+    if (.check_format) {
       assert_dtc_format(.format)
+    }
 
     cap_matrices <-
-      purrr::map2(dots,
-                  .format,
-                  ~ parse_dttm(
-                    dttm = .x,
-                    fmt = .y,
-                    na = .na,
-                    fmt_c = .fmt_c
-                  ))
+      purrr::map2(
+        dots,
+        .format,
+        ~ parse_dttm(
+          dttm = .x,
+          fmt = .y,
+          na = .na,
+          fmt_c = .fmt_c
+        )
+      )
     cap_matrix <- coalesce_capture_matrices(!!!cap_matrices)
 
     iso8601 <- format_iso8601(cap_matrix, .cutoff_2000 = .cutoff_2000)
