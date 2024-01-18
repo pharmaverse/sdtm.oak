@@ -1,6 +1,6 @@
 # Contribution to {sdtm.oak} 
 
-This outlines how to propose a change to the aok package. For more detailed info
+This outlines how to propose a change to the {sdtm.oak} package. For more detailed info
 about contributing to {sdtm.oak}, and other [pharmaverse
 packages](https://pharmaverse.org/), please see the [development process
 guide](https://pharmaverse.github.io/sdtm.oak/CONTRIBUTING.html)
@@ -51,13 +51,8 @@ that they’d like to contribute code.
  * The `{sdtm.oak}` core development team will contact the issue creator as soon
 as possible to discuss further details.
 
-
-<<<<<<< HEAD
-See [Contribution to {admiral}](https://pharmaverse.github.io/admiral/CONTRIBUTING.html) for additional details.
-=======
 See [Contribution to {admiral}](https://pharmaverse.github.io/admiral/articles/contribution_model.html) for additional details.
->>>>>>> update-links-docs
- 
+
 # Containers guideline
 
 This guideline will walk you through the process of setting up and using the Oak image in both GitHub Codespaces and Visual Studio Code's devcontainer functionality.
