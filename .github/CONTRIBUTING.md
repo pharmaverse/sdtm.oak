@@ -1,6 +1,6 @@
 # Contribution to {sdtm.oak} 
 
-This outlines how to propose a change to the aok package. For more detailed info
+This outlines how to propose a change to the {sdtm.oak} package. For more detailed info
 about contributing to {sdtm.oak}, and other [pharmaverse
 packages](https://pharmaverse.org/), please see the [development process
 guide](https://pharmaverse.github.io/sdtm.oak/CONTRIBUTING.html)
