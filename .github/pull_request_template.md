@@ -1,6 +1,6 @@
 Thank you for your Pull Request! We have developed this task checklist from the
 [Development Process
-Guide](https://pharmaverse.github.io/admiraldev/articles/development_process.html)
+Guide](https://pharmaverse.github.io/sdtm.oak/CONTRIBUTING.html)
 to help with the final steps of the process. Completing the below tasks helps to
 ensure our reviewers can maximize their time on your code as well as making sure
 the oak codebase remains robust and consistent.
@@ -31,7 +31,7 @@ and families. Refer to the
 - [ ] Update `NEWS.md` if the changes pertain to a user-facing function (i.e. it
 has an `@export` tag) or documentation aimed at users (rather than developers)
 - [ ] Build oak site `pkgdown::build_site()` and check that all affected
-examples are displayed correctly and that all new functions occur on the "[Reference](https://pharmaverse.github.io/admiral/cran-release/reference/index.html)" page. 
+examples are displayed correctly and that all new functions occur on the "[Reference](https://pharmaverse.github.io/admiral/reference/index.html)" page. 
 - [ ] Address or fix all lintr warnings and errors - `lintr::lint_package()`
 - [ ] Run `R CMD check` locally and address all errors and warnings - `devtools::check()`
 - [ ] Link the issue in the Development Section on the right hand side.
