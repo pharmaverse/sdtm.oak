@@ -15,19 +15,18 @@ value by \code{\link[=parse_dttm]{parse_dttm()}}.}
 though starting with \code{19}.}
 }
 \value{
-A \code{logical} whose length matches the number underlying date/times
+A \code{logical} whose length matches the number of underlying date/times
 passed as inputs to \code{\link[=create_iso8601]{create_iso8601()}}, i.e. whose length matches the
 number of rows of the capture matrices in \code{cap_matrices}.
 }
 \description{
 \code{\link[=any_problems]{any_problems()}} takes a list of capture matrices (see \code{\link[=parse_dttm]{parse_dttm()}}) and
 reports on parsing problems by means of predicate values. A \code{FALSE} value
-indicates the parsing was successful and a \code{TRUE} value that the parsing
-failed in at least one of the inputs to \code{\link[=create_iso8601]{create_iso8601()}}. Note that each
-capture matrix corresponds to one input to \code{\link[=create_iso8601]{create_iso8601()}}.
-
-Note that this is an internal function to be used in the context of
-\code{\link[=create_iso8601]{create_iso8601()}} source code.
+indicates that the parsing was successful and a \code{TRUE} value a parsing
+failure in at least one of the inputs to \code{\link[=create_iso8601]{create_iso8601()}}. Note that this
+is an internal function to be used in the context of \code{\link[=create_iso8601]{create_iso8601()}}
+source code and hence each capture matrix corresponds to one input to
+\code{\link[=create_iso8601]{create_iso8601()}}.
 }
 \examples{
 # No problem (return value is `FALSE`).

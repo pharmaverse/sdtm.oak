@@ -29,12 +29,11 @@ add_problems <- function(x, is_problem, dtc) {
 #'
 #' [any_problems()] takes a list of capture matrices (see [parse_dttm()]) and
 #' reports on parsing problems by means of predicate values. A `FALSE` value
-#' indicates the parsing was successful and a `TRUE` value that the parsing
-#' failed in at least one of the inputs to [create_iso8601()]. Note that each
-#' capture matrix corresponds to one input to [create_iso8601()].
-#'
-#' Note that this is an internal function to be used in the context of
-#' [create_iso8601()] source code.
+#' indicates that the parsing was successful and a `TRUE` value a parsing
+#' failure in at least one of the inputs to [create_iso8601()]. Note that this
+#' is an internal function to be used in the context of [create_iso8601()]
+#' source code and hence each capture matrix corresponds to one input to
+#' [create_iso8601()].
 #'
 #' @param cap_matrices A list of capture matrices in the sense of the returned
 #' value by [parse_dttm()].
@@ -42,7 +41,7 @@ add_problems <- function(x, is_problem, dtc) {
 #'   `.cutoff_2000` are parsed as though starting with `20`, otherwise parsed as
 #'   though starting with `19`.
 #'
-#' @returns A `logical` whose length matches the number underlying date/times
+#' @returns A `logical` whose length matches the number of underlying date/times
 #'   passed as inputs to [create_iso8601()], i.e. whose length matches the
 #'   number of rows of the capture matrices in `cap_matrices`.
 #'
