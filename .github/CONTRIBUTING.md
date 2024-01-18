@@ -1,10 +1,11 @@
-# Contribution to {oak} 
+# Contribution to {sdtm.oak} 
 
 This outlines how to propose a change to the aok package. For more detailed info
-about contributing to {oak}, and other [pharmaverse
-packages](https://pharmaverse.org/), please see the [Programming Strategy](https://pharmaverse.github.io/admiraldev/articles/programming_strategy.html)
+about contributing to {sdtm.oak}, and other [pharmaverse
+packages](https://pharmaverse.org/), please see the [development process
+guide](https://pharmaverse.github.io/sdtm.oak/CONTRIBUTING.html)
 as well as other Developer Guides in the Articles section of the [{admiral}
-website](https://pharmaverse.github.io/admiral/cran-release/index.html)
+website](https://pharmaverse.github.io/admiral/index.html)
 
 # Basics
  * For each new contribution, the user creates an issue on the issue tab on [GitHub](https://github.com/pharmaverse/oak/issues) to put it in our backlog.
@@ -16,7 +17,7 @@ functions, documentation, tests or new features.
 [Slack](https://oakgarden.slack.com) (If you don't have access, use this
 [link](https://join.slack.com/t/oakgarden/shared_invite/zt-204sf8w5c-Vxl71cI~WAYhsMLbHGxeMw)
 to join).  We can discuss details or align expectations if you are not familiar
-with the `{oak}` philosophy and programming strategy. The team will try to
+with the `{sdtm.oak}` philosophy and programming strategy. The team will try to
 review the issues within the next backlog meeting and give some initial
 feedback. Since we are not a 100% fully resourced software development team it
 might be that some issues will take longer to respond to depending on the amount
@@ -41,17 +42,21 @@ community.
  * First, the user creates an issue or comments on an existing issue to notify
 that they’d like to contribute code.
  * Follow our development process step-by-step guide.
- * We advise to contact an `{oak}` core development team directly via [Slack](https://app.slack.com/client/T028PB489D3/C02M8KN8269) before submitting code for complex functionality.
+ * We advise to contact an `{sdtm.oak}` core development team directly via [Slack](https://app.slack.com/client/T028PB489D3/C02M8KN8269) before submitting code for complex functionality.
 
 
 ## Type 2 Contribution without Code: 
 
- * User creates an issue and ideally contacts an `{oak}` team member via [Slack](https://oakgarden.slack.com).
- * The `{oak}` core development team will contact the issue creator as soon
+ * User creates an issue and ideally contacts an `{sdtm.oak}` team member via [Slack](https://oakgarden.slack.com).
+ * The `{sdtm.oak}` core development team will contact the issue creator as soon
 as possible to discuss further details.
 
 
+<<<<<<< HEAD
 See [Contribution to {admiral}](https://pharmaverse.github.io/admiral/CONTRIBUTING.html) for additional details.
+=======
+See [Contribution to {admiral}](https://pharmaverse.github.io/admiral/articles/contribution_model.html) for additional details.
+>>>>>>> update-links-docs
  
 # Containers guideline
 
