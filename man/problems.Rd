@@ -32,15 +32,15 @@ provides easy access to these parsing problems.
 }
 \examples{
 dates <-
-c(
-  "2020-01-01",
-  "2020-02-11",
-  "2020-01-06",
-  "2020-0921",
-  "2020/10/30",
-  "2020-12-05",
-  "20231225"
-)
+  c(
+    "2020-01-01",
+    "2020-02-11",
+    "2020-01-06",
+    "2020-0921",
+    "2020/10/30",
+    "2020-12-05",
+    "20231225"
+  )
 
 #' # By inspecting the problematic dates it can be understood that
 # the `.format` parameter needs to updated to include other variations.
