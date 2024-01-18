@@ -1,3 +1,47 @@
+#' Add ISO 8601 parsing problems
+#'
+#' @description
+#' [add_problems()] annotates the returned value of [create_iso8601()] with
+#' possible parsing problems. This annotation consists of a
+#' [tibble][tibble::tibble-package] of problems, one row for each parsing
+#' failure (see Details section).
+#'
+#' @details
+#' This function annotates its input `x`, a vector date-times in ISO 8601
+#' format, by creating an attribute named `problems`. This attribute's value
+#' is a [tibble][tibble::tibble-package] of parsing problems. The problematic
+#' date/times are indicated by the `logical` vector passed as argument to
+#' `is_problem`.
+#'
+#' The attribute `problems` in the returned value will contain a first column
+#' named `..i` that indicates the date/time index of the problematic date/time
+#' in `x`, and as many extra columns as there were inputs (passed in `dtc`). If
+#' `dtc` is named, then those names are used to name the extra columns,
+#' otherwise they get named sequentially like so `..var1`, `..var2`, etc..
+#'
+#' @param x A character vector of date-times in ISO 8601 format; typically, the
+#'   output of [format_iso8601()].
+#' @param is_problem A `logical` indicating which date/time inputs are
+#'   associated with parsing failures.
+#' @param dtc A list of `character` vectors of dates, times or date-times'
+#'   components. Typically, this parameter takes the value passed in `...` to
+#'   a [create_iso8601()] call.
+#'
+#' @returns Either `x` without any modification, if no parsing problems exist,
+#'   or an annotated `x`, meaning having a `problems` attribute that holds
+#'   parsing issues (see the Details section).
+#'
+#' @examples
+#' date <- c("2000-01-05", "", "1980-06-18", "1979-09-07")
+#' time <- c("001221", "22:35:05", "03:00:15", "07:09:00")
+#' dtc <- list(date, time)
+#' dttm <- c("2000-01-05", "T22:35:05", "1980-06-18T03:00:15", "1979-09-07T07:09:00")
+#' is_problem <- c(TRUE, TRUE, FALSE, FALSE)
+#'
+#' dttm2 <- sdtm.oak:::add_problems(dttm, is_problem, dtc)
+#' sdtm.oak:::problems(dttm2)
+#'
+#' @keywords internal
 add_problems <- function(x, is_problem, dtc) {
   is_x_na <- is_problem
   if (!any(is_x_na)) {
