@@ -1,10 +1,13 @@
 Package: sdtm.oak
 Type: Package
 Title: SDTM Data Transformation Engine
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
     person("Omar", "Garcia", email = "ogcalderon@cdisc.org", role = c("aut", "cre")),
     person("Rammprasad", "Ganapathy", role = "aut"),
+    person("Ramiro", "Magno", email = "rmagno@pattern.institute",
+    role = "aut", comment = c(ORCID = "0000-0001-5226-3441")),
+    person("Pattern Institute", role = c("cph", "fnd")),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")),
     person("Pfizer Inc", role = c("cph", "fnd"))
     )
@@ -13,21 +16,25 @@ Description: An EDC and Data Standard agnostic SDTM data transformation engine
     based on standard mapping algorithms.
 Language: en-US
 License: Apache License (>= 2)
-BugReports: https://github.com/pharmaverse/oak/issues
-URL: https://pharmaverse.github.io/oak/, https://github.com/pharmaverse/oak
+BugReports: https://github.com/pharmaverse/sdtm.oak/issues
+URL: https://pharmaverse.github.io/sdtm.oak/, https://github.com/pharmaverse/sdtm.oak
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-Depends: R (>= 4.1)
+Depends: R (>= 4.2)
 Imports: 
-    rlang (>= 1.0.0)
+    admiraldev,
+    dplyr (>= 1.0.0),
+    purrr (>= 1.0.0),
+    rlang (>= 1.0.0),
+    stringr,
+    tibble
 Suggests:
     knitr,
     rmarkdown,
     spelling,
-    testthat (>= 3.1.7),
-    tibble
+    testthat (>= 3.1.7)
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true
