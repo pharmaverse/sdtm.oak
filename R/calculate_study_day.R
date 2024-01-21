@@ -47,10 +47,10 @@ calculate_study_day <- function(sdtm_in,
 
   assertthat::assert_that(is.data.frame(sdtm_in))
   assertthat::assert_that(is.data.frame(dm_domain))
-  assertthat::assert_that(hasName(dm_domain, refdt))
-  assertthat::assert_that(hasName(sdtm_in, tgdt))
-  assertthat::assert_that(hasName(dm_domain, merge_key))
-  assertthat::assert_that(hasName(sdtm_in, merge_key))
+  assertthat::assert_that(utils::hasName(dm_domain, refdt))
+  assertthat::assert_that(utils::hasName(sdtm_in, tgdt))
+  assertthat::assert_that(utils::hasName(dm_domain, merge_key))
+  assertthat::assert_that(utils::hasName(sdtm_in, merge_key))
   assertthat::assert_that(is.character(study_day_var))
   # check tgdt and study_day_var matching, for example, CMSTDTC matches CMSTDY
   if (gsub("DTC", "", tgdt) != gsub("DY", "", study_day_var)) {
