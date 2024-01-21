@@ -83,16 +83,24 @@ calculate_study_day <- function(sdtm_in,
       )
   }
 
-  # question: should I assume that refdt/tgdt was converted to Date already?
-  # If assume that refdt and tgdt are already dates
-  if (!("Date" %in% class(sdtm_in[[refdt]]) && "Date" %in% class(sdtm_in[[tgdt]]))) {
-    warning(
-      "Reference and target date has to be Date objects. ",
-      "If either is not, NA will be returned for study day."
-    )
-    sdtm_in[study_day_var] <- NA
-    return(sdtm_in)
-  }
+  # refdt/tgdt should be in ISO format, otherwise throw warning
+  tryCatch(
+    sdtm_in[[refdt]] <- as.Date(sdtm_in[[refdt]], "%Y-%m-%d"),
+    error = function(e) {
+      warning("Encountered errors when converting refdt to dates. \n")
+      warning(e)
+      sdtm_in[refdt] <- NA
+    }
+  )
+  tryCatch(
+    sdtm_in[[tgdt]] <- as.Date(sdtm_in[[tgdt]], "%Y-%m-%d"),
+    error = function(e) {
+      warning("Encountered errors when converting tgdt to dates. \n")
+      warning(e)
+      sdtm_in[tgdt] <- NA
+    }
+  )
+
   refdt_vector <- sdtm_in[[refdt]]
   tgdt_vector <- sdtm_in[[tgdt]]
 
