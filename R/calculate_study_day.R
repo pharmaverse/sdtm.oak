@@ -98,20 +98,26 @@ calculate_study_day <- function(sdtm_in,
   }
 
   # refdt/tgdt should be in ISO format, otherwise throw warning
-  tryCatch(
-    sdtm_in[[refdt]] <- as.Date(sdtm_in[[refdt]], "%Y-%m-%d"),
+  sdtm_in[[refdt]] <- tryCatch(
+    as.Date(sdtm_in[[refdt]], "%Y-%m-%d"),
     error = function(e) {
-      warning("Encountered errors when converting refdt to dates. \n")
-      warning(e)
-      sdtm_in[refdt] <- NA
+      warning(
+        "Encountered errors when converting refdt to dates. ",
+        "The warning message is ",
+        e$message
+      )
+      NA
     }
   )
-  tryCatch(
-    sdtm_in[[tgdt]] <- as.Date(sdtm_in[[tgdt]], "%Y-%m-%d"),
+  sdtm_in[[tgdt]] <- tryCatch(
+    as.Date(sdtm_in[[tgdt]], "%Y-%m-%d"),
     error = function(e) {
-      warning("Encountered errors when converting tgdt to dates. \n")
-      warning(e)
-      sdtm_in[tgdt] <- NA
+      warning(
+        "Encountered errors when converting tgdt to dates. ",
+        "The warning message is ",
+        e$message
+      )
+      NA
     }
   )
 
