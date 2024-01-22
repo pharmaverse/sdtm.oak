@@ -5,33 +5,33 @@
 \title{\code{calculate_study_day} performs study day calculation}
 \usage{
 calculate_study_day(
-  ds_in,
-  ds_dm,
-  refdt,
+  sdtm_in,
+  dm_domain = DM,
+  refdt = "RFSTDTC",
   tgdt,
   study_day_var,
   merge_key = "USUBJID"
 )
 }
 \arguments{
-\item{ds_in}{input data.frame that contains the target date.}
+\item{sdtm_in}{input data.frame that contains the target date.}
 
-\item{ds_dm}{reference date.frame that contains the reference date.}
+\item{dm_domain}{reference date.frame that contains the reference date.}
 
-\item{refdt}{reference date from \code{ds_dm} that will be used as reference to
+\item{refdt}{reference date from \code{dm_domain} that will be used as reference to
 calculate the study day.}
 
-\item{tgdt}{target date from \code{ds_in} that will be used to calcualte the study
+\item{tgdt}{target date from \code{sdtm_in} that will be used to calcualte the study
 day.}
 
 \item{study_day_var}{the new study day variable name in the output. For
 example, AESTDY for AE domain for CMSTDY for CM domain.}
 
-\item{merge_key}{character to represents the merging key between \code{ds_in} and
-\code{ds_dm}.}
+\item{merge_key}{character to represents the merging key between \code{sdtm_in} and
+\code{dm_domain}.}
 }
 \value{
-a data.frame that takes all columns from \code{ds_in} and a new variable
+a data.frame that takes all columns from \code{sdtm_in} and a new variable
 to represent the calculated study day.
 }
 \description{
