@@ -25,28 +25,25 @@
 #'
 #' @examples
 #' \dontrun{
-#'   ae <- data.frame(
-#'     USUBJID = c("study123-123", "study123-124", "study123-125"),
-#'     AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14")
-#'   )
-#'   dm <- data.frame(
-#'     USUBJID = c("study123-123", "study123-124", "study123-125"),
-#'     RFSTDTC = c("2012-02-01", "2012-04-14", NA)
-#'   )
-#'   ae$AESTDTC <- as.Date(ae$AESTDTC)
-#'   dm$RFSTDTC <- as.Date(dm$RFSTDTC)
-#'   calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
+#' ae <- data.frame(
+#'   USUBJID = c("study123-123", "study123-124", "study123-125"),
+#'   AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14")
+#' )
+#' dm <- data.frame(
+#'   USUBJID = c("study123-123", "study123-124", "study123-125"),
+#'   RFSTDTC = c("2012-02-01", "2012-04-14", NA)
+#' )
+#' ae$AESTDTC <- as.Date(ae$AESTDTC)
+#' dm$RFSTDTC <- as.Date(dm$RFSTDTC)
+#' calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
 #' }
 #'
-#'
-
 calculate_study_day <- function(sdtm_in,
                                 dm_domain = DM,
                                 refdt = "RFSTDTC",
                                 tgdt,
                                 study_day_var,
                                 merge_key = "USUBJID") {
-
   assertthat::assert_that(is.data.frame(sdtm_in))
   assertthat::assert_that(is.data.frame(dm_domain))
   assertthat::assert_that(
@@ -80,7 +77,7 @@ calculate_study_day <- function(sdtm_in,
     dm_domain <- unique(dm_domain[c(merge_key, refdt)])
 
     check_refdt_uniqueness <- dm_domain %>%
-      dplyr::group_by(dplyr::pick({{merge_key}})) %>%
+      dplyr::group_by(dplyr::pick({{ merge_key }})) %>%
       dplyr::filter(dplyr::n() > 1)
     if (nrow(check_refdt_uniqueness) > 0) {
       warning(
@@ -95,7 +92,8 @@ calculate_study_day <- function(sdtm_in,
 
     sdtm_in <- sdtm_in %>%
       dplyr::left_join(
-        dm_domain, by = structure(names = merge_key, .Data = merge_key)
+        dm_domain,
+        by = structure(names = merge_key, .Data = merge_key)
       )
   }
 
@@ -142,4 +140,3 @@ calculate_study_day <- function(sdtm_in,
   sdtm_in[study_day_var] <- res
   return(sdtm_in)
 }
-
