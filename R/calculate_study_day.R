@@ -74,6 +74,8 @@ calculate_study_day <- function(sdtm_in,
     )
   }
 
+  original_variables <- names(sdtm_in)
+
   if (!identical(sdtm_in, dm_domain)) {
     dm_domain <- unique(dm_domain[c(merge_key, refdt)])
 
@@ -104,7 +106,8 @@ calculate_study_day <- function(sdtm_in,
       warning(
         "Encountered errors when converting refdt to dates. ",
         "The warning message is ",
-        e$message
+        e$message,
+        call. = FALSE
       )
       NA
     }
@@ -115,7 +118,8 @@ calculate_study_day <- function(sdtm_in,
       warning(
         "Encountered errors when converting tgdt to dates. ",
         "The warning message is ",
-        e$message
+        e$message,
+        call. = FALSE
       )
       NA
     }
@@ -133,6 +137,8 @@ calculate_study_day <- function(sdtm_in,
       no = NA
     )
   )
+
+  sdtm_in <- sdtm_in[original_variables]
   sdtm_in[study_day_var] <- res
   return(sdtm_in)
 }
