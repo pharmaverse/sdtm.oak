@@ -105,7 +105,8 @@ definition <- data.frame(
     "target_sdtm_variable",
     "target_sdtm_variable_role",
     "target_sdtm_variable_codelist_code",
-    "target_sdtm_variable_controlled_terms_or_format",
+    paste("target_sdtm_variable_",
+    "controlled_terms_or_format"),
     "target_sdtm_variable_ordinal",
     "origin",
     "mapping_algorithm",
@@ -303,14 +304,14 @@ definition <- data.frame(
     "DATAPAGEID"
   ),
   Association_with_mapping_Algorithms = c(
+    "Generic Use",
+    "Generic Use",
     "Required for all mapping algorithms",
-    "Required for all mapping algorithms",
-    "Required for all mapping algorithms",
-    "Required for all mapping algorithms",
-    "Required for all mapping algorithms",
-    "Required for all mapping algorithms",
-    "Required for all mapping algorithms",
-    "Required for all mapping algorithms",
+    "Generic Use",
+    "Generic Use",
+    "Generic Use",
+    "Generic Use",
+    "Generic Use",
     "Required for all mapping algorithms",
     "Required for all mapping algorithms",
     "Required for all mapping algorithms",
@@ -322,7 +323,7 @@ definition <- data.frame(
     "Required for all mapping algorithms",
     "Required for all mapping algorithms",
     "Required for all mapping algorithms",
-    "Required for all mapping algorithms",
+    "Generic Use",
     "Required for all mapping algorithms",
     "Used for define.xml",
     "Required for all mapping algorithms",
@@ -354,5 +355,5 @@ definition <- data.frame(
   ),
   stringsAsFactors = TRUE
 )
-knitr::kable(definition)
+knitr::kable(definition, col.names = gsub("_", " ", names(definition)))
 ```

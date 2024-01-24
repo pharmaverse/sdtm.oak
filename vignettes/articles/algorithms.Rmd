@@ -31,7 +31,7 @@ engine.
 Here is an example of reusing an algorithm across multiple domains,
 variables, and also to a non-standard
 
-![](reusable_algorithms.jpg)
+![](reusable_algorithms.jpg){width="600px"}
 
 ## List of Algorithms
 
@@ -208,7 +208,7 @@ Currently, sub-algorithms must be provided for these main algorithms.
 Algorithms can be interchangeably used as algorithms and as
 sub-algorithms as seen below (not an exhaustive list)
 
-![](algo_sub_algo_combo.jpg)
+![](algo_sub_algo_combo.jpg){width="650px"}
 
 The permutation & combination of algorithms & sub-algorithms creates
 endless possibilities to accommodate different types of mappings.

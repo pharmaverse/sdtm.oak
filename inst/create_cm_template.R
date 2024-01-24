@@ -85,7 +85,7 @@ cm <- MD1 |>
       topic_var_source = MDRAW
     )
   ) |>
-  # Derive qualifier CMDOS. Annotation text = If numeric then CM.CMDOSE
+  # Derive qualifier CMDOSE. Annotation text = If numeric then CM.CMDOSE
   if_then_else(
     raw_dataset = MD1,
     raw_variable = DOS,
@@ -174,7 +174,7 @@ cm <- MD1 |>
       topic_var_source = MDRAW
     )
   ) |>
-  # Derive qualifier CMSTRTPT  Annotation text = If checked then CM.CMENRTPT = 'ONGOING'
+  # Derive qualifier CMENRTPT  Annotation text = If checked then CM.CMENRTPT = 'ONGOING'
   if_then_else(
     raw_dataset = MD1,
     raw_variable = MDONG,
@@ -189,7 +189,7 @@ cm <- MD1 |>
       topic_var_source = MDRAW
     )
   ) |>
-  # Derive qualifier CMSTRTPT  Annotation text = If checked then CM.CMENTPT = 'DATE OF LAST ASSESSMENT'
+  # Derive qualifier CMENTPT  Annotation text = If checked then CM.CMENTPT = 'DATE OF LAST ASSESSMENT'
   if_then_else(
     raw_dataset = MD1,
     raw_variable = MDONG,
