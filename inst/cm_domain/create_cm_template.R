@@ -14,19 +14,19 @@ library(dplyr)
 
 # Read Specification
 
-sdtm_spec <- read_sdtm_spec(filename = "~/study/study_sdtm_spec.csv")
+sdtm_spec <- read_sdtm_spec(filename = "~/inst/cm_domain/cm_sdtm_oak_spec.csv")
 
-study_ct <- read_study_ct(filename = "~/study/study_sdtm_ct.csv")
+study_ct <- read_study_ct(filename = "~/inst/cm_domain/cm_sdtm_oak_ct.csv")
 
 # Read in raw data
 
-md1 <- read_raw_data_csv(filename = "~/study/MD1.csv") |>
+cm_daw_data <- read_raw_data_csv(filename = "~/inst/cm_domain/cm_raw_data.csv") |>
   # Derive oak_id_vars
   derive_oak_id_vars()
 
 # Create CM domain. The first step in creating CM domain is to create the topic variable
 
-cm <- MD1 |>
+cm <- cm_daw_data |>
   # Derive topic variable
   assign_no_ct(
     raw_dataset = MD1, # This is added for pseudocode. Not required as pipe will send it
