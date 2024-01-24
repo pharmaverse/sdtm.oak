@@ -130,7 +130,7 @@ jobs:
           install_min_version("vctrs", "0.4.1")
           install_min_version("rlang", "1.0.6")
           renv::install("styler@1.10.2", dependencies = "none")
-          renv::install("roxygen2@7.2.3", dependencies = "none")
+          renv::install("roxygen2@7.3.1", dependencies = "none")
 
           renv::settings$snapshot.type("custom")
           renv::snapshot(force = TRUE, prompt = FALSE)
