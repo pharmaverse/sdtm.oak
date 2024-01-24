@@ -105,8 +105,10 @@ definition <- data.frame(
     "target_sdtm_variable",
     "target_sdtm_variable_role",
     "target_sdtm_variable_codelist_code",
-    paste("target_sdtm_variable_",
-    "controlled_terms_or_format"),
+    paste(
+      "target_sdtm_variable_",
+      "controlled_terms_or_format"
+    ),
     "target_sdtm_variable_ordinal",
     "origin",
     "mapping_algorithm",
