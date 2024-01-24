@@ -357,5 +357,5 @@ definition <- data.frame(
   ),
   stringsAsFactors = TRUE
 )
-knitr::kable(definition, col.names = gsub("_", " ", names(definition)))
+knitr::kable(definition)
 ```
