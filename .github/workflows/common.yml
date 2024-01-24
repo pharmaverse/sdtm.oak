@@ -87,6 +87,8 @@ jobs:
   coverage:
     name: Code Coverage
     uses: pharmaverse/admiralci/.github/workflows/code-coverage.yml@main
+    env:
+      R_REMOTES_STANDALONE: true
     if: >
       github.event_name != 'release'
     with:
@@ -98,6 +100,8 @@ jobs:
   man-pages:
     name: Man Pages
     uses: pharmaverse/admiralci/.github/workflows/man-pages.yml@main
+    env:
+      R_REMOTES_STANDALONE: true
     if: github.event_name == 'pull_request'
     with:
       r-version: "4.3"
