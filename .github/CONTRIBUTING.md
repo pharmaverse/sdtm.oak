@@ -4,6 +4,7 @@ This outlines how to propose a change to the sdtm.oak package. For more detailed
 
 Please note that we try to align to best practices used in other R packages' development processes - so veteran developers should be familiar with our processes. However, we do deviate slightly from some best practices and we advise all new contributors to review our package documentation accordingly.
 
+
 # Basics
  * For each new contribution, the user creates an issue on the issue tab on [GitHub](https://github.com/pharmaverse/sdtm.oak/issues) to put it in our backlog.
 The issues can range from bug identification and/or fixes, enhancements to
