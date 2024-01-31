@@ -36,8 +36,8 @@ split_var <- function(string, max_length_out = 200L) {
   split_vector <- unlist(stringr::str_split(string, pattern))
 
   # Use reduce to apply the function across the vector
-  split_vector <- split_vector[-1L] %>%
-    purrr::reduce(single_str_spilt, .init = list(split_vector[1L]), pattern, max_length_out) %>%
+  split_vector <- split_vector[-1L] |>
+    purrr::reduce(single_str_spilt, .init = list(split_vector[1L]), pattern, max_length_out) |>
     unlist()
 
   # Fix case where sentence do not exceed max_length_out
@@ -74,11 +74,12 @@ sdtm_str_split <- function(domain_dataset, max_length_out = 200L) {
     })
     split_df <- dplyr::bind_rows(split_list)
     return(split_df)
-  }) %>%
-    purrr::imap(~ set_names(.x, .y)) %>%
+  }) |>
+    purrr::imap(~ set_names(.x, .y)) |>
     dplyr::bind_cols()
 
-  names(outt) <- sub("....$", "", names(outt)) %>% make.unique(sep = "_")
+  names(outt) <- sub("....$", "", names(outt)) |>
+    make.unique(sep = "_")
   dataset_out <- dplyr::bind_cols(dplyr::select(domain_dataset, -names(char_200)), outt)
   return(dataset_out)
 }
