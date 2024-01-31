@@ -30,7 +30,7 @@ single_str_spilt <- function(result, item, sep, max_length_out) {
 split_var <- function(string, max_length_out = 200L) {
   # Pattern spot
   pattern <- names(which.max(table(stringr::str_extract_all(string, "[:punct:]|[:blank:]")))) |>
-    (\(.) (ifelse(is.null(.), "", .))) ()
+    (\(.) (ifelse(is.null(.), "", .)))()
 
   # Split the input string into a vector
   split_vector <- unlist(stringr::str_split(string, pattern))
