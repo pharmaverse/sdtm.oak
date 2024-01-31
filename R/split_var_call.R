@@ -4,7 +4,10 @@
 #' @param item The item to be added to the result
 #' @param sep The separator used to split the string
 #' @param max_length_out The maximum length of the output string
+#'
 #' @return A list with the split strings
+#'
+#' @export
 single_str_spilt <- function(result, item, sep, max_length_out) {
   current <- tail(result, 1L)
   if (nchar(paste0(current, sep, item)) <= (max_length_out - 1L)) {
@@ -20,11 +23,14 @@ single_str_spilt <- function(result, item, sep, max_length_out) {
 #'
 #' @param string The string to be split
 #' @param max_length_out The maximum length of the output string (default is 200)
+#'
 #' @return A list with the split strings
+#'
+#' @export
 split_var <- function(string, max_length_out = 200L) {
   # Pattern spot
-  pattern <- names(which.max(table(stringr::str_extract_all(string, "[:punct:]|[:blank:]")))) %>%
-    ifelse(is.null(.), "", .)
+  pattern <- names(which.max(table(stringr::str_extract_all(string, "[:punct:]|[:blank:]")))) |>
+    (\(.) (ifelse(is.null(.), "", .))) ()
 
   # Split the input string into a vector
   split_vector <- unlist(stringr::str_split(string, pattern))
@@ -49,7 +55,10 @@ split_var <- function(string, max_length_out = 200L) {
 #'
 #' @param domain_dataset The dataset to be split
 #' @param max_length_out The maximum length of output string (default is 200)
+#'
 #' @return A dataset with the split strings
+#'
+#' @export
 sdtm_str_split <- function(domain_dataset, max_length_out = 200L) {
   outt <- NULL
 
@@ -66,10 +75,10 @@ sdtm_str_split <- function(domain_dataset, max_length_out = 200L) {
     split_df <- dplyr::bind_rows(split_list)
     return(split_df)
   }) %>%
-    purrr::imap(., ~ set_names(.x, .y)) %>%
+    purrr::imap(~ set_names(.x, .y)) %>%
     dplyr::bind_cols()
 
-  names(outt) <- sub("....$", "", names(outt)) %>% make.unique(., sep = "_")
+  names(outt) <- sub("....$", "", names(outt)) %>% make.unique(sep = "_")
   dataset_out <- dplyr::bind_cols(dplyr::select(domain_dataset, -names(char_200)), outt)
   return(dataset_out)
 }
