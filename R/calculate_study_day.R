@@ -8,7 +8,7 @@
 #'
 #' @md
 #' @param sdtm_in Input data frame that contains the target date.
-#' @param dm_domain reference date.frame that contains the reference date.
+#' @param dm_domain Reference date frame that contains the reference date.
 #' @param refdt reference date from `dm_domain` that will be used as reference to
 #' calculate the study day.
 #' @param tgdt target date from `sdtm_in` that will be used to calcualte the study
