@@ -76,7 +76,7 @@ calculate_study_day <- function(sdtm_in,
   if (!identical(sdtm_in, dm_domain)) {
     dm_domain <- unique(dm_domain[c(merge_key, refdt)])
 
-    check_refdt_uniqueness <- dm_domain %>%
+    check_refdt_uniqueness <- dm_domain |>
       dplyr::group_by(dplyr::pick({{ merge_key }})) %>%
       dplyr::filter(dplyr::n() > 1)
     if (nrow(check_refdt_uniqueness) > 0) {
