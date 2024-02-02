@@ -7,7 +7,7 @@ DM <- data.frame(
   RFSTDTC = c("2012-02-01", "2012-04-14", NA_character_)
 )
 
-test_that("`calculate_study_day()` works as epxected for bad input", {
+test_that("`calculate_study_day()` works as expected for invalid input", {
   expect_error(
     calculate_study_day("a", "b", "C", "D", "E"),
     "sdtm_in is not a data frame"
