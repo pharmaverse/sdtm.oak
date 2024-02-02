@@ -90,7 +90,7 @@ calculate_study_day <- function(sdtm_in,
       ]
     }
 
-    sdtm_in <- sdtm_in %>%
+    sdtm_in <- sdtm_in |>
       dplyr::left_join(
         dm_domain,
         by = structure(names = merge_key, .Data = merge_key)
