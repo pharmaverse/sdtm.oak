@@ -1,6 +1,6 @@
 #' `calculate_study_day` performs study day calculation
 #' @description
-#' This function takes the an input data.frame and a reference data.frame (which
+#' This function takes the an input data frame and a reference data frame (which
 #' is DM domain in most cases), and calculate the study day from reference date
 #' and target date. In case of unexpected conditions like reference date is not
 #' unique for each patient, or reference and input dates are not actual dates,
