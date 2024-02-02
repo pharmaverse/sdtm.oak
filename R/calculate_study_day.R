@@ -7,7 +7,7 @@
 #' NA will be returned for those records.
 #'
 #' @md
-#' @param sdtm_in input data.frame that contains the target date.
+#' @param sdtm_in Input data frame that contains the target date.
 #' @param dm_domain reference date.frame that contains the reference date.
 #' @param refdt reference date from `dm_domain` that will be used as reference to
 #' calculate the study day.
