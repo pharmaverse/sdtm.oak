@@ -56,7 +56,7 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
   )
 })
 
-test_that("`calculate_study_day()` works as epxected for good input", {
+test_that("`calculate_study_day()` works as expected for valid input", {
   res <- calculate_study_day(AE, DM, "RFSTDTC", "AESTDTC", "AESTDY")
   expected <- c(-31, 1, NA)
   expect_equal(res$AESTDY, expected)
