@@ -2,5 +2,8 @@
 
 export(create_iso8601)
 export(fmt_cmp)
+export(sdtm_str_split)
+export(single_str_spilt)
+export(split_var)
 importFrom(rlang,.data)
 importFrom(tibble,tibble)
