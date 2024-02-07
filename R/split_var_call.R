@@ -64,22 +64,25 @@ sdtm_str_split <- function(domain_dataset, max_length_out = 200L) {
 
   # Filtering columns > 200
   char_200 <- dplyr::select_if(domain_dataset, ~ max(nchar(.)) >= max_length_out)
+  if (is_empty(char_200)) {
+    dataset_out <- domain_dataset
+  } else {
+    # FUNCTION CALL
+    outt <- purrr::map(char_200, ~ {
+      split_list <- purrr::map(.x, ~ {
+        cv <- as.data.frame(split_var(.x, max_length_out))
+        names(cv) <- seq_along(cv)
+        cv
+      })
+      split_df <- dplyr::bind_rows(split_list)
+      return(split_df)
+    }) |>
+      purrr::imap(~ set_names(.x, .y)) |>
+      dplyr::bind_cols()
 
-  # FUNCTION CALL
-  outt <- purrr::map(char_200, ~ {
-    split_list <- purrr::map(.x, ~ {
-      cv <- as.data.frame(split_var(.x, max_length_out))
-      names(cv) <- seq_along(cv)
-      cv
-    })
-    split_df <- dplyr::bind_rows(split_list)
-    return(split_df)
-  }) |>
-    purrr::imap(~ set_names(.x, .y)) |>
-    dplyr::bind_cols()
-
-  names(outt) <- sub("....$", "", names(outt)) |>
-    make.unique(sep = "_")
-  dataset_out <- dplyr::bind_cols(dplyr::select(domain_dataset, -names(char_200)), outt)
+    names(outt) <- sub("....$", "", names(outt)) |>
+      make.unique(sep = "_")
+    dataset_out <- dplyr::bind_cols(dplyr::select(domain_dataset, -names(char_200)), outt)
+  }
   return(dataset_out)
 }
