@@ -83,6 +83,9 @@ sdtm.oak:::parse_dttm(c("2002-05-11 11:45", "-05-11 11:45"), "y-m-d H:M")
 sdtm.oak:::parse_dttm(c("2002-05-11 11:45", "-05-11 11:45"), "-m-d H:M")
 sdtm.oak:::parse_dttm(c("2002-05-11 11:45", "-05-11 11:45"), c("y-m-d H:M", "-m-d H:M"))
 
+sdtm.oak:::parse_dttm("05 feb 1985 12 55 02", "d m y H M S")
+sdtm.oak:::parse_dttm("12 55 02 05 feb 1985", "H M S d m y")
+
 sdtm.oak:::parse_dttm(c("2020-05-18", "2020-UN-18", "2020-UNK-UN"), "y-m-d")
 sdtm.oak:::parse_dttm(c("2020-05-18", "2020-UN-18", "2020-UNK-UN"), "y-m-d", na = "UN")
 sdtm.oak:::parse_dttm(c("2020-05-18", "2020-UN-18", "2020-UNK-UN"), "y-m-d", na = c("UN", "UNK"))
