@@ -6,7 +6,7 @@
 \alias{sdtm.oak-package}
 \title{sdtm.oak: SDTM Data Transformation Engine}
 \description{
-An EDC and Data Standard agnostic SDTM data transformation engine that automates the transformation of raw clinical data in ODM format to SDTM based on standard mapping algorithms.
+An EDC and Data Standard-agnostic SDTM data transformation engine designed for SDTM programming in R. Powered by metadata sdtm.oak can automate the conversion of raw clinical data to SDTM through standardized mapping algorithms. SDTM is one of the required standards for data submission to FDA (U.S.) and PMDA (Japan). SDTM standards are implemented in accordance with the SDTM Implemetation guide as defined by CDISC \url{https://www.cdisc.org/standards/foundational/sdtmig}
 }
 \seealso{
 Useful links:
@@ -18,11 +18,17 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Omar Garcia \email{ogcalderon@cdisc.org}
+\strong{Maintainer}: Rammprasad Ganapathy \email{ganapathy.rammprasad@gene.com}
 
 Authors:
 \itemize{
-  \item Rammprasad Ganapathy
+  \item Adam Forys
+  \item Edgar Manukyan
+  \item Rosemary Li
+  \item Preetesh Parikh
+  \item Lisa Houterloot
+  \item Yogesh Gupta
+  \item Omar Garcia \email{ogcalderon@cdisc.org}
   \item Ramiro Magno \email{rmagno@pattern.institute} (\href{https://orcid.org/0000-0001-5226-3441}{ORCID})
 }
 

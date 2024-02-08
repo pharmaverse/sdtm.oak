@@ -1,4 +1,8 @@
-url: ~
+url: https://pharmaverse.github.io/sdtm.oak
+
 template:
   bootstrap: 5
+  bootswatch: flatly
 
+navbar:
+  title: "sdtm.oak"
