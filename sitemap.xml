@@ -1,120 +1,135 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/404.html</loc>
   </url>
   <url>
-    <loc>/CODE_OF_CONDUCT.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>/CONTRIBUTING.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/articles/algorithms.html</loc>
   </url>
   <url>
-    <loc>/articles/iso_8601.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/articles/index.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/articles/iso_8601.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/articles/study_sdtm_spec.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/authors.html</loc>
   </url>
   <url>
-    <loc>/pull_request_template.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/index.html</loc>
   </url>
   <url>
-    <loc>/reference/assert_capture_matrix.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/assert_dtc_fmt.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/pull_request_template.html</loc>
   </url>
   <url>
-    <loc>/reference/assert_dtc_format.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/add_problems.html</loc>
   </url>
   <url>
-    <loc>/reference/coalesce_capture_matrices.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/any_problems.html</loc>
   </url>
   <url>
-    <loc>/reference/complete_capture_matrix.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/assert_capture_matrix.html</loc>
   </url>
   <url>
-    <loc>/reference/create_iso8601.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/assert_dtc_fmt.html</loc>
   </url>
   <url>
-    <loc>/reference/dtc_formats.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/assert_dtc_format.html</loc>
   </url>
   <url>
-    <loc>/reference/dttm_fmt_to_regex.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/coalesce_capture_matrices.html</loc>
   </url>
   <url>
-    <loc>/reference/find_int_gap.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/complete_capture_matrix.html</loc>
   </url>
   <url>
-    <loc>/reference/fmt_cmp.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/create_iso8601.html</loc>
   </url>
   <url>
-    <loc>/reference/fmt_rg.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/dtc_formats.html</loc>
   </url>
   <url>
-    <loc>/reference/format_iso8601.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/dttm_fmt_to_regex.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/find_int_gap.html</loc>
   </url>
   <url>
-    <loc>/reference/iso8601_mon.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/fmt_cmp.html</loc>
   </url>
   <url>
-    <loc>/reference/iso8601_na.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/fmt_rg.html</loc>
   </url>
   <url>
-    <loc>/reference/iso8601_sec.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/format_iso8601.html</loc>
   </url>
   <url>
-    <loc>/reference/iso8601_truncate.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/iso8601_two_digits.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/iso8601_mon.html</loc>
   </url>
   <url>
-    <loc>/reference/iso8601_year.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/iso8601_na.html</loc>
   </url>
   <url>
-    <loc>/reference/months_abb_regex.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/iso8601_sec.html</loc>
   </url>
   <url>
-    <loc>/reference/parse_dttm.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/iso8601_truncate.html</loc>
   </url>
   <url>
-    <loc>/reference/parse_dttm_fmt.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/iso8601_two_digits.html</loc>
   </url>
   <url>
-    <loc>/reference/pseq.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/iso8601_year.html</loc>
   </url>
   <url>
-    <loc>/reference/reg_matches.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/months_abb_regex.html</loc>
   </url>
   <url>
-    <loc>/reference/regex_or.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/parse_dttm.html</loc>
   </url>
   <url>
-    <loc>/reference/sdtm.oak-package.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/parse_dttm_fmt.html</loc>
   </url>
   <url>
-    <loc>/reference/str_to_anycase.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/problems.html</loc>
   </url>
   <url>
-    <loc>/reference/yy_to_yyyy.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/pseq.html</loc>
   </url>
   <url>
-    <loc>/reference/zero_pad_whole_number.html</loc>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/reg_matches.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/regex_or.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/sdtm.oak-package.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/str_to_anycase.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/yy_to_yyyy.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/zero_pad_whole_number.html</loc>
   </url>
 </urlset>

@@ -2,6 +2,11 @@ pandoc: 3.1.1
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  algorithms: algorithms.html
   iso_8601: iso_8601.html
-last_built: 2023-11-29T15:43Z
+  study_sdtm_spec: study_sdtm_spec.html
+last_built: 2024-02-08T02:00Z
+urls:
+  reference: https://pharmaverse.github.io/sdtm.oak/reference
+  article: https://pharmaverse.github.io/sdtm.oak/articles
 
