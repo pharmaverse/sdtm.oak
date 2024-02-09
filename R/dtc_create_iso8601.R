@@ -337,6 +337,7 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #'   meaning to check against a selection of validated formats in
 #'   [dtc_formats][sdtm.oak::dtc_formats]; or to have a more permissible
 #'   interpretation of the formats.
+#' @param .warn Whether to warn about parsing failures.
 #'
 #' @examples
 #' # Converting dates
@@ -395,36 +396,75 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #' create_iso8601("05 feb 1985 12 55 02", .format = fmt, .fmt_c = fmt_cmp)
 #'
 #' @export
-create_iso8601 <- function(..., .format, .fmt_c = fmt_cmp(), .na = NULL, .cutoff_2000 = 68L, .check_format = FALSE) {
-  assert_fmt_c(.fmt_c)
+create_iso8601 <-
+  function(...,
+           .format,
+           .fmt_c = fmt_cmp(),
+           .na = NULL,
+           .cutoff_2000 = 68L,
+           .check_format = FALSE,
+           .warn = TRUE) {
+    assert_fmt_c(.fmt_c)
+    admiraldev::assert_logical_scalar(.check_format)
+    admiraldev::assert_logical_scalar(.warn)
 
-  dots <- rlang::dots_list(...)
+    dots <- rlang::dots_list(...)
 
-  if (rlang::is_empty(dots)) {
-    return(character())
+    if (rlang::is_empty(dots)) {
+      return(character())
+    }
+
+    # Check if all vectors in `dots` are of character type.
+    if (!identical(unique(sapply(dots, typeof)), "character")) {
+      rlang::abort("All vectors in `...` must be of type character.")
+    }
+
+    # Check if all vectors in `dots` are of the same length.
+    n <- unique(lengths(dots))
+    if (!identical(length(n), 1L)) {
+      rlang::abort("All vectors in `...` must be of the same length.")
+    }
+
+    if (!identical(length(dots), length(.format))) {
+      rlang::abort("Number of vectors in `...` should match length of `.format`.")
+    }
+
+    # Check that the `.format` is either a character vector or a list of
+    # character vectors, and that each string is one of the possible formats.
+    if (.check_format) {
+      assert_dtc_format(.format)
+    }
+
+    cap_matrices <-
+      purrr::map2(
+        dots,
+        .format,
+        ~ parse_dttm(
+          dttm = .x,
+          fmt = .y,
+          na = .na,
+          fmt_c = .fmt_c
+        )
+      )
+    cap_matrix <- coalesce_capture_matrices(!!!cap_matrices)
+
+    iso8601 <- format_iso8601(cap_matrix, .cutoff_2000 = .cutoff_2000)
+    any_prob <- any_problems(cap_matrices, .cutoff_2000 = .cutoff_2000)
+    iso8601 <- add_problems(iso8601, any_prob, dots)
+    class(iso8601) <- "iso8601"
+
+    if (.warn && rlang::is_interactive()) {
+      warn_problems(iso8601)
+    }
+
+    iso8601
   }
 
-  # Check if all vectors in `dots` are of character type.
-  if (!identical(unique(sapply(dots, typeof)), "character")) {
-    rlang::abort("All vectors in `...` must be of type character.")
-  }
-
-  # Check if all vectors in `dots` are of the same length.
-  n <- unique(lengths(dots))
-  if (!identical(length(n), 1L)) {
-    rlang::abort("All vectors in `...` must be of the same length.")
-  }
-
-  if (!identical(length(dots), length(.format))) {
-    rlang::abort("Number of vectors in `...` should match length of `.format`.")
-  }
-
-  # Check that the `.format` is either a character vector or a list of
-  # character vectors, and that each string is one of the possible formats.
-  if (.check_format) assert_dtc_format(.format)
-
-  cap_matrices <- purrr::map2(dots, .format, ~ parse_dttm(dttm = .x, fmt = .y, na = .na, fmt_c = .fmt_c))
-  cap_matrix <- coalesce_capture_matrices(!!!cap_matrices)
-
-  format_iso8601(cap_matrix, .cutoff_2000 = .cutoff_2000)
+#' @export
+print.iso8601 <- function(x, ...) {
+  # Here we take advantage of the subset operator `[` dropping
+  # attributes. Also, using `seq_along()` should not force a copy of `x` thus
+  # being memory-efficient.
+  print(x[seq_along(x)])
+  invisible(x)
 }
