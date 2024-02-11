@@ -1,8 +1,8 @@
-AE <- data.frame(
+ae <- data.frame(
   USUBJID = c("study123-123", "study123-124", "study123-125"),
   AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14")
 )
-DM <- data.frame(
+dm <- data.frame(
   USUBJID = c("study123-123", "study123-124", "study123-125"),
   RFSTDTC = c("2012-02-01", "2012-04-14", NA_character_)
 )
@@ -33,31 +33,31 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
     "study_day_var is not a character vector"
   )
   expect_warning(
-    calculate_study_day(AE, DM, "RFSTDTC", "AESTDTC", "AENDY"),
+    calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AENDY"),
     "Target date and the returned study day doesn't match."
   )
 
-  DM1 <- data.frame(
+  dm1 <- data.frame(
     USUBJID = c("study123-123", "study123-123", "study123-125"),
     RFSTDTC = c("2012-02-01", "2012-04-14", "2012-04-14")
   )
   expect_warning(
-    calculate_study_day(AE, DM1, "RFSTDTC", "AESTDTC", "AESTDY"),
+    calculate_study_day(ae, dm1, "RFSTDTC", "AESTDTC", "AESTDY"),
     "Reference date is not unique for each patient!"
   )
 
-  DM2 <- data.frame(
+  dm2 <- data.frame(
     USUBJID = c("study123-123", "study123-124", "study123-125"),
     RFSTDTC = c(123, 456, 789)
   )
   expect_warning(
-    calculate_study_day(AE, DM2, "RFSTDTC", "AESTDTC", "AESTDY"),
+    calculate_study_day(ae, dm2, "RFSTDTC", "AESTDTC", "AESTDY"),
     "Encountered errors when converting refdt to dates."
   )
 })
 
 test_that("`calculate_study_day()` works as expected for valid input", {
-  res <- calculate_study_day(AE, DM, "RFSTDTC", "AESTDTC", "AESTDY")
+  res <- calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
   expected <- c(-31, 1, NA)
   expect_equal(res$AESTDY, expected)
 })
