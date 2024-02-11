@@ -29,7 +29,7 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
     "needs to have the variable of merge_key"
   )
   expect_error(
-    calculate_study_day(iris, iris, "Species", "Petal.Length", 123, "Species"),
+    calculate_study_day(iris, iris, "Species", "Petal.Length", 123L, "Species"),
     "study_day_var is not a character vector"
   )
   expect_warning(
@@ -48,7 +48,7 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
 
   dm2 <- data.frame(
     USUBJID = c("study123-123", "study123-124", "study123-125"),
-    RFSTDTC = c(123, 456, 789)
+    RFSTDTC = c(123L, 456L, 789L)
   )
   expect_warning(
     calculate_study_day(ae, dm2, "RFSTDTC", "AESTDTC", "AESTDY"),
