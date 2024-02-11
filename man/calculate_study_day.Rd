@@ -14,14 +14,14 @@ calculate_study_day(
 )
 }
 \arguments{
-\item{sdtm_in}{input data.frame that contains the target date.}
+\item{sdtm_in}{Input data frame that contains the target date.}
 
-\item{dm_domain}{reference date.frame that contains the reference date.}
+\item{dm_domain}{Reference date frame that contains the reference date.}
 
-\item{refdt}{reference date from \code{dm_domain} that will be used as reference to
+\item{refdt}{Reference date from \code{dm_domain} that will be used as reference to
 calculate the study day.}
 
-\item{tgdt}{target date from \code{sdtm_in} that will be used to calcualte the study
+\item{tgdt}{Target date from \code{sdtm_in} that will be used to calculate the study
 day.}
 
 \item{study_day_var}{the new study day variable name in the output. For
@@ -35,7 +35,7 @@ a data.frame that takes all columns from \code{sdtm_in} and a new variable
 to represent the calculated study day.
 }
 \description{
-This function takes the an input data.frame and a reference data.frame (which
+This function takes the an input data frame and a reference data frame (which
 is DM domain in most cases), and calculate the study day from reference date
 and target date. In case of unexpected conditions like reference date is not
 unique for each patient, or reference and input dates are not actual dates,
@@ -43,18 +43,17 @@ NA will be returned for those records.
 }
 \examples{
 \dontrun{
-  ae <- data.frame(
-    USUBJID = c("study123-123", "study123-124", "study123-125"),
-    AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14")
-  )
-  dm <- data.frame(
-    USUBJID = c("study123-123", "study123-124", "study123-125"),
-    RFSTDTC = c("2012-02-01", "2012-04-14", NA)
-  )
-  ae$AESTDTC <- as.Date(ae$AESTDTC)
-  dm$RFSTDTC <- as.Date(dm$RFSTDTC)
-  calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
+ae <- data.frame(
+  USUBJID = c("study123-123", "study123-124", "study123-125"),
+  AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14")
+)
+dm <- data.frame(
+  USUBJID = c("study123-123", "study123-124", "study123-125"),
+  RFSTDTC = c("2012-02-01", "2012-04-14", NA)
+)
+ae$AESTDTC <- as.Date(ae$AESTDTC)
+dm$RFSTDTC <- as.Date(dm$RFSTDTC)
+calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
 }
-
 
 }
