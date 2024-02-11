@@ -128,7 +128,7 @@ calculate_study_day <- function(sdtm_in,
 
   res <- ifelse(
     test = refdt_vector <= tgdt_vector,
-    yes = refdt_vector - tgdt_vector + 1,
+    yes = refdt_vector - tgdt_vector + 1L,
     no = ifelse(
       test = refdt_vector > tgdt_vector,
       yes = tgdt_vector - refdt_vector,
