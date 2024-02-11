@@ -123,20 +123,14 @@ calculate_study_day <- function(sdtm_in,
     }
   )
 
-  refdt_vector <- sdtm_in[[refdt]]
-  tgdt_vector <- sdtm_in[[tgdt]]
-
-  res <- ifelse(
-    test = refdt_vector <= tgdt_vector,
-    yes = refdt_vector - tgdt_vector + 1L,
-    no = ifelse(
-      test = refdt_vector > tgdt_vector,
-      yes = tgdt_vector - refdt_vector,
-      no = NA
+  sdtm_in <- sdtm_in |> dplyr::mutate(
+    {{ study_day_var }} := dplyr::case_when(
+      {{ refdt_vector }} <= {{ tgdt_vector }} ~ {{ refdt_vector }} - {{ tgdt_vector }} + 1,
+      {{ refdt_vector }} > {{ tgdt_vector }} ~ {{ tgdt_vector }} - {{ refdt_vector }},
+      .default = NA
     )
   )
 
-  sdtm_in <- sdtm_in[original_variables]
-  sdtm_in[study_day_var] <- res
+  sdtm_in <- sdtm_in[c(original_variables, study_day_var)]
   return(sdtm_in)
 }
