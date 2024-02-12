@@ -13,7 +13,7 @@
 #' calculate the study day.
 #' @param tgdt Target date from `sdtm_in` that will be used to calculate the study
 #' day.
-#' @param study_day_var the new study day variable name in the output. For
+#' @param study_day_var New study day variable name in the output. For
 #' example, AESTDY for AE domain and CMSTDY for CM domain.
 #' @param merge_key Character to represents the merging key between `sdtm_in` and
 #' `dm_domain`.
