@@ -124,15 +124,14 @@ calculate_study_day <- function(sdtm_in,
   refdt_vector <- sdtm_in[[refdt]]
   tgdt_vector <- sdtm_in[[tgdt]]
 
-  res <- ifelse(
-    test = refdt_vector <= tgdt_vector,
-    yes = refdt_vector - tgdt_vector + 1L,
-    no = ifelse(
-      test = refdt_vector > tgdt_vector,
-      yes = tgdt_vector - refdt_vector,
-      no = NA
-    )
-  )
+  dy_cal_func <- function(ref, tgt) {
+    if (is.na(ref) || is.na(tgt)) res <- NA
+    else if (ref <= tgt) res <- ref - tgt + 1L
+    else if (ref > tgt) res <- tgt - ref
+    else res <- NA
+    return(res)
+  }
+  res <- mapply(dy_cal_func, refdt_vector, tgdt_vector, SIMPLIFY = TRUE, USE.NAMES = FALSE)
 
   sdtm_in <- sdtm_in[original_variables]
   sdtm_in[study_day_var] <- res
