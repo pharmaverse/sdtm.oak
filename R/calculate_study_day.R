@@ -24,7 +24,6 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' ae <- data.frame(
 #'   USUBJID = c("study123-123", "study123-124", "study123-125"),
 #'   AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14")
@@ -36,7 +35,6 @@
 #' ae$AESTDTC <- as.Date(ae$AESTDTC)
 #' dm$RFSTDTC <- as.Date(dm$RFSTDTC)
 #' calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
-#' }
 #'
 calculate_study_day <- function(sdtm_in,
                                 dm_domain = DM,

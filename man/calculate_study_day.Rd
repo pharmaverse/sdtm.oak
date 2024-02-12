@@ -42,7 +42,6 @@ unique for each patient, or reference and input dates are not actual dates,
 NA will be returned for those records.
 }
 \examples{
-\dontrun{
 ae <- data.frame(
   USUBJID = c("study123-123", "study123-124", "study123-125"),
   AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14")
@@ -54,6 +53,5 @@ dm <- data.frame(
 ae$AESTDTC <- as.Date(ae$AESTDTC)
 dm$RFSTDTC <- as.Date(dm$RFSTDTC)
 calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
-}
 
 }
