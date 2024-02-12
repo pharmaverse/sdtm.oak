@@ -62,6 +62,6 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
 
 test_that("`calculate_study_day()` works as expected for valid input", {
   res <- calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
-  expected <- c(-31, 1, NA)
-  expect_equal(res$AESTDY, expected)
+  expected <- c(-31L, 1L, NA)
+  expect_equal(res$AESTDY, expected, tolerance = "1.5e-08")
 })
