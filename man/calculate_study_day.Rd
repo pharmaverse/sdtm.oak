@@ -24,14 +24,14 @@ calculate the study day.}
 \item{tgdt}{Target date from \code{sdtm_in} that will be used to calculate the study
 day.}
 
-\item{study_day_var}{the new study day variable name in the output. For
+\item{study_day_var}{New study day variable name in the output. For
 example, AESTDY for AE domain and CMSTDY for CM domain.}
 
-\item{merge_key}{character to represents the merging key between \code{sdtm_in} and
+\item{merge_key}{Character to represents the merging key between \code{sdtm_in} and
 \code{dm_domain}.}
 }
 \value{
-a data.frame that takes all columns from \code{sdtm_in} and a new variable
+Data frame that takes all columns from \code{sdtm_in} and a new variable
 to represent the calculated study day.
 }
 \description{
