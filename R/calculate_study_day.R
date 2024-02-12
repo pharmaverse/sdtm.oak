@@ -76,8 +76,8 @@ calculate_study_day <- function(sdtm_in,
 
     check_refdt_uniqueness <- dm_domain |>
       dplyr::group_by(dplyr::pick({{ merge_key }})) |>
-      dplyr::filter(dplyr::n() > 1)
-    if (nrow(check_refdt_uniqueness) > 0) {
+      dplyr::filter(dplyr::n() > 1L)
+    if (nrow(check_refdt_uniqueness) > 0L) {
       warning(
         "Reference date is not unique for each patient! ",
         "Patient without unique reference date will be ingored. ",

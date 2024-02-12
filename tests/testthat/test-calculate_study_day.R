@@ -1,10 +1,12 @@
 ae <- data.frame(
   USUBJID = c("study123-123", "study123-124", "study123-125"),
-  AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14")
+  AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14"),
+  stringsAsFactors = FALSE
 )
 dm <- data.frame(
   USUBJID = c("study123-123", "study123-124", "study123-125"),
-  RFSTDTC = c("2012-02-01", "2012-04-14", NA_character_)
+  RFSTDTC = c("2012-02-01", "2012-04-14", NA_character_),
+  stringsAsFactors = FALSE
 )
 
 test_that("`calculate_study_day()` works as expected for invalid input", {
@@ -39,7 +41,8 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
 
   dm1 <- data.frame(
     USUBJID = c("study123-123", "study123-123", "study123-125"),
-    RFSTDTC = c("2012-02-01", "2012-04-14", "2012-04-14")
+    RFSTDTC = c("2012-02-01", "2012-04-14", "2012-04-14"),
+    stringsAsFactors = FALSE
   )
   expect_warning(
     calculate_study_day(ae, dm1, "RFSTDTC", "AESTDTC", "AESTDY"),
@@ -48,7 +51,8 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
 
   dm2 <- data.frame(
     USUBJID = c("study123-123", "study123-124", "study123-125"),
-    RFSTDTC = c(123L, 456L, 789L)
+    RFSTDTC = c(123L, 456L, 789L),
+    stringsAsFactors = FALSE
   )
   expect_warning(
     calculate_study_day(ae, dm2, "RFSTDTC", "AESTDTC", "AESTDY"),
