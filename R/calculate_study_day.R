@@ -62,7 +62,7 @@ calculate_study_day <- function(sdtm_in,
   )
   assertthat::assert_that(is.character(study_day_var))
   # check tgdt and study_day_var matching, for example, CMSTDTC matches CMSTDY
-  if (gsub("DTC", "", tgdt) != gsub("DY", "", study_day_var)) {
+  if (gsub("DTC", "", tgdt, fixed = TRUE) != gsub("DY", "", study_day_var, fixed = TRUE)) {
     warning(
       "Target date and the returned study day doesn't match. ",
       "Expecting matching date and study day, for example, CMENDTC and CMENDY"
