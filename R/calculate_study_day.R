@@ -18,7 +18,7 @@
 #' @param merge_key Character to represents the merging key between `sdtm_in` and
 #' `dm_domain`.
 #'
-#' @return a data.frame that takes all columns from `sdtm_in` and a new variable
+#' @return Data frame that takes all columns from `sdtm_in` and a new variable
 #' to represent the calculated study day.
 #'
 #' @export
