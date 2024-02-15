@@ -6,7 +6,6 @@
 #' unique for each patient, or reference and input dates are not actual dates,
 #' NA will be returned for those records.
 #'
-#' @md
 #' @param sdtm_in Input data frame that contains the target date.
 #' @param dm_domain Reference date frame that contains the reference date.
 #' @param refdt Reference date from `dm_domain` that will be used as reference to
