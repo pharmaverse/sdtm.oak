@@ -16,9 +16,9 @@
 #' MD1 <-
 #'   tibble::tribble(
 #'     ~oak_id, ~raw_source, ~patient_number, ~MDRAW,
-#'     1L,	"MD1", "PATNUM", "BABY ASPIRIN",
-#'     2L,	"MD1", "PATNUM", "CORTISPORIN",
-#'     3L, "MD1", "PATNUM", "ASPIRIN",
+#'     1L, "MD1", "PATNUM", "BABY ASPIRIN",
+#'     2L, "MD1", "PATNUM", "CORTISPORIN",
+#'     3L, "MD1", "PATNUM", NA_character_,
 #'     4L, "MD1", "PATNUM", "DIPHENHYDRAMINE HCL"
 #'   )
 #'
@@ -33,12 +33,13 @@
 #'
 #' CM_INTER <-
 #'   tibble::tribble(
-#'     ~oak_id,	~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
+#'     ~oak_id, ~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
 #'     1L, "MD1", "PATNUM", "BABY ASPIRIN", NA,
 #'     2L, "MD1", "PATNUM", "CORTISPORIN", "NAUSEA",
 #'     3L, "MD1", "PATNUM", "ASPIRIN", "ANEMIA",
-#'     4L, "MD1", "PATNUM", "DIPHENHYDRAMINE HCL", "NAUSEA"
-#'  )
+#'     4L, "MD1", "PATNUM", "DIPHENHYDRAMINE HCL", "NAUSEA",
+#'     5L, "MD1", "PATNUM", "PARACETAMOL", "PYREXIA"
+#'   )
 #'
 #' # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
 #' # hardcoded value "GENERAL CONCOMITANT MEDICATIONS" with a prior join to
@@ -50,8 +51,8 @@
 #'   target_sdtm_variable = "CMCAT",
 #'   target_hardcoded_value = "GENERAL CONCOMITANT MEDICATIONS",
 #'   target_dataset = CM_INTER,
-#'   merge_to_topic_by = c("oak_id","raw_source","patient_number")
-#'   )
+#'   merge_to_topic_by = c("oak_id", "raw_source", "patient_number")
+#' )
 #'
 #' @importFrom rlang :=
 #' @export
@@ -60,12 +61,9 @@ hardcode_no_ct <- function(raw_dataset,
                            target_sdtm_variable,
                            target_hardcoded_value,
                            target_dataset = raw_dataset,
-                           merge_to_topic_by = NULL
-
-) {
-
-  dplyr::left_join(x = raw_dataset, y = target_dataset, by = merge_to_topic_by) |>
-    dplyr::mutate("{raw_variable}" := target_hardcoded_value) |>
-    dplyr::rename("{target_sdtm_variable}" := raw_variable)
-
+                           merge_to_topic_by = NULL) {
+  dplyr::right_join(x = raw_dataset, y = target_dataset, by = merge_to_topic_by) |>
+    dplyr::mutate("{raw_variable}" := overwrite(!!rlang::sym(raw_variable), target_hardcoded_value)) |>
+    dplyr::rename("{target_sdtm_variable}" := raw_variable) |>
+    dplyr::relocate(target_sdtm_variable, .after = dplyr::last_col())
 }

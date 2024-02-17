@@ -36,9 +36,9 @@ no terminology restrictions.
 MD1 <-
   tibble::tribble(
     ~oak_id, ~raw_source, ~patient_number, ~MDRAW,
-    1L,	"MD1", "PATNUM", "BABY ASPIRIN",
-    2L,	"MD1", "PATNUM", "CORTISPORIN",
-    3L, "MD1", "PATNUM", "ASPIRIN",
+    1L, "MD1", "PATNUM", "BABY ASPIRIN",
+    2L, "MD1", "PATNUM", "CORTISPORIN",
+    3L, "MD1", "PATNUM", NA_character_,
     4L, "MD1", "PATNUM", "DIPHENHYDRAMINE HCL"
   )
 
@@ -53,12 +53,13 @@ hardcode_no_ct(
 
 CM_INTER <-
   tibble::tribble(
-    ~oak_id,	~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
+    ~oak_id, ~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
     1L, "MD1", "PATNUM", "BABY ASPIRIN", NA,
     2L, "MD1", "PATNUM", "CORTISPORIN", "NAUSEA",
     3L, "MD1", "PATNUM", "ASPIRIN", "ANEMIA",
-    4L, "MD1", "PATNUM", "DIPHENHYDRAMINE HCL", "NAUSEA"
- )
+    4L, "MD1", "PATNUM", "DIPHENHYDRAMINE HCL", "NAUSEA",
+    5L, "MD1", "PATNUM", "PARACETAMOL", "PYREXIA"
+  )
 
 # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
 # hardcoded value "GENERAL CONCOMITANT MEDICATIONS" with a prior join to
@@ -70,7 +71,7 @@ hardcode_no_ct(
   target_sdtm_variable = "CMCAT",
   target_hardcoded_value = "GENERAL CONCOMITANT MEDICATIONS",
   target_dataset = CM_INTER,
-  merge_to_topic_by = c("oak_id","raw_source","patient_number")
-  )
+  merge_to_topic_by = c("oak_id", "raw_source", "patient_number")
+)
 
 }
