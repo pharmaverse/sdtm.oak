@@ -36,7 +36,7 @@
 #' calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
 #'
 calculate_study_day <- function(sdtm_in,
-                                dm_domain = DM,
+                                dm_domain,
                                 refdt = "RFSTDTC",
                                 tgdt,
                                 study_day_var,
@@ -120,22 +120,11 @@ calculate_study_day <- function(sdtm_in,
     }
   )
 
-  refdt_vector <- sdtm_in[[refdt]]
-  tgdt_vector <- sdtm_in[[tgdt]]
+  ref <- sdtm_in[[refdt]]
+  tgt <- sdtm_in[[tgdt]]
 
-  dy_cal_func <- function(ref, tgt) {
-    if (is.na(ref) || is.na(tgt)) {
-      res <- NA
-    } else if (ref <= tgt) {
-      res <- ref - tgt + 1L
-    } else if (ref > tgt) {
-      res <- tgt - ref
-    } else {
-      res <- NA
-    }
-    return(res)
-  }
-  res <- mapply(dy_cal_func, refdt_vector, tgdt_vector, SIMPLIFY = TRUE, USE.NAMES = FALSE)
+  # SDTMIG 4.4.4 Use of the Study Day Variables
+  res <- ifelse(tgt > ref, tgt - ref + 1L, tgt - ref)
 
   sdtm_in <- sdtm_in[original_variables]
   sdtm_in[study_day_var] <- res

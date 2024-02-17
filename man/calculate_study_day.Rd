@@ -6,7 +6,7 @@
 \usage{
 calculate_study_day(
   sdtm_in,
-  dm_domain = DM,
+  dm_domain,
   refdt = "RFSTDTC",
   tgdt,
   study_day_var,
