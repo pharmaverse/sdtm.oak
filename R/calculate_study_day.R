@@ -36,10 +36,10 @@
 #' calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
 #'
 calculate_study_day <- function(sdtm_in,
-                                dm_domain = DM,
-                                refdt = "RFSTDTC",
                                 tgdt,
                                 study_day_var,
+                                dm_domain = "DM",
+                                refdt = "RFSTDTC",
                                 merge_key = "USUBJID") {
   assertthat::assert_that(is.data.frame(sdtm_in))
   assertthat::assert_that(is.data.frame(dm_domain))
