@@ -7,13 +7,13 @@
 #' NA will be returned for those records.
 #'
 #' @param sdtm_in Input data frame that contains the target date.
-#' @param dm_domain Reference date frame that contains the reference date.
-#' @param refdt Reference date from `dm_domain` that will be used as reference to
-#' calculate the study day.
 #' @param tgdt Target date from `sdtm_in` that will be used to calculate the study
 #' day.
 #' @param study_day_var New study day variable name in the output. For
 #' example, AESTDY for AE domain and CMSTDY for CM domain.
+#' @param dm_domain Reference date frame that contains the reference date.
+#' @param refdt Reference date from `dm_domain` that will be used as reference to
+#' calculate the study day.
 #' @param merge_key Character to represents the merging key between `sdtm_in` and
 #' `dm_domain`.
 #'

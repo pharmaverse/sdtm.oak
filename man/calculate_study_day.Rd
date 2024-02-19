@@ -6,26 +6,26 @@
 \usage{
 calculate_study_day(
   sdtm_in,
-  dm_domain,
-  refdt = "RFSTDTC",
   tgdt,
   study_day_var,
+  dm_domain = "DM",
+  refdt = "RFSTDTC",
   merge_key = "USUBJID"
 )
 }
 \arguments{
 \item{sdtm_in}{Input data frame that contains the target date.}
 
-\item{dm_domain}{Reference date frame that contains the reference date.}
-
-\item{refdt}{Reference date from \code{dm_domain} that will be used as reference to
-calculate the study day.}
-
 \item{tgdt}{Target date from \code{sdtm_in} that will be used to calculate the study
 day.}
 
 \item{study_day_var}{New study day variable name in the output. For
 example, AESTDY for AE domain and CMSTDY for CM domain.}
+
+\item{dm_domain}{Reference date frame that contains the reference date.}
+
+\item{refdt}{Reference date from \code{dm_domain} that will be used as reference to
+calculate the study day.}
 
 \item{merge_key}{Character to represents the merging key between \code{sdtm_in} and
 \code{dm_domain}.}
@@ -52,6 +52,6 @@ dm <- data.frame(
 )
 ae$AESTDTC <- as.Date(ae$AESTDTC)
 dm$RFSTDTC <- as.Date(dm$RFSTDTC)
-calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
+calculate_study_day(ae, "AESTDTC", "AESTDY", "dm", "RFSTDTC")
 
 }
