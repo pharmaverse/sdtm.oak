@@ -33,7 +33,7 @@
 #' )
 #' ae$AESTDTC <- as.Date(ae$AESTDTC)
 #' dm$RFSTDTC <- as.Date(dm$RFSTDTC)
-#' calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
+#' calculate_study_day(ae, "AESTDTC", "AESTDY", "dm", "RFSTDTC")
 #'
 calculate_study_day <- function(sdtm_in,
                                 tgdt,
@@ -42,6 +42,7 @@ calculate_study_day <- function(sdtm_in,
                                 refdt = "RFSTDTC",
                                 merge_key = "USUBJID") {
   assertthat::assert_that(is.data.frame(sdtm_in))
+  dm_domain <- eval(parse(text = dm_domain))
   assertthat::assert_that(is.data.frame(dm_domain))
   assertthat::assert_that(
     utils::hasName(dm_domain, refdt),
