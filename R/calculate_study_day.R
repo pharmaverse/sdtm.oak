@@ -36,8 +36,6 @@
 #' calculate_study_day(ae, dm, "RFSTDTC", "AESTDTC", "AESTDY")
 #'
 calculate_study_day <- function(sdtm_in,
-                                dm_domain,
-                                refdt = "RFSTDTC",
                                 tgdt,
                                 study_day_var,
                                 dm_domain = "DM",
@@ -126,7 +124,7 @@ calculate_study_day <- function(sdtm_in,
   tgt <- sdtm_in[[tgdt]]
 
   # SDTMIG 4.4.4 Use of the Study Day Variables
-  res <- ifelse(tgt > ref, tgt - ref + 1L, tgt - ref)
+  res <- ifelse(tgt >= ref, tgt - ref + 1L, tgt - ref)
 
   sdtm_in <- sdtm_in[original_variables]
   sdtm_in[study_day_var] <- res
