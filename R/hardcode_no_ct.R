@@ -16,10 +16,10 @@
 #' MD1 <-
 #'   tibble::tribble(
 #'     ~oak_id, ~raw_source, ~patient_number, ~MDRAW,
-#'     1L, "MD1", "PATNUM", "BABY ASPIRIN",
-#'     2L, "MD1", "PATNUM", "CORTISPORIN",
-#'     3L, "MD1", "PATNUM", NA_character_,
-#'     4L, "MD1", "PATNUM", "DIPHENHYDRAMINE HCL"
+#'     1L, "MD1", 101L, "BABY ASPIRIN",
+#'     2L, "MD1", 102L, "CORTISPORIN",
+#'     3L, "MD1", 103L, NA_character_,
+#'     4L, "MD1", 104L, "DIPHENHYDRAMINE HCL"
 #'   )
 #'
 #' # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
@@ -34,11 +34,11 @@
 #' CM_INTER <-
 #'   tibble::tribble(
 #'     ~oak_id, ~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
-#'     1L, "MD1", "PATNUM", "BABY ASPIRIN", NA,
-#'     2L, "MD1", "PATNUM", "CORTISPORIN", "NAUSEA",
-#'     3L, "MD1", "PATNUM", "ASPIRIN", "ANEMIA",
-#'     4L, "MD1", "PATNUM", "DIPHENHYDRAMINE HCL", "NAUSEA",
-#'     5L, "MD1", "PATNUM", "PARACETAMOL", "PYREXIA"
+#'     1L, "MD1", 101L, "BABY ASPIRIN", NA,
+#'     2L, "MD1", 102L, "CORTISPORIN", "NAUSEA",
+#'     3L, "MD1", 103L, "ASPIRIN", "ANEMIA",
+#'     4L, "MD1", 104L, "DIPHENHYDRAMINE HCL", "NAUSEA",
+#'     5L, "MD1", 105L, "PARACETAMOL", "PYREXIA"
 #'   )
 #'
 #' # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
@@ -62,8 +62,9 @@ hardcode_no_ct <- function(raw_dataset,
                            target_hardcoded_value,
                            target_dataset = raw_dataset,
                            merge_to_topic_by = NULL) {
-  dplyr::right_join(x = raw_dataset, y = target_dataset, by = merge_to_topic_by) |>
-    dplyr::mutate("{raw_variable}" := overwrite(!!rlang::sym(raw_variable), target_hardcoded_value)) |>
-    dplyr::rename("{target_sdtm_variable}" := raw_variable) |>
+  raw_dataset |>
+    dplyr::mutate("{target_sdtm_variable}" := overwrite(!!rlang::sym(raw_variable), target_hardcoded_value)) |>
+    dplyr::right_join(y = target_dataset, by = merge_to_topic_by) |>
+    dplyr::select(-rlang::sym(raw_variable)) |>
     dplyr::relocate(target_sdtm_variable, .after = dplyr::last_col())
 }
