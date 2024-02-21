@@ -19,23 +19,23 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
     "dm_domain is not a data frame"
   )
   expect_error(
-    calculate_study_day(iris, "d", "e", "iris", "b"),
+    calculate_study_day(iris, iris, "d", "e", "b"),
     "dm_domain needs to have the variable of refdt"
   )
   expect_error(
-    calculate_study_day(iris, "e", "d", "iris", "Species"),
+    calculate_study_day(iris, iris, "d", "Species"),
     "sdtm_in needs to have the variable of tgdt"
   )
   expect_error(
-    calculate_study_day(iris, "Petal.Length", "e", "iris", "Species"),
+    calculate_study_day(iris, iris, "Petal.Length", "Species", "e"),
     "needs to have the variable of merge_key"
   )
   expect_error(
-    calculate_study_day(iris, "Petal.Length", 123L, "iris", "Species", "Species"),
+    calculate_study_day(iris, iris, "Petal.Length", "Species", 123L, "Species"),
     "study_day_var is not a character vector"
   )
   expect_warning(
-    calculate_study_day(ae, "AESTDTC", "AENDY", "dm", "RFSTDTC"),
+    calculate_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AENDY"),
     "Target date and the returned study day doesn't match."
   )
 
@@ -45,7 +45,7 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
     stringsAsFactors = FALSE
   )
   expect_warning(
-    calculate_study_day(ae, "AESTDTC", "AESTDY", "dm1", "RFSTDTC"),
+    calculate_study_day(ae, dm1, "AESTDTC", "RFSTDTC", "AESTDY"),
     "Reference date is not unique for each patient!"
   )
 
@@ -55,13 +55,13 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
     stringsAsFactors = FALSE
   )
   expect_warning(
-    calculate_study_day(ae, "AESTDTC", "AESTDY", "dm2", "RFSTDTC"),
+    calculate_study_day(ae, dm2, "AESTDTC", "RFSTDTC", "AESTDY"),
     "Encountered errors when converting refdt to dates."
   )
 })
 
 test_that("`calculate_study_day()` works as expected for valid input", {
-  res <- calculate_study_day(ae, "AESTDTC", "AESTDY", "dm", "RFSTDTC")
+  res <- calculate_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AESTDY")
   expected <- c(-31L, 1L, NA)
   expect_equal(res$AESTDY, expected, tolerance = "1.5e-08")
 })
