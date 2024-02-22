@@ -1,7 +1,35 @@
+#' @importFrom rlang :=
+#' @keywords internal
+sdtm_hardcode <- function(raw_dat,
+                          raw_var,
+                          tgt_var,
+                          tgt_val,
+                          tgt_dat = raw_dat,
+                          by = NULL,
+                          ct = NULL,
+                          cl = NULL) {
+
+  # TODO: Assertions.
+
+  tgt_val <- ct_map(tgt_val, ct = ct, cl = cl)
+
+  raw_dat |>
+    dplyr::right_join(y = tgt_dat, by = by) |>
+    dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
+    dplyr::select(-rlang::sym(raw_var)) |>
+    dplyr::relocate(tgt_var, .after = dplyr::last_col())
+
+}
+
 #' Derive an SDTM variable with a hardcoded value
 #'
-#' [hardcode_no_ct()] maps a hardcoded value to a target SDTM variable that has
+#'
+#' @description
+#' - [hardcode_no_ct()] maps a hardcoded value to a target SDTM variable that has
 #' no terminology restrictions.
+#'
+#' - [hardcode_ct()] maps a hardcoded value to a target SDTM variable with
+#' controlled terminology recoding.
 #'
 #' @param raw_dataset The raw dataset.
 #' @param raw_variable The raw variable.
@@ -11,6 +39,11 @@
 #' @param merge_to_topic_by If `target_dataset` is different than `raw_dataset`,
 #'   then this parameter defines keys to use in the join between `raw_dataset`
 #'   and `target_dataset`.
+#' @param study_ct Study controlled terminology specification.
+#' @param target_sdtm_variable_codelist_code A codelist code indicating which
+#'   subset of the controlled terminology to apply in the derivation.
+#'
+#' @returns The target dataset with the derived variable `target_sdtm_variable`.
 #'
 #' @examples
 #' MD1 <-
@@ -44,7 +77,6 @@
 #' # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
 #' # hardcoded value "GENERAL CONCOMITANT MEDICATIONS" with a prior join to
 #' # `target_dataset`.
-#'
 #' hardcode_no_ct(
 #'   raw_dataset = MD1,
 #'   raw_variable = "MDRAW",
@@ -54,17 +86,46 @@
 #'   merge_to_topic_by = c("oak_id", "raw_source", "patient_number")
 #' )
 #'
-#' @importFrom rlang :=
+#' @name harcode
+NULL
+
 #' @export
+#' @rdname harcode
 hardcode_no_ct <- function(raw_dataset,
                            raw_variable,
                            target_sdtm_variable,
                            target_hardcoded_value,
                            target_dataset = raw_dataset,
                            merge_to_topic_by = NULL) {
-  raw_dataset |>
-    dplyr::mutate("{target_sdtm_variable}" := overwrite(!!rlang::sym(raw_variable), target_hardcoded_value)) |>
-    dplyr::right_join(y = target_dataset, by = merge_to_topic_by) |>
-    dplyr::select(-rlang::sym(raw_variable)) |>
-    dplyr::relocate(target_sdtm_variable, .after = dplyr::last_col())
+  sdtm_hardcode(
+    raw_dat = raw_dataset,
+    raw_var = raw_variable,
+    tgt_var = target_sdtm_variable,
+    tgt_val = target_hardcoded_value,
+    tgt_dat = target_dataset,
+    by = merge_to_topic_by
+  )
 }
+
+#' @export
+#' @rdname harcode
+hardcode_ct <- function(raw_dataset,
+                        raw_variable,
+                        target_sdtm_variable,
+                        target_hardcoded_value,
+                        target_dataset = raw_dataset,
+                        merge_to_topic_by = NULL,
+                        study_ct = NULL,
+                        target_sdtm_variable_codelist_code = NULL) {
+  sdtm_hardcode(
+    raw_dat = raw_dataset,
+    raw_var = raw_variable,
+    tgt_var = target_sdtm_variable,
+    tgt_val = target_hardcoded_value,
+    tgt_dat = target_dataset,
+    by = merge_to_topic_by,
+    ct = study_ct,
+    cl = target_sdtm_variable_codelist_code
+  )
+}
+

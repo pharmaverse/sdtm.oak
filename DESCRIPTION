@@ -41,7 +41,9 @@ Imports:
     purrr (>= 0.3.3),
     rlang (>= 0.4.4),
     stringr (>= 1.4.0),
-    tibble
+    tibble,
+    tidyr,
+    vctrs
 Suggests:
     knitr,
     rmarkdown,
