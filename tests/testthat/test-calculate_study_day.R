@@ -64,4 +64,13 @@ test_that("`calculate_study_day()` works as expected for valid input", {
   res <- calculate_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AESTDY")
   expected <- c(-31L, 1L, NA)
   expect_equal(res$AESTDY, expected, tolerance = "1.5e-08")
+
+  df <- data.frame(
+    USUBJID = c("study123-123", "study123-124", "study123-125"),
+    RFSTDTC = c("2012-02-01", "2012-04-14", NA_character_),
+    AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14"),
+    stringsAsFactors = FALSE
+  )
+  res1 <- calculate_study_day(df, df, "AESTDTC", "RFSTDTC", "AESTDY")
+  expect_equal(res1$AESTDY, expected, tolerance = "1.5e-08")
 })
