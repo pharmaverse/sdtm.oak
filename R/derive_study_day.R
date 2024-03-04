@@ -36,11 +36,11 @@
 #' derive_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AESTDY")
 #'
 derive_study_day <- function(sdtm_in,
-                              dm_domain,
-                              tgdt,
-                              refdt,
-                              study_day_var,
-                              merge_key = "USUBJID") {
+                             dm_domain,
+                             tgdt,
+                             refdt,
+                             study_day_var,
+                             merge_key = "USUBJID") {
   assertthat::assert_that(is.data.frame(sdtm_in))
   assertthat::assert_that(is.data.frame(dm_domain))
   assertthat::assert_that(
