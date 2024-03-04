@@ -127,6 +127,6 @@ derive_study_day <- function(sdtm_in,
   res <- ifelse(tgt >= ref, tgt - ref + 1L, tgt - ref)
 
   sdtm_in <- sdtm_in[original_variables]
-  sdtm_in[study_day_var] <- res
+  sdtm_in[study_day_var] <- as.integer(res)
   return(sdtm_in)
 }
