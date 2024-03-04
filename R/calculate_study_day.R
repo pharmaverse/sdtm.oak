@@ -1,4 +1,4 @@
-#' `calculate_study_day` performs study day calculation
+#' `derive_study_day` performs study day calculation
 #' @description
 #' This function takes the an input data frame and a reference data frame (which
 #' is DM domain in most cases), and calculate the study day from reference date
@@ -33,14 +33,14 @@
 #' )
 #' ae$AESTDTC <- as.Date(ae$AESTDTC)
 #' dm$RFSTDTC <- as.Date(dm$RFSTDTC)
-#' calculate_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AESTDY")
+#' derive_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AESTDY")
 #'
-calculate_study_day <- function(sdtm_in,
-                                dm_domain,
-                                tgdt,
-                                refdt,
-                                study_day_var,
-                                merge_key = "USUBJID") {
+derive_study_day <- function(sdtm_in,
+                              dm_domain,
+                              tgdt,
+                              refdt,
+                              study_day_var,
+                              merge_key = "USUBJID") {
   assertthat::assert_that(is.data.frame(sdtm_in))
   assertthat::assert_that(is.data.frame(dm_domain))
   assertthat::assert_that(

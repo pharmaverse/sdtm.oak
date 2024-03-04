@@ -9,33 +9,33 @@ dm <- data.frame(
   stringsAsFactors = FALSE
 )
 
-test_that("`calculate_study_day()` works as expected for invalid input", {
+test_that("`derive_study_day()` works as expected for invalid input", {
   expect_error(
-    calculate_study_day("a", "b", "C", "D", "E"),
+    derive_study_day("a", "b", "C", "D", "E"),
     "sdtm_in is not a data frame"
   )
   expect_error(
-    calculate_study_day(iris, "b", "C", "D", "E"),
+    derive_study_day(iris, "b", "C", "D", "E"),
     "dm_domain is not a data frame"
   )
   expect_error(
-    calculate_study_day(iris, iris, "d", "e", "b"),
+    derive_study_day(iris, iris, "d", "e", "b"),
     "dm_domain needs to have the variable of refdt"
   )
   expect_error(
-    calculate_study_day(iris, iris, "d", "Species"),
+    derive_study_day(iris, iris, "d", "Species"),
     "sdtm_in needs to have the variable of tgdt"
   )
   expect_error(
-    calculate_study_day(iris, iris, "Petal.Length", "Species", "e"),
+    derive_study_day(iris, iris, "Petal.Length", "Species", "e"),
     "needs to have the variable of merge_key"
   )
   expect_error(
-    calculate_study_day(iris, iris, "Petal.Length", "Species", 123L, "Species"),
+    derive_study_day(iris, iris, "Petal.Length", "Species", 123L, "Species"),
     "study_day_var is not a character vector"
   )
   expect_warning(
-    calculate_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AENDY"),
+    derive_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AENDY"),
     "Target date and the returned study day doesn't match."
   )
 
@@ -45,7 +45,7 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
     stringsAsFactors = FALSE
   )
   expect_warning(
-    calculate_study_day(ae, dm1, "AESTDTC", "RFSTDTC", "AESTDY"),
+    derive_study_day(ae, dm1, "AESTDTC", "RFSTDTC", "AESTDY"),
     "Reference date is not unique for each patient!"
   )
 
@@ -55,13 +55,13 @@ test_that("`calculate_study_day()` works as expected for invalid input", {
     stringsAsFactors = FALSE
   )
   expect_warning(
-    calculate_study_day(ae, dm2, "AESTDTC", "RFSTDTC", "AESTDY"),
+    derive_study_day(ae, dm2, "AESTDTC", "RFSTDTC", "AESTDY"),
     "Encountered errors when converting refdt to dates."
   )
 })
 
 test_that("`calculate_study_day()` works as expected for valid input", {
-  res <- calculate_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AESTDY")
+  res <- derive_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AESTDY")
   expected <- c(-31L, 1L, NA)
   expect_equal(res$AESTDY, expected, tolerance = "1.5e-08")
 
@@ -71,6 +71,6 @@ test_that("`calculate_study_day()` works as expected for valid input", {
     AESTDTC = c("2012-01-01", "2012-04-14", "2012-04-14"),
     stringsAsFactors = FALSE
   )
-  res1 <- calculate_study_day(df, df, "AESTDTC", "RFSTDTC", "AESTDY")
+  res1 <- derive_study_day(df, df, "AESTDTC", "RFSTDTC", "AESTDY")
   expect_equal(res1$AESTDY, expected, tolerance = "1.5e-08")
 })
