@@ -27,7 +27,7 @@ calculate the study day.}
 \item{study_day_var}{New study day variable name in the output. For
 example, AESTDY for AE domain and CMSTDY for CM domain.}
 
-\item{merge_key}{Character to represents the merging key between \code{sdtm_in} and
+\item{merge_key}{Character to represent the merging key between \code{sdtm_in} and
 \code{dm_domain}.}
 }
 \value{
