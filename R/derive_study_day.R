@@ -14,7 +14,7 @@
 #' calculate the study day.
 #' @param study_day_var New study day variable name in the output. For
 #' example, AESTDY for AE domain and CMSTDY for CM domain.
-#' @param merge_key Character to represents the merging key between `sdtm_in` and
+#' @param merge_key Character to represent the merging key between `sdtm_in` and
 #' `dm_domain`.
 #'
 #' @return Data frame that takes all columns from `sdtm_in` and a new variable
