@@ -12,13 +12,13 @@ sdtm_assign <- function(raw_dat,
   # When target dataset and  by_var variables are provided,
   # the tar_var is added to the input target dataset.
   # This if block deals when ct is not provided.
-  if((!is.null(by_var) & is.null(ct))){
+  if((!is.null(by_var) && is.null(ct))){
     tgt_dat_out <- raw_dat |>
       dplyr::right_join(y = tgt_dat, by = by_var) |>
       dplyr::mutate("{tgt_var}" := !!rlang::sym(raw_var)) |>
       dplyr::select(-rlang::sym(raw_var)) |>
       dplyr::relocate(tgt_var, .after = dplyr::last_col())
-  } else if (is.null(by_var) & is.null(ct)) {
+  } else if (is.null(by_var) && is.null(ct)) {
     # When target dataset and  by_var variables are NOT provided,
     # the tgt_dat_out is created with tar_var & oak_id_vars.
     # This if block deals when ct is not provided.
@@ -26,7 +26,7 @@ sdtm_assign <- function(raw_dat,
       dplyr::select(oak_id, raw_source, patient_number,rlang::sym(raw_var)) |>
       dplyr::mutate("{tgt_var}" := !!rlang::sym(raw_var)) |>
       dplyr::select(-rlang::sym(raw_var))
-  } else if (is.null(by_var) & !is.null(ct)) {
+  } else if (is.null(by_var) && !is.null(ct)) {
     # When target dataset and  by_var variables are NOT provided,
     # the tgt_dat_out is created with tar_var & oak_id_vars.
     # This if block deals when ct is provided.
@@ -35,7 +35,7 @@ sdtm_assign <- function(raw_dat,
       dplyr::mutate("{tgt_var}" := ct_map(!!rlang::sym(raw_var), ct = ct, cl = cl)) |>
       dplyr::select(-rlang::sym(raw_var)) |>
       dplyr::relocate(tgt_var, .after = dplyr::last_col())
-  } else if (!is.null(by_var) & !is.null(ct)) {
+  } else if (!is.null(by_var) && !is.null(ct)) {
     # When target dataset and  by_var variables are provided,
     # the tar_var is added to the input target dataset.
     # This if block deals when ct is provided.
