@@ -2,18 +2,51 @@
 sdtm_assign <- function(raw_dat,
                         raw_var,
                         tgt_var,
-                        tgt_dat = raw_dat,
-                        by = NULL,
+                        tgt_dat,
+                        by_var = NULL,
                         ct = NULL,
                         cl = NULL) {
 
   # TODO: Assertions.
 
-  raw_dat |>
-    dplyr::right_join(y = tgt_dat, by = by) |>
-    dplyr::mutate("{tgt_var}" := ct_map(!!rlang::sym(raw_var), ct = ct, cl = cl)) |>
-    dplyr::select(-rlang::sym(raw_var)) |>
-    dplyr::relocate(tgt_var, .after = dplyr::last_col())
+  # When target dataset and  by_var variables are provided,
+  # the tar_var is added to the input target dataset.
+  # This if block deals when ct is not provided.
+  if((!is.null(by_var) && is.null(ct))){
+    tgt_dat_out <- raw_dat |>
+      dplyr::right_join(y = tgt_dat, by = by_var) |>
+      dplyr::mutate("{tgt_var}" := !!rlang::sym(raw_var)) |>
+      dplyr::select(-rlang::sym(raw_var)) |>
+      dplyr::relocate(tgt_var, .after = dplyr::last_col())
+  } else if (is.null(by_var) && is.null(ct)) {
+    # When target dataset and  by_var variables are NOT provided,
+    # the tgt_dat_out is created with tar_var & oak_id_vars.
+    # This if block deals when ct is not provided.
+    tgt_dat_out <- raw_dat |>
+      dplyr::select(oak_id, raw_source, patient_number,rlang::sym(raw_var)) |>
+      dplyr::mutate("{tgt_var}" := !!rlang::sym(raw_var)) |>
+      dplyr::select(-rlang::sym(raw_var))
+  } else if (is.null(by_var) && !is.null(ct)) {
+    # When target dataset and  by_var variables are NOT provided,
+    # the tgt_dat_out is created with tar_var & oak_id_vars.
+    # This if block deals when ct is provided.
+    tgt_dat_out <- raw_dat |>
+      dplyr::select(oak_id, raw_source, patient_number,rlang::sym(raw_var)) |>
+      dplyr::mutate("{tgt_var}" := ct_map(!!rlang::sym(raw_var), ct = ct, cl = cl)) |>
+      dplyr::select(-rlang::sym(raw_var)) |>
+      dplyr::relocate(tgt_var, .after = dplyr::last_col())
+  } else if (!is.null(by_var) && !is.null(ct)) {
+    # When target dataset and  by_var variables are provided,
+    # the tar_var is added to the input target dataset.
+    # This if block deals when ct is provided.
+    tgt_dat_out <- raw_dat |>
+      dplyr::right_join(y = tgt_dat, by = by_var) |>
+      dplyr::mutate("{tgt_var}" := ct_map(!!rlang::sym(raw_var), ct = ct, cl = cl)) |>
+      dplyr::select(-rlang::sym(raw_var)) |>
+      dplyr::relocate(tgt_var, .after = dplyr::last_col())
+  }
+
+  return(tgt_dat_out)
 
 }
 
@@ -40,90 +73,29 @@ sdtm_assign <- function(raw_dat,
 #' @returns The target dataset with the derived variable `target_sdtm_variable`.
 #'
 #' @examples
-#' study_ct <-
-#'   tibble::tibble(
-#'     codelist_code = rep("C66729", 8L),
-#'     term_code = c(
-#'       "C28161",
-#'       "C38210",
-#'       "C38222",
-#'       "C38223",
-#'       "C38287",
-#'       "C38288",
-#'       "C38305",
-#'       "C38311"
-#'     ),
-#'     CodedData = c(
-#'       "INTRAMUSCULAR",
-#'       "EPIDURAL",
-#'       "INTRA-ARTERIAL",
-#'       "INTRA-ARTICULAR",
-#'       "OPHTHALMIC",
-#'       "ORAL",
-#'       "TRANSDERMAL",
-#'       "UNKNOWN"
-#'     ),
-#'     term_value = CodedData,
-#'     collected_value = c(
-#'       "IM (Intramuscular)",
-#'       "EP (Epidural)",
-#'       "IA (Intra-arterial)",
-#'       "IJ (Intra-articular)",
-#'       "OP (Ophthalmic)",
-#'       "PO (Oral)",
-#'       "DE (Transdermal)",
-#'       "Unknown"
-#'     ),
-#'     term_preferred_term = c(
-#'       "Intramuscular Route of Administration",
-#'       "Epidural Route of Administration",
-#'       "Intraarterial Route of Administration",
-#'       "Intraarticular Route of Administration",
-#'       "Ophthalmic Route of Administration",
-#'       "Oral Route of Administration",
-#'       "Transdermal Route of Administration",
-#'       "Unknown Route of Administration"
-#'     ),
-#'     term_synonyms = c(rep(NA, 5L), "Intraoral Route of Administration; PO", NA, NA),
-#'     raw_codelist = rep("ROUTE_CV1", 8L)
-#'   )
 #'
 #' md1 <-
 #'   tibble::tibble(
 #'     oak_id = 1:14,
 #'     raw_source = "MD1",
-#'     PATIENT_NUM = 101:114,
-#'     MDRTE = c(
-#'       "PO (Oral)",
-#'       "PO (Oral)",
-#'       NA_character_,
-#'       "PO",
-#'       "Intraoral Route of Administration",
-#'       "PO (Oral)",
-#'       "IM (Intramuscular)",
-#'       "IA (Intra-arterial)",
-#'       "",
-#'       "Non-standard",
-#'       "random_value",
-#'       "IJ (Intra-articular)",
-#'       "TRANSDERMAL",
-#'       "OPHTHALMIC"
+#'     patient_number = 101:114,
+#'     MDIND = c( "NAUSEA", "NAUSEA", "ANEMIA", "NAUSEA", "PYREXIA",
+#'     "VOMITINGS", "DIARHHEA", "COLD",
+#'     "FEVER", "LEG PAIN", "FEVER", "COLD", "COLD", "PAIN"
 #'     )
 #'   )
 #'
-#' assign_ct(
+#' assign_no_ct(
 #'   raw_dataset = md1,
-#'   raw_variable = "MDRTE",
-#'   study_ct = study_ct,
-#'   target_sdtm_variable = "CMROUTE",
-#'   target_sdtm_variable_codelist_code = "C66729"
+#'   raw_variable = "MDIND",
+#'   target_sdtm_variable = "CMINDC",
 #'   )
 #'
 #' cm_inter <-
 #'   tibble::tibble(
 #'     oak_id = 1:14,
 #'     raw_source = "MD1",
-#'     PATIENT_NUM = 101:114,
+#'     patient_number = 101:114,
 #'     CMTRT = c(
 #'       "BABY ASPIRIN",
 #'       "CORTISPORIN",
@@ -139,22 +111,6 @@ sdtm_assign <- function(raw_dat,
 #'       "BENADRYL",
 #'       "SOMINEX",
 #'       "ZQUILL"
-#'     ),
-#'     CMINDC = c(
-#'       NA,
-#'       "NAUSEA",
-#'       "ANEMIA",
-#'       "NAUSEA",
-#'       "PYREXIA",
-#'       "VOMITINGS",
-#'       "DIARHHEA",
-#'       "COLD",
-#'       "FEVER",
-#'       "LEG PAIN",
-#'       "FEVER",
-#'       "COLD",
-#'       "COLD",
-#'       "PAIN"
 #'     ),
 #'     CMROUTE = c(
 #'       "ORAL",
@@ -176,12 +132,10 @@ sdtm_assign <- function(raw_dat,
 #'
 #' assign_ct(
 #'   raw_dataset = md1,
-#'   raw_variable = "MDRTE",
-#'   study_ct = study_ct,
-#'   target_sdtm_variable = "CMROUTE",
-#'   target_sdtm_variable_codelist_code = "C66729",
+#'   raw_variable = "MDIND",
+#'   target_sdtm_variable = "CMINDC",
 #'   target_dataset = cm_inter,
-#'   merge_to_topic_by = c("oak_id","raw_source","PATIENT_NUM")
+#'   merge_to_topic_by = c("oak_id","raw_source","patient_number")
 #'   )
 #'
 #' @name assign
@@ -192,14 +146,14 @@ NULL
 assign_no_ct <- function(raw_dataset,
                          raw_variable,
                          target_sdtm_variable,
-                         target_dataset = raw_dataset,
+                         target_dataset = NULL,
                          merge_to_topic_by = NULL) {
   sdtm_assign(
     raw_dat = raw_dataset,
     raw_var = raw_variable,
     tgt_var = target_sdtm_variable,
     tgt_dat = target_dataset,
-    by = merge_to_topic_by
+    by_var = merge_to_topic_by
   )
 }
 
@@ -274,7 +228,7 @@ assign_no_ct <- function(raw_dataset,
 #'   tibble::tibble(
 #'     oak_id = 1:14,
 #'     raw_source = "MD1",
-#'     PATIENT_NUM = 101:114,
+#'     patient_number = 101:114,
 #'     MDRTE = c(
 #'       "PO (Oral)",
 #'       "PO (Oral)",
@@ -305,7 +259,7 @@ assign_no_ct <- function(raw_dataset,
 #'   tibble::tibble(
 #'     oak_id = 1:14,
 #'     raw_source = "MD1",
-#'     PATIENT_NUM = 101:114,
+#'     patient_number = 101:114,
 #'     CMTRT = c(
 #'       "BABY ASPIRIN",
 #'       "CORTISPORIN",
@@ -337,22 +291,6 @@ assign_no_ct <- function(raw_dataset,
 #'       "COLD",
 #'       "COLD",
 #'       "PAIN"
-#'     ),
-#'     CMROUTE = c(
-#'       "ORAL",
-#'       "ORAL",
-#'       NA,
-#'       "ORAL",
-#'       "ORAL",
-#'       "ORAL",
-#'       "INTRAMUSCULAR",
-#'       "INTRA-ARTERIAL",
-#'       NA,
-#'       "NON-STANDARD",
-#'       "RANDOM_VALUE",
-#'       "INTRA-ARTICULAR",
-#'       "TRANSDERMAL",
-#'       "OPHTHALMIC"
 #'     )
 #'   )
 #'
@@ -363,7 +301,7 @@ assign_no_ct <- function(raw_dataset,
 #'   target_sdtm_variable = "CMROUTE",
 #'   target_sdtm_variable_codelist_code = "C66729",
 #'   target_dataset = cm_inter,
-#'   merge_to_topic_by = c("oak_id","raw_source","PATIENT_NUM")
+#'   merge_to_topic_by = c("oak_id","raw_source","patient_number")
 #'   )
 #'
 #'
@@ -381,7 +319,7 @@ assign_ct <- function(raw_dataset,
     raw_var = raw_variable,
     tgt_var = target_sdtm_variable,
     tgt_dat = target_dataset,
-    by = merge_to_topic_by,
+    by_var = merge_to_topic_by,
     ct = study_ct,
     cl = target_sdtm_variable_codelist_code
   )
