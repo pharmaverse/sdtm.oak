@@ -102,7 +102,7 @@ assert_capture_matrix <- function(m) {
 
   col_names <- c("year", "mon", "mday", "hour", "min", "sec")
   m_col_names <- colnames(m)
-  if (is.null(m_col_names) || !all(m_col_names %in% col_names)) {
+  if (is.null(m_col_names) || !all(m_col_names == col_names)) {
     rlang::abort("`m` must have the following colnames: `year`, `mon`, `mday`, `hour`, `min` and `sec`.")
   }
 
@@ -139,8 +139,15 @@ complete_capture_matrix <-
   function(m) {
     col_names <- c("year", "mon", "mday", "hour", "min", "sec")
 
-    if (setequal(col_names, colnames(m))) {
+    # If all columns are already present, and in the correct order,
+    # then simply return.
+    if (identical(col_names, colnames(m))) {
       return(m)
+    }
+
+    # If all columns are present but not in the right order, then reorder.
+    if (setequal(col_names, colnames(m))) {
+      return(m[, col_names, drop = FALSE])
     }
 
     miss_cols <- setdiff(col_names, colnames(m))

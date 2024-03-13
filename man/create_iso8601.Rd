@@ -10,7 +10,8 @@ create_iso8601(
   .fmt_c = fmt_cmp(),
   .na = NULL,
   .cutoff_2000 = 68L,
-  .check_format = FALSE
+  .check_format = FALSE,
+  .warn = TRUE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ though starting with \code{19}.}
 meaning to check against a selection of validated formats in
 \link[=dtc_formats]{dtc_formats}; or to have a more permissible
 interpretation of the formats.}
+
+\item{.warn}{Whether to warn about parsing failures.}
 }
 \description{
 \code{\link[=create_iso8601]{create_iso8601()}} converts vectors of dates, times or date-times to \href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601} format. Learn more in

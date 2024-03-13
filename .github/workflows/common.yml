@@ -90,7 +90,7 @@ jobs:
     if: >
       github.event_name != 'release'
     with:
-      r-version: "4.3"
+      r-version: "release"
       # Whether to skip code coverage badge creation
       # Setting to 'false' will require you to create
       # an orphan branch called 'badges' in your repository
