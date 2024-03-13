@@ -13,11 +13,26 @@ sdtm_hardcode <- function(raw_dat,
 
   tgt_val <- ct_map(tgt_val, ct = ct, cl = cl)
 
-  raw_dat |>
-    dplyr::right_join(y = tgt_dat, by = by) |>
-    dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
-    dplyr::select(-rlang::sym(raw_var)) |>
-    dplyr::relocate(tgt_var, .after = dplyr::last_col())
+  # When target dataset and  by variables are provided,
+  # the tar_var is added to the input target dataset.
+  if((!is.null(by))){
+    tgt_dat_out <- raw_dat |>
+      #we need to keep only the required variables in the input raw dataset
+      dplyr::select(dplyr::all_of(by), rlang::sym(raw_var)) |>
+      dplyr::right_join(y = tgt_dat, by = by) |>
+      dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
+      dplyr::select(-rlang::sym(raw_var)) |>
+      dplyr::relocate(tgt_var, .after = dplyr::last_col())
+  } else {
+    # When target dataset and  by variables are NOT provided,
+    # the tgt_dat_out is created with tar_var & oak_id_vars.
+    tgt_dat_out <- raw_dat |>
+      dplyr::select(oak_id, raw_source, patient_number,rlang::sym(raw_var)) |>
+      dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
+      dplyr::select(-rlang::sym(raw_var))
+  }
+
+  return(tgt_dat_out)
 
 }
 
@@ -95,7 +110,7 @@ hardcode_no_ct <- function(raw_dataset,
                            raw_variable,
                            target_sdtm_variable,
                            target_hardcoded_value,
-                           target_dataset = raw_dataset,
+                           target_dataset = NULL,
                            merge_to_topic_by = NULL) {
   sdtm_hardcode(
     raw_dat = raw_dataset,
