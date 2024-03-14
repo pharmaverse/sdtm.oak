@@ -12,7 +12,7 @@ the default names: oak_id, raw_source, and patient_number.}
 }
 \value{
 A character vector of column names to be regarded
-as keys in \link[tibble:tibble-package]{tibbles} representing raw datasets.
+as keys in raw datasets.
 }
 \description{
 \code{\link[=oak_id_vars]{oak_id_vars()}} is a helper function providing the variable (column) names to

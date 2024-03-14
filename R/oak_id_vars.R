@@ -10,7 +10,7 @@
 #'   the default names: `r knitr::combine_words(oak_id_vars())`.
 #'
 #' @returns A character vector of column names to be regarded
-#' as keys in [tibbles][tibble::tibble-package] representing raw datasets.
+#' as keys in raw datasets.
 #'
 #' @examples
 #' sdtm.oak:::oak_id_vars()
