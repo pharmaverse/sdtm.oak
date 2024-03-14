@@ -9,7 +9,7 @@ recode(x, from = unique(na.omit(x)), to = from, .no_match = x, .na = NA)
 \arguments{
 \item{x}{An atomic vector of values are to be recoded.}
 
-\item{from}{A vector of values to be matched in \code{x} for recoded.}
+\item{from}{A vector of values to be matched in \code{x} for recoding.}
 
 \item{to}{A vector of values to be used as replacement for values in \code{from}.}
 

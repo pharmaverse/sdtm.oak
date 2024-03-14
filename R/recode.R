@@ -50,7 +50,7 @@ are_to_recode <- function(x, from) {
 #' in `to`.
 #'
 #' @param x An atomic vector of values are to be recoded.
-#' @param from A vector of values to be matched in `x` for recoded.
+#' @param from A vector of values to be matched in `x` for recoding.
 #' @param to A vector of values to be used as replacement for values in `from`.
 #' @param .no_match Value to be used as replacement when cases in `from` are not
 #'   matched.
