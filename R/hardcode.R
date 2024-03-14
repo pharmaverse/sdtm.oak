@@ -27,7 +27,7 @@ sdtm_hardcode <- function(raw_dat,
     # When target dataset and  by_var variables are NOT provided,
     # the tgt_dat_out is created with tar_var & oak_id_vars.
     tgt_dat_out <- raw_dat |>
-      dplyr::select(oak_id, raw_source, patient_number,rlang::sym(raw_var)) |>
+      dplyr::select(c(oak_id_vars(), raw_var)) |>
       dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
       dplyr::select(-rlang::sym(raw_var))
   }

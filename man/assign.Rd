@@ -10,7 +10,7 @@ assign_no_ct(
   raw_dataset,
   raw_variable,
   target_sdtm_variable,
-  target_dataset = raw_dataset,
+  target_dataset = NULL,
   merge_to_topic_by = NULL
 )
 
@@ -59,90 +59,29 @@ following controlled terminology recoding.
 following controlled terminology recoding.
 }
 \examples{
-study_ct <-
-  tibble::tibble(
-    codelist_code = rep("C66729", 8L),
-    term_code = c(
-      "C28161",
-      "C38210",
-      "C38222",
-      "C38223",
-      "C38287",
-      "C38288",
-      "C38305",
-      "C38311"
-    ),
-    CodedData = c(
-      "INTRAMUSCULAR",
-      "EPIDURAL",
-      "INTRA-ARTERIAL",
-      "INTRA-ARTICULAR",
-      "OPHTHALMIC",
-      "ORAL",
-      "TRANSDERMAL",
-      "UNKNOWN"
-    ),
-    term_value = CodedData,
-    collected_value = c(
-      "IM (Intramuscular)",
-      "EP (Epidural)",
-      "IA (Intra-arterial)",
-      "IJ (Intra-articular)",
-      "OP (Ophthalmic)",
-      "PO (Oral)",
-      "DE (Transdermal)",
-      "Unknown"
-    ),
-    term_preferred_term = c(
-      "Intramuscular Route of Administration",
-      "Epidural Route of Administration",
-      "Intraarterial Route of Administration",
-      "Intraarticular Route of Administration",
-      "Ophthalmic Route of Administration",
-      "Oral Route of Administration",
-      "Transdermal Route of Administration",
-      "Unknown Route of Administration"
-    ),
-    term_synonyms = c(rep(NA, 5L), "Intraoral Route of Administration; PO", NA, NA),
-    raw_codelist = rep("ROUTE_CV1", 8L)
-  )
 
 md1 <-
   tibble::tibble(
     oak_id = 1:14,
     raw_source = "MD1",
-    PATIENT_NUM = 101:114,
-    MDRTE = c(
-      "PO (Oral)",
-      "PO (Oral)",
-      NA_character_,
-      "PO",
-      "Intraoral Route of Administration",
-      "PO (Oral)",
-      "IM (Intramuscular)",
-      "IA (Intra-arterial)",
-      "",
-      "Non-standard",
-      "random_value",
-      "IJ (Intra-articular)",
-      "TRANSDERMAL",
-      "OPHTHALMIC"
+    patient_number = 101:114,
+    MDIND = c( "NAUSEA", "NAUSEA", "ANEMIA", "NAUSEA", "PYREXIA",
+    "VOMITINGS", "DIARHHEA", "COLD",
+    "FEVER", "LEG PAIN", "FEVER", "COLD", "COLD", "PAIN"
     )
   )
 
-assign_ct(
+assign_no_ct(
   raw_dataset = md1,
-  raw_variable = "MDRTE",
-  study_ct = study_ct,
-  target_sdtm_variable = "CMROUTE",
-  target_sdtm_variable_codelist_code = "C66729"
+  raw_variable = "MDIND",
+  target_sdtm_variable = "CMINDC",
   )
 
 cm_inter <-
   tibble::tibble(
     oak_id = 1:14,
     raw_source = "MD1",
-    PATIENT_NUM = 101:114,
+    patient_number = 101:114,
     CMTRT = c(
       "BABY ASPIRIN",
       "CORTISPORIN",
@@ -158,22 +97,6 @@ cm_inter <-
       "BENADRYL",
       "SOMINEX",
       "ZQUILL"
-    ),
-    CMINDC = c(
-      NA,
-      "NAUSEA",
-      "ANEMIA",
-      "NAUSEA",
-      "PYREXIA",
-      "VOMITINGS",
-      "DIARHHEA",
-      "COLD",
-      "FEVER",
-      "LEG PAIN",
-      "FEVER",
-      "COLD",
-      "COLD",
-      "PAIN"
     ),
     CMROUTE = c(
       "ORAL",
@@ -195,12 +118,10 @@ cm_inter <-
 
 assign_ct(
   raw_dataset = md1,
-  raw_variable = "MDRTE",
-  study_ct = study_ct,
-  target_sdtm_variable = "CMROUTE",
-  target_sdtm_variable_codelist_code = "C66729",
+  raw_variable = "MDIND",
+  target_sdtm_variable = "CMINDC",
   target_dataset = cm_inter,
-  merge_to_topic_by = c("oak_id","raw_source","PATIENT_NUM")
+  merge_to_topic_by = c("oak_id","raw_source","patient_number")
   )
 
 study_ct <-
@@ -255,7 +176,7 @@ md1 <-
   tibble::tibble(
     oak_id = 1:14,
     raw_source = "MD1",
-    PATIENT_NUM = 101:114,
+    patient_number = 101:114,
     MDRTE = c(
       "PO (Oral)",
       "PO (Oral)",
@@ -286,7 +207,7 @@ cm_inter <-
   tibble::tibble(
     oak_id = 1:14,
     raw_source = "MD1",
-    PATIENT_NUM = 101:114,
+    patient_number = 101:114,
     CMTRT = c(
       "BABY ASPIRIN",
       "CORTISPORIN",
@@ -318,22 +239,6 @@ cm_inter <-
       "COLD",
       "COLD",
       "PAIN"
-    ),
-    CMROUTE = c(
-      "ORAL",
-      "ORAL",
-      NA,
-      "ORAL",
-      "ORAL",
-      "ORAL",
-      "INTRAMUSCULAR",
-      "INTRA-ARTERIAL",
-      NA,
-      "NON-STANDARD",
-      "RANDOM_VALUE",
-      "INTRA-ARTICULAR",
-      "TRANSDERMAL",
-      "OPHTHALMIC"
     )
   )
 
@@ -344,7 +249,7 @@ assign_ct(
   target_sdtm_variable = "CMROUTE",
   target_sdtm_variable_codelist_code = "C66729",
   target_dataset = cm_inter,
-  merge_to_topic_by = c("oak_id","raw_source","PATIENT_NUM")
+  merge_to_topic_by = c("oak_id","raw_source","patient_number")
   )
 
 

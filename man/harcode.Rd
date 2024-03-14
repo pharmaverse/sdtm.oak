@@ -11,7 +11,7 @@ hardcode_no_ct(
   raw_variable,
   target_sdtm_variable,
   target_hardcoded_value,
-  target_dataset = raw_dataset,
+  target_dataset = NULL,
   merge_to_topic_by = NULL
 )
 
@@ -20,10 +20,10 @@ hardcode_ct(
   raw_variable,
   target_sdtm_variable,
   target_hardcoded_value,
-  target_dataset = raw_dataset,
+  target_dataset = NULL,
   merge_to_topic_by = NULL,
-  study_ct = NULL,
-  target_sdtm_variable_codelist_code = NULL
+  study_ct,
+  target_sdtm_variable_codelist_code
 )
 }
 \arguments{

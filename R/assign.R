@@ -23,7 +23,7 @@ sdtm_assign <- function(raw_dat,
     # the tgt_dat_out is created with tar_var & oak_id_vars.
     # This if block deals when ct is not provided.
     tgt_dat_out <- raw_dat |>
-      dplyr::select(oak_id, raw_source, patient_number,rlang::sym(raw_var)) |>
+      dplyr::select(c(oak_id_vars(), raw_var)) |>
       dplyr::mutate("{tgt_var}" := !!rlang::sym(raw_var)) |>
       dplyr::select(-rlang::sym(raw_var))
   } else if (is.null(by_var) && !is.null(ct)) {
@@ -31,7 +31,7 @@ sdtm_assign <- function(raw_dat,
     # the tgt_dat_out is created with tar_var & oak_id_vars.
     # This if block deals when ct is provided.
     tgt_dat_out <- raw_dat |>
-      dplyr::select(oak_id, raw_source, patient_number,rlang::sym(raw_var)) |>
+      dplyr::select(c(oak_id_vars(), raw_var)) |>
       dplyr::mutate("{tgt_var}" := ct_map(!!rlang::sym(raw_var), ct = ct, cl = cl)) |>
       dplyr::select(-rlang::sym(raw_var)) |>
       dplyr::relocate(tgt_var, .after = dplyr::last_col())
