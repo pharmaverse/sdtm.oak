@@ -3,6 +3,7 @@
 S3method(print,iso8601)
 export(assign_ct)
 export(assign_no_ct)
+export(clear_cache)
 export(create_iso8601)
 export(ct_map)
 export(fmt_cmp)

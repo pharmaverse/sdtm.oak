@@ -38,11 +38,11 @@ Depends: R (>= 4.2)
 Imports: 
     admiraldev,
     dplyr (>= 1.0.0),
+    memoise,
     purrr (>= 0.3.3),
     rlang (>= 0.4.4),
     stringr (>= 1.4.0),
     tibble,
-    tidyr,
     vctrs
 Suggests:
     knitr,
