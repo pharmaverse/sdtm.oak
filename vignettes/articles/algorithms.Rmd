@@ -2,7 +2,7 @@
 title: "Algorithms & Sub-Algorithms"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Algorithms}
+  %\VignetteIndexEntry{Algorithms & Sub-Algorithms}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

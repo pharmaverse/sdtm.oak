@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# sdtm.oak
+# sdtm.oak <a href="https://pharmaverse.github.io/sdtm.oak"><img src="man/figures/logo.svg" align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/sdtm.oak)](https://CRAN.R-project.org/package=sdtm.oak)

@@ -7,6 +7,8 @@ dtc
 funder
 vectorized
 ORCID
+PMDA
+CDISC
 iso
 hardcoded
 CDISC
@@ -19,3 +21,7 @@ tibble
 codelist
 Memoised
 memoised
+AE
+AESTDY
+CMSTDY
+DM
