@@ -39,7 +39,7 @@ oak_id_vars <- function(extra_vars = NULL) {
 #' # `oak_id_vars()` is the function that defines what are the minimal set of
 #' # oak keys. Hence, by definition, the following code should always return
 #' # `TRUE`.
-#' sdtm.oak:::contains_oak_id_vars(oak_id_vars())
+#' sdtm.oak:::contains_oak_id_vars(sdtm.oak:::oak_id_vars())
 #'
 #' # Returns `FALSE`.
 #' sdtm.oak:::contains_oak_id_vars(character())
