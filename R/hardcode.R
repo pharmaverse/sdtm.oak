@@ -4,33 +4,35 @@ sdtm_hardcode <- function(raw_dat,
                           raw_var,
                           tgt_var,
                           tgt_val,
-                          tgt_dat = raw_dat,
-                          by_var = NULL,
+                          tgt_dat = NULL,
+                          id_vars = oak_id_vars(),
                           ct = NULL,
                           cl = NULL) {
 
-  # TODO: Assertions.
+  # TODO: Assertions. assert that id_vars always contains "oak_id",
+  # "raw_source", "patient_number"
 
   tgt_val <- ct_map(tgt_val, ct = ct, cl = cl)
 
-  # When target dataset and  by_var variables are provided,
-  # the tar_var is added to the input target dataset.
-  if((!is.null(by_var))){
-    tgt_dat_out <- raw_dat |>
-      #we need to keep only the required variables in the input raw dataset
-      dplyr::select(dplyr::all_of(by_var), rlang::sym(raw_var)) |>
-      dplyr::right_join(y = tgt_dat, by = by_var) |>
-      dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
-      dplyr::select(-rlang::sym(raw_var)) |>
-      dplyr::relocate(tgt_var, .after = dplyr::last_col())
-  } else {
-    # When target dataset and  by_var variables are NOT provided,
-    # the tgt_dat_out is created with tar_var & oak_id_vars.
-    tgt_dat_out <- raw_dat |>
-      dplyr::select(c(oak_id_vars(), raw_var)) |>
-      dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
-      dplyr::select(-rlang::sym(raw_var))
-  }
+  # When target dataset and id_vars variables are provided, the tar_var is added
+  # to the input target dataset.
+  tgt_dat_out <-
+    if (!is.null(tgt_dat)) {
+      raw_dat |>
+        #we need to keep only the required variables in the input raw dataset
+        dplyr::select(c(id_vars, raw_var)) |>
+        dplyr::right_join(y = tgt_dat, by = id_vars) |>
+        dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
+        dplyr::select(-rlang::sym(raw_var)) |>
+        dplyr::relocate(tgt_var, .after = dplyr::last_col())
+    } else {
+      # When target dataset and  id_vars variables are NOT provided, the
+      # tgt_dat_out is created with tar_var & oak_id_vars.
+      raw_dat |>
+        dplyr::select(c(id_vars, raw_var)) |>
+        dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
+        dplyr::select(-rlang::sym(raw_var))
+    }
 
   return(tgt_dat_out)
 
@@ -51,7 +53,7 @@ sdtm_hardcode <- function(raw_dat,
 #' @param target_sdtm_variable The target SDTM variable.
 #' @param target_hardcoded_value Hardcoded value.
 #' @param target_dataset Target dataset. By default the same as `raw_dataset`.
-#' @param merge_to_topic_by If `target_dataset` is different than `raw_dataset`,
+#' @param id_vars If `target_dataset` is different than `raw_dataset`,
 #'   then this parameter defines keys to use in the join between `raw_dataset`
 #'   and `target_dataset`.
 #' @param study_ct Study controlled terminology specification.
@@ -98,7 +100,7 @@ sdtm_hardcode <- function(raw_dat,
 #'   target_sdtm_variable = "CMCAT",
 #'   target_hardcoded_value = "GENERAL CONCOMITANT MEDICATIONS",
 #'   target_dataset = CM_INTER,
-#'   merge_to_topic_by = c("oak_id", "raw_source", "patient_number")
+#'   id_vars = c("oak_id", "raw_source", "patient_number")
 #' )
 #'
 #' @name harcode
@@ -111,14 +113,14 @@ hardcode_no_ct <- function(raw_dataset,
                            target_sdtm_variable,
                            target_hardcoded_value,
                            target_dataset = NULL,
-                           merge_to_topic_by = NULL) {
+                           id_vars = NULL) {
   sdtm_hardcode(
     raw_dat = raw_dataset,
     raw_var = raw_variable,
     tgt_var = target_sdtm_variable,
     tgt_val = target_hardcoded_value,
     tgt_dat = target_dataset,
-    by_var = merge_to_topic_by
+    id_vars = id_vars
   )
 }
 
@@ -129,7 +131,7 @@ hardcode_ct <- function(raw_dataset,
                         target_sdtm_variable,
                         target_hardcoded_value,
                         target_dataset = NULL,
-                        merge_to_topic_by = NULL,
+                        id_vars = NULL,
                         study_ct,
                         target_sdtm_variable_codelist_code) {
   sdtm_hardcode(
@@ -138,7 +140,7 @@ hardcode_ct <- function(raw_dataset,
     tgt_var = target_sdtm_variable,
     tgt_val = target_hardcoded_value,
     tgt_dat = target_dataset,
-    by_var = merge_to_topic_by,
+    id_vars = id_vars,
     ct = study_ct,
     cl = target_sdtm_variable_codelist_code
   )

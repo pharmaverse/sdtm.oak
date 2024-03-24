@@ -12,7 +12,7 @@ hardcode_no_ct(
   target_sdtm_variable,
   target_hardcoded_value,
   target_dataset = NULL,
-  merge_to_topic_by = NULL
+  id_vars = NULL
 )
 
 hardcode_ct(
@@ -21,7 +21,7 @@ hardcode_ct(
   target_sdtm_variable,
   target_hardcoded_value,
   target_dataset = NULL,
-  merge_to_topic_by = NULL,
+  id_vars = NULL,
   study_ct,
   target_sdtm_variable_codelist_code
 )
@@ -37,7 +37,7 @@ hardcode_ct(
 
 \item{target_dataset}{Target dataset. By default the same as \code{raw_dataset}.}
 
-\item{merge_to_topic_by}{If \code{target_dataset} is different than \code{raw_dataset},
+\item{id_vars}{If \code{target_dataset} is different than \code{raw_dataset},
 then this parameter defines keys to use in the join between \code{raw_dataset}
 and \code{target_dataset}.}
 
@@ -95,7 +95,7 @@ hardcode_no_ct(
   target_sdtm_variable = "CMCAT",
   target_hardcoded_value = "GENERAL CONCOMITANT MEDICATIONS",
   target_dataset = CM_INTER,
-  merge_to_topic_by = c("oak_id", "raw_source", "patient_number")
+  id_vars = c("oak_id", "raw_source", "patient_number")
 )
 
 }
