@@ -12,7 +12,7 @@ hardcode_no_ct(
   target_sdtm_variable,
   target_hardcoded_value,
   target_dataset = NULL,
-  id_vars = NULL
+  id_vars = oak_id_vars()
 )
 
 hardcode_ct(
@@ -21,7 +21,7 @@ hardcode_ct(
   target_sdtm_variable,
   target_hardcoded_value,
   target_dataset = NULL,
-  id_vars = NULL,
+  id_vars = oak_id_vars(),
   study_ct,
   target_sdtm_variable_codelist_code
 )

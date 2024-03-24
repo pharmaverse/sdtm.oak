@@ -9,33 +9,37 @@ sdtm_hardcode <- function(raw_dat,
                           ct = NULL,
                           cl = NULL) {
 
-  # TODO: Assertions. assert that id_vars always contains "oak_id",
-  # "raw_source", "patient_number"
+  admiraldev::assert_character_scalar(raw_var)
+  admiraldev::assert_character_scalar(tgt_var)
+  assertthat::assert_that(assertthat::is.scalar(tgt_val),
+                          msg = "`tgt_val` must be a scalar value.")
+  admiraldev::assert_character_vector(id_vars)
+  assertthat::assert_that(contains_oak_id_vars(id_vars),
+                          msg = "`id_vars` must include the oak id vars.")
+  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
+  # Recode the hardcoded value following terminology.
   tgt_val <- ct_map(tgt_val, ct = ct, cl = cl)
 
-  # When target dataset and id_vars variables are provided, the tar_var is added
-  # to the input target dataset.
-  tgt_dat_out <-
+  # Apply derivation of the hardcoded value.
+  # `der_dat`: derived dataset.
+  der_dat <-
+    raw_dat |>
+    dplyr::select(c(id_vars, raw_var)) |>
+    dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
+    dplyr::select(-rlang::sym(raw_var))
+
+  # If a target dataset is supplied, then join the so far derived dataset with
+  # the target dataset (`tgt_dat`).
+  der_dat <-
     if (!is.null(tgt_dat)) {
-      raw_dat |>
-        #we need to keep only the required variables in the input raw dataset
-        dplyr::select(c(id_vars, raw_var)) |>
+      der_dat |>
         dplyr::right_join(y = tgt_dat, by = id_vars) |>
-        dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
-        dplyr::select(-rlang::sym(raw_var)) |>
         dplyr::relocate(tgt_var, .after = dplyr::last_col())
-    } else {
-      # When target dataset and  id_vars variables are NOT provided, the
-      # tgt_dat_out is created with tar_var & oak_id_vars.
-      raw_dat |>
-        dplyr::select(c(id_vars, raw_var)) |>
-        dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |>
-        dplyr::select(-rlang::sym(raw_var))
     }
 
-  return(tgt_dat_out)
-
+  der_dat
 }
 
 #' Derive an SDTM variable with a hardcoded value
@@ -113,7 +117,7 @@ hardcode_no_ct <- function(raw_dataset,
                            target_sdtm_variable,
                            target_hardcoded_value,
                            target_dataset = NULL,
-                           id_vars = NULL) {
+                           id_vars = oak_id_vars()) {
   sdtm_hardcode(
     raw_dat = raw_dataset,
     raw_var = raw_variable,
@@ -131,7 +135,7 @@ hardcode_ct <- function(raw_dataset,
                         target_sdtm_variable,
                         target_hardcoded_value,
                         target_dataset = NULL,
-                        id_vars = NULL,
+                        id_vars = oak_id_vars(),
                         study_ct,
                         target_sdtm_variable_codelist_code) {
   sdtm_hardcode(
