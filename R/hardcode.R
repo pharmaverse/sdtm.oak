@@ -31,12 +31,14 @@ sdtm_hardcode <- function(raw_dat,
     dplyr::select(-rlang::sym(raw_var))
 
   # If a target dataset is supplied, then join the so far derived dataset with
-  # the target dataset (`tgt_dat`).
+  # the target dataset (`tgt_dat`), otherwise leave it be.
   der_dat <-
     if (!is.null(tgt_dat)) {
       der_dat |>
         dplyr::right_join(y = tgt_dat, by = id_vars) |>
         dplyr::relocate(tgt_var, .after = dplyr::last_col())
+    } else {
+      der_dat
     }
 
   der_dat
@@ -52,16 +54,16 @@ sdtm_hardcode <- function(raw_dat,
 #' - [hardcode_ct()] maps a hardcoded value to a target SDTM variable with
 #' controlled terminology recoding.
 #'
-#' @param raw_dataset The raw dataset.
-#' @param raw_variable The raw variable.
-#' @param target_sdtm_variable The target SDTM variable.
-#' @param target_hardcoded_value Hardcoded value.
-#' @param target_dataset Target dataset. By default the same as `raw_dataset`.
+#' @param raw_dat The raw dataset.
+#' @param raw_var The raw variable.
+#' @param tgt_var The target SDTM variable.
+#' @param tgt_val Hardcoded value.
+#' @param tgt_dat Target dataset. By default the same as `raw_dataset`.
 #' @param id_vars If `target_dataset` is different than `raw_dataset`,
 #'   then this parameter defines keys to use in the join between `raw_dataset`
 #'   and `target_dataset`.
-#' @param study_ct Study controlled terminology specification.
-#' @param target_sdtm_variable_codelist_code A codelist code indicating which
+#' @param ct Study controlled terminology specification.
+#' @param cl A codelist code indicating which
 #'   subset of the controlled terminology to apply in the derivation.
 #'
 #' @returns The target dataset with the derived variable `target_sdtm_variable`.
@@ -79,10 +81,10 @@ sdtm_hardcode <- function(raw_dat,
 #' # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
 #' # hardcoded value "GENERAL CONCOMITANT MEDICATIONS".
 #' hardcode_no_ct(
-#'   raw_dataset = MD1,
-#'   raw_variable = "MDRAW",
-#'   target_sdtm_variable = "CMCAT",
-#'   target_hardcoded_value = "GENERAL CONCOMITANT MEDICATIONS"
+#'   raw_dat = MD1,
+#'   raw_var = "MDRAW",
+#'   tgt_var = "CMCAT",
+#'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS"
 #' )
 #'
 #' CM_INTER <-
@@ -99,11 +101,11 @@ sdtm_hardcode <- function(raw_dat,
 #' # hardcoded value "GENERAL CONCOMITANT MEDICATIONS" with a prior join to
 #' # `target_dataset`.
 #' hardcode_no_ct(
-#'   raw_dataset = MD1,
-#'   raw_variable = "MDRAW",
-#'   target_sdtm_variable = "CMCAT",
-#'   target_hardcoded_value = "GENERAL CONCOMITANT MEDICATIONS",
-#'   target_dataset = CM_INTER,
+#'   raw_dat = MD1,
+#'   raw_var = "MDRAW",
+#'   tgt_var = "CMCAT",
+#'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
+#'   tgt_dat = CM_INTER,
 #'   id_vars = c("oak_id", "raw_source", "patient_number")
 #' )
 #'
@@ -112,41 +114,41 @@ NULL
 
 #' @export
 #' @rdname harcode
-hardcode_no_ct <- function(raw_dataset,
-                           raw_variable,
-                           target_sdtm_variable,
-                           target_hardcoded_value,
-                           target_dataset = NULL,
+hardcode_no_ct <- function(raw_dat,
+                           raw_var,
+                           tgt_var,
+                           tgt_val,
+                           tgt_dat = NULL,
                            id_vars = oak_id_vars()) {
   sdtm_hardcode(
-    raw_dat = raw_dataset,
-    raw_var = raw_variable,
-    tgt_var = target_sdtm_variable,
-    tgt_val = target_hardcoded_value,
-    tgt_dat = target_dataset,
+    raw_dat = raw_dat,
+    raw_var = raw_var,
+    tgt_var = tgt_var,
+    tgt_val = tgt_val,
+    tgt_dat = tgt_dat,
     id_vars = id_vars
   )
 }
 
 #' @export
 #' @rdname harcode
-hardcode_ct <- function(raw_dataset,
-                        raw_variable,
-                        target_sdtm_variable,
-                        target_hardcoded_value,
-                        target_dataset = NULL,
+hardcode_ct <- function(raw_dat,
+                        raw_var,
+                        tgt_var,
+                        tgt_val,
+                        tgt_dat = NULL,
                         id_vars = oak_id_vars(),
-                        study_ct,
-                        target_sdtm_variable_codelist_code) {
+                        ct,
+                        cl) {
   sdtm_hardcode(
-    raw_dat = raw_dataset,
-    raw_var = raw_variable,
-    tgt_var = target_sdtm_variable,
-    tgt_val = target_hardcoded_value,
-    tgt_dat = target_dataset,
+    raw_dat = raw_dat,
+    raw_var = raw_var,
+    tgt_var = tgt_var,
+    tgt_val = tgt_val,
+    tgt_dat = tgt_dat,
     id_vars = id_vars,
-    ct = study_ct,
-    cl = target_sdtm_variable_codelist_code
+    ct = ct,
+    cl = cl
   )
 }
 

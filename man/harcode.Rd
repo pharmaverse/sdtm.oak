@@ -7,43 +7,43 @@
 \title{Derive an SDTM variable with a hardcoded value}
 \usage{
 hardcode_no_ct(
-  raw_dataset,
-  raw_variable,
-  target_sdtm_variable,
-  target_hardcoded_value,
-  target_dataset = NULL,
+  raw_dat,
+  raw_var,
+  tgt_var,
+  tgt_val,
+  tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
 
 hardcode_ct(
-  raw_dataset,
-  raw_variable,
-  target_sdtm_variable,
-  target_hardcoded_value,
-  target_dataset = NULL,
+  raw_dat,
+  raw_var,
+  tgt_var,
+  tgt_val,
+  tgt_dat = NULL,
   id_vars = oak_id_vars(),
-  study_ct,
-  target_sdtm_variable_codelist_code
+  ct,
+  cl
 )
 }
 \arguments{
-\item{raw_dataset}{The raw dataset.}
+\item{raw_dat}{The raw dataset.}
 
-\item{raw_variable}{The raw variable.}
+\item{raw_var}{The raw variable.}
 
-\item{target_sdtm_variable}{The target SDTM variable.}
+\item{tgt_var}{The target SDTM variable.}
 
-\item{target_hardcoded_value}{Hardcoded value.}
+\item{tgt_val}{Hardcoded value.}
 
-\item{target_dataset}{Target dataset. By default the same as \code{raw_dataset}.}
+\item{tgt_dat}{Target dataset. By default the same as \code{raw_dataset}.}
 
 \item{id_vars}{If \code{target_dataset} is different than \code{raw_dataset},
 then this parameter defines keys to use in the join between \code{raw_dataset}
 and \code{target_dataset}.}
 
-\item{study_ct}{Study controlled terminology specification.}
+\item{ct}{Study controlled terminology specification.}
 
-\item{target_sdtm_variable_codelist_code}{A codelist code indicating which
+\item{cl}{A codelist code indicating which
 subset of the controlled terminology to apply in the derivation.}
 }
 \value{
@@ -70,10 +70,10 @@ MD1 <-
 # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
 # hardcoded value "GENERAL CONCOMITANT MEDICATIONS".
 hardcode_no_ct(
-  raw_dataset = MD1,
-  raw_variable = "MDRAW",
-  target_sdtm_variable = "CMCAT",
-  target_hardcoded_value = "GENERAL CONCOMITANT MEDICATIONS"
+  raw_dat = MD1,
+  raw_var = "MDRAW",
+  tgt_var = "CMCAT",
+  tgt_val = "GENERAL CONCOMITANT MEDICATIONS"
 )
 
 CM_INTER <-
@@ -90,11 +90,11 @@ CM_INTER <-
 # hardcoded value "GENERAL CONCOMITANT MEDICATIONS" with a prior join to
 # `target_dataset`.
 hardcode_no_ct(
-  raw_dataset = MD1,
-  raw_variable = "MDRAW",
-  target_sdtm_variable = "CMCAT",
-  target_hardcoded_value = "GENERAL CONCOMITANT MEDICATIONS",
-  target_dataset = CM_INTER,
+  raw_dat = MD1,
+  raw_var = "MDRAW",
+  tgt_var = "CMCAT",
+  tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
+  tgt_dat = CM_INTER,
   id_vars = c("oak_id", "raw_source", "patient_number")
 )
 

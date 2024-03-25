@@ -2,51 +2,42 @@
 sdtm_assign <- function(raw_dat,
                         raw_var,
                         tgt_var,
-                        tgt_dat,
-                        by_var = NULL,
+                        tgt_dat = NULL,
+                        id_vars = oak_id_vars(),
                         ct = NULL,
                         cl = NULL) {
 
-  # TODO: Assertions.
+  admiraldev::assert_character_scalar(raw_var)
+  admiraldev::assert_character_scalar(tgt_var)
+  admiraldev::assert_character_vector(id_vars)
+  assertthat::assert_that(contains_oak_id_vars(id_vars),
+                          msg = "`id_vars` must include the oak id vars.")
+  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
-  # When target dataset and  by_var variables are provided,
-  # the tar_var is added to the input target dataset.
-  # This if block deals when ct is not provided.
-  if((!is.null(by_var) && is.null(ct))){
-    tgt_dat_out <- raw_dat |>
-      dplyr::right_join(y = tgt_dat, by = by_var) |>
-      dplyr::mutate("{tgt_var}" := !!rlang::sym(raw_var)) |>
-      dplyr::select(-rlang::sym(raw_var)) |>
-      dplyr::relocate(tgt_var, .after = dplyr::last_col())
-  } else if (is.null(by_var) && is.null(ct)) {
-    # When target dataset and  by_var variables are NOT provided,
-    # the tgt_dat_out is created with tar_var & oak_id_vars.
-    # This if block deals when ct is not provided.
-    tgt_dat_out <- raw_dat |>
-      dplyr::select(c(oak_id_vars(), raw_var)) |>
-      dplyr::mutate("{tgt_var}" := !!rlang::sym(raw_var)) |>
-      dplyr::select(-rlang::sym(raw_var))
-  } else if (is.null(by_var) && !is.null(ct)) {
-    # When target dataset and  by_var variables are NOT provided,
-    # the tgt_dat_out is created with tar_var & oak_id_vars.
-    # This if block deals when ct is provided.
-    tgt_dat_out <- raw_dat |>
-      dplyr::select(c(oak_id_vars(), raw_var)) |>
-      dplyr::mutate("{tgt_var}" := ct_map(!!rlang::sym(raw_var), ct = ct, cl = cl)) |>
-      dplyr::select(-rlang::sym(raw_var)) |>
-      dplyr::relocate(tgt_var, .after = dplyr::last_col())
-  } else if (!is.null(by_var) && !is.null(ct)) {
-    # When target dataset and  by_var variables are provided,
-    # the tar_var is added to the input target dataset.
-    # This if block deals when ct is provided.
-    tgt_dat_out <- raw_dat |>
-      dplyr::right_join(y = tgt_dat, by = by_var) |>
-      dplyr::mutate("{tgt_var}" := ct_map(!!rlang::sym(raw_var), ct = ct, cl = cl)) |>
-      dplyr::select(-rlang::sym(raw_var)) |>
-      dplyr::relocate(tgt_var, .after = dplyr::last_col())
-  }
+  # Recode the raw variable following terminology.
+  tgt_val <- ct_map(raw_dat[[raw_var]], ct = ct, cl = cl)
 
-  return(tgt_dat_out)
+  # Apply derivation by assigning `raw_var` to `tgt_var`.
+  # `der_dat`: derived dataset.
+  der_dat <-
+    raw_dat |>
+    dplyr::select(c(id_vars, raw_var)) |>
+    dplyr::mutate("{tgt_var}" := tgt_val) |>
+    dplyr::select(-rlang::sym(raw_var))
+
+  # If a target dataset is supplied, then join the so far derived dataset with
+  # the target dataset (`tgt_dat`), otherwise leave it be.
+  der_dat <-
+    if (!is.null(tgt_dat)) {
+      der_dat |>
+        dplyr::right_join(y = tgt_dat, by = id_vars) |>
+        dplyr::relocate(tgt_var, .after = dplyr::last_col())
+    } else {
+      der_dat
+    }
+
+  der_dat
 
 }
 
@@ -59,15 +50,15 @@ sdtm_assign <- function(raw_dat,
 #' - [assign_ct()] maps a variable in a source dataset to a target SDTM variable
 #' following controlled terminology recoding.
 #'
-#' @param raw_dataset The raw dataset.
-#' @param raw_variable The raw variable.
-#' @param target_sdtm_variable The target SDTM variable.
-#' @param target_dataset Target dataset. By default the same as `raw_dataset`.
-#' @param merge_to_topic_by If `target_dataset` is different than `raw_dataset`,
+#' @param raw_dat The raw dataset.
+#' @param raw_var The raw variable.
+#' @param tgt_var The target SDTM variable.
+#' @param tgt_dat Target dataset.
+#' @param id_vars If `target_dataset` is different than `raw_dataset`,
 #'   then this parameter defines keys to use in the join between `raw_dataset`
 #'   and `target_dataset`.
-#' @param study_ct Study controlled terminology specification.
-#' @param target_sdtm_variable_codelist_code A codelist code indicating which
+#' @param ct Study controlled terminology specification.
+#' @param cl A codelist code indicating which
 #'   subset of the controlled terminology to apply in the derivation.
 #'
 #' @returns The target dataset with the derived variable `target_sdtm_variable`.
@@ -86,9 +77,9 @@ sdtm_assign <- function(raw_dat,
 #'   )
 #'
 #' assign_no_ct(
-#'   raw_dataset = md1,
-#'   raw_variable = "MDIND",
-#'   target_sdtm_variable = "CMINDC",
+#'   raw_dat = md1,
+#'   raw_var = "MDIND",
+#'   tgt_var = "CMINDC",
 #'   )
 #'
 #' cm_inter <-
@@ -131,11 +122,11 @@ sdtm_assign <- function(raw_dat,
 #'   )
 #'
 #' assign_ct(
-#'   raw_dataset = md1,
-#'   raw_variable = "MDIND",
-#'   target_sdtm_variable = "CMINDC",
-#'   target_dataset = cm_inter,
-#'   merge_to_topic_by = c("oak_id","raw_source","patient_number")
+#'   raw_dat = md1,
+#'   raw_var = "MDIND",
+#'   tgt_var = "CMINDC",
+#'   tgt_dat = cm_inter,
+#'   id_vars = c("oak_id","raw_source","patient_number")
 #'   )
 #'
 #' @name assign
@@ -143,17 +134,17 @@ NULL
 
 #' @export
 #' @rdname assign
-assign_no_ct <- function(raw_dataset,
-                         raw_variable,
-                         target_sdtm_variable,
-                         target_dataset = NULL,
-                         merge_to_topic_by = NULL) {
+assign_no_ct <- function(raw_dat,
+                         raw_var,
+                         tgt_var,
+                         tgt_dat = NULL,
+                         id_vars = oak_id_vars()) {
   sdtm_assign(
-    raw_dat = raw_dataset,
-    raw_var = raw_variable,
-    tgt_var = target_sdtm_variable,
-    tgt_dat = target_dataset,
-    by_var = merge_to_topic_by
+    raw_dat = raw_dat,
+    raw_var = raw_var,
+    tgt_var = tgt_var,
+    tgt_dat = tgt_dat,
+    id_vars = id_vars
   )
 }
 
@@ -162,15 +153,15 @@ assign_no_ct <- function(raw_dataset,
 #' [assign_ct()] maps a variable in a source dataset to a target SDTM variable
 #' following controlled terminology recoding.
 #'
-#' @param raw_dataset The raw dataset.
-#' @param raw_variable The raw variable.
-#' @param target_sdtm_variable The target SDTM variable.
-#' @param target_dataset Target dataset. By default the same as `raw_dataset`.
-#' @param merge_to_topic_by If `target_dataset` is different than `raw_dataset`,
+#' @param raw_dat The raw dataset.
+#' @param raw_var The raw variable.
+#' @param tgt_var The target SDTM variable.
+#' @param tgt_dat Target dataset.
+#' @param id_vars If `target_dataset` is different than `raw_dataset`,
 #'   then this parameter defines keys to use in the join between `raw_dataset`
 #'   and `target_dataset`.
-#' @param study_ct Study controlled terminology specification.
-#' @param target_sdtm_variable_codelist_code A codelist code indicating which
+#' @param ct Study controlled terminology specification.
+#' @param cl A codelist code indicating which
 #'   subset of the controlled terminology to apply in the derivation.
 #'
 #' @returns The target dataset with the derived variable `target_sdtm_variable`.
@@ -248,11 +239,11 @@ assign_no_ct <- function(raw_dataset,
 #'   )
 #'
 #' assign_ct(
-#'   raw_dataset = md1,
-#'   raw_variable = "MDRTE",
-#'   study_ct = study_ct,
-#'   target_sdtm_variable = "CMROUTE",
-#'   target_sdtm_variable_codelist_code = "C66729"
+#'   raw_dat = md1,
+#'   raw_var = "MDRTE",
+#'   tgt_var = "CMROUTE",
+#'   ct = study_ct,
+#'   cl = "C66729"
 #'   )
 #'
 #' cm_inter <-
@@ -295,32 +286,31 @@ assign_no_ct <- function(raw_dataset,
 #'   )
 #'
 #' assign_ct(
-#'   raw_dataset = md1,
-#'   raw_variable = "MDRTE",
-#'   study_ct = study_ct,
-#'   target_sdtm_variable = "CMROUTE",
-#'   target_sdtm_variable_codelist_code = "C66729",
-#'   target_dataset = cm_inter,
-#'   merge_to_topic_by = c("oak_id","raw_source","patient_number")
+#'   raw_dat = md1,
+#'   raw_var = "MDRTE",
+#'   tgt_var = "CMROUTE",
+#'   tgt_dat = cm_inter,
+#'   ct = study_ct,
+#'   cl = "C66729"
 #'   )
 #'
 #'
 #' @export
 #' @rdname assign
-assign_ct <- function(raw_dataset,
-                      raw_variable,
-                      target_sdtm_variable,
-                      target_dataset = raw_dataset,
-                      merge_to_topic_by = NULL,
-                      study_ct = NULL,
-                      target_sdtm_variable_codelist_code = NULL) {
+assign_ct <- function(raw_dat,
+                      raw_var,
+                      tgt_var,
+                      tgt_dat = NULL,
+                      id_vars = oak_id_vars(),
+                      ct = NULL,
+                      cl = NULL) {
   sdtm_assign(
-    raw_dat = raw_dataset,
-    raw_var = raw_variable,
-    tgt_var = target_sdtm_variable,
-    tgt_dat = target_dataset,
-    by_var = merge_to_topic_by,
-    ct = study_ct,
-    cl = target_sdtm_variable_codelist_code
+    raw_dat = raw_dat,
+    raw_var = raw_var,
+    tgt_var = tgt_var,
+    tgt_dat = tgt_dat,
+    id_vars = id_vars,
+    ct = ct,
+    cl = cl
   )
 }

@@ -7,39 +7,39 @@
 \title{Derive an SDTM variable}
 \usage{
 assign_no_ct(
-  raw_dataset,
-  raw_variable,
-  target_sdtm_variable,
-  target_dataset = NULL,
-  merge_to_topic_by = NULL
+  raw_dat,
+  raw_var,
+  tgt_var,
+  tgt_dat = NULL,
+  id_vars = oak_id_vars()
 )
 
 assign_ct(
-  raw_dataset,
-  raw_variable,
-  target_sdtm_variable,
-  target_dataset = raw_dataset,
-  merge_to_topic_by = NULL,
-  study_ct = NULL,
-  target_sdtm_variable_codelist_code = NULL
+  raw_dat,
+  raw_var,
+  tgt_var,
+  tgt_dat = NULL,
+  id_vars = oak_id_vars(),
+  ct = NULL,
+  cl = NULL
 )
 }
 \arguments{
-\item{raw_dataset}{The raw dataset.}
+\item{raw_dat}{The raw dataset.}
 
-\item{raw_variable}{The raw variable.}
+\item{raw_var}{The raw variable.}
 
-\item{target_sdtm_variable}{The target SDTM variable.}
+\item{tgt_var}{The target SDTM variable.}
 
-\item{target_dataset}{Target dataset. By default the same as \code{raw_dataset}.}
+\item{tgt_dat}{Target dataset.}
 
-\item{merge_to_topic_by}{If \code{target_dataset} is different than \code{raw_dataset},
+\item{id_vars}{If \code{target_dataset} is different than \code{raw_dataset},
 then this parameter defines keys to use in the join between \code{raw_dataset}
 and \code{target_dataset}.}
 
-\item{study_ct}{Study controlled terminology specification.}
+\item{ct}{Study controlled terminology specification.}
 
-\item{target_sdtm_variable_codelist_code}{A codelist code indicating which
+\item{cl}{A codelist code indicating which
 subset of the controlled terminology to apply in the derivation.}
 }
 \value{
@@ -72,9 +72,9 @@ md1 <-
   )
 
 assign_no_ct(
-  raw_dataset = md1,
-  raw_variable = "MDIND",
-  target_sdtm_variable = "CMINDC",
+  raw_dat = md1,
+  raw_var = "MDIND",
+  tgt_var = "CMINDC",
   )
 
 cm_inter <-
@@ -117,11 +117,11 @@ cm_inter <-
   )
 
 assign_ct(
-  raw_dataset = md1,
-  raw_variable = "MDIND",
-  target_sdtm_variable = "CMINDC",
-  target_dataset = cm_inter,
-  merge_to_topic_by = c("oak_id","raw_source","patient_number")
+  raw_dat = md1,
+  raw_var = "MDIND",
+  tgt_var = "CMINDC",
+  tgt_dat = cm_inter,
+  id_vars = c("oak_id","raw_source","patient_number")
   )
 
 study_ct <-
@@ -196,11 +196,11 @@ md1 <-
   )
 
 assign_ct(
-  raw_dataset = md1,
-  raw_variable = "MDRTE",
-  study_ct = study_ct,
-  target_sdtm_variable = "CMROUTE",
-  target_sdtm_variable_codelist_code = "C66729"
+  raw_dat = md1,
+  raw_var = "MDRTE",
+  tgt_var = "CMROUTE",
+  ct = study_ct,
+  cl = "C66729"
   )
 
 cm_inter <-
@@ -243,13 +243,12 @@ cm_inter <-
   )
 
 assign_ct(
-  raw_dataset = md1,
-  raw_variable = "MDRTE",
-  study_ct = study_ct,
-  target_sdtm_variable = "CMROUTE",
-  target_sdtm_variable_codelist_code = "C66729",
-  target_dataset = cm_inter,
-  merge_to_topic_by = c("oak_id","raw_source","patient_number")
+  raw_dat = md1,
+  raw_var = "MDRTE",
+  tgt_var = "CMROUTE",
+  tgt_dat = cm_inter,
+  ct = study_ct,
+  cl = "C66729"
   )
 
 
