@@ -127,7 +127,7 @@ assert_ct <- function(ct) {
 #' @keywords internal
 ct_mappings <- function(ct, from = ct_vars("from"), to = ct_vars("to")) {
 
-  # TODO: Assertions and memoisation.
+  assert_ct(ct)
 
   cols <- c(to, from)
 
@@ -182,6 +182,7 @@ ct_map <-
            to = ct_vars("to")) {
 
     ct %||% return(x)
+    assert_ct(ct)
 
     cl <- cl %||% unique(ct[[ct_vars("cl")]])
     ct <- dplyr::filter(ct, .data[[ct_vars("cl")]] %in% cl)
