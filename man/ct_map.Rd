@@ -4,13 +4,7 @@
 \alias{ct_map}
 \title{Recode according to controlled terminology}
 \usage{
-ct_map(
-  x,
-  ct = NULL,
-  cl = NULL,
-  from = c("collected_value", "term_synonyms"),
-  to = "term_value"
-)
+ct_map(x, ct = NULL, cl = NULL, from = ct_vars("from"), to = ct_vars("to"))
 }
 \arguments{
 \item{x}{A character vector of terms to be recoded following a controlled

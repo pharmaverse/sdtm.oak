@@ -4,11 +4,7 @@
 \alias{ct_mappings}
 \title{Controlled terminology mappings}
 \usage{
-ct_mappings(
-  ct,
-  from = c("collected_value", "term_synonyms"),
-  to = "term_value"
-)
+ct_mappings(ct, from = ct_vars("from"), to = ct_vars("to"))
 }
 \arguments{
 \item{ct}{Controlled terminology specification as a
