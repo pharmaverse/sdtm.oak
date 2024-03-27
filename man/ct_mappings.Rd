@@ -32,13 +32,16 @@ two \code{from} columns, the first column indicated in \code{from} takes precede
 and only that mapping is retained in the controlled terminology map.
 }
 \examples{
-# example code
+# Read in a bundled controlled terminology spec example (ex. 01).
+(ct_01 <- read_ct_example("ct-01-cm"))
 
+# Generate mappings from the terminology specification.
+sdtm.oak:::ct_mappings(ct = ct_01)
 
-
-
-
-
+# Take a glimpse at those mappings where an actual recoding happens.
+sdtm.oak:::ct_mappings(ct = ct_01) |>
+  dplyr::filter(from != to) |>
+  print(n = 20)
 
 }
 \keyword{internal}

@@ -52,6 +52,42 @@ ct_vars <- function(set = c("all", "cl", "from", "to")) {
 
 }
 
+#' Assert a controlled terminology specification
+#'
+#' [assert_ct()] will check whether `ct` is a data frame and
+#' if it contains the variables: `r knitr::combine_words(ct_vars())`.
+#'
+#' @param ct A data frame to be asserted as a controlled terminology data set.
+#'
+#' @returns The function throws an error if `ct` is not a valid controlled
+#'   terminology data set; otherwise, `ct` is returned invisibly.
+#'
+#' @examples
+#' # If `ct` is a valid controlled terminology then it is returned invisibly.
+#' ct_01 <- read_ct_example("ct-01-cm")
+#' all.equal(ct_01, sdtm.oak:::assert_ct(ct_01))
+#'
+#' # A minimal set of variables needs to be present in `ct` for it to pass the
+#' # assertion; `sdtm.oak:::ct_vars()` defines their names.
+#' (req_vars <- sdtm.oak:::ct_vars())
+#'
+#' # Other (facultative) variables also present in the controlled terminology
+#' # example.
+#' (opt_vars <- setdiff(colnames(ct_01), req_vars))
+#'
+#' # With only the mandatory variables, the assertion still passes.
+#' assert_ct(ct_01[req_vars])
+#'
+#' # Not having the required variables results in an error.
+#' try(assert_ct(ct_01[opt_vars]))
+#'
+#' @keywords internal
+assert_ct <- function(ct) {
+
+  admiraldev::assert_data_frame(arg = ct, required_vars = rlang::syms(ct_vars()))
+  invisible(ct)
+}
+
 #' Controlled terminology mappings
 #'
 #' @description
@@ -76,13 +112,16 @@ ct_vars <- function(set = c("all", "cl", "from", "to")) {
 #'   `to`, indicating the mapping of values, one per row.
 #'
 #' @examples
-#' # example code
+#' # Read in a bundled controlled terminology spec example (ex. 01).
+#' (ct_01 <- read_ct_example("ct-01-cm"))
 #'
+#' # Generate mappings from the terminology specification.
+#' sdtm.oak:::ct_mappings(ct = ct_01)
 #'
-#'
-#'
-#'
-#'
+#' # Take a glimpse at those mappings where an actual recoding happens.
+#' sdtm.oak:::ct_mappings(ct = ct_01) |>
+#'   dplyr::filter(from != to) |>
+#'   print(n = 20)
 #'
 #' @importFrom rlang .data
 #' @keywords internal
@@ -175,12 +214,8 @@ ct_map <-
 #' @export
 read_ct <- function(file = stop("`file` must be specified")) {
 
-  # TODO: Until we have a more precise specification of the controlled
-  # terminology, we just read all columns as character. We assert nonetheless
-  # for the existence of the ct variables: `collected_value`, `term_synonyms` and
-  # `term_value` (provided by the helper `ct_vars()`).
   ct <- readr::read_csv(file = file, col_types = "c")
-  admiraldev::assert_data_frame(arg = ct, required_vars = rlang::syms(ct_vars()))
+  assert_ct(ct)
 
   ct
 }
