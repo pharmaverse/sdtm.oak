@@ -9,16 +9,6 @@ sdtm_hardcode <- function(raw_dat,
                           ct = NULL,
                           cl = NULL) {
 
-  admiraldev::assert_character_scalar(raw_var)
-  admiraldev::assert_character_scalar(tgt_var)
-  assertthat::assert_that(assertthat::is.scalar(tgt_val),
-                          msg = "`tgt_val` must be a scalar value.")
-  admiraldev::assert_character_vector(id_vars)
-  assertthat::assert_that(contains_oak_id_vars(id_vars),
-                          msg = "`id_vars` must include the oak id vars.")
-  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
-  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
-
   # Recode the hardcoded value following terminology.
   tgt_val <- ct_map(tgt_val, ct = ct, cl = cl)
 
@@ -120,6 +110,17 @@ hardcode_no_ct <- function(raw_dat,
                            tgt_val,
                            tgt_dat = NULL,
                            id_vars = oak_id_vars()) {
+
+  admiraldev::assert_character_scalar(raw_var)
+  admiraldev::assert_character_scalar(tgt_var)
+  assertthat::assert_that(assertthat::is.scalar(tgt_val),
+                          msg = "`tgt_val` must be a scalar value.")
+  admiraldev::assert_character_vector(id_vars)
+  assertthat::assert_that(contains_oak_id_vars(id_vars),
+                          msg = "`id_vars` must include the oak id vars.")
+  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
+
   sdtm_hardcode(
     raw_dat = raw_dat,
     raw_var = raw_var,
@@ -134,12 +135,24 @@ hardcode_no_ct <- function(raw_dat,
 #' @rdname harcode
 hardcode_ct <- function(raw_dat,
                         raw_var,
+                        ct,
+                        cl,
                         tgt_var,
                         tgt_val,
                         tgt_dat = NULL,
-                        id_vars = oak_id_vars(),
-                        ct,
-                        cl) {
+                        id_vars = oak_id_vars()
+                        ) {
+
+  admiraldev::assert_character_scalar(raw_var)
+  admiraldev::assert_character_scalar(tgt_var)
+  assertthat::assert_that(assertthat::is.scalar(tgt_val),
+                          msg = "`tgt_val` must be a scalar value.")
+  admiraldev::assert_character_vector(id_vars)
+  assertthat::assert_that(contains_oak_id_vars(id_vars),
+                          msg = "`id_vars` must include the oak id vars.")
+  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
+
   sdtm_hardcode(
     raw_dat = raw_dat,
     raw_var = raw_var,

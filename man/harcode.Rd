@@ -18,12 +18,12 @@ hardcode_no_ct(
 hardcode_ct(
   raw_dat,
   raw_var,
+  ct,
+  cl,
   tgt_var,
   tgt_val,
   tgt_dat = NULL,
-  id_vars = oak_id_vars(),
-  ct,
-  cl
+  id_vars = oak_id_vars()
 )
 }
 \arguments{

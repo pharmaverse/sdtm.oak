@@ -7,14 +7,6 @@ sdtm_assign <- function(raw_dat,
                         ct = NULL,
                         cl = NULL) {
 
-  admiraldev::assert_character_scalar(raw_var)
-  admiraldev::assert_character_scalar(tgt_var)
-  admiraldev::assert_character_vector(id_vars)
-  assertthat::assert_that(contains_oak_id_vars(id_vars),
-                          msg = "`id_vars` must include the oak id vars.")
-  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
-  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
-
   # Recode the raw variable following terminology.
   tgt_val <- ct_map(raw_dat[[raw_var]], ct = ct, cl = cl)
 
@@ -139,6 +131,15 @@ assign_no_ct <- function(raw_dat,
                          tgt_var,
                          tgt_dat = NULL,
                          id_vars = oak_id_vars()) {
+
+  admiraldev::assert_character_scalar(raw_var)
+  admiraldev::assert_character_scalar(tgt_var)
+  admiraldev::assert_character_vector(id_vars)
+  assertthat::assert_that(contains_oak_id_vars(id_vars),
+                          msg = "`id_vars` must include the oak id vars.")
+  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
+
   sdtm_assign(
     raw_dat = raw_dat,
     raw_var = raw_var,
@@ -158,6 +159,15 @@ assign_ct <- function(raw_dat,
                       cl,
                       tgt_dat = NULL,
                       id_vars = oak_id_vars()) {
+
+  admiraldev::assert_character_scalar(raw_var)
+  admiraldev::assert_character_scalar(tgt_var)
+  admiraldev::assert_character_vector(id_vars)
+  assertthat::assert_that(contains_oak_id_vars(id_vars),
+                          msg = "`id_vars` must include the oak id vars.")
+  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
+
   sdtm_assign(
     raw_dat = raw_dat,
     raw_var = raw_var,
