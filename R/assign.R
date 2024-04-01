@@ -36,24 +36,36 @@ sdtm_assign <- function(raw_dat,
 #' Derive an SDTM variable
 #'
 #' @description
-#' - [assign_no_ct()] maps a variable in a source dataset to a target SDTM
+#' - [assign_no_ct()] maps a variable in a raw dataset to a target SDTM
 #' variable that has no terminology restrictions.
 #'
-#' - [assign_ct()] maps a variable in a source dataset to a target SDTM variable
+#' - [assign_ct()] maps a variable in a raw dataset to a target SDTM variable
 #' following controlled terminology recoding.
 #'
-#' @param raw_dat The raw dataset.
-#' @param raw_var The raw variable.
-#' @param tgt_var The target SDTM variable.
-#' @param tgt_dat Target dataset.
-#' @param id_vars If `target_dataset` is different than `raw_dataset`,
-#'   then this parameter defines keys to use in the join between `raw_dataset`
-#'   and `target_dataset`.
-#' @param ct Study controlled terminology specification.
-#' @param cl A codelist code indicating which
-#'   subset of the controlled terminology to apply in the derivation.
+#' @param raw_dat The raw dataset (dataframe); must include the
+#'   variables passed in `id_vars` and `raw_var`.
+#' @param raw_var The raw variable: a single string indicating the name of the
+#'   raw variable in `raw_dat`.
+#' @param tgt_var The target SDTM variable: a single string indicating the name
+#'   of variable to be derived.
+#' @param ct Study controlled terminology specification: a dataframe with a
+#'   minimal set of columns, see [ct_vars()] for details.
+#' @param cl A code-list code indicating which subset of the controlled
+#'   terminology to apply in the derivation.
+#' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
+#'   the variables indicated in `id_vars`. This parameter is optional, see
+#'   section Value for how the output changes depending on this argument value.
+#' @param id_vars Key variables to be used in the join between the raw dataset
+#'   (`raw_dat`) and the target data set (`raw_dat`).
 #'
-#' @returns The target dataset with the derived variable `target_sdtm_variable`.
+#' @returns The returned data set depends on the value of `tgt_dat`:
+#' - If no target dataset is supplied, meaning that `tgt_dat` defaults to
+#' `NULL`, then the returned data set is `raw_dat` selected for the variables
+#' indicated in `id_vars` and a new extra column: the derived variable, as
+#' indicated in `tgt_var`.
+#' - If the target dataset is provided, then it is merged with the raw data set
+#' `raw_dat` by the variables indicated in `id_vars`, with a new column: the
+#' derived variable, as indicated in `tgt_var`.
 #'
 #' @examples
 #'
@@ -113,12 +125,16 @@ sdtm_assign <- function(raw_dat,
 #'     )
 #'   )
 #'
+#' # Controlled terminology specification
+#' (ct <- read_ct_example("ct-01-cm"))
+#'
 #' assign_ct(
 #'   raw_dat = md1,
 #'   raw_var = "MDIND",
 #'   tgt_var = "CMINDC",
-#'   tgt_dat = cm_inter,
-#'   id_vars = c("oak_id","raw_source","patient_number")
+#'   ct = ct,
+#'   cl = "C66729",
+#'   tgt_dat = cm_inter
 #'   )
 #'
 #' @name assign

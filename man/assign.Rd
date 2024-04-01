@@ -25,31 +25,45 @@ assign_ct(
 )
 }
 \arguments{
-\item{raw_dat}{The raw dataset.}
+\item{raw_dat}{The raw dataset (dataframe); must include the
+variables passed in \code{id_vars} and \code{raw_var}.}
 
-\item{raw_var}{The raw variable.}
+\item{raw_var}{The raw variable: a single string indicating the name of the
+raw variable in \code{raw_dat}.}
 
-\item{tgt_var}{The target SDTM variable.}
+\item{tgt_var}{The target SDTM variable: a single string indicating the name
+of variable to be derived.}
 
-\item{tgt_dat}{Target dataset.}
+\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
+the variables indicated in \code{id_vars}. This parameter is optional, see
+section Value for how the output changes depending on this argument value.}
 
-\item{id_vars}{If \code{target_dataset} is different than \code{raw_dataset},
-then this parameter defines keys to use in the join between \code{raw_dataset}
-and \code{target_dataset}.}
+\item{id_vars}{Key variables to be used in the join between the raw dataset
+(\code{raw_dat}) and the target data set (\code{raw_dat}).}
 
-\item{ct}{Study controlled terminology specification.}
+\item{ct}{Study controlled terminology specification: a dataframe with a
+minimal set of columns, see \code{\link[=ct_vars]{ct_vars()}} for details.}
 
-\item{cl}{A codelist code indicating which
-subset of the controlled terminology to apply in the derivation.}
+\item{cl}{A code-list code indicating which subset of the controlled
+terminology to apply in the derivation.}
 }
 \value{
-The target dataset with the derived variable \code{target_sdtm_variable}.
+The returned data set depends on the value of \code{tgt_dat}:
+\itemize{
+\item If no target dataset is supplied, meaning that \code{tgt_dat} defaults to
+\code{NULL}, then the returned data set is \code{raw_dat} selected for the variables
+indicated in \code{id_vars} and a new extra column: the derived variable, as
+indicated in \code{tgt_var}.
+\item If the target dataset is provided, then it is merged with the raw data set
+\code{raw_dat} by the variables indicated in \code{id_vars}, with a new column: the
+derived variable, as indicated in \code{tgt_var}.
+}
 }
 \description{
 \itemize{
-\item \code{\link[=assign_no_ct]{assign_no_ct()}} maps a variable in a source dataset to a target SDTM
+\item \code{\link[=assign_no_ct]{assign_no_ct()}} maps a variable in a raw dataset to a target SDTM
 variable that has no terminology restrictions.
-\item \code{\link[=assign_ct]{assign_ct()}} maps a variable in a source dataset to a target SDTM variable
+\item \code{\link[=assign_ct]{assign_ct()}} maps a variable in a raw dataset to a target SDTM variable
 following controlled terminology recoding.
 }
 }
@@ -111,12 +125,16 @@ cm_inter <-
     )
   )
 
+# Controlled terminology specification
+(ct <- read_ct_example("ct-01-cm"))
+
 assign_ct(
   raw_dat = md1,
   raw_var = "MDIND",
   tgt_var = "CMINDC",
-  tgt_dat = cm_inter,
-  id_vars = c("oak_id","raw_source","patient_number")
+  ct = ct,
+  cl = "C66729",
+  tgt_dat = cm_inter
   )
 
 }
