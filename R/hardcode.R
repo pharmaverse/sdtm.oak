@@ -1,13 +1,60 @@
+#' Derive an SDTM variable with a hardcoded value
+#'
+#' @description
+#' [sdtm_hardcode()] is an internal function packing the same functionality as
+#' [hardcode_no_ct()] and [hardcode_ct()] together but aimed at developers only.
+#' As a user please use either [hardcode_no_ct()] or [hardcode_ct()].
+#'
+#' @param raw_dat The raw dataset (dataframe); must include the
+#'   variables passed in `id_vars` and `raw_var`.
+#' @param raw_var The raw variable: a single string indicating the name of the
+#'   raw variable in `raw_dat`.
+#' @param tgt_var The target SDTM variable: a single string indicating the name
+#'   of variable to be derived.
+#' @param tgt_val The target SDTM value to be hardcoded into the variable
+#'   indicated in `tgt_var`.
+#' @param ct Study controlled terminology specification: a dataframe with a
+#'   minimal set of columns, see [ct_vars()] for details. This parameter is
+#'   optional, if left as `NULL` no controlled terminology recoding is applied.
+#' @param cl A code-list code indicating which subset of the controlled
+#'   terminology to apply in the derivation. This parameter is optional, if left
+#'   as `NULL`, all possible recodings in `ct` are attempted.
+#' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
+#'   the variables indicated in `id_vars`. This parameter is optional, see
+#'   section Value for how the output changes depending on this argument value.
+#' @param id_vars Key variables to be used in the join between the raw dataset
+#'   (`raw_dat`) and the target data set (`raw_dat`).
+#'
+#' @returns The returned data set depends on the value of `tgt_dat`:
+#' - If no target dataset is supplied, meaning that `tgt_dat` defaults to
+#' `NULL`, then the returned data set is `raw_dat`, selected for the variables
+#' indicated in `id_vars`, and a new extra column: the derived variable, as
+#' indicated in `tgt_var`.
+#' - If the target dataset is provided, then it is merged with the raw data set
+#' `raw_dat` by the variables indicated in `id_vars`, with a new column: the
+#' derived variable, as indicated in `tgt_var`.
+#'
 #' @importFrom rlang :=
 #' @keywords internal
 sdtm_hardcode <- function(raw_dat,
                           raw_var,
                           tgt_var,
                           tgt_val,
-                          tgt_dat = NULL,
-                          id_vars = oak_id_vars(),
                           ct = NULL,
-                          cl = NULL) {
+                          cl = NULL,
+                          tgt_dat = NULL,
+                          id_vars = oak_id_vars()) {
+
+  admiraldev::assert_character_scalar(raw_var)
+  admiraldev::assert_character_scalar(tgt_var)
+  admiraldev::assert_character_scalar(tgt_val)
+  admiraldev::assert_character_vector(id_vars)
+  assertthat::assert_that(contains_oak_id_vars(id_vars),
+                          msg = "`id_vars` must include the oak id vars.")
+  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
+  assert_ct(ct, optional = TRUE)
+  assert_cl(ct = ct, cl = cl, optional = TRUE)
 
   # Recode the hardcoded value following terminology.
   tgt_val <- ct_map(tgt_val, ct = ct, cl = cl)
@@ -44,22 +91,37 @@ sdtm_hardcode <- function(raw_dat,
 #' - [hardcode_ct()] maps a hardcoded value to a target SDTM variable with
 #' controlled terminology recoding.
 #'
-#' @param raw_dat The raw dataset.
-#' @param raw_var The raw variable.
-#' @param tgt_var The target SDTM variable.
-#' @param tgt_val Hardcoded value.
-#' @param tgt_dat Target dataset. By default the same as `raw_dataset`.
-#' @param id_vars If `target_dataset` is different than `raw_dataset`,
-#'   then this parameter defines keys to use in the join between `raw_dataset`
-#'   and `target_dataset`.
-#' @param ct Study controlled terminology specification.
-#' @param cl A codelist code indicating which
-#'   subset of the controlled terminology to apply in the derivation.
+#' @param raw_dat The raw dataset (dataframe); must include the
+#'   variables passed in `id_vars` and `raw_var`.
+#' @param raw_var The raw variable: a single string indicating the name of the
+#'   raw variable in `raw_dat`.
+#' @param tgt_var The target SDTM variable: a single string indicating the name
+#'   of variable to be derived.
+#' @param tgt_val The target SDTM value to be hardcoded into the variable
+#'   indicated in `tgt_var`.
+#' @param ct Study controlled terminology specification: a dataframe with a
+#'   minimal set of columns, see [ct_vars()] for details. This parameter is
+#'   optional, if left as `NULL` no controlled terminology recoding is applied.
+#' @param cl A code-list code indicating which subset of the controlled
+#'   terminology to apply in the derivation. This parameter is optional, if left
+#'   as `NULL`, all possible recodings in `ct` are attempted.
+#' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
+#'   the variables indicated in `id_vars`. This parameter is optional, see
+#'   section Value for how the output changes depending on this argument value.
+#' @param id_vars Key variables to be used in the join between the raw dataset
+#'   (`raw_dat`) and the target data set (`raw_dat`).
 #'
-#' @returns The target dataset with the derived variable `target_sdtm_variable`.
+#' @returns The returned data set depends on the value of `tgt_dat`:
+#' - If no target dataset is supplied, meaning that `tgt_dat` defaults to
+#' `NULL`, then the returned data set is `raw_dat`, selected for the variables
+#' indicated in `id_vars`, and a new extra column: the derived variable, as
+#' indicated in `tgt_var`.
+#' - If the target dataset is provided, then it is merged with the raw data set
+#' `raw_dat` by the variables indicated in `id_vars`, with a new column: the
+#' derived variable, as indicated in `tgt_var`.
 #'
 #' @examples
-#' MD1 <-
+#' md1 <-
 #'   tibble::tribble(
 #'     ~oak_id, ~raw_source, ~patient_number, ~MDRAW,
 #'     1L, "MD1", 101L, "BABY ASPIRIN",
@@ -71,13 +133,13 @@ sdtm_hardcode <- function(raw_dat,
 #' # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
 #' # hardcoded value "GENERAL CONCOMITANT MEDICATIONS".
 #' hardcode_no_ct(
-#'   raw_dat = MD1,
+#'   raw_dat = md1,
 #'   raw_var = "MDRAW",
 #'   tgt_var = "CMCAT",
 #'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS"
 #' )
 #'
-#' CM_INTER <-
+#' cm_inter <-
 #'   tibble::tribble(
 #'     ~oak_id, ~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
 #'     1L, "MD1", 101L, "BABY ASPIRIN", NA,
@@ -91,13 +153,28 @@ sdtm_hardcode <- function(raw_dat,
 #' # hardcoded value "GENERAL CONCOMITANT MEDICATIONS" with a prior join to
 #' # `target_dataset`.
 #' hardcode_no_ct(
-#'   raw_dat = MD1,
+#'   raw_dat = md1,
 #'   raw_var = "MDRAW",
 #'   tgt_var = "CMCAT",
 #'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
-#'   tgt_dat = CM_INTER,
-#'   id_vars = c("oak_id", "raw_source", "patient_number")
+#'   tgt_dat = cm_inter
 #' )
+#'
+#' # Controlled terminology specification
+#' (ct <- read_ct_example("ct-01-cm"))
+#'
+#' # Hardcoding of `CMCAT` with the value `"GENERAL CONCOMITANT MEDICATIONS"`
+#' # involving terminology recoding. `NA` values in `MDRAW` are preserved in
+#' # `CMCAT`.
+#' hardcode_ct(
+#'   raw_dat = md1,
+#'   raw_var = "MDRAW",
+#'   tgt_var = "CMCAT",
+#'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
+#'   ct = ct,
+#'   cl = "C66729",
+#'   tgt_dat = cm_inter
+#'   )
 #'
 #' @name harcode
 NULL
@@ -135,10 +212,10 @@ hardcode_no_ct <- function(raw_dat,
 #' @rdname harcode
 hardcode_ct <- function(raw_dat,
                         raw_var,
-                        ct,
-                        cl,
                         tgt_var,
                         tgt_val,
+                        ct,
+                        cl,
                         tgt_dat = NULL,
                         id_vars = oak_id_vars()
                         ) {
@@ -153,15 +230,18 @@ hardcode_ct <- function(raw_dat,
   admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
+  assert_ct(ct, optional = FALSE)
+  assert_cl(ct = ct, cl = cl, optional = FALSE)
+
   sdtm_hardcode(
     raw_dat = raw_dat,
     raw_var = raw_var,
     tgt_var = tgt_var,
     tgt_val = tgt_val,
-    tgt_dat = tgt_dat,
-    id_vars = id_vars,
     ct = ct,
-    cl = cl
+    cl = cl,
+    tgt_dat = tgt_dat,
+    id_vars = id_vars
   )
 }
 

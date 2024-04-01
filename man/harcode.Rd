@@ -18,36 +18,53 @@ hardcode_no_ct(
 hardcode_ct(
   raw_dat,
   raw_var,
-  ct,
-  cl,
   tgt_var,
   tgt_val,
+  ct,
+  cl,
   tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
 }
 \arguments{
-\item{raw_dat}{The raw dataset.}
+\item{raw_dat}{The raw dataset (dataframe); must include the
+variables passed in \code{id_vars} and \code{raw_var}.}
 
-\item{raw_var}{The raw variable.}
+\item{raw_var}{The raw variable: a single string indicating the name of the
+raw variable in \code{raw_dat}.}
 
-\item{tgt_var}{The target SDTM variable.}
+\item{tgt_var}{The target SDTM variable: a single string indicating the name
+of variable to be derived.}
 
-\item{tgt_val}{Hardcoded value.}
+\item{tgt_val}{The target SDTM value to be hardcoded into the variable
+indicated in \code{tgt_var}.}
 
-\item{tgt_dat}{Target dataset. By default the same as \code{raw_dataset}.}
+\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
+the variables indicated in \code{id_vars}. This parameter is optional, see
+section Value for how the output changes depending on this argument value.}
 
-\item{id_vars}{If \code{target_dataset} is different than \code{raw_dataset},
-then this parameter defines keys to use in the join between \code{raw_dataset}
-and \code{target_dataset}.}
+\item{id_vars}{Key variables to be used in the join between the raw dataset
+(\code{raw_dat}) and the target data set (\code{raw_dat}).}
 
-\item{ct}{Study controlled terminology specification.}
+\item{ct}{Study controlled terminology specification: a dataframe with a
+minimal set of columns, see \code{\link[=ct_vars]{ct_vars()}} for details. This parameter is
+optional, if left as \code{NULL} no controlled terminology recoding is applied.}
 
-\item{cl}{A codelist code indicating which
-subset of the controlled terminology to apply in the derivation.}
+\item{cl}{A code-list code indicating which subset of the controlled
+terminology to apply in the derivation. This parameter is optional, if left
+as \code{NULL}, all possible recodings in \code{ct} are attempted.}
 }
 \value{
-The target dataset with the derived variable \code{target_sdtm_variable}.
+The returned data set depends on the value of \code{tgt_dat}:
+\itemize{
+\item If no target dataset is supplied, meaning that \code{tgt_dat} defaults to
+\code{NULL}, then the returned data set is \code{raw_dat}, selected for the variables
+indicated in \code{id_vars}, and a new extra column: the derived variable, as
+indicated in \code{tgt_var}.
+\item If the target dataset is provided, then it is merged with the raw data set
+\code{raw_dat} by the variables indicated in \code{id_vars}, with a new column: the
+derived variable, as indicated in \code{tgt_var}.
+}
 }
 \description{
 \itemize{
@@ -58,7 +75,7 @@ controlled terminology recoding.
 }
 }
 \examples{
-MD1 <-
+md1 <-
   tibble::tribble(
     ~oak_id, ~raw_source, ~patient_number, ~MDRAW,
     1L, "MD1", 101L, "BABY ASPIRIN",
@@ -70,13 +87,13 @@ MD1 <-
 # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
 # hardcoded value "GENERAL CONCOMITANT MEDICATIONS".
 hardcode_no_ct(
-  raw_dat = MD1,
+  raw_dat = md1,
   raw_var = "MDRAW",
   tgt_var = "CMCAT",
   tgt_val = "GENERAL CONCOMITANT MEDICATIONS"
 )
 
-CM_INTER <-
+cm_inter <-
   tibble::tribble(
     ~oak_id, ~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
     1L, "MD1", 101L, "BABY ASPIRIN", NA,
@@ -90,12 +107,27 @@ CM_INTER <-
 # hardcoded value "GENERAL CONCOMITANT MEDICATIONS" with a prior join to
 # `target_dataset`.
 hardcode_no_ct(
-  raw_dat = MD1,
+  raw_dat = md1,
   raw_var = "MDRAW",
   tgt_var = "CMCAT",
   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
-  tgt_dat = CM_INTER,
-  id_vars = c("oak_id", "raw_source", "patient_number")
+  tgt_dat = cm_inter
 )
+
+# Controlled terminology specification
+(ct <- read_ct_example("ct-01-cm"))
+
+# Hardcoding of `CMCAT` with the value `"GENERAL CONCOMITANT MEDICATIONS"`
+# involving terminology recoding. `NA` values in `MDRAW` are preserved in
+# `CMCAT`.
+hardcode_ct(
+  raw_dat = md1,
+  raw_var = "MDRAW",
+  tgt_var = "CMCAT",
+  tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
+  ct = ct,
+  cl = "C66729",
+  tgt_dat = cm_inter
+  )
 
 }
