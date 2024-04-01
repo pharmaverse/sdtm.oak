@@ -297,6 +297,13 @@ ct_map <-
 #' @returns A [tibble][tibble::tibble-package] with a controlled terminology
 #'   specification.
 #'
+#' @examples
+#' # Get the local path to one of the controlled terminology example files.
+#' path <- ct_example("ct-01-cm")
+#'
+#' # Import it to R.
+#' read_ct(file = path)
+#'
 #' @export
 read_ct <- function(file = stop("`file` must be specified")) {
   ct <- readr::read_csv(file = file, col_types = "c")

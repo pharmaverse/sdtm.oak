@@ -23,3 +23,11 @@ specification.
 \code{\link[=read_ct]{read_ct()}} imports a controlled terminology specification data set as a
 \link[tibble:tibble-package]{tibble}.
 }
+\examples{
+# Get the local path to one of the controlled terminology example files.
+path <- ct_example("ct-01-cm")
+
+# Import it to R.
+read_ct(file = path)
+
+}
