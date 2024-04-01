@@ -31,10 +31,10 @@ all.equal(ct_01, sdtm.oak:::assert_ct(ct_01))
 (opt_vars <- setdiff(colnames(ct_01), req_vars))
 
 # With only the mandatory variables, the assertion still passes.
-assert_ct(ct_01[req_vars])
+sdtm.oak:::assert_ct(ct_01[req_vars])
 
 # Not having the required variables results in an error.
-try(assert_ct(ct_01[opt_vars]))
+try(sdtm.oak:::assert_ct(ct_01[opt_vars]))
 
 }
 \keyword{internal}
