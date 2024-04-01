@@ -129,7 +129,19 @@ assert_ct <- function(ct, optional = FALSE) {
 #'   invisibly.
 #'
 #' @examples
-#' # example code
+#' # Load a controlled terminology example.
+#' (ct <- read_ct_example("ct-01-cm"))
+#'
+#' # Should work fine.
+#' sdtm.oak:::assert_cl(ct = ct, cl = "C71113")
+#'
+#' # In certain cases, you might allow `cl` to be `NULL` as to indicate absence,
+#' # in that case, set `optional` to `TRUE` to make `assert_cl()` more
+#' # forgiving.
+#' sdtm.oak:::assert_cl(ct = ct, cl = NULL, optional = TRUE)
+#'
+#' # Otherwise it would err.
+#' try(sdtm.oak:::assert_cl(ct = ct, cl = NULL, optional = FALSE))
 #'
 #' @keywords internal
 assert_cl <- function(ct, cl, optional = FALSE) {
