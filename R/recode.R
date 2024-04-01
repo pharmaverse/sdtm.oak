@@ -19,30 +19,6 @@ index_for_recode <- function(x, from) {
   match(x, from)
 }
 
-#' Are values to be recoded?
-#'
-#' `are_to_recode` is a helper function designed to determine if any values
-#' in a vector `x` match the specified `from` values, indicating they are
-#' candidates for recoding.
-#'
-#' @param x A vector of values that will be checked against the `from` vector.
-#' @param from A vector of values that `x` will be checked for matches against.
-#' @return A logical vector of the same length as `x`, where `TRUE` indicates
-#'         that the corresponding value in `x` matches a value in `from` and
-#'         should be recoded, and `FALSE` otherwise. If `x` is empty, returns
-#'         an empty logical vector. This function is intended for internal use
-#'         and optimization in data transformation processes.
-#' @keywords internal
-#' @examples
-#' sdtm.oak:::are_to_recode(x = 1:5, from = c(2, 4))
-#'
-#' sdtm.oak:::are_to_recode(letters[1:3], from = c("a", "c"))
-#'
-#' @keywords internal
-are_to_recode <- function(x, from) {
-  !is.na(index_for_recode(x, from))
-}
-
 #' Recode values
 #'
 #' [recode()] recodes values in `x` by matching elements in `from` onto values
