@@ -31,7 +31,6 @@
 #' @keywords internal
 #' @export
 ct_vars <- function(set = c("all", "cl", "from", "to")) {
-
   admiraldev::assert_character_vector(set)
 
   set <- match.arg(set)
@@ -39,18 +38,21 @@ ct_vars <- function(set = c("all", "cl", "from", "to")) {
   from_vars <- c("collected_value", "term_synonyms")
   to_var <- "term_value"
 
-  if (identical(set, "all"))
+  if (identical(set, "all")) {
     return(c(cl_var, from_vars, to_var))
+  }
 
-  if (identical(set, "cl"))
+  if (identical(set, "cl")) {
     return(cl_var)
+  }
 
-  if (identical(set, "from"))
+  if (identical(set, "from")) {
     return(from_vars)
+  }
 
-  if (identical(set, "to"))
+  if (identical(set, "to")) {
     return(to_var)
-
+  }
 }
 
 #' Assert a controlled terminology specification
@@ -90,7 +92,6 @@ ct_vars <- function(set = c("all", "cl", "from", "to")) {
 #'
 #' @keywords internal
 assert_ct <- function(ct, optional = FALSE) {
-
   admiraldev::assert_data_frame(
     arg = ct,
     required_vars = rlang::syms(ct_vars()),
@@ -130,10 +131,8 @@ assert_ct <- function(ct, optional = FALSE) {
 #' @examples
 #' # example code
 #'
-#'
 #' @keywords internal
 assert_cl <- function(ct, cl, optional = FALSE) {
-
   if (!is.null(cl)) {
     admiraldev::assert_character_scalar(cl)
   }
@@ -201,7 +200,6 @@ assert_cl <- function(ct, cl, optional = FALSE) {
 #' @importFrom rlang .data
 #' @keywords internal
 ct_mappings <- function(ct, from = ct_vars("from"), to = ct_vars("to")) {
-
   assert_ct(ct)
 
   cols <- c(to, from)
@@ -209,9 +207,11 @@ ct_mappings <- function(ct, from = ct_vars("from"), to = ct_vars("to")) {
   ct_mappings <-
     ct |>
     dplyr::mutate(to = !!rlang::sym(to)) |>
-    tidyr::pivot_longer(cols = dplyr::all_of(cols),
-                        values_to = "from",
-                        names_to = "type") |>
+    tidyr::pivot_longer(
+      cols = dplyr::all_of(cols),
+      values_to = "from",
+      names_to = "type"
+    ) |>
     dplyr::select(c("type", "from", "to")) |>
     dplyr::mutate(type = factor(.data$type, levels = cols)) |>
     dplyr::arrange(.data$type) |>
@@ -253,9 +253,8 @@ ct_map <-
   function(x,
            ct = NULL,
            cl = NULL,
-           from =  ct_vars("from"),
+           from = ct_vars("from"),
            to = ct_vars("to")) {
-
     ct %||% return(x)
     assert_ct(ct)
 
@@ -269,7 +268,6 @@ ct_map <-
       to = mappings$to,
       .no_match = toupper(x)
     )
-
   }
 
 #' Read in a controlled terminology
@@ -289,7 +287,6 @@ ct_map <-
 #'
 #' @export
 read_ct <- function(file = stop("`file` must be specified")) {
-
   ct <- readr::read_csv(file = file, col_types = "c")
   assert_ct(ct)
 
@@ -341,7 +338,6 @@ ct_example <- function(example) {
       ),
       call. = FALSE
     )
-
   } else {
     local_path <-
       system.file(path, package = "sdtm.oak", mustWork = TRUE)
@@ -372,7 +368,6 @@ ct_example <- function(example) {
 #'
 #' @export
 read_ct_example <- function(example) {
-
   if (missing(example)) {
     return(ct_example())
   } else {
@@ -381,5 +376,4 @@ read_ct_example <- function(example) {
 
   path <- ct_example(example)
   read_ct(file = path)
-
 }

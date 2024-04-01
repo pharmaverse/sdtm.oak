@@ -44,13 +44,13 @@ sdtm_hardcode <- function(raw_dat,
                           cl = NULL,
                           tgt_dat = NULL,
                           id_vars = oak_id_vars()) {
-
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   admiraldev::assert_character_scalar(tgt_val)
   admiraldev::assert_character_vector(id_vars)
   assertthat::assert_that(contains_oak_id_vars(id_vars),
-                          msg = "`id_vars` must include the oak id vars.")
+    msg = "`id_vars` must include the oak id vars."
+  )
   admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
   assert_ct(ct, optional = TRUE)
@@ -174,7 +174,7 @@ sdtm_hardcode <- function(raw_dat,
 #'   ct = ct,
 #'   cl = "C66729",
 #'   tgt_dat = cm_inter
-#'   )
+#' )
 #'
 #' @name harcode
 NULL
@@ -187,14 +187,15 @@ hardcode_no_ct <- function(raw_dat,
                            tgt_val,
                            tgt_dat = NULL,
                            id_vars = oak_id_vars()) {
-
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   assertthat::assert_that(assertthat::is.scalar(tgt_val),
-                          msg = "`tgt_val` must be a scalar value.")
+    msg = "`tgt_val` must be a scalar value."
+  )
   admiraldev::assert_character_vector(id_vars)
   assertthat::assert_that(contains_oak_id_vars(id_vars),
-                          msg = "`id_vars` must include the oak id vars.")
+    msg = "`id_vars` must include the oak id vars."
+  )
   admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
@@ -210,38 +211,41 @@ hardcode_no_ct <- function(raw_dat,
 
 #' @export
 #' @rdname harcode
-hardcode_ct <- function(raw_dat,
-                        raw_var,
-                        tgt_var,
-                        tgt_val,
-                        ct,
-                        cl,
-                        tgt_dat = NULL,
-                        id_vars = oak_id_vars()
-                        ) {
+hardcode_ct <-
+  function(raw_dat,
+           raw_var,
+           tgt_var,
+           tgt_val,
+           ct,
+           cl,
+           tgt_dat = NULL,
+           id_vars = oak_id_vars()) {
+    admiraldev::assert_character_scalar(raw_var)
+    admiraldev::assert_character_scalar(tgt_var)
+    assertthat::assert_that(assertthat::is.scalar(tgt_val),
+      msg = "`tgt_val` must be a scalar value."
+    )
+    admiraldev::assert_character_vector(id_vars)
+    assertthat::assert_that(contains_oak_id_vars(id_vars),
+      msg = "`id_vars` must include the oak id vars."
+    )
+    admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+    admiraldev::assert_data_frame(tgt_dat,
+      required_vars = rlang::syms(id_vars),
+      optional = TRUE
+    )
 
-  admiraldev::assert_character_scalar(raw_var)
-  admiraldev::assert_character_scalar(tgt_var)
-  assertthat::assert_that(assertthat::is.scalar(tgt_val),
-                          msg = "`tgt_val` must be a scalar value.")
-  admiraldev::assert_character_vector(id_vars)
-  assertthat::assert_that(contains_oak_id_vars(id_vars),
-                          msg = "`id_vars` must include the oak id vars.")
-  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
-  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
+    assert_ct(ct, optional = FALSE)
+    assert_cl(ct = ct, cl = cl, optional = FALSE)
 
-  assert_ct(ct, optional = FALSE)
-  assert_cl(ct = ct, cl = cl, optional = FALSE)
-
-  sdtm_hardcode(
-    raw_dat = raw_dat,
-    raw_var = raw_var,
-    tgt_var = tgt_var,
-    tgt_val = tgt_val,
-    ct = ct,
-    cl = cl,
-    tgt_dat = tgt_dat,
-    id_vars = id_vars
-  )
-}
-
+    sdtm_hardcode(
+      raw_dat = raw_dat,
+      raw_var = raw_var,
+      tgt_var = tgt_var,
+      tgt_val = tgt_val,
+      ct = ct,
+      cl = cl,
+      tgt_dat = tgt_dat,
+      id_vars = id_vars
+    )
+  }

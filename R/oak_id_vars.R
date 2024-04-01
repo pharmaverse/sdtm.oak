@@ -19,10 +19,8 @@
 #'
 #' @keywords internal
 oak_id_vars <- function(extra_vars = NULL) {
-
   admiraldev::assert_character_vector(extra_vars, optional = TRUE)
   unique(c("oak_id", "raw_source", "patient_number", extra_vars))
-
 }
 
 #' Does a vector contain the raw dataset key variables?

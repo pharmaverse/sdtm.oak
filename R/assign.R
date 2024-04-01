@@ -42,12 +42,12 @@ sdtm_assign <- function(raw_dat,
                         cl = NULL,
                         tgt_dat = NULL,
                         id_vars = oak_id_vars()) {
-
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   admiraldev::assert_character_vector(id_vars)
   assertthat::assert_that(contains_oak_id_vars(id_vars),
-                          msg = "`id_vars` must include the oak id vars.")
+    msg = "`id_vars` must include the oak id vars."
+  )
   admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
   assert_ct(ct, optional = TRUE)
@@ -76,7 +76,6 @@ sdtm_assign <- function(raw_dat,
     }
 
   der_dat
-
 }
 
 #' Derive an SDTM variable
@@ -124,9 +123,10 @@ sdtm_assign <- function(raw_dat,
 #'     oak_id = 1:14,
 #'     raw_source = "MD1",
 #'     patient_number = 101:114,
-#'     MDIND = c( "NAUSEA", "NAUSEA", "ANEMIA", "NAUSEA", "PYREXIA",
-#'     "VOMITINGS", "DIARHHEA", "COLD",
-#'     "FEVER", "LEG PAIN", "FEVER", "COLD", "COLD", "PAIN"
+#'     MDIND = c(
+#'       "NAUSEA", "NAUSEA", "ANEMIA", "NAUSEA", "PYREXIA",
+#'       "VOMITINGS", "DIARHHEA", "COLD",
+#'       "FEVER", "LEG PAIN", "FEVER", "COLD", "COLD", "PAIN"
 #'     )
 #'   )
 #'
@@ -134,7 +134,7 @@ sdtm_assign <- function(raw_dat,
 #'   raw_dat = md1,
 #'   raw_var = "MDIND",
 #'   tgt_var = "CMINDC",
-#'   )
+#' )
 #'
 #' cm_inter <-
 #'   tibble::tibble(
@@ -185,7 +185,7 @@ sdtm_assign <- function(raw_dat,
 #'   ct = ct,
 #'   cl = "C66729",
 #'   tgt_dat = cm_inter
-#'   )
+#' )
 #'
 #' @name assign
 NULL
@@ -198,12 +198,12 @@ assign_no_ct <- function(raw_dat,
                          tgt_var,
                          tgt_dat = NULL,
                          id_vars = oak_id_vars()) {
-
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   admiraldev::assert_character_vector(id_vars)
   assertthat::assert_that(contains_oak_id_vars(id_vars),
-                          msg = "`id_vars` must include the oak id vars.")
+    msg = "`id_vars` must include the oak id vars."
+  )
   admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
@@ -226,12 +226,12 @@ assign_ct <- function(raw_dat,
                       cl,
                       tgt_dat = NULL,
                       id_vars = oak_id_vars()) {
-
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   admiraldev::assert_character_vector(id_vars)
   assertthat::assert_that(contains_oak_id_vars(id_vars),
-                          msg = "`id_vars` must include the oak id vars.")
+    msg = "`id_vars` must include the oak id vars."
+  )
   admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 

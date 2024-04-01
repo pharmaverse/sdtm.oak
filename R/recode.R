@@ -40,7 +40,6 @@ index_for_recode <- function(x, from) {
 #'
 #' @keywords internal
 are_to_recode <- function(x, from) {
-  # match(x, from, nomatch = 0) != 0
   !is.na(index_for_recode(x, from))
 }
 
@@ -78,12 +77,12 @@ are_to_recode <- function(x, from) {
 #' )
 #'
 #' @keywords internal
-recode <- function(x,
-                    from = unique(na.omit(x)),
-                    to = from,
-                    .no_match = x,
-                    .na = NA) {
-  # to <- rlang::rep_along(x, to)
+recode <- function(
+    x,
+    from = unique(na.omit(x)),
+    to = from,
+    .no_match = x,
+    .na = NA) {
   to <- vctrs::vec_recycle(to, length(from))
   index <- index_for_recode(x, from)
   y <- ifelse(!is.na(index), to[index], .no_match)
