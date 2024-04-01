@@ -60,8 +60,8 @@ sdtm_assign <- function(raw_dat,
 #'
 #' @returns The returned data set depends on the value of `tgt_dat`:
 #' - If no target dataset is supplied, meaning that `tgt_dat` defaults to
-#' `NULL`, then the returned data set is `raw_dat` selected for the variables
-#' indicated in `id_vars` and a new extra column: the derived variable, as
+#' `NULL`, then the returned data set is `raw_dat`, selected for the variables
+#' indicated in `id_vars`, and a new extra column: the derived variable, as
 #' indicated in `tgt_var`.
 #' - If the target dataset is provided, then it is merged with the raw data set
 #' `raw_dat` by the variables indicated in `id_vars`, with a new column: the

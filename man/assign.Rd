@@ -51,8 +51,8 @@ terminology to apply in the derivation.}
 The returned data set depends on the value of \code{tgt_dat}:
 \itemize{
 \item If no target dataset is supplied, meaning that \code{tgt_dat} defaults to
-\code{NULL}, then the returned data set is \code{raw_dat} selected for the variables
-indicated in \code{id_vars} and a new extra column: the derived variable, as
+\code{NULL}, then the returned data set is \code{raw_dat}, selected for the variables
+indicated in \code{id_vars}, and a new extra column: the derived variable, as
 indicated in \code{tgt_var}.
 \item If the target dataset is provided, then it is merged with the raw data set
 \code{raw_dat} by the variables indicated in \code{id_vars}, with a new column: the
