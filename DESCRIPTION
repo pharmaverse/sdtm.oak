@@ -44,7 +44,9 @@ Imports:
     rlang (>= 0.4.4),
     stringr (>= 1.4.0),
     tibble,
-    vctrs
+    vctrs,
+    readr,
+    glue
 Suggests:
     knitr,
     rmarkdown,
