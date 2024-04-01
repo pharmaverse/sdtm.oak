@@ -74,6 +74,19 @@ test_that("assert_ct() works as expected", {
   expect_error(assert_ct(ct01, optional = FALSE))
   expect_error(assert_ct(ct01, optional = TRUE))
 
+  ct_empty <-
+    data.frame(
+      codelist_code = character(),
+      collected_value = character(),
+      term_synonyms = character(),
+      term_value = character(),
+      stringsAsFactors = FALSE
+    )
+
+  # `ct` cannot be empty as that means that there are no mappings.
+  expect_error(assert_ct(ct_empty, optional = TRUE))
+  expect_error(assert_ct(ct_empty, optional = FALSE))
+
 })
 
 test_that("assert_cl() works as expected", {
