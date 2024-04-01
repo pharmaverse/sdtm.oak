@@ -29,6 +29,7 @@
 #' sdtm.oak:::ct_vars("to")
 #'
 #' @keywords internal
+#' @export
 ct_vars <- function(set = c("all", "cl", "from", "to")) {
 
   admiraldev::assert_character_vector(set)
@@ -76,10 +77,10 @@ ct_vars <- function(set = c("all", "cl", "from", "to")) {
 #' (opt_vars <- setdiff(colnames(ct_01), req_vars))
 #'
 #' # With only the mandatory variables, the assertion still passes.
-#' assert_ct(ct_01[req_vars])
+#' sdtm.oak:::assert_ct(ct_01[req_vars])
 #'
 #' # Not having the required variables results in an error.
-#' try(assert_ct(ct_01[opt_vars]))
+#' try(sdtm.oak:::assert_ct(ct_01[opt_vars]))
 #'
 #' @keywords internal
 assert_ct <- function(ct) {
