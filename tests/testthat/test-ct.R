@@ -42,6 +42,40 @@ test_that("ct_vars() fails with invalid input choice", {
   expect_error(ct_vars(NULL))
 })
 
+test_that("assert_ct() works as expected", {
+
+  # Load an example controlled terminology spec.
+  ct <- read_ct_example("ct-01-cm")
+  cols <- colnames(ct)
+  cl_col <- ct_vars("cl")
+  to_col <- ct_vars("to")
+
+  expect_no_error(assert_ct(ct, optional = FALSE))
+  expect_no_error(assert_ct(ct, optional = TRUE))
+  expect_identical(assert_ct(ct, optional = FALSE), ct)
+  expect_identical(assert_ct(ct, optional = TRUE), ct)
+  expect_identical(assert_ct(NULL, optional = TRUE), NULL)
+
+  # Code-list code column is one of the key variables that must be present
+  # in `ct`, so being missing should trigger an error.
+  expect_error(assert_ct(ct[setdiff(cols, cl_col)], optional = FALSE))
+  expect_error(assert_ct(ct[setdiff(cols, cl_col)], optional = TRUE))
+
+  # The code-list code and the "to" columns of a controlled terminology should
+  # not contain NAs, as otherwise the mapping is undefined. If that happens
+  # an error is triggered.
+  ct01 <- ct
+  ct01[[cl_col]] <- NA_character_
+  expect_error(assert_ct(ct01, optional = FALSE))
+  expect_error(assert_ct(ct01, optional = TRUE))
+
+  ct02 <- ct
+  ct02[[to_col]] <- NA_character_
+  expect_error(assert_ct(ct01, optional = FALSE))
+  expect_error(assert_ct(ct01, optional = TRUE))
+
+})
+
 test_that("assert_cl() works as expected", {
   # Read in a controlled terminology example.
   ct <- read_ct_example("ct-01-cm")
