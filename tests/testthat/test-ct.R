@@ -1,6 +1,6 @@
 test_that("ct_vars() works as expected", {
 
-  expect_equal(ct_vars(),
+  expect_identical(ct_vars(),
                c(
                  "codelist_code",
                  "collected_value",
@@ -8,7 +8,7 @@ test_that("ct_vars() works as expected", {
                  "term_value"
                ))
 
-  expect_equal(
+  expect_identical(
     ct_vars(set = "all"),
     c(
       "codelist_code",
@@ -18,14 +18,14 @@ test_that("ct_vars() works as expected", {
     )
   )
 
-  expect_equal(ct_vars(set = "cl"),
+  expect_identical(ct_vars(set = "cl"),
                "codelist_code")
 
-  expect_equal(ct_vars(set = "from"),
+  expect_identical(ct_vars(set = "from"),
                c("collected_value",
                  "term_synonyms"))
 
-  expect_equal(ct_vars(set = "to"), "term_value")
+  expect_identical(ct_vars(set = "to"), "term_value")
 })
 
 test_that("ct_vars() fails with invalid input choice", {
@@ -82,7 +82,8 @@ test_that("assert_cl(): when ct is empty", {
       codelist_code = character(),
       collected_value = character(),
       term_synonyms = character(),
-      term_value = character()
+      term_value = character(),
+      stringsAsFactors = FALSE
     )
 
   # If `ct` is supplied but `cl` is NULL, then err if `cl` is not optional, or

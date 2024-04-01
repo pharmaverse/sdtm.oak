@@ -101,11 +101,11 @@ assert_ct <- function(ct, optional = FALSE) {
     rlang::abort("`ct` can't be empty.")
   }
 
-  if (!is.null(ct) && any(is.na(ct[[ct_vars("cl")]]))) {
+  if (!is.null(ct) && anyNA(ct[[ct_vars("cl")]])) {
     rlang::abort(glue::glue("`{ct_vars('cl')}` can't have any NA values."))
   }
 
-  if (!is.null(ct) && any(is.na(ct[[ct_vars("to")]]))) {
+  if (!is.null(ct) && anyNA(ct[[ct_vars("to")]])) {
     rlang::abort(glue::glue("`{ct_vars('to')}` can't have any NA values."))
   }
 
