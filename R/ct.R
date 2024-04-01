@@ -55,10 +55,16 @@ ct_vars <- function(set = c("all", "cl", "from", "to")) {
 
 #' Assert a controlled terminology specification
 #'
-#' [assert_ct()] will check whether `ct` is a data frame and
-#' if it contains the variables: `r knitr::combine_words(ct_vars())`.
+#' @description
+#' [assert_ct()] will check whether `ct` is a data frame and if it contains the
+#' variables: `r knitr::combine_words(ct_vars())`.
 #'
-#' @param ct A data frame to be asserted as a controlled terminology data set.
+#' In addition, it will also check if the data frame is not empty (no rows), and
+#' whether the columns \code{`r ct_vars('cl')`} and \code{`r ct_vars('to')`} do
+#' not contain any `NA` values.
+#'
+#' @param ct A data frame to be asserted as a valid controlled terminology data
+#'   set.
 #'
 #' @returns The function throws an error if `ct` is not a valid controlled
 #'   terminology data set; otherwise, `ct` is returned invisibly.
@@ -83,10 +89,78 @@ ct_vars <- function(set = c("all", "cl", "from", "to")) {
 #' try(sdtm.oak:::assert_ct(ct_01[opt_vars]))
 #'
 #' @keywords internal
-assert_ct <- function(ct) {
+assert_ct <- function(ct, optional = FALSE) {
 
-  admiraldev::assert_data_frame(arg = ct, required_vars = rlang::syms(ct_vars()))
+  admiraldev::assert_data_frame(
+    arg = ct,
+    required_vars = rlang::syms(ct_vars()),
+    optional = optional
+  )
+
+  if (!is.null(ct) && nrow(ct) == 0L) {
+    rlang::abort("`ct` can't be empty.")
+  }
+
+  if (!is.null(ct) && any(is.na(ct[[ct_vars("cl")]]))) {
+    rlang::abort(glue::glue("`{ct_vars('cl')}` can't have any NA values."))
+  }
+
+  if (!is.null(ct) && any(is.na(ct[[ct_vars("to")]]))) {
+    rlang::abort(glue::glue("`{ct_vars('to')}` can't have any NA values."))
+  }
+
   invisible(ct)
+}
+
+#' Assert a code-list code
+#'
+#' [assert_cl()] asserts the validity of a code-list code in the context of
+#' a controlled terminology specification.
+#'
+#' @param ct Either a data frame encoding a controlled terminology data set, or
+#'   `NULL`.
+#' @param cl A string with a to-be asserted code-list code, or `NULL`.
+#' @param optional A scalar logical, indicating whether `cl` can be `NULL` or
+#'   not.
+#'
+#' @returns The function throws an error if `cl` is not a valid code-list code
+#'   given the controlled terminology data set; otherwise, `cl` is returned
+#'   invisibly.
+#'
+#' @examples
+#' # example code
+#'
+#'
+#' @keywords internal
+assert_cl <- function(ct, cl, optional = FALSE) {
+
+  if (!is.null(cl)) {
+    admiraldev::assert_character_scalar(cl)
+  }
+
+  if (is.null(cl) && !optional) {
+    rlang::abort("`cl` is a required parameter.")
+  }
+
+  if (is.null(ct) && !is.null(cl)) {
+    rlang::abort("`ct` must be a valid controlled terminology if `cl` is supplied.")
+  }
+
+  if (is.null(cl)) {
+    return(invisible(NULL))
+  }
+
+  if (!is.null(ct) && is.na(cl)) {
+    rlang::abort("`cl` can't be NA. Did you mean `NULL`?")
+  }
+
+  if (!is.null(ct) && !is.null(cl)) {
+    assert_ct(ct, optional = FALSE)
+    cl_possibilities <- unique(ct[[ct_vars("cl")]])
+    admiraldev::assert_character_scalar(cl, values = cl_possibilities)
+  }
+
+  return(cl)
 }
 
 #' Controlled terminology mappings

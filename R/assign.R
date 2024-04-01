@@ -1,11 +1,57 @@
+#' Derive an SDTM variable
+#'
+#' @description
+#' [sdtm_assign()] is an internal function packing the same functionality as
+#' [assign_no_ct()] and [assign_ct()] together but aimed at developers only.
+#' As a user please use either [assign_no_ct()] or [assign_ct()].
+#'
+#' @param raw_dat The raw dataset (dataframe); must include the
+#'   variables passed in `id_vars` and `raw_var`.
+#' @param raw_var The raw variable: a single string indicating the name of the
+#'   raw variable in `raw_dat`.
+#' @param tgt_var The target SDTM variable: a single string indicating the name
+#'   of variable to be derived.
+#' @param ct Study controlled terminology specification: a dataframe with a
+#'   minimal set of columns, see [ct_vars()] for details. This parameter is
+#'   optional, if left as `NULL` no controlled terminology recoding is applied.
+#' @param cl A code-list code indicating which subset of the controlled
+#'   terminology to apply in the derivation. This parameter is optional, if left
+#'   as `NULL`, all possible recodings in `ct` are attempted.
+#' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
+#'   the variables indicated in `id_vars`. This parameter is optional, see
+#'   section Value for how the output changes depending on this argument value.
+#' @param id_vars Key variables to be used in the join between the raw dataset
+#'   (`raw_dat`) and the target data set (`raw_dat`).
+#'
+#' @returns The returned data set depends on the value of `tgt_dat`:
+#' - If no target dataset is supplied, meaning that `tgt_dat` defaults to
+#' `NULL`, then the returned data set is `raw_dat`, selected for the variables
+#' indicated in `id_vars`, and a new extra column: the derived variable, as
+#' indicated in `tgt_var`.
+#' - If the target dataset is provided, then it is merged with the raw data set
+#' `raw_dat` by the variables indicated in `id_vars`, with a new column: the
+#' derived variable, as indicated in `tgt_var`.
+#'
+#'
 #' @importFrom rlang :=
+#' @keywords internal
 sdtm_assign <- function(raw_dat,
                         raw_var,
                         tgt_var,
-                        tgt_dat = NULL,
-                        id_vars = oak_id_vars(),
                         ct = NULL,
-                        cl = NULL) {
+                        cl = NULL,
+                        tgt_dat = NULL,
+                        id_vars = oak_id_vars()) {
+
+  admiraldev::assert_character_scalar(raw_var)
+  admiraldev::assert_character_scalar(tgt_var)
+  admiraldev::assert_character_vector(id_vars)
+  assertthat::assert_that(contains_oak_id_vars(id_vars),
+                          msg = "`id_vars` must include the oak id vars.")
+  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+  admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
+  assert_ct(ct, optional = TRUE)
+  assert_cl(ct = ct, cl = cl, optional = TRUE)
 
   # Recode the raw variable following terminology.
   tgt_val <- ct_map(raw_dat[[raw_var]], ct = ct, cl = cl)
@@ -41,6 +87,10 @@ sdtm_assign <- function(raw_dat,
 #'
 #' - [assign_ct()] maps a variable in a raw dataset to a target SDTM variable
 #' following controlled terminology recoding.
+#'
+#' - [sdtm_assign()] is an internal function packing the same functionality as
+#' [assign_no_ct()] and [assign_ct()] together but aimed at developers only.
+#' As a user please use either [assign_no_ct()] or [assign_ct()].
 #'
 #' @param raw_dat The raw dataset (dataframe); must include the
 #'   variables passed in `id_vars` and `raw_var`.
@@ -140,6 +190,7 @@ sdtm_assign <- function(raw_dat,
 #' @name assign
 NULL
 
+#' @order 1
 #' @export
 #' @rdname assign
 assign_no_ct <- function(raw_dat,
@@ -165,7 +216,7 @@ assign_no_ct <- function(raw_dat,
   )
 }
 
-
+#' @order 2
 #' @export
 #' @rdname assign
 assign_ct <- function(raw_dat,

@@ -4,18 +4,23 @@
 \alias{assert_ct}
 \title{Assert a controlled terminology specification}
 \usage{
-assert_ct(ct)
+assert_ct(ct, optional = FALSE)
 }
 \arguments{
-\item{ct}{A data frame to be asserted as a controlled terminology data set.}
+\item{ct}{A data frame to be asserted as a valid controlled terminology data
+set.}
 }
 \value{
 The function throws an error if \code{ct} is not a valid controlled
 terminology data set; otherwise, \code{ct} is returned invisibly.
 }
 \description{
-\code{\link[=assert_ct]{assert_ct()}} will check whether \code{ct} is a data frame and
-if it contains the variables: codelist_code, collected_value, term_synonyms, and term_value.
+\code{\link[=assert_ct]{assert_ct()}} will check whether \code{ct} is a data frame and if it contains the
+variables: codelist_code, collected_value, term_synonyms, and term_value.
+
+In addition, it will also check if the data frame is not empty (no rows), and
+whether the columns \code{codelist_code} and \code{term_value} do
+not contain any \code{NA} values.
 }
 \examples{
 # If `ct` is a valid controlled terminology then it is returned invisibly.
