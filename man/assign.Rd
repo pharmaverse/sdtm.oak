@@ -77,9 +77,10 @@ md1 <-
     oak_id = 1:14,
     raw_source = "MD1",
     patient_number = 101:114,
-    MDIND = c( "NAUSEA", "NAUSEA", "ANEMIA", "NAUSEA", "PYREXIA",
-    "VOMITINGS", "DIARHHEA", "COLD",
-    "FEVER", "LEG PAIN", "FEVER", "COLD", "COLD", "PAIN"
+    MDIND = c(
+      "NAUSEA", "NAUSEA", "ANEMIA", "NAUSEA", "PYREXIA",
+      "VOMITINGS", "DIARHHEA", "COLD",
+      "FEVER", "LEG PAIN", "FEVER", "COLD", "COLD", "PAIN"
     )
   )
 
@@ -87,7 +88,7 @@ assign_no_ct(
   raw_dat = md1,
   raw_var = "MDIND",
   tgt_var = "CMINDC",
-  )
+)
 
 cm_inter <-
   tibble::tibble(
@@ -138,6 +139,6 @@ assign_ct(
   ct = ct,
   cl = "C66729",
   tgt_dat = cm_inter
-  )
+)
 
 }
