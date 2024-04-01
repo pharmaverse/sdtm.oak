@@ -255,3 +255,16 @@ test_that("assert_cl(): when ct is empty", {
     optional = TRUE
   ))
 })
+
+test_that("ct_mappings(): works as expected", {
+
+  ct <- read_ct_example("ct-01-cm")
+  ct_qd <- dplyr::filter(ct, term_code == "C25473")
+
+  expect_identical(
+    ct_mappings(ct = ct_qd),
+    tibble::tibble(
+      from = c("QD", "QD (Every Day)", "/day", "Daily", "Per Day"),
+      to = rep("QD", 5L)
+    ))
+})

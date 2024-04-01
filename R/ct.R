@@ -212,8 +212,8 @@ assert_cl <- function(ct, cl, optional = FALSE) {
 #' @importFrom rlang .data
 #' @keywords internal
 ct_mappings <- function(ct, from = ct_vars("from"), to = ct_vars("to")) {
-  assert_ct(ct)
 
+  assert_ct(ct)
   cols <- c(to, from)
 
   ct_mappings <-
