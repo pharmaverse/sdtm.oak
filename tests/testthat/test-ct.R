@@ -43,7 +43,6 @@ test_that("ct_vars() fails with invalid input choice", {
 })
 
 test_that("assert_ct() works as expected", {
-
   # Load an example controlled terminology spec.
   ct <- read_ct_example("ct-01-cm")
   cols <- colnames(ct)
@@ -86,7 +85,6 @@ test_that("assert_ct() works as expected", {
   # `ct` cannot be empty as that means that there are no mappings.
   expect_error(assert_ct(ct_empty, optional = TRUE))
   expect_error(assert_ct(ct_empty, optional = FALSE))
-
 })
 
 test_that("assert_cl() works as expected", {
@@ -257,7 +255,6 @@ test_that("assert_cl(): when ct is empty", {
 })
 
 test_that("ct_mappings(): works as expected", {
-
   ct <- read_ct_example("ct-01-cm")
   ct_qd <- dplyr::filter(ct, term_code == "C25473")
 
@@ -266,5 +263,6 @@ test_that("ct_mappings(): works as expected", {
     tibble::tibble(
       from = c("QD", "QD (Every Day)", "/day", "Daily", "Per Day"),
       to = rep("QD", 5L)
-    ))
+    )
+  )
 })
