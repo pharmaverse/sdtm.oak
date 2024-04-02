@@ -87,10 +87,6 @@ sdtm_assign <- function(raw_dat,
 #' - [assign_ct()] maps a variable in a raw dataset to a target SDTM variable
 #' following controlled terminology recoding.
 #'
-#' - [sdtm_assign()] is an internal function packing the same functionality as
-#' [assign_no_ct()] and [assign_ct()] together but aimed at developers only.
-#' As a user please use either [assign_no_ct()] or [assign_ct()].
-#'
 #' @param raw_dat The raw dataset (dataframe); must include the
 #'   variables passed in `id_vars` and `raw_var`.
 #' @param raw_var The raw variable: a single string indicating the name of the

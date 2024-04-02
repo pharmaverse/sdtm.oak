@@ -65,9 +65,6 @@ derived variable, as indicated in \code{tgt_var}.
 variable that has no terminology restrictions.
 \item \code{\link[=assign_ct]{assign_ct()}} maps a variable in a raw dataset to a target SDTM variable
 following controlled terminology recoding.
-\item \code{\link[=sdtm_assign]{sdtm_assign()}} is an internal function packing the same functionality as
-\code{\link[=assign_no_ct]{assign_no_ct()}} and \code{\link[=assign_ct]{assign_ct()}} together but aimed at developers only.
-As a user please use either \code{\link[=assign_no_ct]{assign_no_ct()}} or \code{\link[=assign_ct]{assign_ct()}}.
 }
 }
 \examples{
