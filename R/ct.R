@@ -258,6 +258,29 @@ ct_mappings <- function(ct, from = ct_vars("from"), to = ct_vars("to")) {
 #'   `x` values are returned in uppercase. If `ct` is not provided `x` is
 #'   returned unchanged.
 #'
+#' @examples
+#' # A few example terms.
+#' terms <-
+#'   c("/day",
+#'     "Yes",
+#'     "Unknown",
+#'     "Prior",
+#'     "Every 2 hours",
+#'     "Percentage",
+#'     "International Unit")
+#'
+#' # Load a controlled terminology example
+#' (ct <- read_ct_example("ct-01-cm"))
+#'
+#' # Use all possible matching terms in the controlled terminology.
+#' ct_map(x = terms, ct = ct)
+#'
+#' # Note that if the controlled terminology mapping is restricted to a code-list
+#' # code, e.g. C71113, then only `"/day"` gets mapped to `"QD"`; remaining terms
+#' # won't match given the code-list code restriction, and will be mapped to an
+#' # uppercase version of the original terms.
+#' ct_map(x = terms, ct = ct, cl = "C71113")
+#'
 #' @importFrom rlang %||% .data
 #' @export
 ct_map <-
