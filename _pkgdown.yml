@@ -6,3 +6,29 @@ template:
 
 navbar:
   title: "sdtm.oak"
+
+reference:
+- title: SDTM derivation
+  desc: Set of functions to perform SDTM derivations
+  contents:
+  - assign
+  - harcode
+  - derive_study_day
+
+- title: Controlled terminology
+  contents:
+  - read_ct
+  - read_ct_example
+  - ct_example
+  - ct_map
+
+- title: Date and time conversion
+  contents:
+  - create_iso8601
+  - fmt_cmp
+  - dtc_formats
+  - problems
+
+- title: Package global state
+  contents:
+  - clear_cache
