@@ -133,7 +133,7 @@ any_problems <- function(cap_matrices, .cutoff_2000 = 68L) {
 #' provides easy access to these parsing problems.
 #'
 #' @param x An object of class iso8601, as typically obtained from a call to
-#'   [create_iso8601()]. The argument can also be left empty, in that case it
+#'   [create_iso8601()]. The argument can also be left empty, in that case
 #'   `problems()` will use the last returned value, making it convenient to use
 #'   immediately after [create_iso8601()].
 #'

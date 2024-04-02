@@ -8,7 +8,7 @@ problems(x = .Last.value)
 }
 \arguments{
 \item{x}{An object of class iso8601, as typically obtained from a call to
-\code{\link[=create_iso8601]{create_iso8601()}}. The argument can also be left empty, in that case it
+\code{\link[=create_iso8601]{create_iso8601()}}. The argument can also be left empty, in that case
 \code{problems()} will use the last returned value, making it convenient to use
 immediately after \code{\link[=create_iso8601]{create_iso8601()}}.}
 }
