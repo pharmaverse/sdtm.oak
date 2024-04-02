@@ -320,6 +320,8 @@ read_ct <- function(file = stop("`file` must be specified")) {
 #' @param example A string with either the basename, file name, or relative path
 #'   to a controlled terminology file bundled with `{stdm.oak}`, see examples.
 #'
+#' @returns The local path to an example file if `example` is supplied, or a
+#'   character vector of example file names.
 #'
 #' @examples
 #' # Get the local path to controlled terminology example file 01
@@ -373,7 +375,7 @@ ct_example <- function(example) {
 #'   with `{stdm.oak}`, run `read_ct_example()` for available example files.
 #'
 #' @returns A [tibble][tibble::tibble-package] with a controlled terminology
-#'   specification data set.
+#'   specification data set, or a character vector of example file names.
 #'
 #' @examples
 #' # Leave the `example` parameter as missing for available example files.

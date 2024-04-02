@@ -12,7 +12,7 @@ with \code{{stdm.oak}}, run \code{read_ct_example()} for available example files
 }
 \value{
 A \link[tibble:tibble-package]{tibble} with a controlled terminology
-specification data set.
+specification data set, or a character vector of example file names.
 }
 \description{
 \code{\link[=read_ct_example]{read_ct_example()}} imports one of the bundled controlled terminology

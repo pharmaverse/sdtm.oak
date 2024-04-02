@@ -10,6 +10,10 @@ ct_example(example)
 \item{example}{A string with either the basename, file name, or relative path
 to a controlled terminology file bundled with \code{{stdm.oak}}, see examples.}
 }
+\value{
+The local path to an example file if \code{example} is supplied, or a
+character vector of example file names.
+}
 \description{
 \code{\link[=ct_example]{ct_example()}} resolves the local path to an example controlled
 terminology file.
