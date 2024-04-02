@@ -107,7 +107,7 @@ test_that("recode(): recycling between `from` and `to` parameters", {
 })
 
 test_that("recode(): notable cases", {
-  x <- c(letters[1:3], NA_character_)
+  x <- c(letters[1L:3L], NA_character_)
 
   # Identity: no recoding.
   expect_identical(recode(x = x), x)

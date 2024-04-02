@@ -53,7 +53,7 @@ test_that("assert_ct() works as expected", {
   expect_no_error(assert_ct(ct, optional = TRUE))
   expect_identical(assert_ct(ct, optional = FALSE), ct)
   expect_identical(assert_ct(ct, optional = TRUE), ct)
-  expect_identical(assert_ct(NULL, optional = TRUE), NULL)
+  expect_null(assert_ct(NULL, optional = TRUE))
 
   # Code-list code column is one of the key variables that must be present
   # in `ct`, so being missing should trigger an error.
