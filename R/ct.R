@@ -237,7 +237,7 @@ ct_mappings <- function(ct, from = ct_vars("from"), to = ct_vars("to")) {
     dplyr::mutate(type = factor(.data$type, levels = cols)) |>
     dplyr::arrange(.data$type) |>
     dplyr::select(-"type") |>
-    tidyr::drop_na(.data$from) |>
+    tidyr::drop_na("from") |>
     dplyr::mutate(from = str_split(.data$from)) |>
     tidyr::unnest(from) |>
     dplyr::filter(from != "") |> # In case the split resulted in empty strings.
