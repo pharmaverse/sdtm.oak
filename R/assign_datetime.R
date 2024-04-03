@@ -78,7 +78,10 @@ assign_datetime <-
            .warn = TRUE) {
 
     tgt_val <-
-      create_iso8601(!!!raw_dat[raw_var], .format = raw_fmt, .na = raw_unk)
+      create_iso8601(!!!raw_dat[raw_var],
+                     .format = raw_fmt,
+                     .na = raw_unk,
+                     .warn = .warn)
 
     der_dat <-
       raw_dat |>
