@@ -61,7 +61,7 @@ sdtm_assign <- function(raw_dat,
   der_dat <-
     raw_dat |>
     dplyr::select(c(id_vars, raw_var)) |>
-    dplyr::mutate("{tgt_var}" := tgt_val) |>
+    dplyr::mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
     dplyr::select(-rlang::sym(raw_var))
 
   # If a target dataset is supplied, then join the so far derived dataset with

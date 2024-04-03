@@ -145,29 +145,39 @@ assert_ct <- function(ct, optional = FALSE) {
 #'
 #' @keywords internal
 assert_cl <- function(ct, cl, optional = FALSE) {
-  if (!is.null(cl)) {
+
+  is_ct_missing <- is.null(ct)
+  is_cl_missing <- is.null(cl)
+  is_required_cl_missing <- is_cl_missing && !optional
+  is_cl_without_ct <- is_ct_missing && !is_cl_missing
+  are_ct_cl_available <- !is_ct_missing && !is_cl_missing
+
+  if (!is_cl_missing) {
     admiraldev::assert_character_scalar(cl)
   }
 
-  if (is.null(cl) && !optional) {
+  if (is_required_cl_missing) {
     rlang::abort("`cl` is a required parameter.")
   }
 
-  if (is.null(ct) && !is.null(cl)) {
+  if (is_cl_without_ct) {
     rlang::abort("`ct` must be a valid controlled terminology if `cl` is supplied.")
   }
 
-  if (is.null(cl)) {
+  if (is_cl_missing) {
     return(invisible(NULL))
   }
 
-  if (!is.null(ct) && is.na(cl)) {
+  if (!is_ct_missing && is.na(cl)) {
     rlang::abort("`cl` can't be NA. Did you mean `NULL`?")
   }
 
-  if (!is.null(ct) && !is.null(cl)) {
+  if (are_ct_cl_available) {
     assert_ct(ct, optional = FALSE)
-    cl_possibilities <- unique(ct[[ct_vars("cl")]])
+    cl_possibilities <-
+      ct |>
+      dplyr::pull(ct_vars("cl")) |>
+      unique()
     admiraldev::assert_character_scalar(cl, values = cl_possibilities)
   }
 
