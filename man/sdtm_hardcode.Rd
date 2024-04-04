@@ -32,7 +32,7 @@ indicated in \code{tgt_var}.}
 minimal set of columns, see \code{\link[=ct_spec_vars]{ct_spec_vars()}} for details. This parameter is
 optional, if left as \code{NULL} no controlled terminology recoding is applied.}
 
-\item{ct_cltc}{A code-list code indicating which subset of the controlled
+\item{ct_cltc}{A codelist code indicating which subset of the controlled
 terminology to apply in the derivation. This parameter is optional, if left
 as \code{NULL}, all possible recodings in \code{ct_spec} are attempted.}
 

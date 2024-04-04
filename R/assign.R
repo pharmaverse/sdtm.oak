@@ -14,7 +14,7 @@
 #' @param ct_spec Study controlled terminology specification: a dataframe with a
 #'   minimal set of columns, see [ct_spec_vars()] for details. This parameter is
 #'   optional, if left as `NULL` no controlled terminology recoding is applied.
-#' @param ct_cltc A code-list code indicating which subset of the controlled
+#' @param ct_cltc A codelist code indicating which subset of the controlled
 #'   terminology to apply in the derivation. This parameter is optional, if left
 #'   as `NULL`, all possible recodings in `ct_spec` are attempted.
 #' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
@@ -95,7 +95,7 @@ sdtm_assign <- function(raw_dat,
 #'   of variable to be derived.
 #' @param ct_spec Study controlled terminology specification: a dataframe with a
 #'   minimal set of columns, see [ct_spec_vars()] for details.
-#' @param ct_cltc A code-list code indicating which subset of the controlled
+#' @param ct_cltc A codelist code indicating which subset of the controlled
 #'   terminology to apply in the derivation.
 #' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
 #'   the variables indicated in `id_vars`. This parameter is optional, see

@@ -44,7 +44,7 @@ section Value for how the output changes depending on this argument value.}
 \item{ct_spec}{Study controlled terminology specification: a dataframe with a
 minimal set of columns, see \code{\link[=ct_spec_vars]{ct_spec_vars()}} for details.}
 
-\item{ct_cltc}{A code-list code indicating which subset of the controlled
+\item{ct_cltc}{A codelist code indicating which subset of the controlled
 terminology to apply in the derivation.}
 }
 \value{

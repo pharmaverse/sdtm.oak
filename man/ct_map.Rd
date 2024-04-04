@@ -20,8 +20,8 @@ terminology.}
 terminology specification.}
 
 \item{ct_cltc}{A character vector indicating a set of possible controlled
-terminology code-lists codes to be used for recoding. By default (\code{NULL})
-all code-lists available in \code{ct_spec} are used.}
+terminology codelists codes to be used for recoding. By default (\code{NULL})
+all codelists available in \code{ct_spec} are used.}
 
 \item{from}{A character vector of column names indicating the variables
 containing values to be matched against for terminology recoding.}
@@ -55,9 +55,9 @@ terms <-
 # Use all possible matching terms in the controlled terminology.
 ct_map(x = terms, ct_spec = ct_spec)
 
-# Note that if the controlled terminology mapping is restricted to a code-list
+# Note that if the controlled terminology mapping is restricted to a codelist
 # code, e.g. C71113, then only `"/day"` gets mapped to `"QD"`; remaining terms
-# won't match given the code-list code restriction, and will be mapped to an
+# won't match given the codelist code restriction, and will be mapped to an
 # uppercase version of the original terms.
 ct_map(x = terms, ct_spec = ct_spec, ct_cltc = "C71113")
 

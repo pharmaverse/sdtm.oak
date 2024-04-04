@@ -2,7 +2,7 @@
 % Please edit documentation in R/ct.R
 \name{assert_ct_cltc}
 \alias{assert_ct_cltc}
-\title{Assert a code-list code}
+\title{Assert a codelist code}
 \usage{
 assert_ct_cltc(ct_spec, ct_cltc, optional = FALSE)
 }
@@ -10,18 +10,18 @@ assert_ct_cltc(ct_spec, ct_cltc, optional = FALSE)
 \item{ct_spec}{Either a data frame encoding a controlled terminology data set, or
 \code{NULL}.}
 
-\item{ct_cltc}{A string with a to-be asserted code-list code, or \code{NULL}.}
+\item{ct_cltc}{A string with a to-be asserted codelist code, or \code{NULL}.}
 
 \item{optional}{A scalar logical, indicating whether \code{ct_cltc} can be \code{NULL} or
 not.}
 }
 \value{
-The function throws an error if \code{ct_cltc} is not a valid code-list code
+The function throws an error if \code{ct_cltc} is not a valid codelist code
 given the controlled terminology data set; otherwise, \code{ct_cltc} is returned
 invisibly.
 }
 \description{
-\code{\link[=assert_ct_cltc]{assert_ct_cltc()}} asserts the validity of a code-list code in the context of
+\code{\link[=assert_ct_cltc]{assert_ct_cltc()}} asserts the validity of a codelist code in the context of
 a controlled terminology specification.
 }
 \examples{

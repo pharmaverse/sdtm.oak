@@ -8,7 +8,7 @@
 #' If only the subset of variables used for matching terms are needed, then
 #' request this subset of variables by passing the argument value `"from"`. If
 #' only the mapping-to variable is to be requested, then simply pass `"to"`. If
-#' only the code-list code variable name is needed then pass `"ct_cltc"`.
+#' only the codelist code variable name is needed then pass `"ct_cltc"`.
 #'
 #' @param set A scalar character (string), one of: `"all"` (default), `"ct_cltc"`,
 #'   `"from"` or `"to"`.
@@ -113,18 +113,18 @@ assert_ct_spec <- function(ct_spec, optional = FALSE) {
   invisible(ct_spec)
 }
 
-#' Assert a code-list code
+#' Assert a codelist code
 #'
-#' [assert_ct_cltc()] asserts the validity of a code-list code in the context of
+#' [assert_ct_cltc()] asserts the validity of a codelist code in the context of
 #' a controlled terminology specification.
 #'
 #' @param ct_spec Either a data frame encoding a controlled terminology data set, or
 #'   `NULL`.
-#' @param ct_cltc A string with a to-be asserted code-list code, or `NULL`.
+#' @param ct_cltc A string with a to-be asserted codelist code, or `NULL`.
 #' @param optional A scalar logical, indicating whether `ct_cltc` can be `NULL` or
 #'   not.
 #'
-#' @returns The function throws an error if `ct_cltc` is not a valid code-list code
+#' @returns The function throws an error if `ct_cltc` is not a valid codelist code
 #'   given the controlled terminology data set; otherwise, `ct_cltc` is returned
 #'   invisibly.
 #'
@@ -256,8 +256,8 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
 #' @param ct_spec A [tibble][tibble::tibble-package] providing a controlled
 #'   terminology specification.
 #' @param ct_cltc A character vector indicating a set of possible controlled
-#'   terminology code-lists codes to be used for recoding. By default (`NULL`)
-#'   all code-lists available in `ct_spec` are used.
+#'   terminology codelists codes to be used for recoding. By default (`NULL`)
+#'   all codelists available in `ct_spec` are used.
 #' @param from A character vector of column names indicating the variables
 #' containing values to be matched against for terminology recoding.
 #' @param to A single string indicating the column whose values are to be
@@ -285,9 +285,9 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
 #' # Use all possible matching terms in the controlled terminology.
 #' ct_map(x = terms, ct_spec = ct_spec)
 #'
-#' # Note that if the controlled terminology mapping is restricted to a code-list
+#' # Note that if the controlled terminology mapping is restricted to a codelist
 #' # code, e.g. C71113, then only `"/day"` gets mapped to `"QD"`; remaining terms
-#' # won't match given the code-list code restriction, and will be mapped to an
+#' # won't match given the codelist code restriction, and will be mapped to an
 #' # uppercase version of the original terms.
 #' ct_map(x = terms, ct_spec = ct_spec, ct_cltc = "C71113")
 #'

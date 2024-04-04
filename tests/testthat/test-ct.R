@@ -55,12 +55,12 @@ test_that("assert_ct_spec() works as expected", {
   expect_identical(assert_ct_spec(ct_spec, optional = TRUE), ct_spec)
   expect_null(assert_ct_spec(NULL, optional = TRUE))
 
-  # Code-list code column is one of the key variables that must be present
+  # Codelist code column is one of the key variables that must be present
   # in `ct_spec`, so being missing should trigger an error.
   expect_error(assert_ct_spec(ct_spec[setdiff(cols, ct_cltc_col)], optional = FALSE))
   expect_error(assert_ct_spec(ct_spec[setdiff(cols, ct_cltc_col)], optional = TRUE))
 
-  # The code-list code and the "to" columns of a controlled terminology should
+  # The codelist code and the "to" columns of a controlled terminology should
   # not contain NAs, as otherwise the mapping is undefined. If that happens
   # an error is triggered.
   ct_spec01 <- ct_spec
@@ -143,7 +143,7 @@ test_that("assert_ct_cltc() works as expected", {
   ))
 
   # If both `ct_spec` and `ct_cltc` are supplied, then `ct_spec` must be a valid controlled
-  # terminology data set and `ct_cltc` must contain a code-list code available among
+  # terminology data set and `ct_cltc` must contain a codelist code available among
   # the possibilities in column `codelist_code` (as returned by `ct_spec_vars("ct_cltc")`).
   expect_error(assert_ct_cltc(
     ct_spec = ct_spec,
@@ -218,7 +218,7 @@ test_that("assert_ct_cltc(): when ct_spec is empty", {
   ))
 
   # If both `ct_spec` and `ct_cltc` are supplied, then `ct_spec` must be a valid controlled
-  # terminology data set and `ct_cltc` must contain a code-list code available among
+  # terminology data set and `ct_cltc` must contain a codelist code available among
   # the possibilities in column `codelist_code` (as returned by `ct_spec_vars("ct_cltc")`).
   expect_error(assert_ct_cltc(
     ct_spec = ct_spec,

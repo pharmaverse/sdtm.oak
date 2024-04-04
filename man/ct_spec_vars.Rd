@@ -18,7 +18,7 @@ variables.
 If only the subset of variables used for matching terms are needed, then
 request this subset of variables by passing the argument value \code{"from"}. If
 only the mapping-to variable is to be requested, then simply pass \code{"to"}. If
-only the code-list code variable name is needed then pass \code{"ct_cltc"}.
+only the codelist code variable name is needed then pass \code{"ct_cltc"}.
 }
 \examples{
 # These two calls are equivalent and return all required variables in a
