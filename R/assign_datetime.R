@@ -47,11 +47,11 @@
 #'     7L, "MD1", 377, "20-UNK-2019", "20-UNK-2019", NA,
 #'     8L, "MD1", 378, "UN-UNK-2020", "UN-UNK-2020", NA,
 #'     9L, "MD1", 378, "26-Jan-20", "26-Jan-20", "07:00:00",
-#'     10L, "MD1",	378, "28-Jan-20", "1-Feb-20", NA,
-#'     11L, "MD1",	378, "12-Feb-20", "18-Feb-20", NA,
-#'     12L, "MD1",	379, "10-UNK-2020", "20-UNK-2020", NA,
-#'     13L, "MD1",	379, NA, NA, NA,
-#'     14L, "MD1",	379, NA, "17-Feb-20", NA
+#'     10L, "MD1", 378, "28-Jan-20", "1-Feb-20", NA,
+#'     11L, "MD1", 378, "12-Feb-20", "18-Feb-20", NA,
+#'     12L, "MD1", 379, "10-UNK-2020", "20-UNK-2020", NA,
+#'     13L, "MD1", 379, NA, NA, NA,
+#'     14L, "MD1", 379, NA, "17-Feb-20", NA
 #'   )
 #'
 #' cm <-
@@ -76,17 +76,28 @@ assign_datetime <-
            tgt_dat = NULL,
            id_vars = oak_id_vars(),
            .warn = TRUE) {
+    admiraldev::assert_character_vector(raw_var)
+    admiraldev::assert_character_scalar(tgt_var)
+    admiraldev::assert_character_vector(id_vars)
+    assertthat::assert_that(contains_oak_id_vars(id_vars),
+      msg = "`id_vars` must include the oak id vars."
+    )
+    admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
+    admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
+    admiraldev::assert_character_vector(raw_unk)
+    admiraldev::assert_logical_scalar(.warn)
 
     tgt_val <-
       create_iso8601(!!!raw_dat[raw_var],
-                     .format = raw_fmt,
-                     .na = raw_unk,
-                     .warn = .warn)
+        .format = raw_fmt,
+        .na = raw_unk,
+        .warn = .warn
+      )
 
     der_dat <-
       raw_dat |>
       dplyr::select(c(id_vars, raw_var)) |>
-      dplyr::mutate("{tgt_var}" := tgt_val) |>
+      dplyr::mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
       dplyr::select(-rlang::sym(raw_var))
 
     der_dat <-
@@ -99,5 +110,4 @@ assign_datetime <-
       }
 
     der_dat
-
   }
