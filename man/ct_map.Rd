@@ -41,13 +41,15 @@ returned unchanged.
 \examples{
 # A few example terms.
 terms <-
-  c("/day",
+  c(
+    "/day",
     "Yes",
     "Unknown",
     "Prior",
     "Every 2 hours",
     "Percentage",
-    "International Unit")
+    "International Unit"
+  )
 
 # Load a controlled terminology example
 (ct_spec <- read_ct_spec_example("ct-01-cm"))
