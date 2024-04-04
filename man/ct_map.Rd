@@ -4,18 +4,24 @@
 \alias{ct_map}
 \title{Recode according to controlled terminology}
 \usage{
-ct_map(x, ct = NULL, cl = NULL, from = ct_vars("from"), to = ct_vars("to"))
+ct_map(
+  x,
+  ct_spec = NULL,
+  ct_cltc = NULL,
+  from = ct_spec_vars("from"),
+  to = ct_spec_vars("to")
+)
 }
 \arguments{
 \item{x}{A character vector of terms to be recoded following a controlled
 terminology.}
 
-\item{ct}{A \link[tibble:tibble-package]{tibble} providing a controlled
+\item{ct_spec}{A \link[tibble:tibble-package]{tibble} providing a controlled
 terminology specification.}
 
-\item{cl}{A character vector indicating a set of possible controlled
+\item{ct_cltc}{A character vector indicating a set of possible controlled
 terminology code-lists codes to be used for recoding. By default (\code{NULL})
-all code-lists available in \code{ct} are used.}
+all code-lists available in \code{ct_spec} are used.}
 
 \item{from}{A character vector of column names indicating the variables
 containing values to be matched against for terminology recoding.}
@@ -25,8 +31,8 @@ recoded into.}
 }
 \value{
 A character vector of terminology recoded values from \code{x}. If no
-match is found in the controlled terminology spec provided in \code{ct}, then
-\code{x} values are returned in uppercase. If \code{ct} is not provided \code{x} is
+match is found in the controlled terminology spec provided in \code{ct_spec}, then
+\code{x} values are returned in uppercase. If \code{ct_spec} is not provided \code{x} is
 returned unchanged.
 }
 \description{
@@ -44,15 +50,15 @@ terms <-
     "International Unit")
 
 # Load a controlled terminology example
-(ct <- read_ct_example("ct-01-cm"))
+(ct_spec <- read_ct_spec_example("ct-01-cm"))
 
 # Use all possible matching terms in the controlled terminology.
-ct_map(x = terms, ct = ct)
+ct_map(x = terms, ct_spec = ct_spec)
 
 # Note that if the controlled terminology mapping is restricted to a code-list
 # code, e.g. C71113, then only `"/day"` gets mapped to `"QD"`; remaining terms
 # won't match given the code-list code restriction, and will be mapped to an
 # uppercase version of the original terms.
-ct_map(x = terms, ct = ct, cl = "C71113")
+ct_map(x = terms, ct_spec = ct_spec, ct_cltc = "C71113")
 
 }

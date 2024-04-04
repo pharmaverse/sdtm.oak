@@ -13,12 +13,12 @@
 #'   of variable to be derived.
 #' @param tgt_val The target SDTM value to be hardcoded into the variable
 #'   indicated in `tgt_var`.
-#' @param ct Study controlled terminology specification: a dataframe with a
-#'   minimal set of columns, see [ct_vars()] for details. This parameter is
+#' @param ct_spec Study controlled terminology specification: a dataframe with a
+#'   minimal set of columns, see [ct_spec_vars()] for details. This parameter is
 #'   optional, if left as `NULL` no controlled terminology recoding is applied.
-#' @param cl A code-list code indicating which subset of the controlled
+#' @param ct_cltc A code-list code indicating which subset of the controlled
 #'   terminology to apply in the derivation. This parameter is optional, if left
-#'   as `NULL`, all possible recodings in `ct` are attempted.
+#'   as `NULL`, all possible recodings in `ct_spec` are attempted.
 #' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
 #'   the variables indicated in `id_vars`. This parameter is optional, see
 #'   section Value for how the output changes depending on this argument value.
@@ -40,8 +40,8 @@ sdtm_hardcode <- function(raw_dat,
                           raw_var,
                           tgt_var,
                           tgt_val,
-                          ct = NULL,
-                          cl = NULL,
+                          ct_spec = NULL,
+                          ct_cltc = NULL,
                           tgt_dat = NULL,
                           id_vars = oak_id_vars()) {
   admiraldev::assert_character_scalar(raw_var)
@@ -53,11 +53,11 @@ sdtm_hardcode <- function(raw_dat,
   )
   admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
-  assert_ct(ct, optional = TRUE)
-  assert_cl(ct = ct, cl = cl, optional = TRUE)
+  assert_ct_spec(ct_spec, optional = TRUE)
+  assert_ct_cltc(ct_spec = ct_spec, ct_cltc = ct_cltc, optional = TRUE)
 
   # Recode the hardcoded value following terminology.
-  tgt_val <- ct_map(tgt_val, ct = ct, cl = cl)
+  tgt_val <- ct_map(tgt_val, ct_spec = ct_spec, ct_cltc = ct_cltc)
 
   # Apply derivation of the hardcoded value.
   # `der_dat`: derived dataset.
@@ -99,12 +99,12 @@ sdtm_hardcode <- function(raw_dat,
 #'   of variable to be derived.
 #' @param tgt_val The target SDTM value to be hardcoded into the variable
 #'   indicated in `tgt_var`.
-#' @param ct Study controlled terminology specification: a dataframe with a
-#'   minimal set of columns, see [ct_vars()] for details. This parameter is
+#' @param ct_spec Study controlled terminology specification: a dataframe with a
+#'   minimal set of columns, see [ct_spec_vars()] for details. This parameter is
 #'   optional, if left as `NULL` no controlled terminology recoding is applied.
-#' @param cl A code-list code indicating which subset of the controlled
+#' @param ct_cltc A code-list code indicating which subset of the controlled
 #'   terminology to apply in the derivation. This parameter is optional, if left
-#'   as `NULL`, all possible recodings in `ct` are attempted.
+#'   as `NULL`, all possible recodings in `ct_spec` are attempted.
 #' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
 #'   the variables indicated in `id_vars`. This parameter is optional, see
 #'   section Value for how the output changes depending on this argument value.
@@ -161,7 +161,7 @@ sdtm_hardcode <- function(raw_dat,
 #' )
 #'
 #' # Controlled terminology specification
-#' (ct <- read_ct_example("ct-01-cm"))
+#' (ct_spec <- read_ct_spec_example("ct-01-cm"))
 #'
 #' # Hardcoding of `CMCAT` with the value `"GENERAL CONCOMITANT MEDICATIONS"`
 #' # involving terminology recoding. `NA` values in `MDRAW` are preserved in
@@ -171,8 +171,8 @@ sdtm_hardcode <- function(raw_dat,
 #'   raw_var = "MDRAW",
 #'   tgt_var = "CMCAT",
 #'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
-#'   ct = ct,
-#'   cl = "C66729",
+#'   ct_spec = ct_spec,
+#'   ct_cltc = "C66729",
 #'   tgt_dat = cm_inter
 #' )
 #'
@@ -216,8 +216,8 @@ hardcode_ct <-
            raw_var,
            tgt_var,
            tgt_val,
-           ct,
-           cl,
+           ct_spec,
+           ct_cltc,
            tgt_dat = NULL,
            id_vars = oak_id_vars()) {
     admiraldev::assert_character_scalar(raw_var)
@@ -235,16 +235,16 @@ hardcode_ct <-
       optional = TRUE
     )
 
-    assert_ct(ct, optional = FALSE)
-    assert_cl(ct = ct, cl = cl, optional = FALSE)
+    assert_ct_spec(ct_spec, optional = FALSE)
+    assert_ct_cltc(ct_spec = ct_spec, ct_cltc = ct_cltc, optional = FALSE)
 
     sdtm_hardcode(
       raw_dat = raw_dat,
       raw_var = raw_var,
       tgt_var = tgt_var,
       tgt_val = tgt_val,
-      ct = ct,
-      cl = cl,
+      ct_spec = ct_spec,
+      ct_cltc = ct_cltc,
       tgt_dat = tgt_dat,
       id_vars = id_vars
     )

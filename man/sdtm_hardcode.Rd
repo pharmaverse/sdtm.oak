@@ -9,8 +9,8 @@ sdtm_hardcode(
   raw_var,
   tgt_var,
   tgt_val,
-  ct = NULL,
-  cl = NULL,
+  ct_spec = NULL,
+  ct_cltc = NULL,
   tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
@@ -28,13 +28,13 @@ of variable to be derived.}
 \item{tgt_val}{The target SDTM value to be hardcoded into the variable
 indicated in \code{tgt_var}.}
 
-\item{ct}{Study controlled terminology specification: a dataframe with a
-minimal set of columns, see \code{\link[=ct_vars]{ct_vars()}} for details. This parameter is
+\item{ct_spec}{Study controlled terminology specification: a dataframe with a
+minimal set of columns, see \code{\link[=ct_spec_vars]{ct_spec_vars()}} for details. This parameter is
 optional, if left as \code{NULL} no controlled terminology recoding is applied.}
 
-\item{cl}{A code-list code indicating which subset of the controlled
+\item{ct_cltc}{A code-list code indicating which subset of the controlled
 terminology to apply in the derivation. This parameter is optional, if left
-as \code{NULL}, all possible recodings in \code{ct} are attempted.}
+as \code{NULL}, all possible recodings in \code{ct_spec} are attempted.}
 
 \item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
 the variables indicated in \code{id_vars}. This parameter is optional, see
