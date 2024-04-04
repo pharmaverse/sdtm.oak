@@ -145,7 +145,6 @@ assert_ct_spec <- function(ct_spec, optional = FALSE) {
 #'
 #' @keywords internal
 assert_ct_cltc <- function(ct_spec, ct_cltc, optional = FALSE) {
-
   is_ct_spec_missing <- is.null(ct_spec)
   is_ct_cltc_missing <- is.null(ct_cltc)
   is_required_ct_cltc_missing <- is_ct_cltc_missing && !optional
@@ -271,13 +270,15 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
 #' @examples
 #' # A few example terms.
 #' terms <-
-#'   c("/day",
+#'   c(
+#'     "/day",
 #'     "Yes",
 #'     "Unknown",
 #'     "Prior",
 #'     "Every 2 hours",
 #'     "Percentage",
-#'     "International Unit")
+#'     "International Unit"
+#'   )
 #'
 #' # Load a controlled terminology example
 #' (ct_spec <- read_ct_spec_example("ct-01-cm"))
