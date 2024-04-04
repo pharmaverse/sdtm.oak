@@ -17,9 +17,9 @@ reference:
 
 - title: Controlled terminology
   contents:
-  - read_ct
-  - read_ct_example
-  - ct_example
+  - read_ct_spec
+  - read_ct_spec_example
+  - ct_spec_example
   - ct_map
 
 - title: Date and time conversion
