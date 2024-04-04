@@ -1,3 +1,9 @@
+# sdtm.oak 0.0.0.9003 (development version)
+
+## New Features
+
+* New function: `assign_datetime()` for deriving an ISO8601 date-time variable.
+
 # sdtm.oak 0.0.0.9002 (development version)
 
 ## New Features
