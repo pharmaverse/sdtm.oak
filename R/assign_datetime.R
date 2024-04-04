@@ -54,7 +54,7 @@
 #'     14L, "MD1", 379, NA, "17-Feb-20", NA
 #'   )
 #'
-#' cm <-
+#' cm1 <-
 #'   assign_datetime(
 #'     raw_dat = md1,
 #'     raw_var = "MDBDR",
@@ -63,8 +63,60 @@
 #'     tgt_var = "CMSTDTC"
 #'   )
 #'
-#' cm
-#' problems(cm$CMSTDTC)
+#' cm1
+#' problems(cm1$CMSTDTC)
+#'
+#' cm_inter <-
+#'   tibble::tibble(
+#'     oak_id = 1L:14L,
+#'     raw_source = "MD1",
+#'     patient_number = c(375, 375, 376, 377, 377, 377, 377, 378,
+#'                        378, 378, 378, 379, 379, 379),
+#'     CMTRT = c(
+#'       "BABY ASPIRIN",
+#'       "CORTISPORIN",
+#'       "ASPIRIN",
+#'       "DIPHENHYDRAMINE HCL",
+#'       "PARCETEMOL",
+#'       "VOMIKIND",
+#'       "ZENFLOX OZ",
+#'       "AMITRYPTYLINE",
+#'       "BENADRYL",
+#'       "DIPHENHYDRAMINE HYDROCHLORIDE",
+#'       "TETRACYCLINE",
+#'       "BENADRYL",
+#'       "SOMINEX",
+#'       "ZQUILL"
+#'     ),
+#'     CMINDC = c(
+#'       "NA",
+#'       "NAUSEA",
+#'       "ANEMIA",
+#'       "NAUSEA",
+#'       "PYREXIA",
+#'       "VOMITINGS",
+#'       "DIARHHEA",
+#'       "COLD",
+#'       "FEVER",
+#'       "LEG PAIN",
+#'       "FEVER",
+#'       "COLD",
+#'       "COLD",
+#'       "PAIN"
+#'     )
+#'   )
+#'
+#' cm2 <-
+#'   assign_datetime(
+#'     raw_dat = md1,
+#'     raw_var = "MDBDR",
+#'     raw_fmt = "d-m-y",
+#'     tgt_var = "CMSTDTC",
+#'     tgt_dat = cm_inter
+#'   )
+#'
+#' cm2
+#' problems(cm2$CMSTDTC)
 #'
 #' @export
 assign_datetime <-

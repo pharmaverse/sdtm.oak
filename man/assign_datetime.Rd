@@ -74,14 +74,14 @@ md1 <-
     7L, "MD1", 377, "20-UNK-2019", "20-UNK-2019", NA,
     8L, "MD1", 378, "UN-UNK-2020", "UN-UNK-2020", NA,
     9L, "MD1", 378, "26-Jan-20", "26-Jan-20", "07:00:00",
-    10L, "MD1",	378, "28-Jan-20", "1-Feb-20", NA,
-    11L, "MD1",	378, "12-Feb-20", "18-Feb-20", NA,
-    12L, "MD1",	379, "10-UNK-2020", "20-UNK-2020", NA,
-    13L, "MD1",	379, NA, NA, NA,
-    14L, "MD1",	379, NA, "17-Feb-20", NA
+    10L, "MD1", 378, "28-Jan-20", "1-Feb-20", NA,
+    11L, "MD1", 378, "12-Feb-20", "18-Feb-20", NA,
+    12L, "MD1", 379, "10-UNK-2020", "20-UNK-2020", NA,
+    13L, "MD1", 379, NA, NA, NA,
+    14L, "MD1", 379, NA, "17-Feb-20", NA
   )
 
-cm <-
+cm1 <-
   assign_datetime(
     raw_dat = md1,
     raw_var = "MDBDR",
@@ -90,7 +90,59 @@ cm <-
     tgt_var = "CMSTDTC"
   )
 
-cm
-problems(cm$CMSTDTC)
+cm1
+problems(cm1$CMSTDTC)
+
+cm_inter <-
+  tibble::tibble(
+    oak_id = 1L:14L,
+    raw_source = "MD1",
+    patient_number = c(375, 375, 376, 377, 377, 377, 377, 378,
+                       378, 378, 378, 379, 379, 379),
+    CMTRT = c(
+      "BABY ASPIRIN",
+      "CORTISPORIN",
+      "ASPIRIN",
+      "DIPHENHYDRAMINE HCL",
+      "PARCETEMOL",
+      "VOMIKIND",
+      "ZENFLOX OZ",
+      "AMITRYPTYLINE",
+      "BENADRYL",
+      "DIPHENHYDRAMINE HYDROCHLORIDE",
+      "TETRACYCLINE",
+      "BENADRYL",
+      "SOMINEX",
+      "ZQUILL"
+    ),
+    CMINDC = c(
+      "NA",
+      "NAUSEA",
+      "ANEMIA",
+      "NAUSEA",
+      "PYREXIA",
+      "VOMITINGS",
+      "DIARHHEA",
+      "COLD",
+      "FEVER",
+      "LEG PAIN",
+      "FEVER",
+      "COLD",
+      "COLD",
+      "PAIN"
+    )
+  )
+
+cm2 <-
+  assign_datetime(
+    raw_dat = md1,
+    raw_var = "MDBDR",
+    raw_fmt = "d-m-y",
+    tgt_var = "CMSTDTC",
+    tgt_dat = cm_inter
+  )
+
+cm2
+problems(cm2$CMSTDTC)
 
 }
