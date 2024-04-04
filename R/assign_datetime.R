@@ -70,8 +70,10 @@
 #'   tibble::tibble(
 #'     oak_id = 1L:14L,
 #'     raw_source = "MD1",
-#'     patient_number = c(375, 375, 376, 377, 377, 377, 377, 378,
-#'                        378, 378, 378, 379, 379, 379),
+#'     patient_number = c(
+#'       375, 375, 376, 377, 377, 377, 377, 378,
+#'       378, 378, 378, 379, 379, 379
+#'     ),
 #'     CMTRT = c(
 #'       "BABY ASPIRIN",
 #'       "CORTISPORIN",
