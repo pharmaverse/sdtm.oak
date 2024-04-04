@@ -4,10 +4,10 @@
 \alias{ct_mappings}
 \title{Controlled terminology mappings}
 \usage{
-ct_mappings(ct, from = ct_vars("from"), to = ct_vars("to"))
+ct_mappings(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars("to"))
 }
 \arguments{
-\item{ct}{Controlled terminology specification as a
+\item{ct_spec}{Controlled terminology specification as a
 \link[tibble:tibble-package]{tibble}. Each row is for a mapped controlled term.
 Controlled terms are expected in the column indicated by \code{to_col}.}
 
@@ -33,13 +33,13 @@ and only that mapping is retained in the controlled terminology map.
 }
 \examples{
 # Read in a bundled controlled terminology spec example (ex. 01).
-(ct_01 <- read_ct_example("ct-01-cm"))
+(ct_spec_01 <- read_ct_spec_example("ct-01-cm"))
 
 # Generate mappings from the terminology specification.
-sdtm.oak:::ct_mappings(ct = ct_01)
+sdtm.oak:::ct_mappings(ct_spec = ct_spec_01)
 
 # Take a glimpse at those mappings where an actual recoding happens.
-sdtm.oak:::ct_mappings(ct = ct_01) |>
+sdtm.oak:::ct_mappings(ct_spec = ct_spec_01) |>
   dplyr::filter(from != to) |>
   print(n = 20)
 

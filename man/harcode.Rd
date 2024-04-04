@@ -20,8 +20,8 @@ hardcode_ct(
   raw_var,
   tgt_var,
   tgt_val,
-  ct,
-  cl,
+  ct_spec,
+  ct_cltc,
   tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
@@ -46,13 +46,13 @@ section Value for how the output changes depending on this argument value.}
 \item{id_vars}{Key variables to be used in the join between the raw dataset
 (\code{raw_dat}) and the target data set (\code{raw_dat}).}
 
-\item{ct}{Study controlled terminology specification: a dataframe with a
-minimal set of columns, see \code{\link[=ct_vars]{ct_vars()}} for details. This parameter is
+\item{ct_spec}{Study controlled terminology specification: a dataframe with a
+minimal set of columns, see \code{\link[=ct_spec_vars]{ct_spec_vars()}} for details. This parameter is
 optional, if left as \code{NULL} no controlled terminology recoding is applied.}
 
-\item{cl}{A code-list code indicating which subset of the controlled
+\item{ct_cltc}{A codelist code indicating which subset of the controlled
 terminology to apply in the derivation. This parameter is optional, if left
-as \code{NULL}, all possible recodings in \code{ct} are attempted.}
+as \code{NULL}, all possible recodings in \code{ct_spec} are attempted.}
 }
 \value{
 The returned data set depends on the value of \code{tgt_dat}:
@@ -115,7 +115,7 @@ hardcode_no_ct(
 )
 
 # Controlled terminology specification
-(ct <- read_ct_example("ct-01-cm"))
+(ct_spec <- read_ct_spec_example("ct-01-cm"))
 
 # Hardcoding of `CMCAT` with the value `"GENERAL CONCOMITANT MEDICATIONS"`
 # involving terminology recoding. `NA` values in `MDRAW` are preserved in
@@ -125,8 +125,8 @@ hardcode_ct(
   raw_var = "MDRAW",
   tgt_var = "CMCAT",
   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
-  ct = ct,
-  cl = "C66729",
+  ct_spec = ct_spec,
+  ct_cltc = "C66729",
   tgt_dat = cm_inter
 )
 

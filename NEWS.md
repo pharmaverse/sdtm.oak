@@ -7,8 +7,8 @@
 * New functions for basic SDTM derivations: ` assign_no_ct()`, `assign_ct()`,
 `hardcode_no_ct()` and `hardcode_ct()`.
 
-* New functions for handling controlled terminologies: `read_ct()`,
-`read_ct_example()`, `ct_example()` and `ct_map()`.
+* New functions for handling controlled terminologies: `read_ct_spec()`,
+`read_ct_spec_example()`, `ct_spec_example()` and `ct_map()`.
 
 # sdtm.oak 0.0.0.9001 (development version)
 
