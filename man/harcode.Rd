@@ -78,10 +78,10 @@ controlled terminology recoding.
 md1 <-
   tibble::tribble(
     ~oak_id, ~raw_source, ~patient_number, ~MDRAW,
-    1L, "MD1", 101L, "BABY ASPIRIN",
-    2L, "MD1", 102L, "CORTISPORIN",
-    3L, "MD1", 103L, NA_character_,
-    4L, "MD1", 104L, "DIPHENHYDRAMINE HCL"
+    1L,      "MD1",       101L,            "BABY ASPIRIN",
+    2L,      "MD1",       102L,            "CORTISPORIN",
+    3L,      "MD1",       103L,            NA_character_,
+    4L,      "MD1",       104L,            "DIPHENHYDRAMINE HCL"
   )
 
 # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
@@ -95,12 +95,12 @@ hardcode_no_ct(
 
 cm_inter <-
   tibble::tribble(
-    ~oak_id, ~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
-    1L, "MD1", 101L, "BABY ASPIRIN", NA,
-    2L, "MD1", 102L, "CORTISPORIN", "NAUSEA",
-    3L, "MD1", 103L, "ASPIRIN", "ANEMIA",
-    4L, "MD1", 104L, "DIPHENHYDRAMINE HCL", "NAUSEA",
-    5L, "MD1", 105L, "PARACETAMOL", "PYREXIA"
+    ~oak_id, ~raw_source, ~patient_number, ~CMTRT,                ~CMINDC,
+    1L,      "MD1",       101L,            "BABY ASPIRIN",        NA,
+    2L,      "MD1",       102L,            "CORTISPORIN",         "NAUSEA",
+    3L,      "MD1",       103L,            "ASPIRIN",             "ANEMIA",
+    4L,      "MD1",       104L,            "DIPHENHYDRAMINE HCL", "NAUSEA",
+    5L,      "MD1",       105L,            "PARACETAMOL",         "PYREXIA"
   )
 
 # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
