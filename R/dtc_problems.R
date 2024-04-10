@@ -133,7 +133,7 @@ any_problems <- function(cap_matrices, .cutoff_2000 = 68L) {
 #' provides easy access to these parsing problems.
 #'
 #' @param x An object of class iso8601, as typically obtained from a call to
-#'   [create_iso8601()]. The argument can also be left empty, in that case it
+#'   [create_iso8601()]. The argument can also be left empty, in that case
 #'   `problems()` will use the last returned value, making it convenient to use
 #'   immediately after [create_iso8601()].
 #'
@@ -159,7 +159,7 @@ any_problems <- function(cap_matrices, .cutoff_2000 = 68L) {
 #'     "20231225"
 #'   )
 #'
-#' #' # By inspecting the problematic dates it can be understood that
+#' # By inspecting the problematic dates it can be understood that
 #' # the `.format` parameter needs to updated to include other variations.
 #' iso8601_dttm <- create_iso8601(dates, .format = "y-m-d")
 #' problems(iso8601_dttm)

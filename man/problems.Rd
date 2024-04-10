@@ -8,7 +8,7 @@ problems(x = .Last.value)
 }
 \arguments{
 \item{x}{An object of class iso8601, as typically obtained from a call to
-\code{\link[=create_iso8601]{create_iso8601()}}. The argument can also be left empty, in that case it
+\code{\link[=create_iso8601]{create_iso8601()}}. The argument can also be left empty, in that case
 \code{problems()} will use the last returned value, making it convenient to use
 immediately after \code{\link[=create_iso8601]{create_iso8601()}}.}
 }
@@ -42,7 +42,7 @@ dates <-
     "20231225"
   )
 
-#' # By inspecting the problematic dates it can be understood that
+# By inspecting the problematic dates it can be understood that
 # the `.format` parameter needs to updated to include other variations.
 iso8601_dttm <- create_iso8601(dates, .format = "y-m-d")
 problems(iso8601_dttm)
