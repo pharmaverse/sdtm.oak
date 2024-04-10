@@ -21,7 +21,7 @@ hardcode_ct(
   tgt_var,
   tgt_val,
   ct_spec,
-  ct_cltc,
+  ct_clst,
   tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
@@ -50,7 +50,7 @@ section Value for how the output changes depending on this argument value.}
 minimal set of columns, see \code{\link[=ct_spec_vars]{ct_spec_vars()}} for details. This parameter is
 optional, if left as \code{NULL} no controlled terminology recoding is applied.}
 
-\item{ct_cltc}{A codelist code indicating which subset of the controlled
+\item{ct_clst}{A codelist code indicating which subset of the controlled
 terminology to apply in the derivation. This parameter is optional, if left
 as \code{NULL}, all possible recodings in \code{ct_spec} are attempted.}
 }
@@ -78,10 +78,10 @@ controlled terminology recoding.
 md1 <-
   tibble::tribble(
     ~oak_id, ~raw_source, ~patient_number, ~MDRAW,
-    1L, "MD1", 101L, "BABY ASPIRIN",
-    2L, "MD1", 102L, "CORTISPORIN",
-    3L, "MD1", 103L, NA_character_,
-    4L, "MD1", 104L, "DIPHENHYDRAMINE HCL"
+    1L,      "MD1",       101L,            "BABY ASPIRIN",
+    2L,      "MD1",       102L,            "CORTISPORIN",
+    3L,      "MD1",       103L,            NA_character_,
+    4L,      "MD1",       104L,            "DIPHENHYDRAMINE HCL"
   )
 
 # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
@@ -95,12 +95,12 @@ hardcode_no_ct(
 
 cm_inter <-
   tibble::tribble(
-    ~oak_id, ~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
-    1L, "MD1", 101L, "BABY ASPIRIN", NA,
-    2L, "MD1", 102L, "CORTISPORIN", "NAUSEA",
-    3L, "MD1", 103L, "ASPIRIN", "ANEMIA",
-    4L, "MD1", 104L, "DIPHENHYDRAMINE HCL", "NAUSEA",
-    5L, "MD1", 105L, "PARACETAMOL", "PYREXIA"
+    ~oak_id, ~raw_source, ~patient_number, ~CMTRT,                ~CMINDC,
+    1L,      "MD1",       101L,            "BABY ASPIRIN",        NA,
+    2L,      "MD1",       102L,            "CORTISPORIN",         "NAUSEA",
+    3L,      "MD1",       103L,            "ASPIRIN",             "ANEMIA",
+    4L,      "MD1",       104L,            "DIPHENHYDRAMINE HCL", "NAUSEA",
+    5L,      "MD1",       105L,            "PARACETAMOL",         "PYREXIA"
   )
 
 # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
@@ -126,7 +126,7 @@ hardcode_ct(
   tgt_var = "CMCAT",
   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
   ct_spec = ct_spec,
-  ct_cltc = "C66729",
+  ct_clst = "C66729",
   tgt_dat = cm_inter
 )
 

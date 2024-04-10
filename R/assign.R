@@ -14,7 +14,7 @@
 #' @param ct_spec Study controlled terminology specification: a dataframe with a
 #'   minimal set of columns, see [ct_spec_vars()] for details. This parameter is
 #'   optional, if left as `NULL` no controlled terminology recoding is applied.
-#' @param ct_cltc A codelist code indicating which subset of the controlled
+#' @param ct_clst A codelist code indicating which subset of the controlled
 #'   terminology to apply in the derivation. This parameter is optional, if left
 #'   as `NULL`, all possible recodings in `ct_spec` are attempted.
 #' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
@@ -39,7 +39,7 @@ sdtm_assign <- function(raw_dat,
                         raw_var,
                         tgt_var,
                         ct_spec = NULL,
-                        ct_cltc = NULL,
+                        ct_clst = NULL,
                         tgt_dat = NULL,
                         id_vars = oak_id_vars()) {
   admiraldev::assert_character_scalar(raw_var)
@@ -51,10 +51,10 @@ sdtm_assign <- function(raw_dat,
   admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
   assert_ct_spec(ct_spec, optional = TRUE)
-  assert_ct_cltc(ct_spec = ct_spec, ct_cltc = ct_cltc, optional = TRUE)
+  assert_ct_clst(ct_spec = ct_spec, ct_clst = ct_clst, optional = TRUE)
 
   # Recode the raw variable following terminology.
-  tgt_val <- ct_map(raw_dat[[raw_var]], ct_spec = ct_spec, ct_cltc = ct_cltc)
+  tgt_val <- ct_map(raw_dat[[raw_var]], ct_spec = ct_spec, ct_clst = ct_clst)
 
   # Apply derivation by assigning `raw_var` to `tgt_var`.
   # `der_dat`: derived dataset.
@@ -95,7 +95,7 @@ sdtm_assign <- function(raw_dat,
 #'   of variable to be derived.
 #' @param ct_spec Study controlled terminology specification: a dataframe with a
 #'   minimal set of columns, see [ct_spec_vars()] for details.
-#' @param ct_cltc A codelist code indicating which subset of the controlled
+#' @param ct_clst A codelist code indicating which subset of the controlled
 #'   terminology to apply in the derivation.
 #' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
 #'   the variables indicated in `id_vars`. This parameter is optional, see
@@ -179,7 +179,7 @@ sdtm_assign <- function(raw_dat,
 #'   raw_var = "MDIND",
 #'   tgt_var = "CMINDC",
 #'   ct_spec = ct_spec,
-#'   ct_cltc = "C66729",
+#'   ct_clst = "C66729",
 #'   tgt_dat = cm_inter
 #' )
 #'
@@ -219,7 +219,7 @@ assign_ct <- function(raw_dat,
                       raw_var,
                       tgt_var,
                       ct_spec,
-                      ct_cltc,
+                      ct_clst,
                       tgt_dat = NULL,
                       id_vars = oak_id_vars()) {
   admiraldev::assert_character_scalar(raw_var)
@@ -238,6 +238,6 @@ assign_ct <- function(raw_dat,
     tgt_dat = tgt_dat,
     id_vars = id_vars,
     ct_spec = ct_spec,
-    ct_cltc = ct_cltc
+    ct_clst = ct_clst
   )
 }

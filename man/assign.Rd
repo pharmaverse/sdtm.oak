@@ -19,7 +19,7 @@ assign_ct(
   raw_var,
   tgt_var,
   ct_spec,
-  ct_cltc,
+  ct_clst,
   tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
@@ -44,7 +44,7 @@ section Value for how the output changes depending on this argument value.}
 \item{ct_spec}{Study controlled terminology specification: a dataframe with a
 minimal set of columns, see \code{\link[=ct_spec_vars]{ct_spec_vars()}} for details.}
 
-\item{ct_cltc}{A codelist code indicating which subset of the controlled
+\item{ct_clst}{A codelist code indicating which subset of the controlled
 terminology to apply in the derivation.}
 }
 \value{
@@ -134,7 +134,7 @@ assign_ct(
   raw_var = "MDIND",
   tgt_var = "CMINDC",
   ct_spec = ct_spec,
-  ct_cltc = "C66729",
+  ct_clst = "C66729",
   tgt_dat = cm_inter
 )
 

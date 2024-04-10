@@ -8,9 +8,9 @@
 #' If only the subset of variables used for matching terms are needed, then
 #' request this subset of variables by passing the argument value `"from"`. If
 #' only the mapping-to variable is to be requested, then simply pass `"to"`. If
-#' only the codelist code variable name is needed then pass `"ct_cltc"`.
+#' only the codelist code variable name is needed then pass `"ct_clst"`.
 #'
-#' @param set A scalar character (string), one of: `"all"` (default), `"ct_cltc"`,
+#' @param set A scalar character (string), one of: `"all"` (default), `"ct_clst"`,
 #'   `"from"` or `"to"`.
 #'
 #' @examples
@@ -20,7 +20,7 @@
 #' sdtm.oak:::ct_spec_vars("all")
 #'
 #' # "Codelist code" variable name.
-#' sdtm.oak:::ct_spec_vars("ct_cltc")
+#' sdtm.oak:::ct_spec_vars("ct_clst")
 #'
 #' # "From" variables
 #' sdtm.oak:::ct_spec_vars("from")
@@ -30,20 +30,20 @@
 #'
 #' @keywords internal
 #' @export
-ct_spec_vars <- function(set = c("all", "ct_cltc", "from", "to")) {
+ct_spec_vars <- function(set = c("all", "ct_clst", "from", "to")) {
   admiraldev::assert_character_vector(set)
 
   set <- match.arg(set)
-  ct_cltc_var <- "codelist_code"
+  ct_clst_var <- "codelist_code"
   from_vars <- c("collected_value", "term_synonyms")
   to_var <- "term_value"
 
   if (identical(set, "all")) {
-    return(c(ct_cltc_var, from_vars, to_var))
+    return(c(ct_clst_var, from_vars, to_var))
   }
 
-  if (identical(set, "ct_cltc")) {
-    return(ct_cltc_var)
+  if (identical(set, "ct_clst")) {
+    return(ct_clst_var)
   }
 
   if (identical(set, "from")) {
@@ -62,7 +62,7 @@ ct_spec_vars <- function(set = c("all", "ct_cltc", "from", "to")) {
 #' variables: `r knitr::combine_words(ct_spec_vars())`.
 #'
 #' In addition, it will also check if the data frame is not empty (no rows), and
-#' whether the columns \code{`r ct_spec_vars('ct_cltc')`} and \code{`r ct_spec_vars('to')`} do
+#' whether the columns \code{`r ct_spec_vars('ct_clst')`} and \code{`r ct_spec_vars('to')`} do
 #' not contain any `NA` values.
 #'
 #' @param ct_spec A data frame to be asserted as a valid controlled terminology data
@@ -102,8 +102,8 @@ assert_ct_spec <- function(ct_spec, optional = FALSE) {
     rlang::abort("`ct_spec` can't be empty.")
   }
 
-  if (!is.null(ct_spec) && anyNA(ct_spec[[ct_spec_vars("ct_cltc")]])) {
-    rlang::abort(glue::glue("`{ct_spec_vars('ct_cltc')}` can't have any NA values."))
+  if (!is.null(ct_spec) && anyNA(ct_spec[[ct_spec_vars("ct_clst")]])) {
+    rlang::abort(glue::glue("`{ct_spec_vars('ct_clst')}` can't have any NA values."))
   }
 
   if (!is.null(ct_spec) && anyNA(ct_spec[[ct_spec_vars("to")]])) {
@@ -115,17 +115,17 @@ assert_ct_spec <- function(ct_spec, optional = FALSE) {
 
 #' Assert a codelist code
 #'
-#' [assert_ct_cltc()] asserts the validity of a codelist code in the context of
+#' [assert_ct_clst()] asserts the validity of a codelist code in the context of
 #' a controlled terminology specification.
 #'
 #' @param ct_spec Either a data frame encoding a controlled terminology data set, or
 #'   `NULL`.
-#' @param ct_cltc A string with a to-be asserted codelist code, or `NULL`.
-#' @param optional A scalar logical, indicating whether `ct_cltc` can be `NULL` or
+#' @param ct_clst A string with a to-be asserted codelist code, or `NULL`.
+#' @param optional A scalar logical, indicating whether `ct_clst` can be `NULL` or
 #'   not.
 #'
-#' @returns The function throws an error if `ct_cltc` is not a valid codelist code
-#'   given the controlled terminology data set; otherwise, `ct_cltc` is returned
+#' @returns The function throws an error if `ct_clst` is not a valid codelist code
+#'   given the controlled terminology data set; otherwise, `ct_clst` is returned
 #'   invisibly.
 #'
 #' @examples
@@ -133,54 +133,54 @@ assert_ct_spec <- function(ct_spec, optional = FALSE) {
 #' (ct_spec <- read_ct_spec_example("ct-01-cm"))
 #'
 #' # Should work fine.
-#' sdtm.oak:::assert_ct_cltc(ct_spec = ct_spec, ct_cltc = "C71113")
+#' sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = "C71113")
 #'
-#' # In certain cases, you might allow `ct_cltc` to be `NULL` as to indicate absence,
-#' # in that case, set `optional` to `TRUE` to make `assert_ct_cltc()` more
+#' # In certain cases, you might allow `ct_clst` to be `NULL` as to indicate absence,
+#' # in that case, set `optional` to `TRUE` to make `assert_ct_clst()` more
 #' # forgiving.
-#' sdtm.oak:::assert_ct_cltc(ct_spec = ct_spec, ct_cltc = NULL, optional = TRUE)
+#' sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = NULL, optional = TRUE)
 #'
 #' # Otherwise it would err.
-#' try(sdtm.oak:::assert_ct_cltc(ct_spec = ct_spec, ct_cltc = NULL, optional = FALSE))
+#' try(sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = NULL, optional = FALSE))
 #'
 #' @keywords internal
-assert_ct_cltc <- function(ct_spec, ct_cltc, optional = FALSE) {
+assert_ct_clst <- function(ct_spec, ct_clst, optional = FALSE) {
   is_ct_spec_missing <- is.null(ct_spec)
-  is_ct_cltc_missing <- is.null(ct_cltc)
-  is_required_ct_cltc_missing <- is_ct_cltc_missing && !optional
-  is_ct_cltc_without_ct_spec <- is_ct_spec_missing && !is_ct_cltc_missing
-  are_ct_spec_ct_cltc_available <- !is_ct_spec_missing && !is_ct_cltc_missing
+  is_ct_clst_missing <- is.null(ct_clst)
+  is_required_ct_clst_missing <- is_ct_clst_missing && !optional
+  is_ct_clst_without_ct_spec <- is_ct_spec_missing && !is_ct_clst_missing
+  are_ct_spec_ct_clst_available <- !is_ct_spec_missing && !is_ct_clst_missing
 
-  if (!is_ct_cltc_missing) {
-    admiraldev::assert_character_scalar(ct_cltc)
+  if (!is_ct_clst_missing) {
+    admiraldev::assert_character_scalar(ct_clst)
   }
 
-  if (is_required_ct_cltc_missing) {
-    rlang::abort("`ct_cltc` is a required parameter.")
+  if (is_required_ct_clst_missing) {
+    rlang::abort("`ct_clst` is a required parameter.")
   }
 
-  if (is_ct_cltc_without_ct_spec) {
-    rlang::abort("`ct_spec` must be a valid controlled terminology if `ct_cltc` is supplied.")
+  if (is_ct_clst_without_ct_spec) {
+    rlang::abort("`ct_spec` must be a valid controlled terminology if `ct_clst` is supplied.")
   }
 
-  if (is_ct_cltc_missing) {
+  if (is_ct_clst_missing) {
     return(invisible(NULL))
   }
 
-  if (!is_ct_spec_missing && is.na(ct_cltc)) {
-    rlang::abort("`ct_cltc` can't be NA. Did you mean `NULL`?")
+  if (!is_ct_spec_missing && is.na(ct_clst)) {
+    rlang::abort("`ct_clst` can't be NA. Did you mean `NULL`?")
   }
 
-  if (are_ct_spec_ct_cltc_available) {
+  if (are_ct_spec_ct_clst_available) {
     assert_ct_spec(ct_spec, optional = FALSE)
-    ct_cltc_possibilities <-
+    ct_clst_possibilities <-
       ct_spec |>
-      dplyr::pull(ct_spec_vars("ct_cltc")) |>
+      dplyr::pull(ct_spec_vars("ct_clst")) |>
       unique()
-    admiraldev::assert_character_scalar(ct_cltc, values = ct_cltc_possibilities)
+    admiraldev::assert_character_scalar(ct_clst, values = ct_clst_possibilities)
   }
 
-  return(ct_cltc)
+  return(ct_clst)
 }
 
 #' Controlled terminology mappings
@@ -254,7 +254,7 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
 #' terminology.
 #' @param ct_spec A [tibble][tibble::tibble-package] providing a controlled
 #'   terminology specification.
-#' @param ct_cltc A character vector indicating a set of possible controlled
+#' @param ct_clst A character vector indicating a set of possible controlled
 #'   terminology codelists codes to be used for recoding. By default (`NULL`)
 #'   all codelists available in `ct_spec` are used.
 #' @param from A character vector of column names indicating the variables
@@ -287,24 +287,25 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
 #' ct_map(x = terms, ct_spec = ct_spec)
 #'
 #' # Note that if the controlled terminology mapping is restricted to a codelist
-#' # code, e.g. C71113, then only `"/day"` gets mapped to `"QD"`; remaining terms
-#' # won't match given the codelist code restriction, and will be mapped to an
-#' # uppercase version of the original terms.
-#' ct_map(x = terms, ct_spec = ct_spec, ct_cltc = "C71113")
+#' # code, e.g. C71113, then only `"/day"` and `"Every 2 hours"` get mapped to
+#' # `"QD"` and `"Q2H"`, respectively; remaining terms won't match given the
+#' # codelist code # restriction, and will be mapped to an uppercase version of
+#' # the original terms.
+#' ct_map(x = terms, ct_spec = ct_spec, ct_clst = "C71113")
 #'
 #' @importFrom rlang %||% .data
 #' @export
 ct_map <-
   function(x,
            ct_spec = NULL,
-           ct_cltc = NULL,
+           ct_clst = NULL,
            from = ct_spec_vars("from"),
            to = ct_spec_vars("to")) {
     ct_spec %||% return(x)
     assert_ct_spec(ct_spec)
 
-    ct_cltc <- ct_cltc %||% unique(ct_spec[[ct_spec_vars("ct_cltc")]])
-    ct_spec <- dplyr::filter(ct_spec, .data[[ct_spec_vars("ct_cltc")]] %in% ct_cltc)
+    ct_clst <- ct_clst %||% unique(ct_spec[[ct_spec_vars("ct_clst")]])
+    ct_spec <- dplyr::filter(ct_spec, .data[[ct_spec_vars("ct_clst")]] %in% ct_clst)
 
     mappings <- ct_mappings(ct_spec, from = from, to = to)
     recode(

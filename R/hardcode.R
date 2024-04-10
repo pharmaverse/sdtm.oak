@@ -16,7 +16,7 @@
 #' @param ct_spec Study controlled terminology specification: a dataframe with a
 #'   minimal set of columns, see [ct_spec_vars()] for details. This parameter is
 #'   optional, if left as `NULL` no controlled terminology recoding is applied.
-#' @param ct_cltc A codelist code indicating which subset of the controlled
+#' @param ct_clst A codelist code indicating which subset of the controlled
 #'   terminology to apply in the derivation. This parameter is optional, if left
 #'   as `NULL`, all possible recodings in `ct_spec` are attempted.
 #' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
@@ -41,7 +41,7 @@ sdtm_hardcode <- function(raw_dat,
                           tgt_var,
                           tgt_val,
                           ct_spec = NULL,
-                          ct_cltc = NULL,
+                          ct_clst = NULL,
                           tgt_dat = NULL,
                           id_vars = oak_id_vars()) {
   admiraldev::assert_character_scalar(raw_var)
@@ -54,10 +54,10 @@ sdtm_hardcode <- function(raw_dat,
   admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(c(id_vars, raw_var)))
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
   assert_ct_spec(ct_spec, optional = TRUE)
-  assert_ct_cltc(ct_spec = ct_spec, ct_cltc = ct_cltc, optional = TRUE)
+  assert_ct_clst(ct_spec = ct_spec, ct_clst = ct_clst, optional = TRUE)
 
   # Recode the hardcoded value following terminology.
-  tgt_val <- ct_map(tgt_val, ct_spec = ct_spec, ct_cltc = ct_cltc)
+  tgt_val <- ct_map(tgt_val, ct_spec = ct_spec, ct_clst = ct_clst)
 
   # Apply derivation of the hardcoded value.
   # `der_dat`: derived dataset.
@@ -102,7 +102,7 @@ sdtm_hardcode <- function(raw_dat,
 #' @param ct_spec Study controlled terminology specification: a dataframe with a
 #'   minimal set of columns, see [ct_spec_vars()] for details. This parameter is
 #'   optional, if left as `NULL` no controlled terminology recoding is applied.
-#' @param ct_cltc A codelist code indicating which subset of the controlled
+#' @param ct_clst A codelist code indicating which subset of the controlled
 #'   terminology to apply in the derivation. This parameter is optional, if left
 #'   as `NULL`, all possible recodings in `ct_spec` are attempted.
 #' @param tgt_dat Target dataset: a data frame to be merged against `raw_dat` by
@@ -124,10 +124,10 @@ sdtm_hardcode <- function(raw_dat,
 #' md1 <-
 #'   tibble::tribble(
 #'     ~oak_id, ~raw_source, ~patient_number, ~MDRAW,
-#'     1L, "MD1", 101L, "BABY ASPIRIN",
-#'     2L, "MD1", 102L, "CORTISPORIN",
-#'     3L, "MD1", 103L, NA_character_,
-#'     4L, "MD1", 104L, "DIPHENHYDRAMINE HCL"
+#'     1L,      "MD1",       101L,            "BABY ASPIRIN",
+#'     2L,      "MD1",       102L,            "CORTISPORIN",
+#'     3L,      "MD1",       103L,            NA_character_,
+#'     4L,      "MD1",       104L,            "DIPHENHYDRAMINE HCL"
 #'   )
 #'
 #' # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
@@ -141,12 +141,12 @@ sdtm_hardcode <- function(raw_dat,
 #'
 #' cm_inter <-
 #'   tibble::tribble(
-#'     ~oak_id, ~raw_source, ~patient_number, ~CMTRT, ~CMINDC,
-#'     1L, "MD1", 101L, "BABY ASPIRIN", NA,
-#'     2L, "MD1", 102L, "CORTISPORIN", "NAUSEA",
-#'     3L, "MD1", 103L, "ASPIRIN", "ANEMIA",
-#'     4L, "MD1", 104L, "DIPHENHYDRAMINE HCL", "NAUSEA",
-#'     5L, "MD1", 105L, "PARACETAMOL", "PYREXIA"
+#'     ~oak_id, ~raw_source, ~patient_number, ~CMTRT,                ~CMINDC,
+#'     1L,      "MD1",       101L,            "BABY ASPIRIN",        NA,
+#'     2L,      "MD1",       102L,            "CORTISPORIN",         "NAUSEA",
+#'     3L,      "MD1",       103L,            "ASPIRIN",             "ANEMIA",
+#'     4L,      "MD1",       104L,            "DIPHENHYDRAMINE HCL", "NAUSEA",
+#'     5L,      "MD1",       105L,            "PARACETAMOL",         "PYREXIA"
 #'   )
 #'
 #' # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
@@ -172,7 +172,7 @@ sdtm_hardcode <- function(raw_dat,
 #'   tgt_var = "CMCAT",
 #'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
 #'   ct_spec = ct_spec,
-#'   ct_cltc = "C66729",
+#'   ct_clst = "C66729",
 #'   tgt_dat = cm_inter
 #' )
 #'
@@ -217,7 +217,7 @@ hardcode_ct <-
            tgt_var,
            tgt_val,
            ct_spec,
-           ct_cltc,
+           ct_clst,
            tgt_dat = NULL,
            id_vars = oak_id_vars()) {
     admiraldev::assert_character_scalar(raw_var)
@@ -236,7 +236,7 @@ hardcode_ct <-
     )
 
     assert_ct_spec(ct_spec, optional = FALSE)
-    assert_ct_cltc(ct_spec = ct_spec, ct_cltc = ct_cltc, optional = FALSE)
+    assert_ct_clst(ct_spec = ct_spec, ct_clst = ct_clst, optional = FALSE)
 
     sdtm_hardcode(
       raw_dat = raw_dat,
@@ -244,7 +244,7 @@ hardcode_ct <-
       tgt_var = tgt_var,
       tgt_val = tgt_val,
       ct_spec = ct_spec,
-      ct_cltc = ct_cltc,
+      ct_clst = ct_clst,
       tgt_dat = tgt_dat,
       id_vars = id_vars
     )
