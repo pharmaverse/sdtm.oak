@@ -7,7 +7,7 @@
 ct_map(
   x,
   ct_spec = NULL,
-  ct_cltc = NULL,
+  ct_clst = NULL,
   from = ct_spec_vars("from"),
   to = ct_spec_vars("to")
 )
@@ -19,7 +19,7 @@ terminology.}
 \item{ct_spec}{A \link[tibble:tibble-package]{tibble} providing a controlled
 terminology specification.}
 
-\item{ct_cltc}{A character vector indicating a set of possible controlled
+\item{ct_clst}{A character vector indicating a set of possible controlled
 terminology codelists codes to be used for recoding. By default (\code{NULL})
 all codelists available in \code{ct_spec} are used.}
 
@@ -62,6 +62,6 @@ ct_map(x = terms, ct_spec = ct_spec)
 # `"QD"` and `"Q2H"`, respectively; remaining terms won't match given the
 # codelist code # restriction, and will be mapped to an uppercase version of
 # the original terms.
-ct_map(x = terms, ct_spec = ct_spec, ct_cltc = "C71113")
+ct_map(x = terms, ct_spec = ct_spec, ct_clst = "C71113")
 
 }

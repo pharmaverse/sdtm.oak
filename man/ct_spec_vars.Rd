@@ -4,10 +4,10 @@
 \alias{ct_spec_vars}
 \title{Controlled terminology variables}
 \usage{
-ct_spec_vars(set = c("all", "ct_cltc", "from", "to"))
+ct_spec_vars(set = c("all", "ct_clst", "from", "to"))
 }
 \arguments{
-\item{set}{A scalar character (string), one of: \code{"all"} (default), \code{"ct_cltc"},
+\item{set}{A scalar character (string), one of: \code{"all"} (default), \code{"ct_clst"},
 \code{"from"} or \code{"to"}.}
 }
 \description{
@@ -18,7 +18,7 @@ variables.
 If only the subset of variables used for matching terms are needed, then
 request this subset of variables by passing the argument value \code{"from"}. If
 only the mapping-to variable is to be requested, then simply pass \code{"to"}. If
-only the codelist code variable name is needed then pass \code{"ct_cltc"}.
+only the codelist code variable name is needed then pass \code{"ct_clst"}.
 }
 \examples{
 # These two calls are equivalent and return all required variables in a
@@ -27,7 +27,7 @@ sdtm.oak:::ct_spec_vars()
 sdtm.oak:::ct_spec_vars("all")
 
 # "Codelist code" variable name.
-sdtm.oak:::ct_spec_vars("ct_cltc")
+sdtm.oak:::ct_spec_vars("ct_clst")
 
 # "From" variables
 sdtm.oak:::ct_spec_vars("from")

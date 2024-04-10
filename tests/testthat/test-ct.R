@@ -20,7 +20,7 @@ test_that("ct_spec_vars() works as expected", {
   )
 
   expect_identical(
-    ct_spec_vars(set = "ct_cltc"),
+    ct_spec_vars(set = "ct_clst"),
     "codelist_code"
   )
 
@@ -46,7 +46,7 @@ test_that("assert_ct_spec() works as expected", {
   # Load an example controlled terminology spec.
   ct_spec <- read_ct_spec_example("ct-01-cm")
   cols <- colnames(ct_spec)
-  ct_cltc_col <- ct_spec_vars("ct_cltc")
+  ct_clst_col <- ct_spec_vars("ct_clst")
   to_col <- ct_spec_vars("to")
 
   expect_no_error(assert_ct_spec(ct_spec, optional = FALSE))
@@ -57,14 +57,14 @@ test_that("assert_ct_spec() works as expected", {
 
   # Codelist code column is one of the key variables that must be present
   # in `ct_spec`, so being missing should trigger an error.
-  expect_error(assert_ct_spec(ct_spec[setdiff(cols, ct_cltc_col)], optional = FALSE))
-  expect_error(assert_ct_spec(ct_spec[setdiff(cols, ct_cltc_col)], optional = TRUE))
+  expect_error(assert_ct_spec(ct_spec[setdiff(cols, ct_clst_col)], optional = FALSE))
+  expect_error(assert_ct_spec(ct_spec[setdiff(cols, ct_clst_col)], optional = TRUE))
 
   # The codelist code and the "to" columns of a controlled terminology should
   # not contain NAs, as otherwise the mapping is undefined. If that happens
   # an error is triggered.
   ct_spec01 <- ct_spec
-  ct_spec01[[ct_cltc_col]] <- NA_character_
+  ct_spec01[[ct_clst_col]] <- NA_character_
   expect_error(assert_ct_spec(ct_spec01, optional = FALSE))
   expect_error(assert_ct_spec(ct_spec01, optional = TRUE))
 
@@ -87,109 +87,109 @@ test_that("assert_ct_spec() works as expected", {
   expect_error(assert_ct_spec(ct_spec_empty, optional = FALSE))
 })
 
-test_that("assert_ct_cltc() works as expected", {
+test_that("assert_ct_clst() works as expected", {
   # Read in a controlled terminology example.
   ct_spec <- read_ct_spec_example("ct-01-cm")
 
-  # If `ct_cltc` is not supplied and is not optional, then it should err.
-  expect_error(assert_ct_cltc(
+  # If `ct_clst` is not supplied and is not optional, then it should err.
+  expect_error(assert_ct_clst(
     ct_spec = NULL,
-    ct_cltc = NULL,
+    ct_clst = NULL,
     optional = FALSE
   ))
 
-  # If `ct_cltc` is not supplied but it is optional, then all fine.
-  expect_no_error(assert_ct_cltc(
+  # If `ct_clst` is not supplied but it is optional, then all fine.
+  expect_no_error(assert_ct_clst(
     ct_spec = NULL,
-    ct_cltc = NULL,
+    ct_clst = NULL,
     optional = TRUE
   ))
-  # Moreover, in case of no error, `ct_cltc` should be returned invisibly, in this
+  # Moreover, in case of no error, `ct_clst` should be returned invisibly, in this
   # case `NULL`.
-  expect_null(assert_ct_cltc(
+  expect_null(assert_ct_clst(
     ct_spec = NULL,
-    ct_cltc = NULL,
+    ct_clst = NULL,
     optional = TRUE
   ))
 
-  # If `ct_cltc` is supplied but `ct_spec` is not, then err.
-  expect_error(assert_ct_cltc(
+  # If `ct_clst` is supplied but `ct_spec` is not, then err.
+  expect_error(assert_ct_clst(
     ct_spec = NULL,
-    ct_cltc = "C71113",
+    ct_clst = "C71113",
     optional = FALSE
   ))
-  expect_error(assert_ct_cltc(
+  expect_error(assert_ct_clst(
     ct_spec = NULL,
-    ct_cltc = "C71113",
+    ct_clst = "C71113",
     optional = TRUE
   ))
 
-  # If `ct_spec` is supplied but `ct_cltc` is NULL, then err if `ct_cltc` is not optional, or
-  # return `ct_cltc` invisibly.
-  expect_error(assert_ct_cltc(
+  # If `ct_spec` is supplied but `ct_clst` is NULL, then err if `ct_clst` is not optional, or
+  # return `ct_clst` invisibly.
+  expect_error(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = NULL,
+    ct_clst = NULL,
     optional = FALSE
   ))
-  expect_no_error(assert_ct_cltc(
+  expect_no_error(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = NULL,
+    ct_clst = NULL,
     optional = TRUE
   ))
-  expect_null(assert_ct_cltc(
+  expect_null(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = NULL,
-    optional = TRUE
-  ))
-
-  # If both `ct_spec` and `ct_cltc` are supplied, then `ct_spec` must be a valid controlled
-  # terminology data set and `ct_cltc` must contain a codelist code available among
-  # the possibilities in column `codelist_code` (as returned by `ct_spec_vars("ct_cltc")`).
-  expect_error(assert_ct_cltc(
-    ct_spec = ct_spec,
-    ct_cltc = "foo",
-    optional = FALSE
-  ))
-  expect_error(assert_ct_cltc(
-    ct_spec = ct_spec,
-    ct_cltc = "",
-    optional = FALSE
-  ))
-
-  expect_error(assert_ct_cltc(
-    ct_spec = ct_spec,
-    ct_cltc = NA_character_,
-    optional = FALSE
-  ))
-  expect_error(assert_ct_cltc(
-    ct_spec = ct_spec,
-    ct_cltc = NA_character_,
+    ct_clst = NULL,
     optional = TRUE
   ))
 
-  expect_identical(assert_ct_cltc(
+  # If both `ct_spec` and `ct_clst` are supplied, then `ct_spec` must be a valid controlled
+  # terminology data set and `ct_clst` must contain a codelist code available among
+  # the possibilities in column `codelist_code` (as returned by `ct_spec_vars("ct_clst")`).
+  expect_error(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = "C71113",
+    ct_clst = "foo",
+    optional = FALSE
+  ))
+  expect_error(assert_ct_clst(
+    ct_spec = ct_spec,
+    ct_clst = "",
+    optional = FALSE
+  ))
+
+  expect_error(assert_ct_clst(
+    ct_spec = ct_spec,
+    ct_clst = NA_character_,
+    optional = FALSE
+  ))
+  expect_error(assert_ct_clst(
+    ct_spec = ct_spec,
+    ct_clst = NA_character_,
+    optional = TRUE
+  ))
+
+  expect_identical(assert_ct_clst(
+    ct_spec = ct_spec,
+    ct_clst = "C71113",
     optional = FALSE
   ), "C71113")
-  expect_identical(assert_ct_cltc(
+  expect_identical(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = "C66726",
+    ct_clst = "C66726",
     optional = FALSE
   ), "C66726")
-  expect_identical(assert_ct_cltc(
+  expect_identical(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = "C71113",
+    ct_clst = "C71113",
     optional = TRUE
   ), "C71113")
-  expect_identical(assert_ct_cltc(
+  expect_identical(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = "C66726",
+    ct_clst = "C66726",
     optional = TRUE
   ), "C66726")
 })
 
-test_that("assert_ct_cltc(): when ct_spec is empty", {
+test_that("assert_ct_clst(): when ct_spec is empty", {
   ct_spec <-
     data.frame(
       codelist_code = character(),
@@ -199,57 +199,57 @@ test_that("assert_ct_cltc(): when ct_spec is empty", {
       stringsAsFactors = FALSE
     )
 
-  # If `ct_spec` is supplied but `ct_cltc` is NULL, then err if `ct_cltc` is not optional, or
-  # return `ct_cltc` invisibly.
-  expect_error(assert_ct_cltc(
+  # If `ct_spec` is supplied but `ct_clst` is NULL, then err if `ct_clst` is not optional, or
+  # return `ct_clst` invisibly.
+  expect_error(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = NULL,
+    ct_clst = NULL,
     optional = FALSE
   ))
-  expect_no_error(assert_ct_cltc(
+  expect_no_error(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = NULL,
+    ct_clst = NULL,
     optional = TRUE
   ))
-  expect_null(assert_ct_cltc(
+  expect_null(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = NULL,
-    optional = TRUE
-  ))
-
-  # If both `ct_spec` and `ct_cltc` are supplied, then `ct_spec` must be a valid controlled
-  # terminology data set and `ct_cltc` must contain a codelist code available among
-  # the possibilities in column `codelist_code` (as returned by `ct_spec_vars("ct_cltc")`).
-  expect_error(assert_ct_cltc(
-    ct_spec = ct_spec,
-    ct_cltc = "foo",
-    optional = FALSE
-  ))
-  expect_error(assert_ct_cltc(
-    ct_spec = ct_spec,
-    ct_cltc = "",
-    optional = FALSE
-  ))
-
-  expect_error(assert_ct_cltc(
-    ct_spec = ct_spec,
-    ct_cltc = NA_character_,
-    optional = FALSE
-  ))
-  expect_error(assert_ct_cltc(
-    ct_spec = ct_spec,
-    ct_cltc = NA_character_,
+    ct_clst = NULL,
     optional = TRUE
   ))
 
-  expect_error(assert_ct_cltc(
+  # If both `ct_spec` and `ct_clst` are supplied, then `ct_spec` must be a valid controlled
+  # terminology data set and `ct_clst` must contain a codelist code available among
+  # the possibilities in column `codelist_code` (as returned by `ct_spec_vars("ct_clst")`).
+  expect_error(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = "C71113",
+    ct_clst = "foo",
     optional = FALSE
   ))
-  expect_error(assert_ct_cltc(
+  expect_error(assert_ct_clst(
     ct_spec = ct_spec,
-    ct_cltc = "C71113",
+    ct_clst = "",
+    optional = FALSE
+  ))
+
+  expect_error(assert_ct_clst(
+    ct_spec = ct_spec,
+    ct_clst = NA_character_,
+    optional = FALSE
+  ))
+  expect_error(assert_ct_clst(
+    ct_spec = ct_spec,
+    ct_clst = NA_character_,
+    optional = TRUE
+  ))
+
+  expect_error(assert_ct_clst(
+    ct_spec = ct_spec,
+    ct_clst = "C71113",
+    optional = FALSE
+  ))
+  expect_error(assert_ct_clst(
+    ct_spec = ct_spec,
+    ct_clst = "C71113",
     optional = TRUE
   ))
 })
