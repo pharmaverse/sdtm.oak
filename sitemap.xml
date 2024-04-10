@@ -46,10 +46,22 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/assert_capture_matrix.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/assert_ct_clst.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/assert_ct_spec.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/assert_dtc_fmt.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/assert_dtc_format.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/assign.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/clear_cache.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/coalesce_capture_matrices.html</loc>
@@ -58,7 +70,22 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/complete_capture_matrix.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/contains_oak_id_vars.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/create_iso8601.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/ct_map.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/ct_mappings.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/ct_spec_example.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/ct_spec_vars.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/derive_study_day.html</loc>
@@ -82,7 +109,13 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/format_iso8601.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/harcode.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/index_for_recode.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/iso8601_mon.html</loc>
@@ -106,6 +139,9 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/months_abb_regex.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/oak_id_vars.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/parse_dttm.html</loc>
   </url>
   <url>
@@ -118,6 +154,15 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/pseq.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/read_ct_spec.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/read_ct_spec_example.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/recode.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/reg_matches.html</loc>
   </url>
   <url>
@@ -125,6 +170,12 @@
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/sdtm.oak-package.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/sdtm_assign.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/sdtm_hardcode.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/str_to_anycase.html</loc>
