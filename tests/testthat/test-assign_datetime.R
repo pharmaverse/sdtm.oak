@@ -42,9 +42,11 @@ test_that("assign_datetime: date and time conversion", {
   )
 
   problems_index <- seq(1L, 14L)[-c(5L, 9L)]
-  problems <- tibble::tibble(..i = problems_index,
-                             MDEDR = md1$MDEDR[problems_index],
-                             MDETM = md1$MDETM[problems_index])
+  problems <- tibble::tibble(
+    ..i = problems_index,
+    MDEDR = md1$MDEDR[problems_index],
+    MDETM = md1$MDETM[problems_index]
+  )
 
   cmstdtc <-
     structure(
@@ -74,5 +76,4 @@ test_that("assign_datetime: date and time conversion", {
     dplyr::bind_cols(tibble::tibble(CMSTDTC = cmstdtc))
 
   expect_equal(object = cm1, expected = expected)
-
 })
