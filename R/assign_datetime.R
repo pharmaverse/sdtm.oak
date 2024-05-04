@@ -152,7 +152,7 @@ assign_datetime <-
       raw_dat |>
       dplyr::select(c(id_vars, raw_var)) |>
       dplyr::mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
-      dplyr::select(-rlang::sym(raw_var))
+      dplyr::select(-raw_var)
 
     der_dat <-
       if (!is.null(tgt_dat)) {
