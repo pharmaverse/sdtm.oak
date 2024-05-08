@@ -8,7 +8,6 @@
 #'   partial dates should be set to NA (default is `TRUE`).
 #'
 #' @return Character vector containing ISO8601 dates.
-#' @export
 #'
 #' @examples
 #' ## Partial or missing dates set to NA by default
@@ -53,7 +52,6 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 #'   seconds should be ignored (default is `TRUE`).
 #'
 #' @return Character vector containing ISO 8601 times.
-#' @export
 #'
 #' @examples
 #' ## Partial or missing times set to NA and seconds ignored by default
@@ -162,6 +160,18 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'   observations in the study. Common choices for this reference variable
 #'   include "RFSTDTC" (the date/time of the first study treatment) or
 #'   "RFXSTDTC" (the date/time of the first exposure to the study drug).
+#' @param baseline_visits A character vector specifying the baseline visits within the study.
+#'   These visits are identified as critical points for data collection at the start of the study,
+#'   before any intervention is applied. This parameter allows the function to filter and analyze
+#'   data specifically from these initial assessment points. For example, baseline visits might
+#'   include "Cycle 1 Day 1" if this is the first visit where subjects are assessed prior to receiving treatment.
+#' @param baseline_timepoints A character vector of dates in "YYYY-MM-DD" format that specifies
+#'   the specific days during the baseline visits when key assessments or measurements were taken.
+#'   These timepoints are used to refine the selection of data points to include only those
+#'   collected on these specific dates, ensuring that only relevant baseline data is analyzed.
+#'   This is particularly important in studies where the timing of measurements can significantly
+#'   impact the interpretation of results. An example might be "2020-09-20", indicating a specific
+#'   day when baseline data was collected.
 #'
 #' @return Modified input data frame with baseline flag variable `--BLFL` or
 #'   last observation before exposure flag `--LOBXFL` added.
@@ -169,9 +179,9 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #' @export
 #'
 #' @examples
-#' DM <- read.csv(system.file("inst/derive_blfl/DM.csv", package = "sdtmoak"))
+#' DM <- read.csv(system.file("derive_blfl/DM.csv", package = "sdtm.oak"))
 #' DM
-#' raw_dataset <- read.csv(system.file("inst/derive_blfl/raw_dataset.csv", package = "sdtmoak"))
+#' raw_dataset <- read.csv(system.file("derive_blfl/raw_dataset.csv", package = "sdtm.oak"))
 #' raw_dataset
 #' observed_output <- derive_blfl(raw_dataset = raw_dataset,
 #'                                DM_dataset = DM,
@@ -194,7 +204,7 @@ derive_blfl <- function(raw_dataset,
 
   # Assert that the input dataset has a "DOMAIN" column
   checkmate::assert_names(names(raw_dataset),
-                          must.include = "DOMAIN",
+                          must.include = c("DOMAIN", sdtm.oak:::oak_id_vars()),
                           .var.name = "Columns of 'raw_dataset'",
                           add = assertion_collection)
 
@@ -311,10 +321,10 @@ derive_blfl <- function(raw_dataset,
 
   # Split --DTC and reference_date_variable into date and time parts
   # (partial or missing dates and times set to NA)
-  ds_mod$dom_dt <- dtc_datepart(ds_mod[[domain_prefixed_names["dtc"]]])
-  ds_mod$dom_tm <- dtc_timepart(ds_mod[[domain_prefixed_names["dtc"]]])
-  ds_mod$ref_dt <- dtc_datepart(ds_mod[[reference_date_variable]])
-  ds_mod$ref_tm <- dtc_timepart(ds_mod[[reference_date_variable]])
+  ds_mod$dom_dt <- sdtm.oak:::dtc_datepart(ds_mod[[domain_prefixed_names["dtc"]]])
+  ds_mod$dom_tm <- sdtm.oak:::dtc_timepart(ds_mod[[domain_prefixed_names["dtc"]]])
+  ds_mod$ref_dt <- sdtm.oak:::dtc_datepart(ds_mod[[reference_date_variable]])
+  ds_mod$ref_tm <- sdtm.oak:::dtc_timepart(ds_mod[[reference_date_variable]])
 
 
   # If VISIT not in data frame then assign it as "<unspecified>" for processing
@@ -322,31 +332,10 @@ derive_blfl <- function(raw_dataset,
     ds_mod[["VISIT"]] <- "<unspecified>"
   }
 
-  # Get a vector of baseline visits from Baseline column (if it exists)
-  # in oak_pkg_env$study_visit_configuration
-  # TODO: How this should work? Attached file doesn't contain this info
-  # if ("Baseline" %in% names(oak_pkg_env$study_visit_configuration)) {
-  #   baseline_visits <- oak_pkg_env$study_visit_configuration |>
-  #     dplyr::filter(toupper(Baseline) == "Y") |>
-  #     dplyr::select(TV_Visit) |>
-  #     dplyr::distinct() |>
-  #     unlist()
-  # }
-
   # If --TPT not in data frame then assign it as "<unspecified>" for processing
   if (!domain_prefixed_names["tpt"] %in% names(ds_mod)) {
     ds_mod[[domain_prefixed_names["tpt"]]] <- "<unspecified>"
   }
-
-  # Get a vector of baseline timepoints from Baseline column (if it exists)
-  # TODO: How this part should work? I need example data
-  # if ("Baseline" %in% names(oak_pkg_env$study_visit_configuration)) {
-  #   baseline_timepoints <- oak_pkg_env$timepoint_conf |>
-  #     dplyr::filter(Domain == domain & toupper(Baseline) == "Y") |>
-  #     dplyr::select(TPT) |>
-  #     dplyr::distinct() |>
-  #     unlist()
-  # }
 
   # Filter on rows that have domain and reference dates not equal to NA
   ds_subset <- dplyr::filter(ds_mod, !is.na(dom_dt) & !is.na(ref_dt))
@@ -368,11 +357,13 @@ derive_blfl <- function(raw_dataset,
   # - VISIT is in baseline visits list and
   # - xxTPT is in baseline timepoints list
   # (*C)
-  ds_subset_eq_2 <- dplyr::filter(ds_subset, dom_dt == ref_dt,
-                                  is.na(dom_tm) | is.na(ref_tm),
-                                  (VISIT %in% baseline_visits & get(domain_prefixed_names["tpt"]) %in% baseline_timepoints) |
-                                    (VISIT %in% baseline_visits & length(baseline_timepoints) == 0) |
-                                    (get(domain_prefixed_names["tpt"]) %in% baseline_timepoints & length(baseline_visits) == 0))
+  ds_subset_eq_2 <-
+    ds_subset |>
+    dplyr::filter(dom_dt == ref_dt,
+                  is.na(dom_tm) | is.na(ref_tm),
+                  (VISIT %in% baseline_visits & get(domain_prefixed_names["tpt"]) %in% baseline_timepoints) |
+                  (VISIT %in% baseline_visits & length(baseline_timepoints) == 0) |
+                  (get(domain_prefixed_names["tpt"]) %in% baseline_timepoints & length(baseline_visits) == 0))
 
   # Combine (*A) and (*B) and (*C)
   ds_base <- rbind(ds_subset_lt, ds_subset_eq_1, ds_subset_eq_2)
@@ -392,9 +383,7 @@ derive_blfl <- function(raw_dataset,
     dplyr::group_by(USUBJID, .data[[domain_prefixed_names["testcd"]]]) |>
     dplyr::slice_max(!!rlang::sym(domain_prefixed_names["dtc"]), na_rm = TRUE) |>
     dplyr::ungroup() |>
-    # OAK.id.vars already there
-    # TODO: this is not true
-    dplyr::select(dplyr::all_of(c(oak_id_vars(), domain_prefixed_names["testcd"])),
+    dplyr::select(dplyr::all_of(c(sdtm.oak:::oak_id_vars(), domain_prefixed_names["testcd"])),
                   dplyr::any_of(
                     c(domain_prefixed_names[c("cat",
                                               "scat",
@@ -414,7 +403,7 @@ derive_blfl <- function(raw_dataset,
   ds_blfl[[target_sdtm_variable]] <- "Y"
 
   # Join baseline flag onto input dataset
-  ds_out <- dplyr::left_join(raw_dataset, ds_blfl)
+  ds_out <- dplyr::left_join(raw_dataset, ds_blfl, by = sdtm.oak:::oak_id_vars())
 
   # Assert that merged data frame has same number of rows as input data frame
   if (nrow(ds_out) != nrow(raw_dataset)) {
