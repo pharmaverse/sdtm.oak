@@ -35,6 +35,7 @@
 #' derived variable, as indicated in `tgt_var`.
 #'
 #' @examples
+#' # `md1`: an example raw data set.
 #' md1 <-
 #'   tibble::tribble(
 #'     ~oak_id, ~raw_source, ~patient_number, ~MDBDR,        ~MDEDR,        ~MDETM,
@@ -54,6 +55,10 @@
 #'     14L,     "MD1",       379,             NA,            "17-Feb-20",   NA
 #'   )
 #'
+#' # Using the raw data set `md1`, derive the variable CMSTDTC from MDBDR using
+#' # the parsing format (`raw_fmt`) `"d-m-y"` (day-month-year), while allowing
+#' # for the presence of special date component values (e.g. `"UN"` or `"UNK"`),
+#' # indicating that these values are missing/unknown (unk).
 #' cm1 <-
 #'   assign_datetime(
 #'     raw_dat = md1,
@@ -64,8 +69,11 @@
 #'   )
 #'
 #' cm1
+#'
+#' # Inspect parsing failures associated with derivation of CMSTDTC.
 #' problems(cm1$CMSTDTC)
 #'
+#' # `cm_inter`: an example target data set.
 #' cm_inter <-
 #'   tibble::tibble(
 #'     oak_id = 1L:14L,
@@ -108,6 +116,8 @@
 #'     )
 #'   )
 #'
+#' # Same derivation as above but now involving the merging with the target
+#' # data set `cm_inter`.
 #' cm2 <-
 #'   assign_datetime(
 #'     raw_dat = md1,
@@ -118,7 +128,26 @@
 #'   )
 #'
 #' cm2
+#'
+#' # Inspect parsing failures associated with derivation of CMSTDTC.
 #' problems(cm2$CMSTDTC)
+#'
+#' # Derive CMSTDTC using both MDEDR and MDETM variables.
+#' # Note that the format `"d-m-y"` is used for parsing MDEDR and `"H:M:S"` for
+#' # MDETM (correspondence is by positional matching).
+#' cm3 <-
+#'   assign_datetime(
+#'     raw_dat = md1,
+#'     raw_var = c("MDEDR", "MDETM"),
+#'     raw_fmt = c("d-m-y", "H:M:S"),
+#'     raw_unk = c("UN", "UNK"),
+#'     tgt_var = "CMSTDTC"
+#'   )
+#'
+#' cm3
+#'
+#' # Inspect parsing failures associated with derivation of CMSTDTC.
+#' problems(cm3$CMSTDTC)
 #'
 #' @export
 assign_datetime <-
