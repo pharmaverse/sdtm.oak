@@ -33,7 +33,7 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 
   # Set partial or missing dates to NA, depending on partial_as_na parameter
   if (partial_as_na) {
-    dt <- ifelse(nchar(dt) < 10, NA, dt)
+    dt <- ifelse(nchar(dt) < 10L, NA, dt)
   }
 
   return(dt)
@@ -88,10 +88,10 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
   checkmate::assert_character(dtc)
 
   # Determine length of time part depending on ignore_seconds parameter
-  tm_length <- ifelse(ignore_seconds, 5, 8)
+  tm_length <- ifelse(ignore_seconds, 5L, 8L)
 
   # Extract time part from ISO 8601 date/time variable
-  tm <- substr(sub("^([^T]+)T?", "", dtc), 1, tm_length)
+  tm <- substr(sub("^([^T]+)T?", "", dtc), 1L, tm_length)
 
   # Set partial or missing times to NA, depending on partial_as_na parameter
   if (partial_as_na) {
@@ -143,7 +143,7 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #' exposure flag (`--LOBXFL`) variable to these rows.
 #'  - Join the baseline flag onto the input dataset based on oak id vars
 #'
-#' @param tgt_dat Input SDTM domain.
+#' @param sdtm_in Input SDTM domain.
 #' @param tgt_var Name of variable to be derived (`--BLFL` or
 #'   `--LOBXFL` where `--` is domain).
 #' @param ref_var vector of a date/time from the
@@ -176,7 +176,7 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'
 #' dm
 #'
-#' tgt_dat <-
+#' sdtm_in <-
 #' tibble::tribble(
 #' ~DOMAIN, ~oak_id, ~raw_source, ~patient_number,      ~USUBJID,             ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT,
 #' "VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-01T13:31",   "DIABP",     "90",      NA,
@@ -186,62 +186,62 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #' "VS",      1L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:10",   "SYSBP",     "120",      NA,
 #' "VS",      2L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:05",   "SYSBP",     "120",      NA,
 #' "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "DIABP",     "75",      NA,
-#' "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",      NA,      "NOT DONE",
+#' "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",      NA,      "NOT DONE", #nolint
 #' "VS",      2L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",     "110",      NA
 #' )
 #'
-#' tgt_dat
+#' sdtm_in
 #'
-#' observed_output <- derive_blfl(tgt_dat = tgt_dat,
-#'                                dm_dat = dm,
+#' observed_output <- derive_blfl(sdtm_in = sdtm_in,
+#'                                dm_domain = dm,
 #'                                tgt_var = "VSLOBXFL",
 #'                                ref_var = "RFXSTDTC")
 #' observed_output
 #'
-derive_blfl <- function(tgt_dat,
-                        dm_dat,
+derive_blfl <- function(sdtm_in,
+                        dm_domain,
                         tgt_var,
                         ref_var,
                         baseline_visits = character(),
                         baseline_timepoints = character()) {
   # Check assertions --------------------------------------------------------
-  assertion_collection = checkmate::makeAssertCollection()
-  # Assert that tgt_dat is a data frame,
-  checkmate::assert_data_frame(tgt_dat,
+  assertion_collection <- checkmate::makeAssertCollection()
+  # Assert that sdtm_in is a data frame,
+  checkmate::assert_data_frame(sdtm_in,
                                col.names = "strict",
-                               min.rows = 1,
+                               min.rows = 1L,
                                add = assertion_collection)
 
   # Assert that the input dataset has a "DOMAIN" column
-  checkmate::assert_names(names(tgt_dat),
+  checkmate::assert_names(names(sdtm_in),
                           must.include = c("DOMAIN", sdtm.oak:::oak_id_vars()),
-                          .var.name = "Columns of 'tgt_dataset'",
+                          .var.name = "Columns of 'sdtm_inaset'",
                           add = assertion_collection)
 
-  # Assert dm_dat is data.frame
-  checkmate::assert_data_frame(dm_dat,
+  # Assert dm_domain is data.frame
+  checkmate::assert_data_frame(dm_domain,
                                col.names = "strict",
-                               min.rows = 1,
+                               min.rows = 1L,
                                add = assertion_collection)
 
   # Check if USUBJID and reference_date is present in the DM
-  checkmate::assert_names(names(dm_dat),
+  checkmate::assert_names(names(dm_domain),
                           must.include = c("USUBJID", ref_var),
-                          .var.name = "Columns of 'dm_dat'",
+                          .var.name = "Columns of 'dm_domain'",
                           add = assertion_collection)
 
   checkmate::assert_character(tgt_var,
-                             min.chars = 1,
-                             len = 1,
-                             add = assertion_collection)
+                              min.chars = 1L,
+                              len = 1L,
+                              add = assertion_collection)
 
   checkmate::assert_names(tgt_var,
-                         type = "strict",
-                         add = assertion_collection)
+                          type = "strict",
+                          add = assertion_collection)
 
   checkmate::assert_character(ref_var,
-                              min.chars = 1,
-                              len = 1,
+                              min.chars = 1L,
+                              len = 1L,
                               add = assertion_collection)
 
   checkmate::assert_names(ref_var,
@@ -251,11 +251,11 @@ derive_blfl <- function(tgt_dat,
   checkmate::reportAssertions(assertion_collection)
 
   # Get domain from input dataset
-  domain <- unique(tgt_dat$DOMAIN)
+  domain <- unique(sdtm_in$DOMAIN)
   checkmate::assert_character(domain,
-                             min.chars = 1,
-                             len = 1,
-                             add = assertion_collection)
+                              min.chars = 1L,
+                              len = 1L,
+                              add = assertion_collection)
 
   # Assert that tgt_var is a concatenation of domain and "BLFL" or "LOBXFL"
   checkmate::assert_choice(
@@ -274,18 +274,18 @@ derive_blfl <- function(tgt_dat,
     setNames(tolower(suffixes))
 
   # Assert that the input dataset has a "DTC" column
-  checkmate::assert_names(names(tgt_dat),
+  checkmate::assert_names(names(sdtm_in),
                           must.include = c(domain_prefixed_names[c("orres",
                                                                    "stat",
                                                                    "testcd",
                                                                    "dtc")]),
-                          .var.name = "Columns of 'tgt_dat'",
+                          .var.name = "Columns of 'sdtm_in'",
                           add = assertion_collection)
   checkmate::reportAssertions(assertion_collection)
 
   # End of assertions, work begins ------------------------------------------
   # Create copy of input dataset for modification and processing
-  ds_mod <- tgt_dat
+  ds_mod <- sdtm_in
 
   # Filter out rows where --ORRES is missing. Filter out --ORRES in
   # ("ND", "NOT DONE") as well.
@@ -294,12 +294,12 @@ derive_blfl <- function(tgt_dat,
   ds_mod <- ds_mod[!bad_orres_rows, ]
 
   # Filter out rows where --STAT is not equal to "NOT DONE"
-  ds_mod <- ds_mod |>
-    dplyr::filter(
-      dplyr::if_any(
-        dplyr::any_of(domain_prefixed_names["stat"]), ~ !.x %in% "NOT DONE"))
+  ds_mod <-
+    ds_mod |>
+    dplyr::filter(dplyr::if_any(dplyr::any_of(domain_prefixed_names["stat"]),
+                                ~ !.x %in% "NOT DONE"))
 
-  if (nrow(ds_mod) == 0) {
+  if (nrow(ds_mod) == 0L) {
     stop(paste0(
       "No rows for which both --ORRES is not missing\n  and --STAT not equals to NOT DONE.\n",
       "  Not able to derive Baseline Flag or Last Observation Before Exposure Flag"
@@ -307,11 +307,10 @@ derive_blfl <- function(tgt_dat,
   }
 
   # Checking for columns of interest
-  con_col <- c(domain_prefixed_names[c("testcd", "dtc", "var_tpt")],
-                                     "VISITNUM")
+  con_col <- c(domain_prefixed_names[c("testcd", "dtc", "var_tpt")], "VISITNUM")
 
   # Drop those columns from the list which are not present in ds_in
-  con_col <- con_col[con_col %in% names(tgt_dat)]
+  con_col <- con_col[con_col %in% names(sdtm_in)]
 
   # Check for any column which is all NA and removing it from con_col list
   h <- which(sapply(ds_mod, function(x) all(is.na(x))))
@@ -322,12 +321,10 @@ derive_blfl <- function(tgt_dat,
   }
 
   # Keep only USUBJID and ref_var
-  dm_dat <- dplyr::select(dm_dat,
-                              dplyr::all_of(c("USUBJID",
-                                              ref_var)))
+  dm_domain <- dplyr::select(dm_domain, dplyr::all_of(c("USUBJID", ref_var)))
 
-  # Left join dataset with dm_dat domain based on USUBJID
-  ds_mod <- dplyr::left_join(ds_mod, dm_dat, by = "USUBJID")
+  # Left join dataset with dm_domain domain based on USUBJID
+  ds_mod <- dplyr::left_join(ds_mod, dm_domain, by = "USUBJID")
 
   # Split --DTC and ref_var into date and time parts
   # (partial or missing dates and times set to NA)
@@ -372,8 +369,8 @@ derive_blfl <- function(tgt_dat,
     dplyr::filter(dom_dt == ref_dt,
                   is.na(dom_tm) | is.na(ref_tm),
                   (VISIT %in% baseline_visits & get(domain_prefixed_names["tpt"]) %in% baseline_timepoints) |
-                  (VISIT %in% baseline_visits & length(baseline_timepoints) == 0) |
-                  (get(domain_prefixed_names["tpt"]) %in% baseline_timepoints & length(baseline_visits) == 0))
+                  (VISIT %in% baseline_visits & length(baseline_timepoints) == 0L) |
+                  (get(domain_prefixed_names["tpt"]) %in% baseline_timepoints & length(baseline_visits) == 0L))
 
   # Combine (*A) and (*B) and (*C)
   ds_base <- rbind(ds_subset_lt, ds_subset_eq_1, ds_subset_eq_2)
@@ -381,7 +378,7 @@ derive_blfl <- function(tgt_dat,
   # Sort the rows in ascending order with respect to columns from con_col
   ds_base <- dplyr::arrange_at(ds_base, c("USUBJID", con_col))
 
-  if (nrow(ds_base) == 0) {
+  if (nrow(ds_base) == 0L) {
     message(paste0("There are no baseline records."))
   }
 
@@ -410,14 +407,15 @@ derive_blfl <- function(tgt_dat,
   ds_blfl[[tgt_var]] <- "Y"
 
   # Join baseline flag onto input dataset
-  ds_out <- dplyr::left_join(tgt_dat, ds_blfl, by = c(domain_prefixed_names[["testcd"]],
+  ds_out <- dplyr::left_join(sdtm_in, ds_blfl, by = c(domain_prefixed_names[["testcd"]],
                                                       sdtm.oak:::oak_id_vars()))
 
   # Assert that merged data frame has same number of rows as input data frame
-  if (nrow(ds_out) != nrow(tgt_dat)) {
+  if (nrow(ds_out) != nrow(sdtm_in)) {
     stop(sprintf(
-      "Internal error: The processed dataset was expected to have the same number of rows (%d) as the input dataset (tgt_dat), but it actually has %d rows.",
-      nrow(tgt_dat),
+      "Internal error: The processed dataset was expected to have the same
+      number of rows (%d) as the input dataset (sdtm_in), but it actually has %d rows.",
+      nrow(sdtm_in),
       nrow(ds_out)
     ))
   }
