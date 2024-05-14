@@ -36,7 +36,7 @@
 #' \item{`"mh"`}{Medical History Dataset-updated.}
 #' \item{`"oe_ophtha"`}{Ophthalmology Adverse Events Dataset.}
 #' \item{`"pc"`}{Pharmacokinetics Concentrations Dataset.}
-#' \item{`"pp"`}{Pharmacokinetic Parameters Dataset.}
+#' \item{`"pp"`}{Pharmacokinetics Parameters Dataset.}
 #' \item{`"qs_ophtha"`}{Ophthalmology Questionnaire Dataset.}
 #' \item{`"rs_onco_irecist"`}{Disease Response Dataset (iRECIST).}
 #' \item{`"rs_onco"`}{Disease Response Dataset.}
@@ -56,7 +56,7 @@
 #' # Get the local path to the Concomitant Medication dataset file.
 #' domain_example("cm")
 #'
-#' Local path to the Adverse Events dataset file.
+#' # Local path to the Adverse Events dataset file.
 #' domain_example("ae")
 #'
 #' @source See \url{https://cran.r-project.org/package=pharmaversesdtm}.

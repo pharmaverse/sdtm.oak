@@ -52,7 +52,7 @@ are bundled with \code{{sdtm.oak}}, thus obviating a dependence on
 \item{\code{"mh"}}{Medical History Dataset-updated.}
 \item{\code{"oe_ophtha"}}{Ophthalmology Adverse Events Dataset.}
 \item{\code{"pc"}}{Pharmacokinetics Concentrations Dataset.}
-\item{\code{"pp"}}{Pharmacokinetic Parameters Dataset.}
+\item{\code{"pp"}}{Pharmacokinetics Parameters Dataset.}
 \item{\code{"qs_ophtha"}}{Ophthalmology Questionnaire Dataset.}
 \item{\code{"rs_onco_irecist"}}{Disease Response Dataset (iRECIST).}
 \item{\code{"rs_onco"}}{Disease Response Dataset.}
@@ -66,7 +66,7 @@ domain_example()
 # Get the local path to the Concomitant Medication dataset file.
 domain_example("cm")
 
-Local path to the Adverse Events dataset file.
+# Local path to the Adverse Events dataset file.
 domain_example("ae")
 
 }
