@@ -29,18 +29,18 @@
 #'
 #'
 #' @export
-derive_seq <-
-  function(tgt_dat,
-           tgt_var,
-           id_vars = oak_id_vars(),
-           sort_vars = purrr::set_names(rlang::rep_along(id_vars, "asc"), id_vars),
-           start_at = 1L) {
-
-  return(sort_vars)
-
-  tgt_dat %>%
-    dplyr::arrange(dplyr::across(.cols = tidyselect::all_of(id_vars))) |>
-    dplyr::group_by(dplyr::across(tidyselect::all_of(id_vars))) |>
-    dplyr::mutate("{tgt_var}" := dplyr::row_number() + start_at - 1L) |>
-    dplyr::ungroup()
-}
+# derive_seq <-
+#   function(tgt_dat,
+#            tgt_var,
+#            id_vars = oak_id_vars(),
+#            sort_vars = purrr::set_names(rlang::rep_along(id_vars, "asc"), id_vars),
+#            start_at = 1L) {
+#
+#   return(sort_vars)
+#
+#   tgt_dat %>%
+#     dplyr::arrange(dplyr::across(.cols = dplyr::all_of(id_vars))) |>
+#     dplyr::group_by(dplyr::across(dplyr::all_of(id_vars))) |>
+#     dplyr::mutate("{tgt_var}" := dplyr::row_number() + start_at - 1L) |>
+#     dplyr::ungroup()
+# }
