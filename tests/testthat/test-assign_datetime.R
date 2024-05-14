@@ -19,7 +19,7 @@ test_that("assign_datetime: date and time conversion", {
     )
 
   warning_msg <-
-    "There were 12 parsing problems\\. Run `problems\\(\\)` on parsed results for details\\."
+    r"{There were 12 parsing problems\. Run `problems\(\)` on parsed results for details\.}"
   expect_warning(rlang::with_interactive(
     assign_datetime(
       raw_dat = md1,
