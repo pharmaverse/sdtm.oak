@@ -22,7 +22,7 @@ only the codelist code variable name is needed then pass "ct_clst".'><meta prope
     
     <a class="navbar-brand me-2" href="../index.html">sdtm.oak</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9003</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,21 +92,21 @@ only the codelist code variable name is needed then pass <code>"ct_clst"</code>.
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># These two calls are equivalent and return all required variables in a</span></span></span>
 <span class="r-in"><span><span class="co"># controlled terminology data set.</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "codelist_code"   "collected_value" "term_synonyms"   "term_value"     </span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="st">"all"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "codelist_code"   "collected_value" "term_synonyms"   "term_value"     </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># "Codelist code" variable name.</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="st">"ct_clst"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="st">"ct_clst"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "codelist_code"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># "From" variables</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="st">"from"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="st">"from"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "collected_value" "term_synonyms"  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The "to" variable.</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="st">"to"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ct_spec_vars</span><span class="op">(</span><span class="st">"to"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "term_value"</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
