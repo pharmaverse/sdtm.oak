@@ -14,6 +14,7 @@ reference:
   - assign
   - harcode
   - derive_study_day
+  - assign_datetime
 
 - title: Controlled terminology
   contents:
