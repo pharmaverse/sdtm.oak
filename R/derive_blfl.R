@@ -107,41 +107,32 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #' exposure flag (`--LOBXFL`), from the observation date/time (`--DTC`), and a
 #' DM domain reference date/time.
 #'
-#' The methodology and approach implemented in this function are based on
-#' concepts and examples found in the Roche version of the {roak} package.
 #'
 #' The derivation is as follows:
 #'
 #'  - Remove records where the result (`--ORRES`) is missing. Also, exclude records
 #'    with results labeled as "ND" (No Data) or "NOT DONE" in the `--ORRES` column,
-#'    which indicate that the measurement or observation was not completed. This
-#'    step is important even if a previous cleaning step (like the
-#'    'oak_clean_not_done' function) might not have been applied to the data yet.
+#'    which indicate that the measurement or observation was not completed.
 #'  - Remove records where the status (`--STAT`) indicates the observation or test
 #'    was not performed, marked as "NOT DONE".
 #'  - Divide the date and time column (`--DTC`) and the reference date/time
-#'    variable (`reference_date_variable`) into separate date and time components. Ignore
+#'    variable (`ref_var`) into separate date and time components. Ignore
 #'    any seconds recorded in the time component, focusing only on hours and
 #'    minutes for further calculations.
 #'  - Set partial or missing dates to `NA`.
 #'  - Set partial or missing times to `NA`.
-#'  - Get a list of baseline visits from `Baseline column`
-#'    (if it exists) in `oak_pkg_env$study_visit_configuration`.
-#'  - Get a list of baseline timepoints from `Baseline` column
-#'    (if it exists) in `oak_pkg_env$timepoint_conf`.
 #'  - Filter on rows that have domain and reference dates not equal to
-#'    `NA`. (Ref: **X**)
-#'  - Filter **X** on rows with domain date prior to (less than)
-#'    reference date. (Ref: **A**)
-#'  - Filter **X** on rows with domain date equal to reference date but
+#'    `NA`. (Ref to as **X**)
+#'  - Filter **X** on rows with domain date (--DTC) prior to (less than)
+#'    reference date. (Ref to as **A**)
+#'  - Filter **X** on rows with domain date (--DTC) equal to reference date but
 #'    domain and reference times not equal to `NA` and domain time prior to (less
-#'    than) reference time. (Ref: **B**)
-#'  - Filter **X** on rows with domain date equal to reference date but
+#'    than) reference time. (Ref to as **B**)
+#'  - Filter **X** on rows with domain date (--DTC) equal to reference date but
 #'    domain and/or reference time equal to NA and:
 #'      - VISIT is in baseline visits list (if it exists) and
 #'      - xxTPT is in baseline timepoints list (if it exists).
-#'
-#' (Ref: **C**)
+#'    (Ref to as **C**)
 #'  - Combine the rows from **A**, **B**, and **C** to get a
 #' data frame of pre-reference date observations. Sort the rows by `USUBJID`,
 #' `--STAT`, and `--ORRES`.
@@ -150,28 +141,23 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #' `--TESTCD` (because these are the unique values). Remove any duplicate rows.
 #' Assign the baseline flag variable, `--BLFL`, the last observation before
 #' exposure flag (`--LOBXFL`) variable to these rows.
-#'  - Join the baseline flag onto the input dataset.
+#'  - Join the baseline flag onto the input dataset based on oak id vars
 #'
-#' @param raw_dataset Input data frame.
-#' @param target_sdtm_variable Name of variable to be derived (`--BLFL` or
+#' @param tgt_dat Input SDTM domain.
+#' @param tgt_var Name of variable to be derived (`--BLFL` or
 #'   `--LOBXFL` where `--` is domain).
-#' @param reference_date_variable vector of a date/time from the
+#' @param ref_var vector of a date/time from the
 #'   Demographics (DM) dataset, which serves as a point of comparison for other
 #'   observations in the study. Common choices for this reference variable
 #'   include "RFSTDTC" (the date/time of the first study treatment) or
 #'   "RFXSTDTC" (the date/time of the first exposure to the study drug).
 #' @param baseline_visits A character vector specifying the baseline visits within the study.
 #'   These visits are identified as critical points for data collection at the start of the study,
-#'   before any intervention is applied. This parameter allows the function to filter and analyze
-#'   data specifically from these initial assessment points. For example, baseline visits might
-#'   include "Cycle 1 Day 1" if this is the first visit where subjects are assessed prior to receiving treatment.
-#' @param baseline_timepoints A character vector of dates in "YYYY-MM-DD" format that specifies
-#'   the specific days during the baseline visits when key assessments or measurements were taken.
-#'   These timepoints are used to refine the selection of data points to include only those
-#'   collected on these specific dates, ensuring that only relevant baseline data is analyzed.
-#'   This is particularly important in studies where the timing of measurements can significantly
-#'   impact the interpretation of results. An example might be "2020-09-20", indicating a specific
-#'   day when baseline data was collected.
+#'   before any intervention is applied.  This allows the function to assign the baseline
+#'   flag if thre --DTC matches to the reference date.
+#' @param baseline_timepoints A character vector of timpoints values in --TPT that specifies
+#'   the specific timepoints during the baseline visits when key assessments or measurements were taken.
+#'   This allows the function to assign the baseline flag if the --DTC matches to the reference date.
 #'
 #' @return Modified input data frame with baseline flag variable `--BLFL` or
 #'   last observation before exposure flag `--LOBXFL` added.
@@ -179,77 +165,101 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #' @export
 #'
 #' @examples
-#' DM <- read.csv(system.file("derive_blfl/DM.csv", package = "sdtm.oak"))
-#' DM
-#' raw_dataset <- read.csv(system.file("derive_blfl/raw_dataset.csv", package = "sdtm.oak"))
-#' raw_dataset
-#' observed_output <- derive_blfl(raw_dataset = raw_dataset,
-#'                                DM_dataset = DM,
-#'                                target_sdtm_variable = "VSBLFL",
-#'                                reference_date_variable = "RFSTDTC")
+#' dm <- tibble::tribble(
+#' ~USUBJID,           ~RFSTDTC,          ~RFXSTDTC,
+#' "test_study-375", "2020-09-28T10:10", "2020-09-28T10:10",
+#' "test_study-376", "2020-09-21T11:00", "2020-09-21T11:00",
+#' "test_study-377",                 NA,                 NA,
+#' "test_study-378", "2020-01-20T10:00", "2020-01-20T10:00",
+#' "test_study-379",                 NA,                 NA,
+#' )
+#'
+#' dm
+#'
+#' tgt_dat <-
+#' tibble::tribble(
+#' ~DOMAIN, ~oak_id, ~raw_source, ~patient_number,      ~USUBJID,             ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT,
+#' "VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-01T13:31",   "DIABP",     "90",      NA,
+#' "VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T11:20",   "DIABP",     "90",      NA,
+#' "VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-28T10:10",   "PULSE",     "ND",      NA,
+#' "VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T13:31",   "PULSE",     "85",      NA,
+#' "VS",      1L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:10",   "SYSBP",     "120",      NA,
+#' "VS",      2L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:05",   "SYSBP",     "120",      NA,
+#' "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "DIABP",     "75",      NA,
+#' "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",      NA,      "NOT DONE",
+#' "VS",      2L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",     "110",      NA
+#' )
+#'
+#' tgt_dat
+#'
+#' observed_output <- derive_blfl(tgt_dat = tgt_dat,
+#'                                dm_dat = dm,
+#'                                tgt_var = "VSLOBXFL",
+#'                                ref_var = "RFXSTDTC")
 #' observed_output
-derive_blfl <- function(raw_dataset,
-                        DM_dataset,
-                        target_sdtm_variable,
-                        reference_date_variable,
+#'
+derive_blfl <- function(tgt_dat,
+                        dm_dat,
+                        tgt_var,
+                        ref_var,
                         baseline_visits = character(),
                         baseline_timepoints = character()) {
   # Check assertions --------------------------------------------------------
   assertion_collection = checkmate::makeAssertCollection()
-  # Assert that raw_dataset is a data frame,
-  checkmate::assert_data_frame(raw_dataset,
+  # Assert that tgt_dat is a data frame,
+  checkmate::assert_data_frame(tgt_dat,
                                col.names = "strict",
                                min.rows = 1,
                                add = assertion_collection)
 
   # Assert that the input dataset has a "DOMAIN" column
-  checkmate::assert_names(names(raw_dataset),
+  checkmate::assert_names(names(tgt_dat),
                           must.include = c("DOMAIN", sdtm.oak:::oak_id_vars()),
-                          .var.name = "Columns of 'raw_dataset'",
+                          .var.name = "Columns of 'tgt_dataset'",
                           add = assertion_collection)
 
-  # Assert DM_dataset is data.frame
-  checkmate::assert_data_frame(DM_dataset,
+  # Assert dm_dat is data.frame
+  checkmate::assert_data_frame(dm_dat,
                                col.names = "strict",
                                min.rows = 1,
                                add = assertion_collection)
 
   # Check if USUBJID and reference_date is present in the DM
-  checkmate::assert_names(names(DM),
-                          must.include = c("USUBJID", reference_date_variable),
-                          .var.name = "Columns of 'DM_dataset'",
+  checkmate::assert_names(names(dm_dat),
+                          must.include = c("USUBJID", ref_var),
+                          .var.name = "Columns of 'dm_dat'",
                           add = assertion_collection)
 
-  checkmate::assert_character(target_sdtm_variable,
+  checkmate::assert_character(tgt_var,
                              min.chars = 1,
                              len = 1,
                              add = assertion_collection)
 
-  checkmate::assert_names(target_sdtm_variable,
+  checkmate::assert_names(tgt_var,
                          type = "strict",
                          add = assertion_collection)
 
-  checkmate::assert_character(reference_date_variable,
+  checkmate::assert_character(ref_var,
                               min.chars = 1,
                               len = 1,
                               add = assertion_collection)
 
-  checkmate::assert_names(reference_date_variable,
+  checkmate::assert_names(ref_var,
                           type = "strict",
                           add = assertion_collection)
 
   checkmate::reportAssertions(assertion_collection)
 
   # Get domain from input dataset
-  domain <- unique(raw_dataset$DOMAIN)
+  domain <- unique(tgt_dat$DOMAIN)
   checkmate::assert_character(domain,
                              min.chars = 1,
                              len = 1,
                              add = assertion_collection)
 
-  # Assert that target_sdtm_variable is a concatenation of domain and "BLFL" or "LOBXFL"
+  # Assert that tgt_var is a concatenation of domain and "BLFL" or "LOBXFL"
   checkmate::assert_choice(
-    target_sdtm_variable,
+    tgt_var,
     choices = c(paste0(domain, "BLFL"),
                 paste0(domain, "LOBXFL")),
     add = assertion_collection
@@ -264,18 +274,18 @@ derive_blfl <- function(raw_dataset,
     setNames(tolower(suffixes))
 
   # Assert that the input dataset has a "DTC" column
-  checkmate::assert_names(names(raw_dataset),
+  checkmate::assert_names(names(tgt_dat),
                           must.include = c(domain_prefixed_names[c("orres",
                                                                    "stat",
                                                                    "testcd",
                                                                    "dtc")]),
-                          .var.name = "Columns of 'raw_dataset'",
+                          .var.name = "Columns of 'tgt_dat'",
                           add = assertion_collection)
   checkmate::reportAssertions(assertion_collection)
 
   # End of assertions, work begins ------------------------------------------
   # Create copy of input dataset for modification and processing
-  ds_mod <- raw_dataset
+  ds_mod <- tgt_dat
 
   # Filter out rows where --ORRES is missing. Filter out --ORRES in
   # ("ND", "NOT DONE") as well.
@@ -301,7 +311,7 @@ derive_blfl <- function(raw_dataset,
                                      "VISITNUM")
 
   # Drop those columns from the list which are not present in ds_in
-  con_col <- con_col[con_col %in% names(raw_dataset)]
+  con_col <- con_col[con_col %in% names(tgt_dat)]
 
   # Check for any column which is all NA and removing it from con_col list
   h <- which(sapply(ds_mod, function(x) all(is.na(x))))
@@ -311,20 +321,20 @@ derive_blfl <- function(raw_dataset,
     con_col <- con_col[!con_col %in% h]
   }
 
-  # Keep only USUBJID and reference_date_variable
-  DM_dataset <- dplyr::select(DM_dataset,
+  # Keep only USUBJID and ref_var
+  dm_dat <- dplyr::select(dm_dat,
                               dplyr::all_of(c("USUBJID",
-                                              reference_date_variable)))
+                                              ref_var)))
 
-  # Left join dataset with DM_dataset domain based on USUBJID
-  ds_mod <- dplyr::left_join(ds_mod, DM_dataset, by = "USUBJID")
+  # Left join dataset with dm_dat domain based on USUBJID
+  ds_mod <- dplyr::left_join(ds_mod, dm_dat, by = "USUBJID")
 
-  # Split --DTC and reference_date_variable into date and time parts
+  # Split --DTC and ref_var into date and time parts
   # (partial or missing dates and times set to NA)
   ds_mod$dom_dt <- sdtm.oak:::dtc_datepart(ds_mod[[domain_prefixed_names["dtc"]]])
   ds_mod$dom_tm <- sdtm.oak:::dtc_timepart(ds_mod[[domain_prefixed_names["dtc"]]])
-  ds_mod$ref_dt <- sdtm.oak:::dtc_datepart(ds_mod[[reference_date_variable]])
-  ds_mod$ref_tm <- sdtm.oak:::dtc_timepart(ds_mod[[reference_date_variable]])
+  ds_mod$ref_dt <- sdtm.oak:::dtc_datepart(ds_mod[[ref_var]])
+  ds_mod$ref_tm <- sdtm.oak:::dtc_timepart(ds_mod[[ref_var]])
 
 
   # If VISIT not in data frame then assign it as "<unspecified>" for processing
@@ -383,7 +393,7 @@ derive_blfl <- function(raw_dataset,
     dplyr::group_by(USUBJID, .data[[domain_prefixed_names["testcd"]]]) |>
     dplyr::slice_max(!!rlang::sym(domain_prefixed_names["dtc"]), na_rm = TRUE) |>
     dplyr::ungroup() |>
-    dplyr::select(dplyr::all_of(c(sdtm.oak:::oak_id_vars(), domain_prefixed_names["testcd"])),
+    dplyr::select(dplyr::all_of(c(sdtm.oak:::oak_id_vars(), domain_prefixed_names[["testcd"]])),
                   dplyr::any_of(
                     c(domain_prefixed_names[c("cat",
                                               "scat",
@@ -391,25 +401,23 @@ derive_blfl <- function(raw_dataset,
                                               "loc",
                                               "lat",
                                               "dir",
-                                              "method")],
-                      # For MI domain
-                      "MIMRKSTI",
-                      "MIGRPID"
+                                              "method")]
                     )
                   )) |>
     dplyr::distinct()
 
   # Assign the baseline flag variable
-  ds_blfl[[target_sdtm_variable]] <- "Y"
+  ds_blfl[[tgt_var]] <- "Y"
 
   # Join baseline flag onto input dataset
-  ds_out <- dplyr::left_join(raw_dataset, ds_blfl, by = sdtm.oak:::oak_id_vars())
+  ds_out <- dplyr::left_join(tgt_dat, ds_blfl, by = c(domain_prefixed_names[["testcd"]],
+                                                      sdtm.oak:::oak_id_vars()))
 
   # Assert that merged data frame has same number of rows as input data frame
-  if (nrow(ds_out) != nrow(raw_dataset)) {
+  if (nrow(ds_out) != nrow(tgt_dat)) {
     stop(sprintf(
-      "Internal error: The processed dataset was expected to have the same number of rows (%d) as the input dataset (raw_dataset), but it actually has %d rows.",
-      nrow(raw_dataset),
+      "Internal error: The processed dataset was expected to have the same number of rows (%d) as the input dataset (tgt_dat), but it actually has %d rows.",
+      nrow(tgt_dat),
       nrow(ds_out)
     ))
   }
