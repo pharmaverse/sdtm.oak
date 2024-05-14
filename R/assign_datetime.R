@@ -22,7 +22,7 @@
 #'   the variables indicated in `id_vars`. This parameter is optional, see
 #'   section Value for how the output changes depending on this argument value.
 #' @param id_vars Key variables to be used in the join between the raw dataset
-#'   (`raw_dat`) and the target data set (`raw_dat`).
+#'   (`raw_dat`) and the target data set (`tgt_dat`).
 #' @param .warn Whether to warn about parsing failures.
 #'
 #' @returns The returned data set depends on the value of `tgt_dat`:

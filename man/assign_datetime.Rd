@@ -41,7 +41,7 @@ the variables indicated in \code{id_vars}. This parameter is optional, see
 section Value for how the output changes depending on this argument value.}
 
 \item{id_vars}{Key variables to be used in the join between the raw dataset
-(\code{raw_dat}) and the target data set (\code{raw_dat}).}
+(\code{raw_dat}) and the target data set (\code{tgt_dat}).}
 
 \item{.warn}{Whether to warn about parsing failures.}
 }
