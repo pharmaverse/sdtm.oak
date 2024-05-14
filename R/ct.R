@@ -16,17 +16,17 @@
 #' @examples
 #' # These two calls are equivalent and return all required variables in a
 #' # controlled terminology data set.
-#' sdtm.oak:::ct_spec_vars()
-#' sdtm.oak:::ct_spec_vars("all")
+#' ct_spec_vars()
+#' ct_spec_vars("all")
 #'
 #' # "Codelist code" variable name.
-#' sdtm.oak:::ct_spec_vars("ct_clst")
+#' ct_spec_vars("ct_clst")
 #'
 #' # "From" variables
-#' sdtm.oak:::ct_spec_vars("from")
+#' ct_spec_vars("from")
 #'
 #' # The "to" variable.
-#' sdtm.oak:::ct_spec_vars("to")
+#' ct_spec_vars("to")
 #'
 #' @keywords internal
 #' @export
