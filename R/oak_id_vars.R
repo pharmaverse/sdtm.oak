@@ -51,3 +51,31 @@ contains_oak_id_vars <- function(x) {
   admiraldev::assert_character_vector(x)
   all(oak_id_vars() %in% x)
 }
+
+
+#' A function to generate oak_id_vars
+#'
+#' @param raw_dat
+#' @param pat_var
+#' @param raw_src
+#'
+#' @return
+#' @export
+#'
+#' @examples
+generate_oak_id_vars <- function(raw_dat,
+                                 pat_var,
+                                 raw_src) {
+
+  admiraldev::assert_character_scalar(pat_var)
+  admiraldev::assert_character_scalar(raw_src)
+  admiraldev::assert_data_frame(raw_dat)
+  admiraldev::assert_data_frame(raw_dat, required_vars = rlang::syms(pat_var))
+
+  raw_oak_id_vars <- raw_dat |>
+    dplyr::mutate(oak_id = structure(seq_len(nrow(raw_dat))),
+                  patient_number = !!rlang::sym(pat_var),
+                  raw_source = raw_src) |>
+    dplyr::select(oak_id_vars(), dplyr::everything())
+
+}
