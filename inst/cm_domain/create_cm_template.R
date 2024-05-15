@@ -14,48 +14,44 @@ library(dplyr)
 
 # Read Specification
 
-sdtm_spec <- read_(filename = "~/inst/cm_domain/cm_sdtm_oak_spec.csv")
-
-study_ct <- read_study_ct(filename = "~/inst/cm_domain/cm_sdtm_oak_ct.csv")
+study_ct <- read.csv(system.file("cm_domain/cm_sdtm_oak_ct.csv",
+                                 package = "sdtm.oak"))
 
 # Read in raw data
 
-cm_raw_data <- read_raw_data_csv(filename = "~/inst/cm_domain/cm_raw_data.csv") |>
-  # Derive oak_id_vars
-  derive_oak_id_vars()
+cm_raw <-  read.csv(system.file("cm_domain/cm_raw_data.csv",
+                                     package = "sdtm.oak")) |>
+  generate_oak_id_vars(pat_var = "PATNUM",
+                       raw_src = "cm_raw")
 
 # Create CM domain. The first step in creating CM domain is to create the topic variable
 
-cm <- cm_daw_data |>
+cm <-
   # Derive topic variable
   assign_no_ct(
-    raw_dataset = MD1, # This is added for pseudocode. Not required as pipe will send it
-    raw_variable = MDRAW,
-    target_sdtm_var = CMTRT
+    raw_dat = cm_raw,
+    raw_var = "MDRAW",
+    tgt_var = "CMTRT"
   ) |>
   # Derive qualifier CMDOSU
   # Use merge and add the qualifier to the topic variable
   assign_ct(
-    raw_dataset = MD1,
-    raw_variable = DOSU,
-    target_sdtm_var = CMDOSU,
-    study_ct = study_ct,
-    target_sdtm_variable_codelist_code = "C71620",
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
-  ) |>
+    raw_dat = cm_raw,
+    raw_var = "DOSU",
+    tgt_var = "CMDOSU",
+    ct_spec = study_ct,
+    ct_clst = "C71620",
+    id_vars = oak_id_vars()
+    ) |>
   # Derive qualifier CMDOSFRM and merge it with the target dataset
   assign_ct(
-    raw_dataset = MD1,
-    raw_variable = MDFORM,
-    target_sdtm_var = CMDOSFRM,
-    target_sdtm_variable_codelist_code = "C66726",
-    study_ct = study_ct,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
-  ) |>
+    raw_dat = cm_raw,
+    raw_var = "MDFORM",
+    tgt_var = "CMDOSFRM",
+    ct_spec = study_ct,
+    ct_clst = "C66726",
+    id_vars = (oak_id_vars())
+    ) |>
   # DERIVE CMROUTE
   assign_ct(
     raw_dataset = MD1,
