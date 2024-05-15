@@ -4,7 +4,13 @@
 \alias{derive_seq}
 \title{Derive the sequence number (\code{--SEQ}) variable}
 \usage{
-derive_seq(tgt_dat, tgt_var, id_vars, start_at = 1L)
+derive_seq(
+  tgt_dat,
+  tgt_var,
+  rec_vars,
+  sbj_vars = sdtm.oak::sbj_vars(),
+  start_at = 1L
+)
 }
 \arguments{
 \item{tgt_dat}{The target dataset, a data frame.}
@@ -13,8 +19,10 @@ derive_seq(tgt_dat, tgt_var, id_vars, start_at = 1L)
 of the sequence number (\code{--SEQ}) variable, e.g. \code{"DSSEQ"}. Note that
 supplying a name not ending in \code{"SEQ"} will raise a warning.}
 
-\item{id_vars}{Either a character vector of identifier variables.
-Default is the set of variables returned by \code{\link[=oak_id_vars]{oak_id_vars()}}.}
+\item{rec_vars}{A character vector of record-level identifier variables. Use
+\code{\link[=rec_vars]{rec_vars()}} to quickly get the identifier variables for a given domain.}
+
+\item{sbj_vars}{A character vector of subject-level identifier variables.}
 
 \item{start_at}{The sequence numbering starts at this value (default is \code{1}).}
 }
@@ -32,5 +40,23 @@ number (\code{--SEQ}) whose name is the one provided in \code{tgt_var}. An integ
 sequence is generated that uniquely identifies each record within the domain.
 
 Prior to the derivation of \code{tgt_var}, the data frame \code{tgt_dat} is sorted
-according to grouping variables indicated in \code{id_vars}.
+according to grouping variables indicated in \code{rec_vars}.
+}
+\examples{
+# A VS raw data set example
+(vs <- read_domain_example("vs"))
+
+# Derivation of VSSEQ
+derive_seq(tgt_dat = vs, tgt_var = "VSSEQ", rec_vars = rec_vars("VS"))
+
+# An APSC raw data set example
+(apsc <- read_domain_example("apsc"))
+
+# Derivation of APSEQ
+derive_seq(
+  tgt_dat = apsc,
+  tgt_var = "APSEQ",
+  rec_vars = c("STUDYID", "RSUBJID", "SCTESTCD"),
+  sbj_vars = c("STUDYID", "RSUBJID")
+)
 }
