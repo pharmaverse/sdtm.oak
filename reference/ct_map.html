@@ -146,7 +146,7 @@ returned unchanged.</p>
 <span class="r-in"><span><span class="co"># Note that if the controlled terminology mapping is restricted to a codelist</span></span></span>
 <span class="r-in"><span><span class="co"># code, e.g. C71113, then only `"/day"` and `"Every 2 hours"` get mapped to</span></span></span>
 <span class="r-in"><span><span class="co"># `"QD"` and `"Q2H"`, respectively; remaining terms won't match given the</span></span></span>
-<span class="r-in"><span><span class="co"># codelist code # restriction, and will be mapped to an uppercase version of</span></span></span>
+<span class="r-in"><span><span class="co"># codelist code restriction, and will be mapped to an uppercase version of</span></span></span>
 <span class="r-in"><span><span class="co"># the original terms.</span></span></span>
 <span class="r-in"><span><span class="fu">ct_map</span><span class="op">(</span>x <span class="op">=</span> <span class="va">terms</span>, ct_spec <span class="op">=</span> <span class="va">ct_spec</span>, ct_clst <span class="op">=</span> <span class="st">"C71113"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "QD"                 "YES"                "UNKNOWN"           </span>
