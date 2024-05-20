@@ -5,7 +5,7 @@ dta <- function(env = parent.frame()) {
     "test_study-376", "2020-09-21T11:00", "2020-09-21T11:00",
     "test_study-377", NA, NA,
     "test_study-378", "2020-01-20T10:00", "2020-01-20T10:00",
-    "test_study-379", NA, NA,
+    "test_study-379", NA, NA
   )
 
   sdtm_in <-
@@ -48,29 +48,29 @@ test_that("derive_blfl example works", {
 
 test_that("derive_blfl sdmt_in validations work", {
   d <- dta()
-  sdmt_in_noDOMAIN <-
+  sdmt_in_no_domain <-
     d$sdtm_in |>
     dplyr::select(-DOMAIN)
 
   expect_snapshot_error(derive_blfl(
-    sdtm_in = sdmt_in_noDOMAIN,
+    sdtm_in = sdmt_in_no_domain,
     dm_domain = d$dm,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
   ))
 
-  sdmt_in_noIDvars <-
+  sdmt_in_no_id_vars <-
     d$sdtm_in |>
     dplyr::select(-sdtm.oak:::oak_id_vars())
 
   expect_snapshot_error(derive_blfl(
-    sdtm_in = sdmt_in_noIDvars,
+    sdtm_in = sdmt_in_no_id_vars,
     dm_domain = d$dm,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
   ))
 
-  sdmt_in_noVSvars <-
+  sdmt_in_no_vs_vars <-
     d$sdtm_in |>
     dplyr::select(-c(
       "VSORRES",
@@ -80,7 +80,7 @@ test_that("derive_blfl sdmt_in validations work", {
     ))
 
   expect_snapshot_error(derive_blfl(
-    sdtm_in = sdmt_in_noVSvars,
+    sdtm_in = sdmt_in_no_vs_vars,
     dm_domain = d$dm,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
@@ -90,13 +90,13 @@ test_that("derive_blfl sdmt_in validations work", {
 test_that("derive_blfl dm_domain validations work", {
   d <- dta()
 
-  dm_noVars <-
+  dm_no_vars <-
     d$dm |>
     dplyr::select(-c(RFXSTDTC, USUBJID))
 
   expect_snapshot_error(derive_blfl(
     sdtm_in = d$sdtm_in,
-    dm_domain = dm_noVars,
+    dm_domain = dm_no_vars,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
   ))
@@ -130,12 +130,12 @@ test_that("derive_blfl tgt_var and ref_var validations work", {
 test_that("derive_blfl DOMAIN validation works", {
   d <- dta()
 
-  sdtm_in_badDOMAIN <-
+  sdtm_in_bad_domain <-
     d$sdtm_in |>
-    dplyr::mutate(DOMAIN = 4)
+    dplyr::mutate(DOMAIN = 4L)
 
   expect_snapshot_error(derive_blfl(
-    sdtm_in = sdtm_in_badDOMAIN,
+    sdtm_in = sdtm_in_bad_domain,
     dm_domain = d$dm,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
