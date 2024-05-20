@@ -14,17 +14,16 @@
 #' dtc_datepart(
 #'   c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25T12:00:00")
 #' )
-#'   # |-->  c(NA, NA, NA, NA, "2021-12-25", "2021-12-25")
+#' # |-->  c(NA, NA, NA, NA, "2021-12-25", "2021-12-25")
 #'
 #' ## Prevent partial or missing dates from being set to NA
 #' dtc_datepart(
 #'   c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25T12:00:00"),
 #'   partial_as_na = FALSE
 #' )
-#'   # |--> c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25")
+#' # |--> c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25")
 #'
 dtc_datepart <- function(dtc, partial_as_na = TRUE) {
-
   # Assert that dtc is a character vector
   checkmate::assert_character(dtc)
 
@@ -58,21 +57,21 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 #' dtc_timepart(
 #'   c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59")
 #' )
-#'   # |--> c(NA, NA, NA, NA, "12:30", "12:30")
+#' # |--> c(NA, NA, NA, NA, "12:30", "12:30")
 #'
 #' ## Prevent partial or missing times from being set to NA
 #' dtc_timepart(
 #'   c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59"),
 #'   partial_as_na = FALSE
 #' )
-#'   # |--> c(NA, "", "", "12", "12:30", "12:30")
+#' # |--> c(NA, "", "", "12", "12:30", "12:30")
 #'
 #' ## Do not ignore seconds, partial or missing times set to NA
 #' dtc_timepart(
 #'   c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59"),
 #'   ignore_seconds = FALSE
 #' )
-#'   # |--> c(NA, NA, NA, NA, NA, "12:30:59")
+#' # |--> c(NA, NA, NA, NA, NA, "12:30:59")
 #'
 #' ## Do not ignore seconds and prevent partial or missing times from being set to NA
 #' dtc_timepart(
@@ -80,10 +79,9 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 #'   partial_as_na = FALSE,
 #'   ignore_seconds = FALSE
 #' )
-#'   # |--> c(NA, "", "", "12", "12:30", "12:30:59")
+#' # |--> c(NA, "", "", "12", "12:30", "12:30:59")
 #'
 dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
-
   # Assert that dtc is a character vector
   checkmate::assert_character(dtc)
 
@@ -166,36 +164,38 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'
 #' @examples
 #' dm <- tibble::tribble(
-#' ~USUBJID,           ~RFSTDTC,          ~RFXSTDTC,
-#' "test_study-375", "2020-09-28T10:10", "2020-09-28T10:10",
-#' "test_study-376", "2020-09-21T11:00", "2020-09-21T11:00",
-#' "test_study-377",                 NA,                 NA,
-#' "test_study-378", "2020-01-20T10:00", "2020-01-20T10:00",
-#' "test_study-379",                 NA,                 NA,
+#'   ~USUBJID, ~RFSTDTC, ~RFXSTDTC,
+#'   "test_study-375", "2020-09-28T10:10", "2020-09-28T10:10",
+#'   "test_study-376", "2020-09-21T11:00", "2020-09-21T11:00",
+#'   "test_study-377", NA, NA,
+#'   "test_study-378", "2020-01-20T10:00", "2020-01-20T10:00",
+#'   "test_study-379", NA, NA,
 #' )
 #'
 #' dm
 #'
 #' sdtm_in <-
-#' tibble::tribble(
-#' ~DOMAIN, ~oak_id, ~raw_source, ~patient_number,      ~USUBJID,             ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT,
-#' "VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-01T13:31",   "DIABP",     "90",      NA,
-#' "VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T11:20",   "DIABP",     "90",      NA,
-#' "VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-28T10:10",   "PULSE",     "ND",      NA,
-#' "VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T13:31",   "PULSE",     "85",      NA,
-#' "VS",      1L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:10",   "SYSBP",     "120",      NA,
-#' "VS",      2L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:05",   "SYSBP",     "120",      NA,
-#' "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "DIABP",     "75",      NA,
-#' "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",      NA,      "NOT DONE", #nolint
-#' "VS",      2L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",     "110",      NA
-#' )
+#'   tibble::tribble(
+#'     ~DOMAIN, ~oak_id, ~raw_source, ~patient_number, ~USUBJID, ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT,
+#'     "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-01T13:31", "DIABP", "90", NA,
+#'     "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T11:20", "DIABP", "90", NA,
+#'     "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-28T10:10", "PULSE", "ND", NA,
+#'     "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T13:31", "PULSE", "85", NA,
+#'     "VS", 1L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:10", "SYSBP", "120", NA,
+#'     "VS", 2L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:05", "SYSBP", "120", NA,
+#'     "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "DIABP", "75", NA,
+#'     "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", NA, "NOT DONE", # nolint
+#'     "VS", 2L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", "110", NA
+#'   )
 #'
 #' sdtm_in
 #'
-#' observed_output <- derive_blfl(sdtm_in = sdtm_in,
-#'                                dm_domain = dm,
-#'                                tgt_var = "VSLOBXFL",
-#'                                ref_var = "RFXSTDTC")
+#' observed_output <- derive_blfl(
+#'   sdtm_in = sdtm_in,
+#'   dm_domain = dm,
+#'   tgt_var = "VSLOBXFL",
+#'   ref_var = "RFXSTDTC"
+#' )
 #' observed_output
 #'
 derive_blfl <- function(sdtm_in,
@@ -213,7 +213,7 @@ derive_blfl <- function(sdtm_in,
   admiraldev::assert_data_frame(
     sdtm_in,
     required_vars = rlang::syms(c("DOMAIN", sdtm.oak:::oak_id_vars()))
-    )
+  )
 
   # Assert dm_domain is data.frame
   admiraldev::assert_data_frame(
@@ -228,13 +228,18 @@ derive_blfl <- function(sdtm_in,
 
   # Assert that tgt_var is a concatenation of domain and "BLFL" or "LOBXFL"
   admiraldev::assert_character_scalar(tgt_var,
-                                      values = c(paste0(domain, "BLFL"),
-                                                 paste0(domain, "LOBXFL")))
+    values = c(
+      paste0(domain, "BLFL"),
+      paste0(domain, "LOBXFL")
+    )
+  )
 
   # Determine domain prefixed columns
   suffixes <-
-    c("ORRES", "STAT", "TESTCD", "TPT", "DTC", "CAT", "SCAT", "LOC", "LAT",
-      "DIR", "METHOD", "SPEC")
+    c(
+      "ORRES", "STAT", "TESTCD", "TPT", "DTC", "CAT", "SCAT", "LOC", "LAT",
+      "DIR", "METHOD", "SPEC"
+    )
   domain_prefixed_names <-
     paste0(domain, suffixes) |>
     setNames(tolower(suffixes))
@@ -242,10 +247,13 @@ derive_blfl <- function(sdtm_in,
   # Assert that the input dataset has a "DTC" column
   admiraldev::assert_data_frame(
     sdtm_in,
-    required_vars = rlang::syms(c(domain_prefixed_names[c("orres",
-                                                          "stat",
-                                                          "testcd",
-                                                          "dtc")])))
+    required_vars = rlang::syms(c(domain_prefixed_names[c(
+      "orres",
+      "stat",
+      "testcd",
+      "dtc"
+    )]))
+  )
 
   # End of assertions, work begins ------------------------------------------
   # Create copy of input dataset for modification and processing
@@ -260,8 +268,10 @@ derive_blfl <- function(sdtm_in,
   # Filter out rows where --STAT is not equal to "NOT DONE"
   ds_mod <-
     ds_mod |>
-    dplyr::filter(dplyr::if_any(dplyr::any_of(domain_prefixed_names["stat"]),
-                                ~ !.x %in% "NOT DONE"))
+    dplyr::filter(dplyr::if_any(
+      dplyr::any_of(domain_prefixed_names["stat"]),
+      ~ !.x %in% "NOT DONE"
+    ))
 
   if (nrow(ds_mod) == 0L) {
     stop(paste0(
@@ -319,9 +329,11 @@ derive_blfl <- function(sdtm_in,
   # - domain and reference times not equal to NA and
   # - domain time prior to reference time
   # (*B)
-  ds_subset_eq_1 <- dplyr::filter(ds_subset, dom_dt == ref_dt,
-                                  !is.na(dom_tm) & !is.na(ref_tm),
-                                  dom_tm < ref_tm)
+  ds_subset_eq_1 <- dplyr::filter(
+    ds_subset, dom_dt == ref_dt,
+    !is.na(dom_tm) & !is.na(ref_tm),
+    dom_tm < ref_tm
+  )
 
   # Filter on rows with domain date equal to reference date but
   # - domain and/or reference time equal to NA and
@@ -330,11 +342,13 @@ derive_blfl <- function(sdtm_in,
   # (*C)
   ds_subset_eq_2 <-
     ds_subset |>
-    dplyr::filter(dom_dt == ref_dt,
-                  is.na(dom_tm) | is.na(ref_tm),
-                  (VISIT %in% baseline_visits & get(domain_prefixed_names["tpt"]) %in% baseline_timepoints) |
-                  (VISIT %in% baseline_visits & length(baseline_timepoints) == 0L) |
-                  (get(domain_prefixed_names["tpt"]) %in% baseline_timepoints & length(baseline_visits) == 0L))
+    dplyr::filter(
+      dom_dt == ref_dt,
+      is.na(dom_tm) | is.na(ref_tm),
+      (VISIT %in% baseline_visits & get(domain_prefixed_names["tpt"]) %in% baseline_timepoints) |
+        (VISIT %in% baseline_visits & length(baseline_timepoints) == 0L) |
+        (get(domain_prefixed_names["tpt"]) %in% baseline_timepoints & length(baseline_visits) == 0L)
+    )
 
   # Combine (*A) and (*B) and (*C)
   ds_base <- rbind(ds_subset_lt, ds_subset_eq_1, ds_subset_eq_2)
@@ -354,25 +368,30 @@ derive_blfl <- function(sdtm_in,
     dplyr::group_by(USUBJID, .data[[domain_prefixed_names["testcd"]]]) |>
     dplyr::slice_max(!!rlang::sym(domain_prefixed_names["dtc"]), na_rm = TRUE) |>
     dplyr::ungroup() |>
-    dplyr::select(dplyr::all_of(c(sdtm.oak:::oak_id_vars(), domain_prefixed_names[["testcd"]])),
-                  dplyr::any_of(
-                    c(domain_prefixed_names[c("cat",
-                                              "scat",
-                                              "spec",
-                                              "loc",
-                                              "lat",
-                                              "dir",
-                                              "method")]
-                    )
-                  )) |>
+    dplyr::select(
+      dplyr::all_of(c(sdtm.oak:::oak_id_vars(), domain_prefixed_names[["testcd"]])),
+      dplyr::any_of(
+        c(domain_prefixed_names[c(
+          "cat",
+          "scat",
+          "spec",
+          "loc",
+          "lat",
+          "dir",
+          "method"
+        )])
+      )
+    ) |>
     dplyr::distinct()
 
   # Assign the baseline flag variable
   ds_blfl[[tgt_var]] <- "Y"
 
   # Join baseline flag onto input dataset
-  ds_out <- dplyr::left_join(sdtm_in, ds_blfl, by = c(domain_prefixed_names[["testcd"]],
-                                                      sdtm.oak:::oak_id_vars()))
+  ds_out <- dplyr::left_join(sdtm_in, ds_blfl, by = c(
+    domain_prefixed_names[["testcd"]],
+    sdtm.oak:::oak_id_vars()
+  ))
 
   # Assert that merged data frame has same number of rows as input data frame
   if (nrow(ds_out) != nrow(sdtm_in)) {
