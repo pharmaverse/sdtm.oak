@@ -205,65 +205,31 @@ derive_blfl <- function(sdtm_in,
                         baseline_visits = character(),
                         baseline_timepoints = character()) {
   # Check assertions --------------------------------------------------------
-  assertion_collection <- checkmate::makeAssertCollection()
-  # Assert that sdtm_in is a data frame,
-  checkmate::assert_data_frame(sdtm_in,
-                               col.names = "strict",
-                               min.rows = 1L,
-                               add = assertion_collection)
+  # Check variables are character scalars
+  admiraldev::assert_character_scalar(tgt_var)
+  admiraldev::assert_character_scalar(ref_var)
 
-  # Assert that the input dataset has a "DOMAIN" column
-  checkmate::assert_names(names(sdtm_in),
-                          must.include = c("DOMAIN", sdtm.oak:::oak_id_vars()),
-                          .var.name = "Columns of 'sdtm_inaset'",
-                          add = assertion_collection)
+  # Assert that sdtm_in is a data frame, contains DOMAIN and oak id vars
+  admiraldev::assert_data_frame(
+    sdtm_in,
+    required_vars = rlang::syms(c("DOMAIN", sdtm.oak:::oak_id_vars()))
+    )
 
   # Assert dm_domain is data.frame
-  checkmate::assert_data_frame(dm_domain,
-                               col.names = "strict",
-                               min.rows = 1L,
-                               add = assertion_collection)
-
-  # Check if USUBJID and reference_date is present in the DM
-  checkmate::assert_names(names(dm_domain),
-                          must.include = c("USUBJID", ref_var),
-                          .var.name = "Columns of 'dm_domain'",
-                          add = assertion_collection)
-
-  checkmate::assert_character(tgt_var,
-                              min.chars = 1L,
-                              len = 1L,
-                              add = assertion_collection)
-
-  checkmate::assert_names(tgt_var,
-                          type = "strict",
-                          add = assertion_collection)
-
-  checkmate::assert_character(ref_var,
-                              min.chars = 1L,
-                              len = 1L,
-                              add = assertion_collection)
-
-  checkmate::assert_names(ref_var,
-                          type = "strict",
-                          add = assertion_collection)
-
-  checkmate::reportAssertions(assertion_collection)
+  admiraldev::assert_data_frame(
+    dm_domain,
+    required_vars = rlang::syms(c("USUBJID", ref_var))
+  )
 
   # Get domain from input dataset
   domain <- unique(sdtm_in$DOMAIN)
-  checkmate::assert_character(domain,
-                              min.chars = 1L,
-                              len = 1L,
-                              add = assertion_collection)
+
+  admiraldev::assert_character_scalar(domain)
 
   # Assert that tgt_var is a concatenation of domain and "BLFL" or "LOBXFL"
-  checkmate::assert_choice(
-    tgt_var,
-    choices = c(paste0(domain, "BLFL"),
-                paste0(domain, "LOBXFL")),
-    add = assertion_collection
-  )
+  admiraldev::assert_character_scalar(tgt_var,
+                                      values = c(paste0(domain, "BLFL"),
+                                                 paste0(domain, "LOBXFL")))
 
   # Determine domain prefixed columns
   suffixes <-
@@ -274,14 +240,12 @@ derive_blfl <- function(sdtm_in,
     setNames(tolower(suffixes))
 
   # Assert that the input dataset has a "DTC" column
-  checkmate::assert_names(names(sdtm_in),
-                          must.include = c(domain_prefixed_names[c("orres",
-                                                                   "stat",
-                                                                   "testcd",
-                                                                   "dtc")]),
-                          .var.name = "Columns of 'sdtm_in'",
-                          add = assertion_collection)
-  checkmate::reportAssertions(assertion_collection)
+  admiraldev::assert_data_frame(
+    sdtm_in,
+    required_vars = rlang::syms(c(domain_prefixed_names[c("orres",
+                                                          "stat",
+                                                          "testcd",
+                                                          "dtc")])))
 
   # End of assertions, work begins ------------------------------------------
   # Create copy of input dataset for modification and processing

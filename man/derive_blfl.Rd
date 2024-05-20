@@ -5,21 +5,21 @@
 \title{Derive Baseline Flag or Last Observation Before Exposure Flag}
 \usage{
 derive_blfl(
-  raw_dataset,
-  DM_dataset,
-  target_sdtm_variable,
-  reference_date_variable,
+  sdtm_in,
+  dm_domain,
+  tgt_var,
+  ref_var,
   baseline_visits = character(),
   baseline_timepoints = character()
 )
 }
 \arguments{
-\item{raw_dataset}{Input data frame.}
+\item{sdtm_in}{Input SDTM domain.}
 
-\item{target_sdtm_variable}{Name of variable to be derived (\code{--BLFL} or
+\item{tgt_var}{Name of variable to be derived (\code{--BLFL} or
 \code{--LOBXFL} where \verb{--} is domain).}
 
-\item{reference_date_variable}{vector of a date/time from the
+\item{ref_var}{vector of a date/time from the
 Demographics (DM) dataset, which serves as a point of comparison for other
 observations in the study. Common choices for this reference variable
 include "RFSTDTC" (the date/time of the first study treatment) or
@@ -27,17 +27,12 @@ include "RFSTDTC" (the date/time of the first study treatment) or
 
 \item{baseline_visits}{A character vector specifying the baseline visits within the study.
 These visits are identified as critical points for data collection at the start of the study,
-before any intervention is applied. This parameter allows the function to filter and analyze
-data specifically from these initial assessment points. For example, baseline visits might
-include "Cycle 1 Day 1" if this is the first visit where subjects are assessed prior to receiving treatment.}
+before any intervention is applied.  This allows the function to assign the baseline
+flag if thre --DTC matches to the reference date.}
 
-\item{baseline_timepoints}{A character vector of dates in "YYYY-MM-DD" format that specifies
-the specific days during the baseline visits when key assessments or measurements were taken.
-These timepoints are used to refine the selection of data points to include only those
-collected on these specific dates, ensuring that only relevant baseline data is analyzed.
-This is particularly important in studies where the timing of measurements can significantly
-impact the interpretation of results. An example might be "2020-09-20", indicating a specific
-day when baseline data was collected.}
+\item{baseline_timepoints}{A character vector of timpoints values in --TPT that specifies
+the specific timepoints during the baseline visits when key assessments or measurements were taken.
+This allows the function to assign the baseline flag if the --DTC matches to the reference date.}
 }
 \value{
 Modified input data frame with baseline flag variable \code{--BLFL} or
@@ -49,45 +44,33 @@ exposure flag (\code{--LOBXFL}), from the observation date/time (\code{--DTC}), 
 DM domain reference date/time.
 }
 \details{
-The methodology and approach implemented in this function are based on
-concepts and examples found in the Roche version of the {roak} package.
-
 The derivation is as follows:
 \itemize{
 \item Remove records where the result (\code{--ORRES}) is missing. Also, exclude records
 with results labeled as "ND" (No Data) or "NOT DONE" in the \code{--ORRES} column,
-which indicate that the measurement or observation was not completed. This
-step is important even if a previous cleaning step (like the
-'oak_clean_not_done' function) might not have been applied to the data yet.
+which indicate that the measurement or observation was not completed.
 \item Remove records where the status (\code{--STAT}) indicates the observation or test
 was not performed, marked as "NOT DONE".
 \item Divide the date and time column (\code{--DTC}) and the reference date/time
-variable (\code{reference_date_variable}) into separate date and time components. Ignore
+variable (\code{ref_var}) into separate date and time components. Ignore
 any seconds recorded in the time component, focusing only on hours and
 minutes for further calculations.
 \item Set partial or missing dates to \code{NA}.
 \item Set partial or missing times to \code{NA}.
-\item Get a list of baseline visits from \verb{Baseline column}
-(if it exists) in \code{oak_pkg_env$study_visit_configuration}.
-\item Get a list of baseline timepoints from \code{Baseline} column
-(if it exists) in \code{oak_pkg_env$timepoint_conf}.
 \item Filter on rows that have domain and reference dates not equal to
-\code{NA}. (Ref: \strong{X})
-\item Filter \strong{X} on rows with domain date prior to (less than)
-reference date. (Ref: \strong{A})
-\item Filter \strong{X} on rows with domain date equal to reference date but
+\code{NA}. (Ref to as \strong{X})
+\item Filter \strong{X} on rows with domain date (--DTC) prior to (less than)
+reference date. (Ref to as \strong{A})
+\item Filter \strong{X} on rows with domain date (--DTC) equal to reference date but
 domain and reference times not equal to \code{NA} and domain time prior to (less
-than) reference time. (Ref: \strong{B})
-\item Filter \strong{X} on rows with domain date equal to reference date but
+than) reference time. (Ref to as \strong{B})
+\item Filter \strong{X} on rows with domain date (--DTC) equal to reference date but
 domain and/or reference time equal to NA and:
 \itemize{
 \item VISIT is in baseline visits list (if it exists) and
 \item xxTPT is in baseline timepoints list (if it exists).
+(Ref to as \strong{C})
 }
-}
-
-(Ref: \strong{C})
-\itemize{
 \item Combine the rows from \strong{A}, \strong{B}, and \strong{C} to get a
 data frame of pre-reference date observations. Sort the rows by \code{USUBJID},
 \code{--STAT}, and \code{--ORRES}.
@@ -96,17 +79,41 @@ that have maximum value from \code{--DTC}. Keep only the oak id variables and
 \code{--TESTCD} (because these are the unique values). Remove any duplicate rows.
 Assign the baseline flag variable, \code{--BLFL}, the last observation before
 exposure flag (\code{--LOBXFL}) variable to these rows.
-\item Join the baseline flag onto the input dataset.
+\item Join the baseline flag onto the input dataset based on oak id vars
 }
 }
 \examples{
-DM <- read.csv(system.file("derive_blfl/DM.csv", package = "sdtm.oak"))
-DM
-raw_dataset <- read.csv(system.file("derive_blfl/raw_dataset.csv", package = "sdtm.oak"))
-raw_dataset
-observed_output <- derive_blfl(raw_dataset = raw_dataset,
-                               DM_dataset = DM,
-                               target_sdtm_variable = "VSBLFL",
-                               reference_date_variable = "RFSTDTC")
+dm <- tibble::tribble(
+~USUBJID,           ~RFSTDTC,          ~RFXSTDTC,
+"test_study-375", "2020-09-28T10:10", "2020-09-28T10:10",
+"test_study-376", "2020-09-21T11:00", "2020-09-21T11:00",
+"test_study-377",                 NA,                 NA,
+"test_study-378", "2020-01-20T10:00", "2020-01-20T10:00",
+"test_study-379",                 NA,                 NA,
+)
+
+dm
+
+sdtm_in <-
+tibble::tribble(
+~DOMAIN, ~oak_id, ~raw_source, ~patient_number,      ~USUBJID,             ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT,
+"VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-01T13:31",   "DIABP",     "90",      NA,
+"VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T11:20",   "DIABP",     "90",      NA,
+"VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-28T10:10",   "PULSE",     "ND",      NA,
+"VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T13:31",   "PULSE",     "85",      NA,
+"VS",      1L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:10",   "SYSBP",     "120",      NA,
+"VS",      2L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:05",   "SYSBP",     "120",      NA,
+"VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "DIABP",     "75",      NA,
+"VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",      NA,      "NOT DONE", #nolint
+"VS",      2L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",     "110",      NA
+)
+
+sdtm_in
+
+observed_output <- derive_blfl(sdtm_in = sdtm_in,
+                               dm_domain = dm,
+                               tgt_var = "VSLOBXFL",
+                               ref_var = "RFXSTDTC")
 observed_output
+
 }
