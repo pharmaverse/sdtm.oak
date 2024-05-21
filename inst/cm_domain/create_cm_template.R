@@ -32,198 +32,205 @@ cm <-
     raw_dat = cm_raw,
     raw_var = "MDRAW",
     tgt_var = "CMTRT"
+  )  |>
+  # Derive CMGRPID
+  assign_no_ct(
+    raw_dat = cm_raw,
+    raw_var = "MDNUM",
+    tgt_var = "CMGRPID",
+    id_vars = oak_id_vars()
+  ) |>
+  # DERIVE CMINDC
+  assign_no_ct(
+    raw_dat = cm_raw,
+    raw_var = "MDIND",
+    tgt_var = "CMINDC",
+    id_vars = oak_id_vars()
+  ) |>
+  # Derive CMSTDTC. This function calls create_iso8601
+  assign_datetime(
+    raw_dat = cm_raw,
+    raw_var = c("MDBDR", "MDBTM"),
+    tgt_var = "CMSTDTC",
+    raw_fmt = c("d-m-y", "H:M"),
+    raw_unk = c("UN", "UNK")
+  ) |>
+  # Derive qualifier CMSTRTPT  Annotation text is If MDPRIOR == 1 then CM.CMSTRTPT = 'BEFORE'
+  hardcode_ct(
+    raw_dat = add_cond(cm_raw, MDPRIOR == "1"),
+    raw_var = "MDPRIOR",
+    tgt_var = "CMSTRTPT",
+    tgt_val = "BEFORE",
+    ct_spec = study_ct,
+    ct_clst = "C66728",
+    id_vars = oak_id_vars()
+  ) |>
+  # Derive qualifier CMSTTPT  Annotation text is If MDPRIOR == 1 then CM.CMSTTPT = 'SCREENING'
+  hardcode_no_ct(
+    raw_dat = add_cond(cm_raw, MDPRIOR == "1"),
+    raw_var = "MDPRIOR",
+    tgt_var = "CMSTTPT",
+    tgt_val = "SCREENING",
+    id_vars = oak_id_vars()
+  ) |>
+  # Derive CMENDTC. This function calls create_iso8601
+  assign_datetime(
+    raw_dat = cm_raw,
+    raw_var = c("MDEDR", "MDETM"),
+    tgt_var = "CMENDTC",
+    raw_fmt = c("d-m-y", "H:M"),
+    raw_unk = c("UN", "UNK")
+  ) |>
+  # Derive qualifier CMENRTPT  Annotation text is If MDONG == 1 then CM.CMENRTPT = 'ONGOING'
+  hardcode_ct(
+    raw_dat = add_cond(cm_raw, MDONG == "1"),
+    raw_var = "MDONG",
+    tgt_var = "CMENRTPT",
+    tgt_val = "ONGOING",
+    ct_spec = study_ct,
+    ct_clst = "C66728",
+    id_vars = oak_id_vars()
+  ) |>
+  # Derive qualifier CMENTPT  Annotation text is If MDONG == 1 then CM.CMENTPT = 'DATE OF LAST ASSESSMENT'
+  hardcode_no_ct(
+    raw_dat = add_cond(cm_raw, MDONG == "1"),
+    raw_var = "MDONG",
+    tgt_var = "CMENTPT",
+    tgt_val = "DATE OF LAST ASSESSMENT",
+    id_vars = oak_id_vars()
+  ) |>
+  # Derive qualifier CMDOS If collected value in raw_var DOS is numeric then CM.CMDOSE
+  assign_no_ct(
+    raw_dat = add_cond(cm_raw, is.numeric(DOS)),
+    raw_var = "DOS",
+    tgt_var = "CMDOS",
+    id_vars = oak_id_vars()
+    ) |>
+  # Derive qualifier CMDOS If collected value in raw_var DOS is character then CM.CMDOSTXT
+  assign_no_ct(
+    raw_dat = add_cond(cm_raw, is.character(DOS)),
+    raw_var = "DOS",
+    tgt_var = "CMDOSTXT",
+    id_vars = oak_id_vars()
   ) |>
   # Derive qualifier CMDOSU
-  # Use merge and add the qualifier to the topic variable
   assign_ct(
     raw_dat = cm_raw,
-    raw_var = "DOSU",
-    tgt_var = "CMDOSU",
+    raw_var = "MDFORM",
+    tgt_var = "DOSU",
     ct_spec = study_ct,
     ct_clst = "C71620",
     id_vars = oak_id_vars()
-    ) |>
-  # Derive qualifier CMDOSFRM and merge it with the target dataset
+  ) |>
+  # Derive qualifier CMDOSFRM
   assign_ct(
     raw_dat = cm_raw,
     raw_var = "MDFORM",
     tgt_var = "CMDOSFRM",
     ct_spec = study_ct,
     ct_clst = "C66726",
-    id_vars = (oak_id_vars())
+    id_vars = oak_id_vars()
     ) |>
   # DERIVE CMROUTE
   assign_ct(
-    raw_dataset = MD1,
-    raw_variable = MDFORM,
-    target_sdtm_var = MDRTE,
-    target_sdtm_variable_codelist_code = "C66729",
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
+    raw_dat = cm_raw,
+    raw_var = MDFORM,
+    tgt_var = "MDRTE",
+    ct_spec = study_ct,
+    ct_clst = "C66729",
+    id_vars = oak_id_vars()
   ) |>
   # DERIVE CMDOSFRQ
   assign_ct(
-    raw_dataset = MD1,
-    raw_variable = MDFRQ,
-    target_sdtm_var = CMDOSFRQ,
-    target_sdtm_variable_codelist_code = "C71113",
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
+    raw_dat = cm_raw,
+    raw_var = MDFRQ,
+    tgt_var = CMDOSFRQ,
+    ct_spec = study_ct,
+    ct_clst = "C71113",
+    id_vars = oak_id_vars()
   ) |>
-  # DERIVE CMINDC
+  # Derive qualifier CMPROPH  Annotation text is If MDPROPH == 1 then CM.CMPROPH = 'Y'
+  hardcode_ct(
+    raw_dat = add_cond(cm_raw, MDPROPH == "1"),
+    raw_var = "MDPROPH",
+    tgt_var = "CMPROPH",
+    tgt_val = "Y",
+    ct_spec = study_ct,
+    ct_clst = "C66742",
+    id_vars = oak_id_vars()
+  ) |>
+  # Derive qualifier CMMODIFY  Annotation text  If collected value in CMMODIFY
+  # in cm_raw is different to CM.CMTRT then
+  # assign the collected value to CMMODIFY in CM domain (CM.CMMODIFY)
   assign_no_ct(
-    raw_dataset = MD1,
-    raw_variable = MDIND,
-    target_sdtm_var = CMINDC,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
+    raw_dat = cm_raw,
+    raw_var = "CMMODIFY",
+   # add_cond = (cm_raw$CMMODIFY == .data$CMTRT),
+    tgt_var = "CMMODIFY",
+    id_vars = oak_id_vars()
   ) |>
-  # Derive qualifier CMDOSE. Annotation text = If numeric then CM.CMDOSE
-  if_then_else(
-    raw_dataset = MD1,
-    raw_variable = DOS,
-    condition_left_raw_dataset = MD1,
-    condition_left_raw_variable = DOS,
-    condition_operator = "is_numeric",
-    sub_algorithm = assign_no_ct, # pass the function as the argument
-    target_sdtm_var = CMDOSE,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
+  # Derive CMDRG
+  assign_no_ct(
+    raw_dat = cm_raw,
+    raw_var = "CMDRG",
+    tgt_var = "CMDRG"
   ) |>
-  # Derive qualifier CMDOSTXT.  Annotation text = If character then CM.CMDOSTXT
-  if_then_else(
-    raw_dataset = MD1,
-    raw_variable = DOS,
-    condition_left_raw_dataset = MD1,
-    condition_left_raw_variable = DOS,
-    condition_operator = "is_character",
-    sub_algorithm = assign_no_ct,
-    target_sdtm_var = CMDOSETXT,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
-  ) |>
-  # Derive qualifier CMMODIFY  Annotation text = If different to CM.CMTRT then CM.CMMODIFY
-  if_then_else(
-    raw_dataset = MD1,
-    raw_variable = CMMODIFY,
-    condition_left_raw_dataset = MD1,
-    condition_left_raw_variable = CMMODIFY,
-    condition_operator = "diffferent_to",
-    condition_right_sdtm_variable_domain = CM,
-    condition_right_sdtm_variable = CMTRT,
-    sub_algorithm = assign_no_ct,
-    target_sdtm_var = CMDOSETXT,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
+  # Derive CMDRGCD
+  assign_no_ct(
+    raw_dat = cm_raw,
+    raw_var = "CMDRGCD",
+    tgt_var = "CMDRGCD"
   ) |>
   # Derive CMDECOD
   assign_no_ct(
-    raw_dataset = MD1,
-    raw_variable = CMDECOD,
-    target_sdtm_var = CMDECOD
+    raw_dat = cm_raw,
+    raw_var = CMDECOD,
+    tgt_var = CMDECOD
   ) |>
-  # Derive CMSTDTC. This function calls create_iso8601
+  # Derive CMPNCD
   assign_no_ct(
-    raw_dataset = MD1,
-    raw_variable = c("MDBD", "MDBTM"),
-    target_sdtm_var = CMSTDTC,
-    .format = c("ddmmmyyyy", "HHMM")
-  ) |>
-  # Derive CMENDTC. This function calls create_iso8601
-  assign_no_ct(
-    raw_dataset = MD1,
-    raw_variable = c("MDED", "MDETM"),
-    target_sdtm_var = CMENDTC,
-    .format = c("ddmmmyyyy", "HHMM")
-  ) |>
-  # Derive qualifier CMSTRTPT  Annotation text = If checked then CM.CMSTRTPT = 'BEFORE'
-  if_then_else(
-    raw_dataset = MD1,
-    raw_variable = MDPRIOR,
-    condition_left_raw_dataset = MD1,
-    condition_left_raw_variable = MDPRIOR,
-    condition_operator = "if_checked",
-    sub_algorithm = assign_ct,
-    target_sdtm_variable_codelist_code = "C66728",
-    target_sdtm_var = CMSTRTPT,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
-  ) |>
-  # Derive qualifier CMSTRTPT  Annotation text = If checked then CM.CMSTTPT = 'SCREENING'
-  if_then_else(
-    raw_dataset = MD1,
-    raw_variable = MDPRIOR,
-    condition_left_raw_dataset = MD1,
-    condition_left_raw_variable = MDPRIOR,
-    condition_operator = "if_checked",
-    sub_algorithm = hardcode_no_ct,
-    target_hardcoded_value = "SCREENING",
-    target_sdtm_var = CM.CMSTTPT,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
-  ) |>
-  # Derive qualifier CMENRTPT  Annotation text = If checked then CM.CMENRTPT = 'ONGOING'
-  if_then_else(
-    raw_dataset = MD1,
-    raw_variable = MDONG,
-    condition_left_raw_dataset = MD1,
-    condition_left_raw_variable = MDONG,
-    condition_operator = "if_checked",
-    sub_algorithm = hardcode_ct,
-    target_hardcoded_value = "ONGOING",
-    target_sdtm_variable_codelist_code = "C66728",
-    target_sdtm_var = CMENRTPT,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
-  ) |>
-  # Derive qualifier CMENTPT  Annotation text = If checked then CM.CMENTPT = 'DATE OF LAST ASSESSMENT'
-  if_then_else(
-    raw_dataset = MD1,
-    raw_variable = MDONG,
-    condition_left_raw_dataset = MD1,
-    condition_left_raw_variable = MDONG,
-    condition_operator = "if_checked",
-    sub_algorithm = hardcode_no_ct,
-    target_hardcoded_value = "DATE OF LAST ASSESSMENT",
-    target_sdtm_var = CMENTPT,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
-  ) |>
-  # Derive CMGRPID
-  assign_no_ct(
-    raw_dataset = MD1,
-    raw_variable = MDNUM,
-    target_sdtm_var = CMGRPID,
-    merge_to_topic_by = c(oak_id_vars,
-      topic_var_source = MDRAW
-    )
+    raw_dat = cm_raw,
+    raw_var = "CMPNCD",
+    tgt_var = "CMPNCD"
   ) |>
   dplyr::mutate(
     STUDYID = "test_study",
     DOMAIN = "CM",
-    CMCAT = "GENERAL CONMED"
+    CMCAT = "GENERAL CONMED",
+    USUBJID = "test_study" || "-" || cm_raw$PATNUM
   ) |>
-  derive_usubjid() |>
-  derive_sequence(keys = c(USUBJID, CMTRT)) |>
-  derive_visit_visitnum() |>
-  calculate_study_day(
+  # DERIVE VISIT
+  assign_ct(
+    raw_dat = cm_raw,
+    raw_var = "INSTANCE",
+    tgt_var = "VISIT",
+    ct_spec = study_ct,
+    ct_clst = "VISIT",
+    id_vars = oak_id_vars()
+  ) |>
+  # DERIVE VISITNUM
+  assign_ct(
+    raw_dat = cm_raw,
+    raw_var = "INSTANCE",
+    tgt_var = "VISITNUM",
+    ct_spec = study_ct,
+    ct_clst = "VISITNUM",
+    id_vars = oak_id_vars()
+  ) |>
+  derive_seq(tgt_var = "VSSEQ",
+             rec_vars= c("USUBJID", "CMTRT")) |>
+  derive_study_day(
+    sdtm_in = .data,
     dm_domain = dm,
-    study_day_var = "RFSTDTS",
-    var_in = CMSTDTC,
-    target_var = CMSTDY,
-    merge_key = "USUBJID"
+    tgdt = "CMENDTC",
+    refdt = "RFXSTDTC",
+    study_day_var = "CMENDY"
   ) |>
   derive_study_day(
-    var_in = CMENDTC,
-    target_var = CMENDY
-  )
+    sdtm_in = .data,
+    dm_domain = dm,
+    tgdt = "CMSTDTC",
+    refdt = "RFXSTDTC",
+    study_day_var = "CMSTDY"
+  ) |>
+  dplyr::select("STUDYID", "USUBJID", everything())
