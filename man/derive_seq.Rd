@@ -19,8 +19,7 @@ derive_seq(
 of the sequence number (\code{--SEQ}) variable, e.g. \code{"DSSEQ"}. Note that
 supplying a name not ending in \code{"SEQ"} will raise a warning.}
 
-\item{rec_vars}{A character vector of record-level identifier variables. Use
-\code{\link[=rec_vars]{rec_vars()}} to quickly get the identifier variables for a given domain.}
+\item{rec_vars}{A character vector of record-level identifier variables.}
 
 \item{sbj_vars}{A character vector of subject-level identifier variables.}
 
@@ -47,7 +46,8 @@ according to grouping variables indicated in \code{rec_vars}.
 (vs <- read_domain_example("vs"))
 
 # Derivation of VSSEQ
-derive_seq(tgt_dat = vs, tgt_var = "VSSEQ", rec_vars = rec_vars("VS"))
+rec_vars <- c("STUDYID", "USUBJID", "VSTESTCD", "VSDTC", "VSTPTNUM")
+derive_seq(tgt_dat = vs, tgt_var = "VSSEQ", rec_vars = rec_vars)
 
 # An APSC raw data set example
 (apsc <- read_domain_example("apsc"))

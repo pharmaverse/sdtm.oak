@@ -15,8 +15,7 @@
 #' @param tgt_var The target SDTM variable: a single string indicating the name
 #'   of the sequence number (`--SEQ`) variable, e.g. `"DSSEQ"`. Note that
 #'   supplying a name not ending in `"SEQ"` will raise a warning.
-#' @param rec_vars A character vector of record-level identifier variables. Use
-#' [rec_vars()] to quickly get the identifier variables for a given domain.
+#' @param rec_vars A character vector of record-level identifier variables.
 #' @param sbj_vars A character vector of subject-level identifier variables.
 #' @param start_at The sequence numbering starts at this value (default is `1`).
 #'
@@ -29,7 +28,8 @@
 #' (vs <- read_domain_example("vs"))
 #'
 #' # Derivation of VSSEQ
-#' derive_seq(tgt_dat = vs, tgt_var = "VSSEQ", rec_vars = rec_vars("VS"))
+#' rec_vars <- c("STUDYID", "USUBJID", "VSTESTCD", "VSDTC", "VSTPTNUM")
+#' derive_seq(tgt_dat = vs, tgt_var = "VSSEQ", rec_vars = rec_vars)
 #'
 #' # An APSC raw data set example
 #' (apsc <- read_domain_example("apsc"))
