@@ -1,7 +1,6 @@
-# Title: `roak` example data sets
-# Description: Data sets provided during the initial development of sdtm.oak
-# by the team at Roche.
+# Title: SDTM domain example datasets.
 
+library(pharmaversesdtm)
 library(readr)
 library(here)
 
@@ -27,5 +26,8 @@ apsc <- tibble::tribble(
   "ABC123", "ABC123-212", "JOBCLAS",  "APSC",  "SPOUSE",  "CAREGIVERSTUDY"
 )
 
+readr::write_rds(x = pharmaversesdtm::ae, file = file.path(path, "ae.rds"), compress = "xz")
+readr::write_rds(x = pharmaversesdtm::cm, file = file.path(path, "cm.rds"), compress = "xz")
 readr::write_rds(x = vs, file = file.path(path, "vs.rds"), compress = "xz")
 readr::write_rds(x = apsc, file = file.path(path, "apsc.rds"), compress = "xz")
+
