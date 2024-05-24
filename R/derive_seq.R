@@ -53,8 +53,9 @@ derive_seq <-
     admiraldev::assert_character_vector(rec_vars)
     admiraldev::assert_character_vector(sbj_vars)
     admiraldev::assert_data_frame(tgt_dat,
-                                  required_vars = rlang::syms(rec_vars),
-                                  optional = FALSE)
+      required_vars = rlang::syms(rec_vars),
+      optional = FALSE
+    )
 
     admiraldev::assert_integer_scalar(start_at, subset = "non-negative")
 
