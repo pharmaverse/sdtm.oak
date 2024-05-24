@@ -62,6 +62,6 @@ derive_seq <-
       dplyr::ungroup() |> # ensure that is ungrouped
       dplyr::arrange(dplyr::across(.cols = dplyr::all_of(rec_vars))) |>
       dplyr::group_by(dplyr::across(dplyr::all_of(sbj_vars))) |>
-      dplyr::mutate("{tgt_var}" := dplyr::row_number() + start_at - 1L) |>
+      dplyr::mutate("{tgt_var}" := dplyr::row_number() + start_at - 1L) |> # nolint object_name_linter()
       dplyr::ungroup()
   }
