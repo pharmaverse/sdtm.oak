@@ -10,11 +10,11 @@ eval_conditions(dat, ..., .na = NA, .env = rlang::env())
 \item{dat}{A data frame}
 
 \item{...}{A set of logical conditions, e.g. \verb{y & z, x | z} (\code{x}, \code{y}, \code{z}
-would have to exist either as columns in \code{dat} or in the enviroment
+would have to exist either as columns in \code{dat} or in the environment
 \code{.env}). If multiple expressions are included, they are combined with the
 \code{&} operator.}
 
-\item{.na}{Return value to be used when the conditions evalute to \code{NA}.}
+\item{.na}{Return value to be used when the conditions evaluate to \code{NA}.}
 
 \item{.env}{An optional environment to look for variables involved in logical
 expression passed in \code{...}. A data frame or a list can also be passed that

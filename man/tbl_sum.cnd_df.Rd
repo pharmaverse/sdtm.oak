@@ -7,7 +7,7 @@
 \method{tbl_sum}{cnd_df}(x, ...)
 }
 \arguments{
-\item{x}{A conditioned tibble of class 'cnd_df'.}
+\item{x}{A conditioned tibble of class \code{cnd_df}.}
 
 \item{...}{Additional arguments passed to the default print method.}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/cnd_df.R
 \name{rm_cnd_df}
 \alias{rm_cnd_df}
-\title{Remove the cnd_df class from a data frame}
+\title{Remove the \code{cnd_df} class from a data frame}
 \usage{
 rm_cnd_df(dat)
 }
@@ -10,9 +10,9 @@ rm_cnd_df(dat)
 \item{dat}{A data frame.}
 }
 \value{
-The input \code{dat} without the 'cnd_df' class.
+The input \code{dat} without the \code{cnd_df} class.
 }
 \description{
-This function removes the 'cnd_df' class, along with its attributes, if
+This function removes the \code{cnd_df} class, along with its attributes, if
 applicable.
 }

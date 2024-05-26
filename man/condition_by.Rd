@@ -11,14 +11,14 @@ condition_by(dat, ..., .na = NA, .env = rlang::env())
 
 \item{...}{Conditions to filter the tibble.}
 
-\item{.na}{Return value to be used when the conditions evalute to \code{NA}.}
+\item{.na}{Return value to be used when the conditions evaluate to \code{NA}.}
 
 \item{.env}{An optional environment to look for variables involved in logical
 expression passed in \code{...}. A data frame or a list can also be passed that
 will be coerced to an environment internally.}
 }
 \value{
-A tibble with an additional class 'cnd_df' and a logical vector
+A tibble with an additional class \code{cnd_df} and a logical vector
 attribute indicating matching rows.
 }
 \description{

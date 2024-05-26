@@ -69,6 +69,7 @@ new_cnd_df <- function(dat, cnd, .warn = TRUE) {
   }
 
   if (!is_cnd_df) {
+    dat <- tibble::as_tibble(dat)
     class(dat) <- c("cnd_df", class(dat))
   }
 
@@ -103,13 +104,13 @@ get_cnd_df_cnd_sum <- function(dat) {
   }
 }
 
-#' Remove the cnd_df class from a data frame
+#' Remove the `cnd_df` class from a data frame
 #'
-#' This function removes the 'cnd_df' class, along with its attributes, if
+#' This function removes the `cnd_df` class, along with its attributes, if
 #' applicable.
 #'
 #' @param dat A data frame.
-#' @return The input `dat` without the 'cnd_df' class.
+#' @return The input `dat` without the `cnd_df` class.
 #'
 #' @export
 rm_cnd_df <- function(dat) {
@@ -125,7 +126,7 @@ rm_cnd_df <- function(dat) {
 #'
 #' Blah
 #'
-#' @param x A conditioned tibble of class 'cnd_df'.
+#' @param x A conditioned tibble of class `cnd_df`.
 #' @param ... Additional arguments passed to the default print method.
 #'
 #' @importFrom pillar tbl_sum
@@ -142,6 +143,8 @@ lgl_to_chr <- function(x) {
   ifelse(is.na(x), "-", ifelse(x, "T", "F"))
 }
 
+#' @importFrom pillar ctl_new_rowid_pillar
+#' @export
 ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
 
   out <- NextMethod()
@@ -188,10 +191,10 @@ ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
 #'
 #' @param dat A data frame
 #' @param ... A set of logical conditions, e.g. `y & z, x | z` (`x`, `y`, `z`
-#'   would have to exist either as columns in `dat` or in the enviroment
+#'   would have to exist either as columns in `dat` or in the environment
 #'   `.env`). If multiple expressions are included, they are combined with the
 #'   `&` operator.
-#' @param .na Return value to be used when the conditions evalute to `NA`.
+#' @param .na Return value to be used when the conditions evaluate to `NA`.
 #' @param .env An optional environment to look for variables involved in logical
 #'   expression passed in `...`. A data frame or a list can also be passed that
 #'   will be coerced to an environment internally.
@@ -262,9 +265,9 @@ eval_conditions <- function(dat,
 #'
 #' @param dat A tibble.
 #' @param ... Conditions to filter the tibble.
-#' @return A tibble with an additional class 'cnd_df' and a logical vector
+#' @return A tibble with an additional class `cnd_df` and a logical vector
 #'   attribute indicating matching rows.
-#' @param .na Return value to be used when the conditions evalute to `NA`.
+#' @param .na Return value to be used when the conditions evaluate to `NA`.
 #' @param .env An optional environment to look for variables involved in logical
 #'   expression passed in `...`. A data frame or a list can also be passed that
 #'   will be coerced to an environment internally.
@@ -283,17 +286,23 @@ condition_by <- function(dat, ..., .na = NA, .env = rlang::env()) {
   new_cnd_df(dat, cnd = cnd, .warn = FALSE)
 }
 
-#' @keywords internal
-derive_by_condition <- function(dat, ...) {
+#' @importFrom dplyr mutate
+#' @export
+mutate.cnd_df <- function(.data,
+                          ...,
+                          .by = NULL,
+                          .keep = c("all", "used", "unused", "none"),
+                          .before = NULL,
+                          .after = NULL) {
 
-  cnd <- get_cnd_df_cnd(dat)
+  cnd <- get_cnd_df_cnd(.data)
+  dat <- rm_cnd_df(.data) # avoids recursive S3 method dispatch.
+
   derivations <- rlang::enquos(...)
   derived_vars <- names(derivations)
 
   lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else({{cnd}}, !!.x, NA)))
   lst <- rlang::set_names(lst, derived_vars)
-  dat2 <- dplyr::mutate({{dat}}, !!!lst)
-  rm_cnd_df(dat2)
+
+  dplyr::mutate(dat, !!!lst)
 }
-
-
