@@ -170,30 +170,20 @@ assign_datetime <-
     admiraldev::assert_character_vector(raw_unk)
     admiraldev::assert_logical_scalar(.warn)
 
-    tgt_val <-
-      create_iso8601(!!!raw_dat[raw_var],
-        .format = raw_fmt,
-        .na = raw_unk,
-        .warn = .warn
-      )
-
-    der_dat <-
+    join_dat <-
       raw_dat |>
       dplyr::select(dplyr::all_of(c(id_vars, raw_var))) |>
-      dplyr::mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
-      dplyr::select(-dplyr::any_of(raw_var))
+      sdtm_join(tgt_dat = tgt_dat, id_vars = id_vars)
 
-    der_dat <-
-      if (!is.null(tgt_dat)) {
-        # If variable `tgt_var` exists in `tgt_dat` remove it as we want to
-        # keep the derived variable in `der_dat`.
-        tgt_dat <- dplyr::select(tgt_dat, -dplyr::any_of(tgt_var))
-        der_dat |>
-          dplyr::right_join(y = tgt_dat, by = id_vars) |>
-          dplyr::relocate(tgt_var, .after = dplyr::last_col())
-      } else {
-        der_dat
-      }
+    tgt_val <-
+      create_iso8601(!!!join_dat[raw_var],
+                     .format = raw_fmt,
+                     .na = raw_unk,
+                     .warn = .warn
+      )
 
-    der_dat
+    join_dat |>
+      mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
+      dplyr::select(-dplyr::any_of(setdiff(raw_var, tgt_var))) |>
+      dplyr::relocate(dplyr::all_of(tgt_var), .after = dplyr::last_col())
   }

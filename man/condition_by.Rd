@@ -20,8 +20,10 @@ will be coerced to an environment internally.}
 \value{
 A tibble with an additional class \code{cnd_df} and a logical vector
 attribute indicating matching rows.
+
+A conditioned data frame.
 }
 \description{
 This function tags records in a data set, indicating which rows match the
-specified conditions.
+specified conditions, resulting in a conditioned data frame.
 }

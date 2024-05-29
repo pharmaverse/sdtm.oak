@@ -122,9 +122,7 @@ rm_cnd_df <- function(dat) {
   return(dat)
 }
 
-#' Print
-#'
-#' Blah
+#' Conditioned tibble header print method
 #'
 #' @param x A conditioned tibble of class `cnd_df`.
 #' @param ... Additional arguments passed to the default print method.
@@ -143,6 +141,9 @@ lgl_to_chr <- function(x) {
   ifelse(is.na(x), "-", ifelse(x, "T", "F"))
 }
 
+#' Conditioned tibble pillar print method
+#'
+#' @inheritParams pillar::ctl_new_rowid_pillar
 #' @importFrom pillar ctl_new_rowid_pillar
 #' @export
 ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
@@ -261,7 +262,7 @@ eval_conditions <- function(dat,
 #' Condition a data set based on specified conditions
 #'
 #' This function tags records in a data set, indicating which rows match the
-#' specified conditions.
+#' specified conditions, resulting in a conditioned data frame.
 #'
 #' @param dat A tibble.
 #' @param ... Conditions to filter the tibble.
@@ -271,6 +272,8 @@ eval_conditions <- function(dat,
 #' @param .env An optional environment to look for variables involved in logical
 #'   expression passed in `...`. A data frame or a list can also be passed that
 #'   will be coerced to an environment internally.
+#'
+#' @returns A conditioned data frame.
 #'
 #' @export
 condition_by <- function(dat, ..., .na = NA, .env = rlang::env()) {
@@ -286,6 +289,16 @@ condition_by <- function(dat, ..., .na = NA, .env = rlang::env()) {
   new_cnd_df(dat, cnd = cnd, .warn = FALSE)
 }
 
+#' Mutate method for conditioned data frames
+#'
+#' [mutate.cnd_df()] is an S3 method to be dispatched by [mutate][dplyr::mutate]
+#' generic on conditioned data frames. This function implements a conditional
+#' mutate by only changing rows for which the condition stored in the
+#' conditioned data frame is `TRUE`.
+#'
+#' @param .data A conditioned data frame.
+#'
+#' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate
 #' @export
 mutate.cnd_df <- function(.data,
@@ -304,5 +317,5 @@ mutate.cnd_df <- function(.data,
   lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else({{cnd}}, !!.x, NA)))
   lst <- rlang::set_names(lst, derived_vars)
 
-  dplyr::mutate(dat, !!!lst)
+  dplyr::mutate(dat, !!!lst, .by = .by, .keep = .keep, .after = .after)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/cnd_df.R
 \name{tbl_sum.cnd_df}
 \alias{tbl_sum.cnd_df}
-\title{Print}
+\title{Conditioned tibble header print method}
 \usage{
 \method{tbl_sum}{cnd_df}(x, ...)
 }
@@ -12,5 +12,5 @@
 \item{...}{Additional arguments passed to the default print method.}
 }
 \description{
-Blah
+Conditioned tibble header print method
 }

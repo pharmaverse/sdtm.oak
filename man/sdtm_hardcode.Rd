@@ -41,7 +41,7 @@ the variables indicated in \code{id_vars}. This parameter is optional, see
 section Value for how the output changes depending on this argument value.}
 
 \item{id_vars}{Key variables to be used in the join between the raw dataset
-(\code{raw_dat}) and the target data set (\code{raw_dat}).}
+(\code{raw_dat}) and the target data set (\code{tgt_dat}).}
 }
 \value{
 The returned data set depends on the value of \code{tgt_dat}:

@@ -23,7 +23,7 @@
 #'   the variables indicated in `id_vars`. This parameter is optional, see
 #'   section Value for how the output changes depending on this argument value.
 #' @param id_vars Key variables to be used in the join between the raw dataset
-#'   (`raw_dat`) and the target data set (`raw_dat`).
+#'   (`raw_dat`) and the target data set (`tgt_dat`).
 #'
 #' @returns The returned data set depends on the value of `tgt_dat`:
 #' - If no target dataset is supplied, meaning that `tgt_dat` defaults to
@@ -56,33 +56,18 @@ sdtm_hardcode <- function(raw_dat,
   assert_ct_spec(ct_spec, optional = TRUE)
   assert_ct_clst(ct_spec = ct_spec, ct_clst = ct_clst, optional = TRUE)
 
+  join_dat <-
+    raw_dat |>
+    dplyr::select(dplyr::all_of(c(id_vars, raw_var))) |>
+    sdtm_join(tgt_dat = tgt_dat, id_vars = id_vars)
+
   # Recode the hardcoded value following terminology.
   tgt_val <- ct_map(tgt_val, ct_spec = ct_spec, ct_clst = ct_clst)
 
-  # Apply derivation of the hardcoded value.
-  # `der_dat`: derived dataset.
-  der_dat <-
-    raw_dat |>
-    dplyr::select(dplyr::all_of(c(id_vars, raw_var))) |>
+  join_dat |>
     mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |> # nolint object_name_linter()
-    dplyr::select(-dplyr::any_of(raw_var))
-
-  # If a target dataset is supplied, then join the so far derived dataset with
-  # the target dataset (`tgt_dat`), otherwise leave it be.
-  der_dat <-
-    if (!is.null(tgt_dat)) {
-      # If variable `tgt_var` exists in `tgt_dat` remove it as we want to
-      # keep the derived variable in `der_dat`.
-      tgt_dat <- dplyr::select(tgt_dat, -dplyr::any_of(tgt_var))
-
-      der_dat |>
-        dplyr::right_join(y = tgt_dat, by = id_vars) |>
-        dplyr::relocate(tgt_var, .after = dplyr::last_col())
-    } else {
-      der_dat
-    }
-
-  der_dat
+    dplyr::select(-dplyr::any_of(setdiff(raw_var, tgt_var))) |>
+    dplyr::relocate(dplyr::all_of(tgt_var), .after = dplyr::last_col())
 }
 
 #' Derive an SDTM variable with a hardcoded value
