@@ -49,6 +49,9 @@ derive_seq <-
            sbj_vars = sdtm.oak::sbj_vars(),
            start_at = 1L) {
     admiraldev::assert_character_scalar(tgt_var)
+    if (!is_seq_name(tgt_var)) {
+      rlang::warn("Target variable name (`tgt_var`) should end in 'SEQ'.")
+    }
 
     admiraldev::assert_character_vector(rec_vars)
     admiraldev::assert_character_vector(sbj_vars)
@@ -60,9 +63,35 @@ derive_seq <-
     admiraldev::assert_integer_scalar(start_at, subset = "non-negative")
 
     tgt_dat |>
-      dplyr::ungroup() |> # ensure that is ungrouped
+      # Ensure that no prior grouping exists that alters ordering and new
+      # grouping.
+      dplyr::ungroup() |>
       dplyr::arrange(dplyr::across(.cols = dplyr::all_of(rec_vars))) |>
       dplyr::group_by(dplyr::across(dplyr::all_of(sbj_vars))) |>
       dplyr::mutate("{tgt_var}" := dplyr::row_number() + start_at - 1L) |> # nolint object_name_linter()
       dplyr::ungroup()
   }
+
+#' Is it a --SEQ variable name
+#'
+#' [is_seq_name()] returns which variable names end in `"SEQ"`.
+#'
+#' @param x A character vector.
+#'
+#' @returns A logical vector.
+#'
+#' @examples
+#' # A valid SEQ name.
+#' sdtm.oak:::is_seq_name("AESEQ")
+#'
+#' # Not valid sequence number (`--SEQ`) variable names.
+#' # Case matters.
+#' sdtm.oak:::is_seq_name("AEseq")
+#'
+#' # A valid name has to end in "SEQ".
+#' sdtm.oak:::is_seq_name("AESEQUENCE")
+#'
+#' @keywords internal
+is_seq_name <- function(x) {
+  stringr::str_detect(x, "SEQ$")
+}
