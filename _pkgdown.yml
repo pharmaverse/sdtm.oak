@@ -37,6 +37,10 @@ reference:
   - dtc_formats
   - problems
 
+- title: Utils
+  contents:
+  - sbj_vars
+
 - title: Package global state
   contents:
   - clear_cache
