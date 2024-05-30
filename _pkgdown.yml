@@ -13,8 +13,15 @@ reference:
   contents:
   - assign
   - harcode
+  - derive_seq
   - derive_study_day
   - assign_datetime
+
+- title: SDTM examples
+  desc: SDTM domain file examples
+  contents:
+  - domain_example
+  - read_domain_example
 
 - title: Controlled terminology
   contents:
@@ -29,6 +36,10 @@ reference:
   - fmt_cmp
   - dtc_formats
   - problems
+
+- title: Utils
+  contents:
+  - sbj_vars
 
 - title: Package global state
   contents:
