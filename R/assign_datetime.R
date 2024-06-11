@@ -22,7 +22,7 @@
 #'   the variables indicated in `id_vars`. This parameter is optional, see
 #'   section Value for how the output changes depending on this argument value.
 #' @param id_vars Key variables to be used in the join between the raw dataset
-#'   (`raw_dat`) and the target data set (`raw_dat`).
+#'   (`raw_dat`) and the target data set (`tgt_dat`).
 #' @param .warn Whether to warn about parsing failures.
 #'
 #' @returns The returned data set depends on the value of `tgt_dat`:
@@ -170,27 +170,20 @@ assign_datetime <-
     admiraldev::assert_character_vector(raw_unk)
     admiraldev::assert_logical_scalar(.warn)
 
+    join_dat <-
+      raw_dat |>
+      dplyr::select(dplyr::all_of(c(id_vars, raw_var))) |>
+      sdtm_join(tgt_dat = tgt_dat, id_vars = id_vars)
+
     tgt_val <-
-      create_iso8601(!!!raw_dat[raw_var],
-        .format = raw_fmt,
-        .na = raw_unk,
-        .warn = .warn
+      create_iso8601(!!!join_dat[raw_var],
+                     .format = raw_fmt,
+                     .na = raw_unk,
+                     .warn = .warn
       )
 
-    der_dat <-
-      raw_dat |>
-      dplyr::select(c(id_vars, raw_var)) |>
-      dplyr::mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
-      dplyr::select(-raw_var)
-
-    der_dat <-
-      if (!is.null(tgt_dat)) {
-        der_dat |>
-          dplyr::right_join(y = tgt_dat, by = id_vars) |>
-          dplyr::relocate(tgt_var, .after = dplyr::last_col())
-      } else {
-        der_dat
-      }
-
-    der_dat
+    join_dat |>
+      mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
+      dplyr::select(-dplyr::any_of(setdiff(raw_var, tgt_var))) |>
+      dplyr::relocate(dplyr::all_of(tgt_var), .after = dplyr::last_col())
   }

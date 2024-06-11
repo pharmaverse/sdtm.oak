@@ -46,7 +46,8 @@ Imports:
     tibble,
     vctrs,
     readr,
-    glue
+    glue,
+    pillar
 Suggests:
     knitr,
     rmarkdown,
