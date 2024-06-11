@@ -152,7 +152,7 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #' @param baseline_visits A character vector specifying the baseline visits within the study.
 #'   These visits are identified as critical points for data collection at the start of the study,
 #'   before any intervention is applied.  This allows the function to assign the baseline
-#'   flag if thre --DTC matches to the reference date.
+#'   flag if the --DTC matches to the reference date.
 #' @param baseline_timepoints A character vector of timpoints values in --TPT that specifies
 #'   the specific timepoints during the baseline visits when key assessments or measurements were taken.
 #'   This allows the function to assign the baseline flag if the --DTC matches to the reference date.
@@ -176,16 +176,18 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'
 #' sdtm_in <-
 #'   tibble::tribble(
-#'     ~DOMAIN, ~oak_id, ~raw_source, ~patient_number, ~USUBJID, ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT,
-#'     "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-01T13:31", "DIABP", "90", NA,
-#'     "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T11:20", "DIABP", "90", NA,
-#'     "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-28T10:10", "PULSE", "ND", NA,
-#'     "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T13:31", "PULSE", "85", NA,
-#'     "VS", 1L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:10", "SYSBP", "120", NA,
-#'     "VS", 2L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:05", "SYSBP", "120", NA,
-#'     "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "DIABP", "75", NA,
-#'     "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", NA, "NOT DONE", # nolint
-#'     "VS", 2L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", "110", NA
+#'     ~DOMAIN, ~oak_id, ~raw_source, ~patient_number, ~USUBJID, ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT,  ~VISIT,
+#'     "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-01T13:31", "DIABP", "90", NA, "SCREENING",
+#'     "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T11:20", "DIABP", "90", NA, "SCREENING",
+#'     "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-28T10:10", "PULSE", "ND", NA, "SCREENING",
+#'     "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T13:31", "PULSE", "85", NA, "SCREENING",
+#'     "VS", 1L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:10", "SYSBP", "120", NA, "SCREENING",
+#'     "VS", 2L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:05", "SYSBP", "120", NA, "SCREENING",
+#'     "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "DIABP", "75", NA, "SCREENING",
+#'     "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", NA, "NOT DONE",  "SCREENING", # nolint
+#'     "VS", 2L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", "110", NA,  "SCREENING",
+#'     "VS", 2L, "VTLS1", 378L, "test_study-378", "2020-01-20T10:00", "PULSE", "110", NA, "SCREENING",
+#'     "VS", 3L, "VTLS1", 378L, "test_study-378", "2020-01-21T11:00", "PULSE", "105", NA, "SCREENING"
 #'   )
 #'
 #' sdtm_in
@@ -194,7 +196,8 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'   sdtm_in = sdtm_in,
 #'   dm_domain = dm,
 #'   tgt_var = "VSLOBXFL",
-#'   ref_var = "RFXSTDTC"
+#'   ref_var = "RFXSTDTC",
+#'   baseline_visits = c("SCREENING")
 #' )
 #' observed_output
 #'
@@ -281,7 +284,7 @@ derive_blfl <- function(sdtm_in,
   }
 
   # Checking for columns of interest
-  con_col <- c(domain_prefixed_names[c("testcd", "dtc", "var_tpt")], "VISITNUM")
+  con_col <- c(domain_prefixed_names[c("testcd", "dtc", "var_tpt")], "VISIT")
 
   # Drop those columns from the list which are not present in ds_in
   con_col <- con_col[con_col %in% names(sdtm_in)]
@@ -344,7 +347,7 @@ derive_blfl <- function(sdtm_in,
     ds_subset |>
     dplyr::filter(
       dom_dt == ref_dt,
-      is.na(dom_tm) | is.na(ref_tm),
+      is.na(dom_tm) | is.na(ref_tm) | dom_tm == ref_tm,
       (VISIT %in% baseline_visits & get(domain_prefixed_names["tpt"]) %in% baseline_timepoints) |
         (VISIT %in% baseline_visits & length(baseline_timepoints) == 0L) |
         (get(domain_prefixed_names["tpt"]) %in% baseline_timepoints & length(baseline_visits) == 0L)
