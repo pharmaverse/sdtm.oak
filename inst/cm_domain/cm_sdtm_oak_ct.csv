@@ -1,4 +1,4 @@
-﻿codelist_code,term_code,CodedData,term_value,collected_value,term_preferred_term,term_synonyms,raw_codelist
+codelist_code,term_code,CodedData,term_value,collected_value,term_preferred_term,term_synonyms,raw_codelist
 C71113,C25473,QD,QD,QD (Every Day),Daily,/day; Daily; Per Day,FREQ_CV1
 C71113,C64496,BID,BID,BID (Twice a Day),Twice Daily,BD; Twice per day,FREQ_CV1
 C71113,C64499,PRN,PRN,PRN (As Needed),As Needed,As needed,FREQ_CV1
@@ -32,4 +32,3 @@ C71620,C28254,ML,mL,mL,Milliliter,cm3; Milliliter,UNIT_CV5
 C66728,C25629,BEFORE,BEFORE,Prior,Prior,,NA
 C66728,C53279,ONGOING,ONGOING,Continue,Continue,Continuous,NA
 C66734,C49568,CM,CM,Concomitant Medication Domain,Concomitant Medication Domain,Concomitant/Prior Medications,NA
-,,,,,,,
