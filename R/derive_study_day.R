@@ -94,6 +94,10 @@ derive_study_day <- function(sdtm_in,
       )
   }
 
+  # convert to character to verify the iso format
+  sdtm_in[[refdt]] <- as.character(sdtm_in[[refdt]])
+  sdtm_in[[tgdt]] <- as.character(sdtm_in[[tgdt]])
+
   # refdt/tgdt should be in ISO format, otherwise throw warning
   sdtm_in[[refdt]] <- tryCatch(
     as.Date(sdtm_in[[refdt]], "%Y-%m-%d"),
@@ -104,7 +108,7 @@ derive_study_day <- function(sdtm_in,
         e$message,
         call. = FALSE
       )
-      NA
+      sdtm_in[[refdt]]
     }
   )
   sdtm_in[[tgdt]] <- tryCatch(
@@ -116,12 +120,12 @@ derive_study_day <- function(sdtm_in,
         e$message,
         call. = FALSE
       )
-      NA
+      sdtm_in[[tgdt]]
     }
   )
 
-  ref <- sdtm_in[[refdt]]
-  tgt <- sdtm_in[[tgdt]]
+  ref <- as.Date(sdtm_in[[refdt]])
+  tgt <- as.Date(sdtm_in[[tgdt]])
 
   # SDTMIG 4.4.4 Use of the Study Day Variables
   res <- ifelse(tgt >= ref, tgt - ref + 1L, tgt - ref)
