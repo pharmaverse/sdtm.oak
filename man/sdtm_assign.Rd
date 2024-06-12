@@ -5,24 +5,28 @@
 \title{Derive an SDTM variable}
 \usage{
 sdtm_assign(
+  tgt_dat = NULL,
+  tgt_var,
   raw_dat,
   raw_var,
-  tgt_var,
   ct_spec = NULL,
   ct_clst = NULL,
-  tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
 }
 \arguments{
+\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
+the variables indicated in \code{id_vars}. This parameter is optional, see
+section Value for how the output changes depending on this argument value.}
+
+\item{tgt_var}{The target SDTM variable: a single string indicating the name
+of variable to be derived.}
+
 \item{raw_dat}{The raw dataset (dataframe); must include the
 variables passed in \code{id_vars} and \code{raw_var}.}
 
 \item{raw_var}{The raw variable: a single string indicating the name of the
 raw variable in \code{raw_dat}.}
-
-\item{tgt_var}{The target SDTM variable: a single string indicating the name
-of variable to be derived.}
 
 \item{ct_spec}{Study controlled terminology specification: a dataframe with a
 minimal set of columns, see \code{\link[=ct_spec_vars]{ct_spec_vars()}} for details. This parameter is
@@ -31,10 +35,6 @@ optional, if left as \code{NULL} no controlled terminology recoding is applied.}
 \item{ct_clst}{A codelist code indicating which subset of the controlled
 terminology to apply in the derivation. This parameter is optional, if left
 as \code{NULL}, all possible recodings in \code{ct_spec} are attempted.}
-
-\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
-the variables indicated in \code{id_vars}. This parameter is optional, see
-section Value for how the output changes depending on this argument value.}
 
 \item{id_vars}{Key variables to be used in the join between the raw dataset
 (\code{raw_dat}) and the target data set (\code{tgt_dat}).}

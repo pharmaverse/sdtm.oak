@@ -47,12 +47,12 @@ test_that("assign_ct works as expected with a conditioned `tgt_dat`", {
 
   result <-
     assign_ct(
+      tgt_dat = condition_add(vs_tgt_dat, VSTESTCD == "TEMP"),
+      tgt_var = "VSLOC",
       raw_dat = vs_raw_dat,
       raw_var = "TEMPLOC",
-      tgt_var = "VSLOC",
       ct_spec = ct_spec,
-      ct_clst = "C74456",
-      tgt_dat = condition_by(vs_tgt_dat, VSTESTCD == "TEMP")
+      ct_clst = "C74456"
     )
 
   expected_result <-
@@ -100,16 +100,16 @@ test_that("assign_ct works as expected with both `raw_dat` and `tgt_dat` as cond
 
   result <-
     assign_ct(
-      raw_dat = condition_by(fa_raw_dat, is.na(SPECTYP)),
-      raw_var = "SPCNM",
-      tgt_var = "FASPEC",
-      ct_spec = ct_spec,
-      ct_clst = "C78734",
-      tgt_dat = condition_by(
+      tgt_dat = condition_add(
         fa_tgt_dat,
         FATESTCD == "STATUS" &
           FAOBJ  == "Severe Acute Resp Syndrome Coronavirus 2"
-      )
+      ),
+      tgt_var = "FASPEC",
+      raw_dat = condition_add(fa_raw_dat, is.na(SPECTYP)),
+      raw_var = "SPCNM",
+      ct_spec = ct_spec,
+      ct_clst = "C78734"
     )
 
   expected_result <-
@@ -140,10 +140,10 @@ test_that("assign_ct works as expected with conditions across both data sets", {
   # meaningful.
   result1 <-
     assign_no_ct(
-      raw_dat = cm_raw_dat,
-      raw_var = "CMMODIFY",
+      tgt_dat = condition_add(cm_tgt_dat, CMMODIFY != CMTRT, .dat2 = cm_raw_dat),
       tgt_var = "CMMODIFY",
-      tgt_dat = condition_by(cm_tgt_dat, CMMODIFY != CMTRT, .env = cm_raw_dat)
+      raw_dat = cm_raw_dat,
+      raw_var = "CMMODIFY"
     )
 
   # Because both data sets have to have the same number of records for the
@@ -151,10 +151,10 @@ test_that("assign_ct works as expected with conditions across both data sets", {
   # raw data set itself.
   result2 <-
     assign_no_ct(
-      raw_dat = condition_by(cm_raw_dat, CMMODIFY != CMTRT, .env = cm_tgt_dat),
-      raw_var = "CMMODIFY",
+      tgt_dat = cm_tgt_dat,
       tgt_var = "CMMODIFY",
-      tgt_dat = cm_tgt_dat
+      raw_dat = condition_add(cm_raw_dat, CMMODIFY != CMTRT, .dat2 = cm_tgt_dat),
+      raw_var = "CMMODIFY"
     )
 
   expected_result <-
@@ -165,3 +165,4 @@ test_that("assign_ct works as expected with conditions across both data sets", {
   expect_equal(result2, expected_result)
 
 })
+

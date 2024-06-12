@@ -7,26 +7,33 @@
 \title{Derive an SDTM variable with a hardcoded value}
 \usage{
 hardcode_no_ct(
+  tgt_dat = NULL,
+  tgt_val,
   raw_dat,
   raw_var,
   tgt_var,
-  tgt_val,
-  tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
 
 hardcode_ct(
+  tgt_dat = NULL,
+  tgt_val,
   raw_dat,
   raw_var,
   tgt_var,
-  tgt_val,
   ct_spec,
   ct_clst,
-  tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
 }
 \arguments{
+\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
+the variables indicated in \code{id_vars}. This parameter is optional, see
+section Value for how the output changes depending on this argument value.}
+
+\item{tgt_val}{The target SDTM value to be hardcoded into the variable
+indicated in \code{tgt_var}.}
+
 \item{raw_dat}{The raw dataset (dataframe); must include the
 variables passed in \code{id_vars} and \code{raw_var}.}
 
@@ -35,13 +42,6 @@ raw variable in \code{raw_dat}.}
 
 \item{tgt_var}{The target SDTM variable: a single string indicating the name
 of variable to be derived.}
-
-\item{tgt_val}{The target SDTM value to be hardcoded into the variable
-indicated in \code{tgt_var}.}
-
-\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
-the variables indicated in \code{id_vars}. This parameter is optional, see
-section Value for how the output changes depending on this argument value.}
 
 \item{id_vars}{Key variables to be used in the join between the raw dataset
 (\code{raw_dat}) and the target data set (\code{raw_dat}).}
@@ -87,10 +87,10 @@ md1 <-
 # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
 # hardcoded value "GENERAL CONCOMITANT MEDICATIONS".
 hardcode_no_ct(
+  tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
   raw_dat = md1,
   raw_var = "MDRAW",
-  tgt_var = "CMCAT",
-  tgt_val = "GENERAL CONCOMITANT MEDICATIONS"
+  tgt_var = "CMCAT"
 )
 
 cm_inter <-
@@ -107,11 +107,11 @@ cm_inter <-
 # hardcoded value "GENERAL CONCOMITANT MEDICATIONS" with a prior join to
 # `target_dataset`.
 hardcode_no_ct(
+  tgt_dat = cm_inter,
+  tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
   raw_dat = md1,
   raw_var = "MDRAW",
-  tgt_var = "CMCAT",
-  tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
-  tgt_dat = cm_inter
+  tgt_var = "CMCAT"
 )
 
 # Controlled terminology specification
@@ -121,13 +121,13 @@ hardcode_no_ct(
 # involving terminology recoding. `NA` values in `MDRAW` are preserved in
 # `CMCAT`.
 hardcode_ct(
+  tgt_dat = cm_inter,
+  tgt_var = "CMCAT",
   raw_dat = md1,
   raw_var = "MDRAW",
-  tgt_var = "CMCAT",
   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
   ct_spec = ct_spec,
-  ct_clst = "C66729",
-  tgt_dat = cm_inter
+  ct_clst = "C66729"
 )
 
 }

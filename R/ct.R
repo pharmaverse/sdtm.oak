@@ -232,10 +232,10 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
       values_to = "from",
       names_to = "type"
     ) |>
-    dplyr::select(c("type", "from", "to")) |>
+    dplyr::select(dplyr::all_of(c("type", "from", "to"))) |>
     dplyr::mutate(type = factor(.data$type, levels = cols)) |>
     dplyr::arrange(.data$type) |>
-    dplyr::select(-"type") |>
+    dplyr::select(-dplyr::all_of("type")) |>
     tidyr::drop_na("from") |>
     dplyr::mutate(from = str_split(.data$from)) |>
     tidyr::unnest(from) |>

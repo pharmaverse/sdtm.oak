@@ -20,7 +20,7 @@
 # - `tbl_sum.cnd_df()`: Provide a tibble header print method for `cnd_df` tibbles.
 # - `ctl_new_rowid_pillar.cnd_df()`: A print method for the row ids cnd_df` tibbles.
 # - `eval_conditions()`: Find which rows match a set of conditions.
-# - `condition_by()`: Create a conditioned data frame (user facing).
+# - `condition_add()`: Create a conditioned data frame (user facing).
 # - `derive_by_condition()`: Perform a derivation on a conditioned data frame.
 
 #' Create a data frame with filtering tags
@@ -269,14 +269,14 @@ eval_conditions <- function(dat,
 #' @return A tibble with an additional class `cnd_df` and a logical vector
 #'   attribute indicating matching rows.
 #' @param .na Return value to be used when the conditions evaluate to `NA`.
-#' @param .env An optional environment to look for variables involved in logical
+#' @param .dat2 An optional environment to look for variables involved in logical
 #'   expression passed in `...`. A data frame or a list can also be passed that
 #'   will be coerced to an environment internally.
 #'
 #' @returns A conditioned data frame.
 #'
 #' @export
-condition_by <- function(dat, ..., .na = NA, .env = rlang::env()) {
+condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 
   if (is_cnd_df(dat)) {
     rlang::warn(
@@ -284,6 +284,7 @@ condition_by <- function(dat, ..., .na = NA, .env = rlang::env()) {
       "The previous condition will be replaced by the new one.")
     )
   }
+  .env <- .dat2
 
   cnd <- eval_conditions(dat = dat, ..., .na = .na, .env = .env)
   new_cnd_df(dat, cnd = cnd, .warn = FALSE)

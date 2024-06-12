@@ -7,36 +7,36 @@
 \title{Derive an SDTM variable}
 \usage{
 assign_no_ct(
+  tgt_dat = NULL,
+  tgt_var,
   raw_dat,
   raw_var,
-  tgt_var,
-  tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
 
 assign_ct(
+  tgt_dat = NULL,
+  tgt_var,
   raw_dat,
   raw_var,
-  tgt_var,
   ct_spec,
   ct_clst,
-  tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
 }
 \arguments{
+\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
+the variables indicated in \code{id_vars}. This parameter is optional, see
+section Value for how the output changes depending on this argument value.}
+
+\item{tgt_var}{The target SDTM variable: a single string indicating the name
+of variable to be derived.}
+
 \item{raw_dat}{The raw dataset (dataframe); must include the
 variables passed in \code{id_vars} and \code{raw_var}.}
 
 \item{raw_var}{The raw variable: a single string indicating the name of the
 raw variable in \code{raw_dat}.}
-
-\item{tgt_var}{The target SDTM variable: a single string indicating the name
-of variable to be derived.}
-
-\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
-the variables indicated in \code{id_vars}. This parameter is optional, see
-section Value for how the output changes depending on this argument value.}
 
 \item{id_vars}{Key variables to be used in the join between the raw dataset
 (\code{raw_dat}) and the target data set (\code{raw_dat}).}
@@ -82,9 +82,9 @@ md1 <-
   )
 
 assign_no_ct(
-  raw_dat = md1,
-  raw_var = "MDIND",
   tgt_var = "CMINDC",
+  raw_dat = md1,
+  raw_var = "MDIND"
 )
 
 cm_inter <-
@@ -130,12 +130,12 @@ cm_inter <-
 (ct_spec <- read_ct_spec_example("ct-01-cm"))
 
 assign_ct(
+  tgt_dat = cm_inter,
+  tgt_var = "CMINDC",
   raw_dat = md1,
   raw_var = "MDIND",
-  tgt_var = "CMINDC",
   ct_spec = ct_spec,
-  ct_clst = "C66729",
-  tgt_dat = cm_inter
+  ct_clst = "C66729"
 )
 
 }
