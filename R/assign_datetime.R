@@ -61,11 +61,11 @@
 #' # indicating that these values are missing/unknown (unk).
 #' cm1 <-
 #'   assign_datetime(
+#'     tgt_var = "CMSTDTC",
 #'     raw_dat = md1,
 #'     raw_var = "MDBDR",
 #'     raw_fmt = "d-m-y",
-#'     raw_unk = c("UN", "UNK"),
-#'     tgt_var = "CMSTDTC"
+#'     raw_unk = c("UN", "UNK")
 #'   )
 #'
 #' cm1
@@ -120,11 +120,11 @@
 #' # data set `cm_inter`.
 #' cm2 <-
 #'   assign_datetime(
+#'     tgt_dat = cm_inter,
+#'     tgt_var = "CMSTDTC",
 #'     raw_dat = md1,
 #'     raw_var = "MDBDR",
-#'     raw_fmt = "d-m-y",
-#'     tgt_var = "CMSTDTC",
-#'     tgt_dat = cm_inter
+#'     raw_fmt = "d-m-y"
 #'   )
 #'
 #' cm2
@@ -137,11 +137,11 @@
 #' # MDETM (correspondence is by positional matching).
 #' cm3 <-
 #'   assign_datetime(
+#'     tgt_var = "CMSTDTC",
 #'     raw_dat = md1,
 #'     raw_var = c("MDEDR", "MDETM"),
 #'     raw_fmt = c("d-m-y", "H:M:S"),
-#'     raw_unk = c("UN", "UNK"),
-#'     tgt_var = "CMSTDTC"
+#'     raw_unk = c("UN", "UNK")
 #'   )
 #'
 #' cm3
@@ -151,14 +151,15 @@
 #'
 #' @export
 assign_datetime <-
-  function(raw_dat,
+  function(tgt_dat = NULL,
+           tgt_var,
+           raw_dat,
            raw_var,
            raw_fmt,
-           tgt_var,
            raw_unk = c("UN", "UNK"),
-           tgt_dat = NULL,
            id_vars = oak_id_vars(),
            .warn = TRUE) {
+
     admiraldev::assert_character_vector(raw_var)
     admiraldev::assert_character_scalar(tgt_var)
     admiraldev::assert_character_vector(id_vars)

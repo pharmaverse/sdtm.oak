@@ -18,7 +18,7 @@ oe_inter <- tibble::tribble(
 )
 
 test_that("hardcode_no_ct works as expected", {
-  aesos_cnd <- condition_by(aesos, AESO == 1L & !is.na(AESOSP))
+  aesos_cnd <- condition_add(aesos, AESO == 1L & !is.na(AESOSP))
 
   result <- hardcode_no_ct(
     raw_dat = aesos_cnd,
@@ -44,7 +44,7 @@ test_that("hardcode_no_ct works as expected", {
 })
 
 test_that("hardcode_ct works as expected", {
-  aesos_cnd <- condition_by(aesos, AESO == 1L & is.na(AESOSP))
+  aesos_cnd <- condition_add(aesos, AESO == 1L & is.na(AESOSP))
   ct_spec <- tibble::tibble(
     codelist_code = "C117743",
     term_code = "C178048",

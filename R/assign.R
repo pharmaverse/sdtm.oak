@@ -35,13 +35,14 @@
 #'
 #' @importFrom rlang :=
 #' @keywords internal
-sdtm_assign <- function(raw_dat,
-                        raw_var,
+sdtm_assign <- function(tgt_dat = NULL,
                         tgt_var,
+                        raw_dat,
+                        raw_var,
                         ct_spec = NULL,
                         ct_clst = NULL,
-                        tgt_dat = NULL,
                         id_vars = oak_id_vars()) {
+
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   admiraldev::assert_character_vector(id_vars)
@@ -117,9 +118,9 @@ sdtm_assign <- function(raw_dat,
 #'   )
 #'
 #' assign_no_ct(
-#'   raw_dat = md1,
-#'   raw_var = "MDIND",
 #'   tgt_var = "CMINDC",
+#'   raw_dat = md1,
+#'   raw_var = "MDIND"
 #' )
 #'
 #' cm_inter <-
@@ -165,12 +166,12 @@ sdtm_assign <- function(raw_dat,
 #' (ct_spec <- read_ct_spec_example("ct-01-cm"))
 #'
 #' assign_ct(
+#'   tgt_dat = cm_inter,
+#'   tgt_var = "CMINDC",
 #'   raw_dat = md1,
 #'   raw_var = "MDIND",
-#'   tgt_var = "CMINDC",
 #'   ct_spec = ct_spec,
-#'   ct_clst = "C66729",
-#'   tgt_dat = cm_inter
+#'   ct_clst = "C66729"
 #' )
 #'
 #' @name assign
@@ -179,11 +180,12 @@ NULL
 #' @order 1
 #' @export
 #' @rdname assign
-assign_no_ct <- function(raw_dat,
-                         raw_var,
+assign_no_ct <- function(tgt_dat = NULL,
                          tgt_var,
-                         tgt_dat = NULL,
+                         raw_dat,
+                         raw_var,
                          id_vars = oak_id_vars()) {
+
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   admiraldev::assert_character_vector(id_vars)
@@ -194,10 +196,10 @@ assign_no_ct <- function(raw_dat,
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
   sdtm_assign(
+    tgt_dat = tgt_dat,
+    tgt_var = tgt_var,
     raw_dat = raw_dat,
     raw_var = raw_var,
-    tgt_var = tgt_var,
-    tgt_dat = tgt_dat,
     id_vars = id_vars
   )
 }
@@ -205,13 +207,14 @@ assign_no_ct <- function(raw_dat,
 #' @order 2
 #' @export
 #' @rdname assign
-assign_ct <- function(raw_dat,
-                      raw_var,
+assign_ct <- function(tgt_dat = NULL,
                       tgt_var,
+                      raw_dat,
+                      raw_var,
                       ct_spec,
                       ct_clst,
-                      tgt_dat = NULL,
                       id_vars = oak_id_vars()) {
+
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   admiraldev::assert_character_vector(id_vars)
@@ -222,10 +225,10 @@ assign_ct <- function(raw_dat,
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
   sdtm_assign(
+    tgt_dat = tgt_dat,
+    tgt_var = tgt_var,
     raw_dat = raw_dat,
     raw_var = raw_var,
-    tgt_var = tgt_var,
-    tgt_dat = tgt_dat,
     id_vars = id_vars,
     ct_spec = ct_spec,
     ct_clst = ct_clst

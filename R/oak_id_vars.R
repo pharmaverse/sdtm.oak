@@ -13,11 +13,11 @@
 #' as keys in raw datasets.
 #'
 #' @examples
-#' sdtm.oak:::oak_id_vars()
+#' oak_id_vars()
 #'
-#' sdtm.oak:::oak_id_vars(extra_vars = "sample_id")
+#' oak_id_vars(extra_vars = "sample_id")
 #'
-#' @keywords internal
+#' @export
 oak_id_vars <- function(extra_vars = NULL) {
   admiraldev::assert_character_vector(extra_vars, optional = TRUE)
   unique(c("oak_id", "raw_source", "patient_number", extra_vars))
@@ -37,7 +37,7 @@ oak_id_vars <- function(extra_vars = NULL) {
 #' # `oak_id_vars()` is the function that defines what are the minimal set of
 #' # oak keys. Hence, by definition, the following code should always return
 #' # `TRUE`.
-#' sdtm.oak:::contains_oak_id_vars(sdtm.oak:::oak_id_vars())
+#' sdtm.oak:::contains_oak_id_vars(oak_id_vars())
 #'
 #' # Returns `FALSE`.
 #' sdtm.oak:::contains_oak_id_vars(character())
