@@ -57,7 +57,7 @@ cm <-
   ) %>%
   # Derive qualifier CMSTRTPT  Annotation text is If MDPRIOR == 1 then CM.CMSTRTPT = 'BEFORE'
   hardcode_ct(
-    raw_dat = condition_by(cm_raw, MDPRIOR == "1"),
+    raw_dat = condition_add(cm_raw, MDPRIOR == "1"),
     raw_var = "MDPRIOR",
     tgt_var = "CMSTRTPT",
     tgt_val = "BEFORE",
@@ -67,7 +67,7 @@ cm <-
   ) %>%
   # Derive qualifier CMSTTPT  Annotation text is If MDPRIOR == 1 then CM.CMSTTPT = 'SCREENING'
   hardcode_no_ct(
-    raw_dat = condition_by(cm_raw, MDPRIOR == "1"),
+    raw_dat = condition_add(cm_raw, MDPRIOR == "1"),
     raw_var = "MDPRIOR",
     tgt_var = "CMSTTPT",
     tgt_val = "SCREENING",
@@ -83,7 +83,7 @@ cm <-
   ) %>%
   # Derive qualifier CMENRTPT  Annotation text is If MDONG == 1 then CM.CMENRTPT = 'ONGOING'
   hardcode_ct(
-    raw_dat = condition_by(cm_raw, MDONG == "1"),
+    raw_dat = condition_add(cm_raw, MDONG == "1"),
     raw_var = "MDONG",
     tgt_var = "CMENRTPT",
     tgt_val = "ONGOING",
@@ -93,7 +93,7 @@ cm <-
   ) %>%
   # Derive qualifier CMENTPT  Annotation text is If MDONG == 1 then CM.CMENTPT = 'DATE OF LAST ASSESSMENT'
   hardcode_no_ct(
-    raw_dat = condition_by(cm_raw, MDONG == "1"),
+    raw_dat = condition_add(cm_raw, MDONG == "1"),
     raw_var = "MDONG",
     tgt_var = "CMENTPT",
     tgt_val = "DATE OF LAST ASSESSMENT",
@@ -101,14 +101,14 @@ cm <-
   ) %>%
   # Derive qualifier CMDOS If collected value in raw_var DOS is numeric then CM.CMDOSE
   assign_no_ct(
-    raw_dat = condition_by(cm_raw, is.numeric(DOS)),
+    raw_dat = condition_add(cm_raw, is.numeric(DOS)),
     raw_var = "DOS",
     tgt_var = "CMDOS",
     id_vars = oak_id_vars()
     ) %>%
   # Derive qualifier CMDOS If collected value in raw_var DOS is character then CM.CMDOSTXT
   assign_no_ct(
-    raw_dat = condition_by(cm_raw, is.character(DOS)),
+    raw_dat = condition_add(cm_raw, is.character(DOS)),
     raw_var = "DOS",
     tgt_var = "CMDOSTXT",
     id_vars = oak_id_vars()
@@ -151,7 +151,7 @@ cm <-
   ) %>%
   # Derive qualifier CMPROPH  Annotation text is If MDPROPH == 1 then CM.CMPROPH = 'Y'
   hardcode_ct(
-    raw_dat = condition_by(cm_raw, MDPROPH == "1"),
+    raw_dat = condition_add(cm_raw, MDPROPH == "1"),
     raw_var = "MDPROPH",
     tgt_var = "CMPROPH",
     tgt_val = "Y",
@@ -165,7 +165,7 @@ cm <-
   {assign_no_ct(
     raw_dat = cm_raw,
     raw_var = "CMMODIFY",
-    tgt_dat =  condition_by(. , CMMODIFY != CMTRT, .env = cm_raw),
+    tgt_dat =  condition_add(. , CMMODIFY != CMTRT, .env = cm_raw),
     tgt_var = "CMMODIFY",
     id_vars = oak_id_vars()
   )} %>%
