@@ -33,7 +33,7 @@ Raw datasets can be exported from the EDC systems in the format they are collect
 
 The raw dataset is presented below:
 
-```{r eval=TRUE}
+```{r eval=TRUE, echo=FALSE}
 cm_raw <-  as_tibble(read.csv("cm_raw_data.csv", stringsAsFactors = FALSE))
 ```
 
@@ -55,7 +55,15 @@ In {sdtm.oak} we process one raw dataset at a time. Similar raw datasets (exampl
 * [Create oak_id_vars](#oakidvars)
 * [Read in CT](#readct)
 * [Map Topic Variable](#maptopic)
-* [Map Qualifies, Identifiers, and Timing Variables](#mapqualifiers)
+* [Map Rest of the Variables](#maprest)
+    * [assign_no_ct](#assign_no_ct)
+    * [assign_ct](#assign_ct)
+    * [assign_datetime](#assign_datetime)
+    * [hardcode_ct and condition_add](#hardcode_ct)
+    * [hardcode_no_ct and condition_add](#hardcode_no_ct)
+    * [condition_add involving target domain](#condition_add_tar)
+    * [condition_add involving raw dataset and target domain](#condition_add_raw_tar)
+* [Repeat Map Topic and Map Rest](#repeatsteps)
 
 Repeat the above steps for different raw datasets before proceeding with the below steps.
 
@@ -99,7 +107,7 @@ dataset_oak_vignette(
 )
 ```
 
-Reead in the DM domain
+Read in the DM domain
 
 ```{r eval=TRUE}
 dm <-  as_tibble(read.csv("dm.csv", stringsAsFactors = FALSE))
@@ -108,15 +116,15 @@ dm <-  as_tibble(read.csv("dm.csv", stringsAsFactors = FALSE))
 
 ## Read in CT {#readct}
 
-Controlled Terminology is part of the SDTM specification and it is prepared by the user.  In this example, the study controlled terminology name is `cm_sdtm_oak_ct.csv`. Users can read it from the package using the below code:
+Controlled Terminology is part of the SDTM specification and it is prepared by the user.  In this example, the study controlled terminology name is `sdtm_ct.csv`. Users can read it from the package using the below code:
 
 ```{r eval=FALSE}
-study_ct <- read.csv(system.file("cm_domain/cm_sdtm_oak_ct.csv",
+study_ct <- read.csv(system.file("cm_domain/sdtm_ct.csv",
                                  package = "sdtm.oak"))
 ```
 
 ```{r eval=TRUE}
-study_ct <-  as_tibble(read.csv("cm_sdtm_oak_ct.csv", stringsAsFactors = FALSE))
+study_ct <-  as_tibble(read.csv("sdtm_ct.csv", stringsAsFactors = FALSE))
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -153,11 +161,11 @@ dataset_oak_vignette(
   )
 )
 ```
-## Map Qualifiers, Identifiers, and Timing Variables {#mapqualifiers}
+## Map Rest of the Variables {#maprest}
 
 The Qualifiers, Identifiers, and Timing Variables can be mapped in any order. In this example, we will map each variable one by one to demonstrate different mapping algorithms.
 
-### `assign_no_ct`
+### assign_no_ct {#assign_no_ct}
 
 The mapping logic for `CMGRPID` is `Map the collected value in the cm_raw dataset MDNUM variable to CM.CMGRPID`.
 
@@ -184,7 +192,7 @@ dataset_oak_vignette(
 
 The CMGRPID is added to the corresponding CMTRT based on the 'oak_id_vars'. When calling the function, the parameter 'id_vars = oak_id_vars()' matches the raw dataset 'oak_id_vars' to the 'oak_id_vars' in the cm domain created in the previous step. It's important to note that the 'oak_id_vars' can be extended to include user-defined variables. But in most cases, the three variables should suffice.
 
-### `assign_ct`
+### assign_ct {#assign_ct}
 
 The mapping logic for `CMDOSU` is `Map the collected value in the cm_raw dataset DOSU variable to CM.CMDOSU`. The controlled terminology is used to map the collected value to the standard value. `assign_ct` is the right algorithm to perform this mapping.
 
@@ -210,7 +218,7 @@ dataset_oak_vignette(
 )
 ```
 
-### `assign_datetime`
+### assign_datetime {#assign_datetime}
 
 The mapping logic for `CMSTDTC` is `Map the collected value in the cm_raw dataset MDBDR (start date) variable and MDBTM (start time) to CM.CMSTDTC`. The collected date value is in the format 'dd mmm yyyy'. The collected time value is in 'H"M' format. The `assign_datetime` function is used to map the collected value in ISO8601 format.
 
@@ -236,7 +244,7 @@ dataset_oak_vignette(
 )
 ```
 
-### `hardcode_ct` and `condition_add`
+### hardcode_ct and condition_add {#hardcode_ct}
 
 The mapping logic for `CMSTRTPT` is as follows: `If the collected value in the raw variable MDPRIOR and raw dataset cm_raw equals to 1, then CM.CMSTRTPT == 'BEFORE'.` The `hardcode_ct` function is used to map the CMSTRTPT as it involves hardcoding a specific value to an SDTM variable with controlled terminology. The `condition_add` function filters the raw dataset based on a particular condition, and the `hardcode_ct` function performs the mapping.
 
@@ -267,7 +275,7 @@ dataset_oak_vignette(
 
 The `condition_add` function adds additional metadata to the records in the raw dataset that meets the condition. Refer to the function documentation for more details. `hardcode_ct` function uses the addtional metadata to find the records that meet the criteria and map them accordingly.
 
-## hardcode_no_ct and condition_add
+### hardcode_no_ct and condition_add {#hardcode_no_ct}
 
 The mapping logic for `CMSTTPT` is as follows: `If the collected value in the raw variable MDPRIOR and raw dataset cm_raw equals to 1, then CM.CMSTTPT == 'SCREENING'.` The `hardcode_no_ct` function is used to map the CMSTTPT as it involves hardcoding a specific value to an SDTM variable without controlled terminology. The `condition_add` function filters the raw dataset based on a particular condition, and the `hardcode_no_ct` function performs the mapping.
 
@@ -292,7 +300,7 @@ dataset_oak_vignette(
 )
 ```
 
-### condition_add involving target domain
+### condition_add involving target domain {#condition_add_tar}
 
 In the mapping for `CMSTRTPT` and `CMSTTTPT`, the `condition_add` function is used in the raw dataset. In this mapping, we can explore how to use `condition_add` to add a filter condition based on the target SDTM variable.
 
@@ -342,7 +350,7 @@ cm <- cm %>%
   ) 
 ```
 
-### condition_add involving raw dataset and target domain
+### condition_add involving raw dataset and target domain {#condition_add_raw_tar}
 
 In this mapping,  we can explore how to use `condition_add` to add a filter condition based on the target SDTM variable.
 
@@ -382,7 +390,7 @@ cm <- cm %>%
   ) 
 ```
 
-### Map rest of the variables
+Now, complete mapping the rest of the SDTM variables.
 
 ```{r eval=TRUE}
 cm <- cm %>%
@@ -510,6 +518,10 @@ dataset_oak_vignette(
 )
 ```
 
+## Repeat Map Topic and Map Rest {#repeatsteps}
+
+There is only one topic variable in this raw data source, and there are no additional topic variable mappings. Users can proceed to the next step. This is required only if there is more than one topic variable to map.
+
 ## Create SDTM derived variables {#derivedvars}
 
 The SDTM derived variables or any SDTM mapping that is applicable to all the records in the `cm` dataset produced in the previous step cam be created now. In this example, we will create the `CMSEQ` variable. The mapping logic is `Create a sequence number for each record in the CM domain`.
@@ -554,3 +566,7 @@ dataset_oak_vignette(
 )
 ```
 
+
+## Add Labels and Attributes {#attributes}
+
+Yet to be developed.
