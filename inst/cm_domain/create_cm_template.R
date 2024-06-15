@@ -2,19 +2,18 @@
 #
 # Label: R program to create CM Domain
 #
-# Input raw data:
-# study_sdtm_spec
-# study_controlled_terminology
-# study_raw_datasets
+# Input raw data: cm_raw
+# study_controlled_terminology : study_ct
 #
 #
 
 library(sdtm.oak)
 library(dplyr)
 
+
 # Read Specification
 
-study_ct <- read.csv(system.file("cm_domain/cm_sdtm_oak_ct.csv",
+study_ct <- read.csv(system.file("cm_domain/sdtm_ct.csv",
                                  package = "sdtm.oak"))
 
 # Read in raw data
@@ -23,6 +22,9 @@ cm_raw <-  read.csv(system.file("cm_domain/cm_raw_data.csv",
                                      package = "sdtm.oak")) %>%
   generate_oak_id_vars(pat_var = "PATNUM",
                        raw_src = "cm_raw")
+
+dm <-  read.csv(system.file("cm_domain/dm.csv",
+                            package = "sdtm.oak"))
 
 # Create CM domain. The first step in creating CM domain is to create the topic variable
 
@@ -159,13 +161,13 @@ cm <-
     ct_clst = "C66742",
     id_vars = oak_id_vars()
   ) %>%
-  # Derive qualifier CMMODIFY  Annotation text  If collected value in CMMODIFY
+  # Derive qualifier CMMODIFY  Annotation text  If collected value in MODIFY
   # in cm_raw is different to CM.CMTRT then
   # assign the collected value to CMMODIFY in CM domain (CM.CMMODIFY)
   {assign_no_ct(
     raw_dat = cm_raw,
-    raw_var = "CMMODIFY",
-    tgt_dat =  condition_add(. , CMMODIFY != CMTRT, .env = cm_raw),
+    raw_var = "MODIFY",
+    tgt_dat =  condition_add(. , MODIFY != CMTRT, .dat2 = cm_raw),
     tgt_var = "CMMODIFY",
     id_vars = oak_id_vars()
   )} %>%
