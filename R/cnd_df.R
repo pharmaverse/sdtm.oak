@@ -3,7 +3,7 @@
 # Package: sdtm.oak
 # Author: Ramiro Magno <rmagno@pattern.institute>
 # Created: 2024-05-23
-# Last Modified: 2024-05-23
+# Last Modified: 2024-05-15
 # ------------------------------------------------------------------------------
 # Description:
 #
@@ -17,11 +17,11 @@
 # - `get_cnd_df_cnd()`: Extract the attribute "cnd" from a `cnd_df` data frame.
 # - `get_cnd_df_cnd_sum()`: Extract the attribute "cnd_sum" from a `cnd_df` data frame.
 # - `rm_cnd_df()`: De-class a cnd_df data frame.
-# - `tbl_sum.cnd_df()`: Provide a tibble header print method for `cnd_df` tibbles.
-# - `ctl_new_rowid_pillar.cnd_df()`: A print method for the row ids cnd_df` tibbles.
+# - `tbl_sum.cnd_df()`: Print method for `cnd_df` tibbles.
+# - `ctl_new_rowid_pillar.cnd_df()`: Print method for the row ids cnd_df` tibbles.
 # - `eval_conditions()`: Find which rows match a set of conditions.
 # - `condition_add()`: Create a conditioned data frame (user facing).
-# - `derive_by_condition()`: Perform a derivation on a conditioned data frame.
+# - `mutate.cnd_df()`: Mutate a conditioned data frame.
 
 #' Create a data frame with filtering tags
 #'
@@ -45,6 +45,9 @@
 #' - `cnd_sum`: An integer vector of three elements providing the sum of `TRUE`,
 #' `FALSE` and `NA` values in `cnd`, respectively.
 #'
+#' @seealso [is_cnd_df()], [get_cnd_df_cnd()], [get_cnd_df_cnd_sum()],
+#'   [rm_cnd_df()].
+#'
 #' @examples
 #' df <- data.frame(x = 1:3, y = letters[1:3])
 #' sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
@@ -57,7 +60,7 @@ new_cnd_df <- function(dat, cnd, .warn = TRUE) {
 
   if (!identical(nrow(dat), length(cnd))) {
     msg <- c(
-      "Number of rows in `dat` must match length of `cond`."
+      "Number of rows in `dat` must match length of `cnd`."
     )
     rlang::abort(message = msg)
   }
@@ -84,10 +87,51 @@ new_cnd_df <- function(dat, cnd, .warn = TRUE) {
   return(dat)
 }
 
+#' Check if a data frame is a conditioned data frame
+#'
+#' [is_cnd_df()] checks whether a data frame is a conditioned data frame, i.e.
+#' of class `cnd_df`.
+#'
+#' @param dat A data frame.
+#' @return `TRUE` if `dat` is a conditioned data frame (class `cnd_df`),
+#'   otherwise `FALSE`.
+#'
+#' @seealso [new_cnd_df()], [get_cnd_df_cnd()], [get_cnd_df_cnd_sum()],
+#'   [rm_cnd_df()].
+#'
+#' @examples
+#' df <- data.frame(x = 1:3, y = letters[1:3])
+#' sdtm.oak:::is_cnd_df(df)
+#'
+#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
+#' sdtm.oak:::is_cnd_df(cnd_df)
+#'
+#' @keywords internal
 is_cnd_df <- function(dat) {
   inherits(dat, "cnd_df")
 }
 
+#' Get the conditioning vector from a conditioned data frame
+#'
+#' [get_cnd_df_cnd()] extracts the conditioning vector from a conditioned data
+#' frame, i.e. from an object of class `cnd_df`.
+#'
+#' @param dat A conditioned data frame (`cnd_df`).
+#' @return The conditioning vector (`cnd`) if `dat` is a conditioned data frame
+#'   (`cnd_df`), otherwise `NULL`, or `NULL` if `dat` is not a conditioned data
+#'   frame (`cnd_df`).
+#'
+#' @seealso [new_cnd_df()], [is_cnd_df()], [get_cnd_df_cnd_sum()],
+#'   [rm_cnd_df()].
+#'
+#' @examples
+#' df <- data.frame(x = 1:3, y = letters[1:3])
+#' sdtm.oak:::get_cnd_df_cnd(df)
+#'
+#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
+#' sdtm.oak:::get_cnd_df_cnd(cnd_df)
+#'
+#' @keywords internal
 get_cnd_df_cnd <- function(dat) {
   if (is_cnd_df(dat)) {
     attr(dat, "cnd")
@@ -96,6 +140,26 @@ get_cnd_df_cnd <- function(dat) {
   }
 }
 
+#' Get the summary of the conditioning vector from a conditioned data frame
+#'
+#' [get_cnd_df_cnd_sum()] extracts the tally of the conditioning vector from a
+#' conditioned data frame.
+#'
+#' @param dat A conditioned data frame (`cnd_df`).
+#' @return A vector of three elements providing the sum of `TRUE`, `FALSE`, and
+#'   `NA` values in the conditioning vector (`cnd`), or `NULL` if `dat` is not
+#'   a conditioned data frame (`cnd_df`).
+#'
+#' @seealso [new_cnd_df()], [is_cnd_df()], [get_cnd_df_cnd()], [rm_cnd_df()].
+#'
+#' @examples
+#' df <- data.frame(x = 1:3, y = letters[1:3])
+#' sdtm.oak:::get_cnd_df_cnd_sum(df)
+#'
+#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
+#' sdtm.oak:::get_cnd_df_cnd_sum(cnd_df)
+#'
+#' @keywords internal
 get_cnd_df_cnd_sum <- function(dat) {
   if (is_cnd_df(dat)) {
     attr(dat, "cnd_sum")
@@ -110,9 +174,19 @@ get_cnd_df_cnd_sum <- function(dat) {
 #' applicable.
 #'
 #' @param dat A data frame.
-#' @return The input `dat` without the `cnd_df` class.
+#' @return The input `dat` without the `cnd_df` class and associated attributes.
 #'
-#' @export
+#' @seealso [new_cnd_df()], [is_cnd_df()], [get_cnd_df_cnd()],
+#'   [get_cnd_df_cnd_sum()].
+#'
+#' @examples
+#' df <- data.frame(x = 1:3, y = letters[1:3])
+#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
+#'
+#' sdtm.oak:::is_cnd_df(cnd_df)
+#' sdtm.oak:::is_cnd_df(sdtm.oak:::rm_cnd_df(cnd_df))
+#'
+#' @keywords internal
 rm_cnd_df <- function(dat) {
   if (is_cnd_df(dat)) {
     class(dat) <- class(dat)[class(dat) != "cnd_df"]
@@ -124,10 +198,23 @@ rm_cnd_df <- function(dat) {
 
 #' Conditioned tibble header print method
 #'
+#' Conditioned tibble header print method. This S3 method adds an extra line
+#' in the header of a tibble that indicates the tibble is a conditioned tibble
+#' (`# Cond. tbl:`) followed by the tally of the conditioning vector: number
+#' of TRUE, FALSE and NA values: e.g., `1/1/1`.
+#'
 #' @param x A conditioned tibble of class `cnd_df`.
 #' @param ... Additional arguments passed to the default print method.
 #'
 #' @importFrom pillar tbl_sum
+#'
+#' @seealso [ctl_new_rowid_pillar.cnd_df()].
+#'
+#' @examples
+#' df <- data.frame(x = 1:3, y = letters[1:3])
+#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
+#' print(cnd_df)
+#'
 #' @export
 tbl_sum.cnd_df <- function(x, ...) {
   default_header <- NextMethod()
@@ -145,6 +232,9 @@ lgl_to_chr <- function(x) {
 #'
 #' @inheritParams pillar::ctl_new_rowid_pillar
 #' @importFrom pillar ctl_new_rowid_pillar
+#'
+#' @seealso [tbl_sum.cnd_df()].
+#'
 #' @export
 ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
 
@@ -205,7 +295,7 @@ ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
 #' @examples
 #' # Create a sample data frame
 #' df <- data.frame(
-#'   x = c(1, 2, 3, 4, 5),
+#'   x = c(1, 2, NA_integer_, 4, 5),
 #'   y = c(TRUE, FALSE, TRUE, FALSE, TRUE),
 #'   z = c("a", "b", "a", "b", "a")
 #' )
@@ -214,6 +304,7 @@ ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
 #' sdtm.oak:::eval_conditions(df, x > 2)
 #'
 #' # Combined conditions on multiple columns
+#' sdtm.oak:::eval_conditions(df, x > 2 & y)
 #' sdtm.oak:::eval_conditions(df, x > 2, y)
 #'
 #' # Using conditions with NA handling
@@ -240,13 +331,13 @@ ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
 eval_conditions <- function(dat,
                             ...,
                             .na = NA,
-                            .env = rlang::env()) {
+                            .env = rlang::caller_env()) {
 
   conditions <- rlang::enexprs(...)
 
   # List (or data frame).
   if (is.list(.env)) {
-    .env <- rlang::as_environment(.env, parent = rlang::env())
+    .env <- rlang::as_environment(.env, parent = rlang::caller_env())
   }
 
   lgl_vctrs <-
@@ -259,21 +350,21 @@ eval_conditions <- function(dat,
   cnd
 }
 
-#' Condition a data set based on specified conditions
+#' Add filtering tags to a data set
 #'
+#' @description
 #' This function tags records in a data set, indicating which rows match the
 #' specified conditions, resulting in a conditioned data frame.
 #'
-#' @param dat A tibble.
-#' @param ... Conditions to filter the tibble.
-#' @return A tibble with an additional class `cnd_df` and a logical vector
-#'   attribute indicating matching rows.
+#' @param dat A data frame.
+#' @param ... Conditions to filter the data frame.
 #' @param .na Return value to be used when the conditions evaluate to `NA`.
-#' @param .dat2 An optional environment to look for variables involved in logical
-#'   expression passed in `...`. A data frame or a list can also be passed that
-#'   will be coerced to an environment internally.
+#' @param .dat2 An optional environment to look for variables involved in
+#'   logical expression passed in `...`. A data frame or a list can also be
+#'   passed that will be coerced to an environment internally.
 #'
-#' @returns A conditioned data frame.
+#' @returns A conditioned data frame, meaning a tibble with an additional class
+#'   `cnd_df` and a logical vector attribute indicating matching rows.
 #'
 #' @export
 condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
@@ -298,6 +389,10 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 #' conditioned data frame is `TRUE`.
 #'
 #' @param .data A conditioned data frame.
+#' @param .by Not used when `.data` is a conditioned data frame.
+#' @param .before Not used, use `.after` instead.
+#' @param .after Control where new columns should appear, i.e. after which
+#'   columns.
 #'
 #' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate
@@ -309,6 +404,14 @@ mutate.cnd_df <- function(.data,
                           .before = NULL,
                           .after = NULL) {
 
+  if (!rlang::is_null(.by)) {
+    rlang::abort("`.by` is not supported on conditioned data frames.")
+  }
+
+  if (!rlang::is_null(.before)) {
+    rlang::abort("`.before` is not supported on conditioned data frames, use `.after` instead.")
+  }
+
   cnd <- get_cnd_df_cnd(.data)
   dat <- rm_cnd_df(.data) # avoids recursive S3 method dispatch.
 
@@ -318,5 +421,5 @@ mutate.cnd_df <- function(.data,
   lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else({{cnd}}, !!.x, NA)))
   lst <- rlang::set_names(lst, derived_vars)
 
-  dplyr::mutate(dat, !!!lst, .by = .by, .keep = .keep, .after = .after)
+  dplyr::mutate(dat, !!!lst, .by = NULL, .keep = .keep, .after = .after)
 }

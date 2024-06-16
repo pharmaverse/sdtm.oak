@@ -2,26 +2,24 @@
 % Please edit documentation in R/cnd_df.R
 \name{condition_add}
 \alias{condition_add}
-\title{Condition a data set based on specified conditions}
+\title{Add filtering tags to a data set}
 \usage{
 condition_add(dat, ..., .na = NA, .dat2 = rlang::env())
 }
 \arguments{
-\item{dat}{A tibble.}
+\item{dat}{A data frame.}
 
-\item{...}{Conditions to filter the tibble.}
+\item{...}{Conditions to filter the data frame.}
 
 \item{.na}{Return value to be used when the conditions evaluate to \code{NA}.}
 
-\item{.dat2}{An optional environment to look for variables involved in logical
-expression passed in \code{...}. A data frame or a list can also be passed that
-will be coerced to an environment internally.}
+\item{.dat2}{An optional environment to look for variables involved in
+logical expression passed in \code{...}. A data frame or a list can also be
+passed that will be coerced to an environment internally.}
 }
 \value{
-A tibble with an additional class \code{cnd_df} and a logical vector
-attribute indicating matching rows.
-
-A conditioned data frame.
+A conditioned data frame, meaning a tibble with an additional class
+\code{cnd_df} and a logical vector attribute indicating matching rows.
 }
 \description{
 This function tags records in a data set, indicating which rows match the
