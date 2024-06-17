@@ -33,3 +33,10 @@ reference:
 - title: Package global state
   contents:
   - clear_cache
+  - condition_add
+  - ctl_new_rowid_pillar.cnd_df
+  - dataset_oak_vignette
+  - mutate.cnd_df
+  - oak_id_vars
+  - rm_cnd_df
+  -  tbl_sum.cnd_df
