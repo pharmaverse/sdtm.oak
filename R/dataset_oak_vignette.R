@@ -24,7 +24,7 @@
 #'
 #' @keywords dev_utility
 #'
-#' @export
+#' @keywords internal
 #'
 dataset_oak_vignette <- function(dataset, display_vars = NULL, filter = NULL) {
 

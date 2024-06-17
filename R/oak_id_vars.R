@@ -55,14 +55,27 @@ contains_oak_id_vars <- function(x) {
 
 #' A function to generate oak_id_vars
 #'
-#' @param raw_dat
-#' @param pat_var
-#' @param raw_src
+#' @param raw_dat The raw dataset (dataframe)
+#' @param pat_var Variable that holds the patient number
+#' @param raw_src Name of the raw source
 #'
-#' @return
+#' @return dataframe
 #' @export
 #'
 #' @examples
+#' raw_dataset <-
+#'   tibble::tribble(
+#'   ~patnum          , ~MDRAW,
+#'    101L,            "BABY ASPIRIN",
+#'    102L,            "CORTISPORIN",
+#'    103L,            NA_character_,
+#'    104L,            "DIPHENHYDRAMINE HCL"
+#'   )
+#'
+#' #Generate oak_id_vars
+#' generate_oak_id_vars(raw_dat = raw_dataset,
+#' pat_var = "patnum",
+#' raw_src = "Concomitant Medication")
 generate_oak_id_vars <- function(raw_dat,
                                  pat_var,
                                  raw_src) {

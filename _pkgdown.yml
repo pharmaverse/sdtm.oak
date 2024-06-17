@@ -8,13 +8,14 @@ navbar:
   title: "sdtm.oak"
 
 reference:
-- title: SDTM derivation
-  desc: Set of functions to perform SDTM derivations
+- title: SDTM Mapping Algorithms
+  desc: Set of functions to perform SDTM Mappings
   contents:
   - assign
   - harcode
   - derive_study_day
   - assign_datetime
+  - condition_add
 
 - title: Controlled terminology
   contents:
@@ -33,3 +34,6 @@ reference:
 - title: Package global state
   contents:
   - clear_cache
+  - generate_oak_id_vars
+  - oak_id_vars
+  - %.>%
