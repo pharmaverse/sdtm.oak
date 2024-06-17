@@ -50,6 +50,8 @@ Imports:
     pillar
 Suggests:
     knitr,
+    lifecycle,
+    magrittr,
     rmarkdown,
     spelling,
     testthat (>= 3.1.7)

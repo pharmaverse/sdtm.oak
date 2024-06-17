@@ -4,7 +4,7 @@
 \alias{eval_conditions}
 \title{Evaluate conditions}
 \usage{
-eval_conditions(dat, ..., .na = NA, .env = rlang::env())
+eval_conditions(dat, ..., .na = NA, .env = rlang::caller_env())
 }
 \arguments{
 \item{dat}{A data frame}
@@ -39,7 +39,7 @@ function's environment, followed by its parent environments.
 \examples{
 # Create a sample data frame
 df <- data.frame(
-  x = c(1, 2, 3, 4, 5),
+  x = c(1, 2, NA_integer_, 4, 5),
   y = c(TRUE, FALSE, TRUE, FALSE, TRUE),
   z = c("a", "b", "a", "b", "a")
 )
@@ -48,6 +48,7 @@ df <- data.frame(
 sdtm.oak:::eval_conditions(df, x > 2)
 
 # Combined conditions on multiple columns
+sdtm.oak:::eval_conditions(df, x > 2 & y)
 sdtm.oak:::eval_conditions(df, x > 2, y)
 
 # Using conditions with NA handling

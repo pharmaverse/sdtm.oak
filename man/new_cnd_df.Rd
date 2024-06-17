@@ -37,4 +37,8 @@ df <- data.frame(x = 1:3, y = letters[1:3])
 sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
 
 }
+\seealso{
+\code{\link[=is_cnd_df]{is_cnd_df()}}, \code{\link[=get_cnd_df_cnd]{get_cnd_df_cnd()}}, \code{\link[=get_cnd_df_cnd_sum]{get_cnd_df_cnd_sum()}},
+\code{\link[=rm_cnd_df]{rm_cnd_df()}}.
+}
 \keyword{internal}

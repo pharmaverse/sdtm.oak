@@ -12,5 +12,17 @@
 \item{...}{Additional arguments passed to the default print method.}
 }
 \description{
-Conditioned tibble header print method
+Conditioned tibble header print method. This S3 method adds an extra line
+in the header of a tibble that indicates the tibble is a conditioned tibble
+(\verb{# Cond. tbl:}) followed by the tally of the conditioning vector: number
+of TRUE, FALSE and NA values: e.g., \code{1/1/1}.
+}
+\examples{
+df <- data.frame(x = 1:3, y = letters[1:3])
+cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
+print(cnd_df)
+
+}
+\seealso{
+\code{\link[=ctl_new_rowid_pillar.cnd_df]{ctl_new_rowid_pillar.cnd_df()}}.
 }

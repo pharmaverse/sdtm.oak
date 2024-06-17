@@ -28,11 +28,7 @@ if ungrouped).
 \item A data frame or tibble, to create multiple columns in the output.
 }}
 
-\item{.by}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-
-<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Optionally, a selection of columns to
-group by for just this operation, functioning as an alternative to \code{\link[dplyr:group_by]{group_by()}}. For
-details and examples, see \link[dplyr:dplyr_by]{?dplyr_by}.}
+\item{.by}{Not used when \code{.data} is a conditioned data frame.}
 
 \item{.keep}{Control which columns from \code{.data} are retained in the output. Grouping
 columns and columns created by \code{...} are always kept.
@@ -48,9 +44,10 @@ the columns used to generate them.
 variables and columns created by \code{...} are kept.
 }}
 
-\item{.before, .after}{<\code{\link[dplyr:dplyr_tidy_select]{tidy-select}}> Optionally, control where new columns
-should appear (the default is to add to the right hand side). See
-\code{\link[dplyr:relocate]{relocate()}} for more details.}
+\item{.before}{Not used, use \code{.after} instead.}
+
+\item{.after}{Control where new columns should appear, i.e. after which
+columns.}
 }
 \description{
 \code{\link[=mutate.cnd_df]{mutate.cnd_df()}} is an S3 method to be dispatched by \link[dplyr:mutate]{mutate}

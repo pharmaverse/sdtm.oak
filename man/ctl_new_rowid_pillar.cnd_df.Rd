@@ -18,3 +18,6 @@
 \description{
 Conditioned tibble pillar print method
 }
+\seealso{
+\code{\link[=tbl_sum.cnd_df]{tbl_sum.cnd_df()}}.
+}
