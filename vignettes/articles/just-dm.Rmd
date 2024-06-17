@@ -1,0 +1,24 @@
+---
+title: "Just read csv"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Just read csv}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(sdtm.oak)
+```
+
+```{r eval=TRUE, echo=FALSE}
+dm <- system.file("cm_domain/dm.csv", package = "sdtm.oak") |>
+  read.csv()
+nrow(dm)
+```
