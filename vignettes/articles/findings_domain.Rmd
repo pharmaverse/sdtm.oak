@@ -14,15 +14,12 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-#library(sdtm.oak)
+library(sdtm.oak)
 library(admiraldev)
 library(rlang)
 library(dplyr, warn.conflicts = FALSE)
 ```
 
-```{r, include=FALSE}
-devtools::load_all(".")
-```
 # Introduction
 
 This article describes how to create a Findings SDTM domain using the {sdtm.oak} package. Examples are currently presented and tested in the context of the VS domain.
@@ -51,7 +48,7 @@ Repeat the above steps for different raw datasets before proceeding with the bel
 
 Read all the raw datasets into the environment. In this example, the raw dataset name is `cm_raw`. Users can read it from the package using the below code:
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 vs_raw <-  read.csv(system.file("cm_domain/vitals_raw_data.csv",
                                 package = "sdtm.oak"))
 
@@ -59,8 +56,8 @@ dm <-  read.csv(system.file("cm_domain/dm.csv",
                             package = "sdtm.oak"))
 ```
 
-```{r eval=TRUE, echo=FALSE}
-vs_raw <-  as_tibble(read.csv("vitals_raw_data.csv", stringsAsFactors = FALSE))
+```{r eval=FALSE, echo=FALSE}
+#vs_raw <-  as_tibble(read.csv("vitals_raw_data.csv", stringsAsFactors = FALSE))
 ```
 
 ```{r, eval=TRUE, echo=FALSE}

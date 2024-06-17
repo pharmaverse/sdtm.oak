@@ -14,15 +14,12 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-#library(sdtm.oak)
+library(sdtm.oak)
 library(admiraldev)
 library(rlang)
 library(dplyr, warn.conflicts = FALSE)
 ```
 
-```{r, include=FALSE}
-devtools::load_all(".")
-```
 # Introduction
 
 This article describes creating an Events SDTM domain using the `sdtm.oak` package. Examples are currently presented and tested in the context of the CM domain.
@@ -34,7 +31,10 @@ Raw datasets can be exported from the EDC systems in the format they are collect
 The raw dataset is presented below:
 
 ```{r eval=TRUE, echo=FALSE}
-cm_raw <-  as_tibble(read.csv("cm_raw_data.csv", stringsAsFactors = FALSE))
+#cm_raw <-  as_tibble(read.csv("cm_raw_data.csv", stringsAsFactors = FALSE))
+
+cm_raw <-  read.csv(system.file("cm_domain/cm_raw_data.csv",
+                                     package = "sdtm.oak"))
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -74,7 +74,7 @@ Repeat the above steps for different raw datasets before proceeding with the bel
 
 Read all the raw datasets into the environment. In this example, the raw dataset name is `cm_raw`. Users can read it from the package using the below code:
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 cm_raw <-  read.csv(system.file("cm_domain/cm_raw_data.csv",
                                      package = "sdtm.oak"))
 
