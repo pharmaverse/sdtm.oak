@@ -79,4 +79,3 @@ test_that("ctl_new_rowid_pillar.cnd_df customizes row IDs with condition", {
   expect_true(inherits(rowid_pillar, "pillar"))
   expect_equal(rowid_pillar$data[[1]]$row_ids, c("1 F", "2 -", "3 T"))
 })
-

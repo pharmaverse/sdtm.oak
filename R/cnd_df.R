@@ -54,7 +54,6 @@
 #'
 #' @keywords internal
 new_cnd_df <- function(dat, cnd, .warn = TRUE) {
-
   admiraldev::assert_data_frame(dat)
   assert_logical_vector(cnd)
 
@@ -237,7 +236,6 @@ lgl_to_chr <- function(x) {
 #'
 #' @export
 ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
-
   out <- NextMethod()
   n_row <- nrow(x)
   idx <- seq_len(n_row)
@@ -256,8 +254,8 @@ ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
       type = out$type,
       data = pillar::pillar_component(
         pillar::new_pillar_shaft(list(row_ids = row_ids),
-                                 width = width,
-                                 class = "pillar_rif_shaft"
+          width = width,
+          class = "pillar_rif_shaft"
         )
       )
     ),
@@ -332,7 +330,6 @@ eval_conditions <- function(dat,
                             ...,
                             .na = NA,
                             .env = rlang::caller_env()) {
-
   conditions <- rlang::enexprs(...)
 
   # List (or data frame).
@@ -368,11 +365,12 @@ eval_conditions <- function(dat,
 #'
 #' @export
 condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
-
   if (is_cnd_df(dat)) {
     rlang::warn(
-      c("`dat` is already a conditioned data frame (`cnd_df`).",
-      "The previous condition will be replaced by the new one.")
+      c(
+        "`dat` is already a conditioned data frame (`cnd_df`).",
+        "The previous condition will be replaced by the new one."
+      )
     )
   }
   .env <- .dat2
@@ -403,7 +401,6 @@ mutate.cnd_df <- function(.data,
                           .keep = c("all", "used", "unused", "none"),
                           .before = NULL,
                           .after = NULL) {
-
   if (!rlang::is_null(.by)) {
     rlang::abort("`.by` is not supported on conditioned data frames.")
   }
@@ -418,7 +415,7 @@ mutate.cnd_df <- function(.data,
   derivations <- rlang::enquos(...)
   derived_vars <- names(derivations)
 
-  lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else({{cnd}}, !!.x, NA)))
+  lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else({{ cnd }}, !!.x, NA)))
   lst <- rlang::set_names(lst, derived_vars)
 
   dplyr::mutate(dat, !!!lst, .by = NULL, .keep = .keep, .after = .after)

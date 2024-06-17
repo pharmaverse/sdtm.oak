@@ -18,7 +18,6 @@ test_that("condition_add tags records correctly with multiple conditions", {
 
   expect_equal(get_cnd_df_cnd(cnd_df_multiple), c(FALSE, TRUE, TRUE, TRUE, FALSE))
   expect_equal(get_cnd_df_cnd_sum(cnd_df_multiple), c(n_true = 3, n_false = 2, n_na = 0))
-
 })
 
 test_that("condition_add handles different data types correctly", {

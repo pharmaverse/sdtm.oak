@@ -1,5 +1,4 @@
 test_that("assign_ct works as expected with a conditioned `tgt_dat`", {
-
   vs_raw_dat <- tibble::tibble(
     oak_id = 1:5,
     raw_source = c("VS1", "VS2", "VS3", "VS4", "VS5"),
@@ -11,17 +10,21 @@ test_that("assign_ct works as expected with a conditioned `tgt_dat`", {
     oak_id = as.integer(rep(1:5, each = 4)),
     raw_source = rep(c("VS1", "VS2", "VS3", "VS4", "VS5"), each = 4),
     patient_number = as.integer(rep(c(101L, 102L, 103L, 104L, 105L), each = 4)),
-    VSTESTCD = c("TEMP", "BPSYS", "BPDIAS", "HR",
-                 "TEMP", "BPSYS", "BPDIAS", "HR",
-                 "TEMP", "BPSYS", "BPDIAS", "HR",
-                 "TEMP", "BPSYS", "BPDIAS", "HR",
-                 "TEMP", "BPSYS", "BPDIAS", "HR")
+    VSTESTCD = c(
+      "TEMP", "BPSYS", "BPDIAS", "HR",
+      "TEMP", "BPSYS", "BPDIAS", "HR",
+      "TEMP", "BPSYS", "BPDIAS", "HR",
+      "TEMP", "BPSYS", "BPDIAS", "HR",
+      "TEMP", "BPSYS", "BPDIAS", "HR"
+    )
   )
 
   # vital signs' locations
-  vs_loc_raw <- c("Mouth", "Arm", "Arm", "Arm", "Armpit", "Arm", "Arm", "Arm",
-                    "Rectum", "Arm", "Arm", "Arm", "auris", "Arm", "Arm", "Arm", "brow", "Arm",
-                    "Arm", "Arm")
+  vs_loc_raw <- c(
+    "Mouth", "Arm", "Arm", "Arm", "Armpit", "Arm", "Arm", "Arm",
+    "Rectum", "Arm", "Arm", "Arm", "auris", "Arm", "Arm", "Arm", "brow", "Arm",
+    "Arm", "Arm"
+  )
 
   vs_loc_tgt <- c(
     "ORAL",
@@ -66,7 +69,6 @@ test_that("assign_ct works as expected with a conditioned `tgt_dat`", {
 
 
 test_that("assign_ct works as expected with both `raw_dat` and `tgt_dat` as conditioned data frames", {
-
   ct_spec <- tibble::tibble(
     codelist_code = "C78734",
     term_code = c("C150895", "C12434", "C13275", "C89803", "C12801"),
@@ -103,7 +105,7 @@ test_that("assign_ct works as expected with both `raw_dat` and `tgt_dat` as cond
       tgt_dat = condition_add(
         fa_tgt_dat,
         FATESTCD == "STATUS" &
-          FAOBJ  == "Severe Acute Resp Syndrome Coronavirus 2"
+          FAOBJ == "Severe Acute Resp Syndrome Coronavirus 2"
       ),
       tgt_var = "FASPEC",
       raw_dat = condition_add(fa_raw_dat, is.na(SPECTYP)),
@@ -120,12 +122,11 @@ test_that("assign_ct works as expected with both `raw_dat` and `tgt_dat` as cond
 })
 
 test_that("assign_ct works as expected with conditions across both data sets", {
-
   cm_raw_dat <- tibble::tibble(
     oak_id = 1:5,
     raw_source = paste0("MD", 1:5),
     patient_number = 101:105,
-    CMMODIFY = c("ASPIRIN EC", "IBUPROFEN LYSINE" , "PARACETAMOL", "DICLOFENAC", "NAPROXEN")
+    CMMODIFY = c("ASPIRIN EC", "IBUPROFEN LYSINE", "PARACETAMOL", "DICLOFENAC", "NAPROXEN")
   )
 
   cm_tgt_dat <- tibble::tibble(
@@ -163,6 +164,4 @@ test_that("assign_ct works as expected with conditions across both data sets", {
 
   expect_equal(result1, expected_result)
   expect_equal(result2, expected_result)
-
 })
-

@@ -44,7 +44,6 @@ sdtm_hardcode <- function(tgt_dat = NULL,
                           ct_spec = NULL,
                           ct_clst = NULL,
                           id_vars = oak_id_vars()) {
-
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   admiraldev::assert_character_scalar(tgt_val)
@@ -177,7 +176,6 @@ hardcode_no_ct <- function(tgt_dat = NULL,
                            raw_var,
                            tgt_var,
                            id_vars = oak_id_vars()) {
-
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
   assertthat::assert_that(assertthat::is.scalar(tgt_val),
@@ -211,7 +209,6 @@ hardcode_ct <-
            ct_spec,
            ct_clst,
            id_vars = oak_id_vars()) {
-
     admiraldev::assert_character_scalar(raw_var)
     admiraldev::assert_character_scalar(tgt_var)
     assertthat::assert_that(assertthat::is.scalar(tgt_val),

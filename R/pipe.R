@@ -49,13 +49,12 @@
 #'
 #' @examples
 #'
-#' iris %.>% subset(., 1:nrow(.) %% 2 == 0)  # Equivalent to subset(iris, 1:nrow(iris) %% 2 == 0)
-#' 1:10 %.>% c(min(.), max(.))  # Equivalent to c(min(1:10), max(1:10))
+#' iris %.>% subset(., 1:nrow(.) %% 2 == 0) # Equivalent to subset(iris, 1:nrow(iris) %% 2 == 0)
+#' 1:10 %.>% c(min(.), max(.)) # Equivalent to c(min(1:10), max(1:10))
 #'
 #' @rdname dot_pipe
 #' @export
 `%.>%` <- function(lhs, rhs) {
-
   rhs_expr <- rlang::enexpr(rhs)
   if (!contains_dot(rhs_expr)) {
     rlang::abort("The right-hand side (rhs) of `%.>%` must contain at least one dot (.) placeholder.")
