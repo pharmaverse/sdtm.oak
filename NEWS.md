@@ -1,3 +1,9 @@
+# sdtm.oak 0.0.0.9004 (development version)
+
+## New Features
+
+* New function: `derive_seq()` for deriving a sequence number variable.
+
 # sdtm.oak 0.0.0.9003 (development version)
 
 ## New Features
