@@ -22,7 +22,7 @@
 #'   partial_as_na = FALSE
 #' )
 #' # |--> c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25")
-#'
+#' @export
 dtc_datepart <- function(dtc, partial_as_na = TRUE) {
   # Assert that dtc is a character vector
   admiraldev::assert_character_vector(dtc)
@@ -51,6 +51,7 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 #'   seconds should be ignored (default is `TRUE`).
 #'
 #' @return Character vector containing ISO 8601 times.
+#' @export
 #'
 #' @examples
 #' ## Partial or missing times set to NA and seconds ignored by default
@@ -80,7 +81,6 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 #'   ignore_seconds = FALSE
 #' )
 #' # |--> c(NA, "", "", "12", "12:30", "12:30:59")
-#'
 dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
   # Assert that dtc is a character vector
   admiraldev::assert_character_vector(dtc)
@@ -323,7 +323,7 @@ derive_blfl <- function(sdtm_in,
   # Assert that sdtm_in is a data frame, contains DOMAIN and oak id vars
   admiraldev::assert_data_frame(
     sdtm_in,
-    required_vars = rlang::syms(c("DOMAIN", sdtm.oak:::oak_id_vars()))
+    required_vars = rlang::syms(c("DOMAIN", oak_id_vars()))
   )
 
   # Assert dm_domain is data.frame
@@ -353,7 +353,7 @@ derive_blfl <- function(sdtm_in,
     )
   domain_prefixed_names <-
     paste0(domain, suffixes) |>
-    setNames(tolower(suffixes))
+    stats::setNames(tolower(suffixes))
 
   # Assert that the input dataset has a "DTC" column
   admiraldev::assert_data_frame(
@@ -413,15 +413,15 @@ derive_blfl <- function(sdtm_in,
 
   # Split --DTC and ref_var into date and time parts
   # (partial or missing dates and times set to NA)
-  ds_mod$dom_dt <- sdtm.oak:::dtc_datepart(ds_mod[[domain_prefixed_names["dtc"]]])
-  ds_mod$dom_tm <- sdtm.oak:::dtc_timepart(ds_mod[[domain_prefixed_names["dtc"]]])
-  ds_mod$ref_dt <- sdtm.oak:::dtc_datepart(ds_mod[[ref_var]])
-  ds_mod$ref_tm <- sdtm.oak:::dtc_timepart(ds_mod[[ref_var]])
+  ds_mod$dom_dt <- dtc_datepart(ds_mod[[domain_prefixed_names["dtc"]]]) # nolint object_name_linter()
+  ds_mod$dom_tm <- dtc_timepart(ds_mod[[domain_prefixed_names["dtc"]]]) # nolint object_name_linter()
+  ds_mod$ref_dt <- dtc_datepart(ds_mod[[ref_var]]) # nolint object_name_linter()
+  ds_mod$ref_tm <- dtc_timepart(ds_mod[[ref_var]]) # nolint object_name_linter()
 
 
   # If VISIT not in data frame then assign it as "<unspecified>" for processing
   if (!"VISIT" %in% names(ds_mod)) {
-    ds_mod[["VISIT"]] <- "<unspecified>"
+    ds_mod[["VISIT"]] <- "<unspecified>" # nolint object_name_linter()
   }
 
   # If --TPT not in data frame then assign it as "<unspecified>" for processing
@@ -465,7 +465,7 @@ derive_blfl <- function(sdtm_in,
   ds_base <- rbind(ds_subset_lt, ds_subset_eq_1, ds_subset_eq_2)
 
   # Sort the rows in ascending order with respect to columns from con_col
-  ds_base <- dplyr::arrange_at(ds_base, c("USUBJID", con_col))
+  ds_base <- dplyr::arrange_at(ds_base, c("USUBJID", con_col)) # nolint object_name_linter()
 
   if (nrow(ds_base) == 0L) {
     message(paste0("There are no baseline records."))

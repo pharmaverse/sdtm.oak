@@ -51,5 +51,4 @@ dtc_timepart(
   ignore_seconds = FALSE
 )
 # |--> c(NA, "", "", "12", "12:30", "12:30:59")
-
 }
