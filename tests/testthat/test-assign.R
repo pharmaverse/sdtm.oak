@@ -117,6 +117,7 @@ test_that("assign_ct works as expected with both `raw_dat` and `tgt_dat` as cond
   expected_result <-
     fa_tgt_dat |>
     tibble::add_column(FASPEC = c("SWABBED MATERIAL", NA, NA, "URINE", NA))
+
   expect_identical(result, expected_result)
 })
 

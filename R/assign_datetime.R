@@ -159,7 +159,6 @@ assign_datetime <-
            raw_unk = c("UN", "UNK"),
            id_vars = oak_id_vars(),
            .warn = TRUE) {
-
     admiraldev::assert_character_vector(raw_var)
     admiraldev::assert_character_scalar(tgt_var)
     admiraldev::assert_character_vector(id_vars)
