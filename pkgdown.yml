@@ -3,9 +3,10 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   algorithms: algorithms.html
+  cnd_df: cnd_df.html
   iso_8601: iso_8601.html
   study_sdtm_spec: study_sdtm_spec.html
-last_built: 2024-05-30T21:16Z
+last_built: 2024-06-18T01:57Z
 urls:
   reference: https://pharmaverse.github.io/sdtm.oak/reference
   article: https://pharmaverse.github.io/sdtm.oak/articles

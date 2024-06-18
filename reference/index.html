@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sdtm.oak</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,6 +25,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/algorithms.html">Algorithms &amp; Sub-Algorithms</a>
+    <a class="dropdown-item" href="../articles/cnd_df.html">Conditioned Data Frames</a>
     <a class="dropdown-item" href="../articles/iso_8601.html">Converting dates, times or date-times to ISO 8601</a>
     <a class="dropdown-item" href="../articles/study_sdtm_spec.html">All about Metadata</a>
   </div>
@@ -54,7 +55,7 @@
     <div class="section level2">
       <h2 id="sdtm-derivation">SDTM derivation<a class="anchor" aria-label="anchor" href="#sdtm-derivation"></a></h2>
       
-      <p class="section-desc"></p><p>Set of functions to perform SDTM derivations</p>
+      <p class="section-desc"></p><p>Toolkit for SDTM derivations</p>
 
       
     </div><div id="" class="section level2">
@@ -87,6 +88,42 @@
           <code><a href="assign_datetime.html">assign_datetime()</a></code> 
         </dt>
         <dd>Derive an ISO8601 date-time variable</dd>
+      </dl><dl><dt>
+          
+          <code><a href="oak_id_vars.html">oak_id_vars()</a></code> 
+        </dt>
+        <dd>Raw dataset keys</dd>
+      </dl><dl><dt>
+          
+          <code><a href="sbj_vars.html">sbj_vars()</a></code> 
+        </dt>
+        <dd>Subject-level key variables</dd>
+      </dl></div><div class="section level2">
+      <h2 id="conditioned-data-frames">Conditioned data frames<a class="anchor" aria-label="anchor" href="#conditioned-data-frames"></a></h2>
+      
+      <p class="section-desc"></p><p>Functions for conditioned data frames (<code>cnd_df</code>)</p>
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
+          
+          <code><a href="condition_add.html">condition_add()</a></code> 
+        </dt>
+        <dd>Add filtering tags to a data set</dd>
+      </dl><dl><dt>
+          
+          <code><a href="ctl_new_rowid_pillar.cnd_df.html">ctl_new_rowid_pillar(<i>&lt;cnd_df&gt;</i>)</a></code> 
+        </dt>
+        <dd>Conditioned tibble pillar print method</dd>
+      </dl><dl><dt>
+          
+          <code><a href="tbl_sum.cnd_df.html">tbl_sum(<i>&lt;cnd_df&gt;</i>)</a></code> 
+        </dt>
+        <dd>Conditioned tibble header print method</dd>
       </dl></div><div class="section level2">
       <h2 id="sdtm-examples">SDTM examples<a class="anchor" aria-label="anchor" href="#sdtm-examples"></a></h2>
       
@@ -171,9 +208,9 @@
         </dt>
         <dd>Retrieve date/time parsing problems</dd>
       </dl></div><div class="section level2">
-      <h2 id="utils">Utils<a class="anchor" aria-label="anchor" href="#utils"></a></h2>
+      <h2 id="explicit-dot-pipe-operator">Explicit dot pipe operator<a class="anchor" aria-label="anchor" href="#explicit-dot-pipe-operator"></a></h2>
       
-      
+      <p class="section-desc"></p><p>A simple alternative to <code>%&gt;% {...}</code></p>
 
       
     </div><div id="" class="section level2">
@@ -183,9 +220,9 @@
 
       <dl><dt>
           
-          <code><a href="sbj_vars.html">sbj_vars()</a></code> 
+          <code><a href="dot_pipe.html">`%.&gt;%`</a></code> 
         </dt>
-        <dd>Subject-level key variables</dd>
+        <dd>Explicit Dot Pipe</dd>
       </dl></div><div class="section level2">
       <h2 id="package-global-state">Package global state<a class="anchor" aria-label="anchor" href="#package-global-state"></a></h2>
       

@@ -12,7 +12,7 @@ raw dataset to a target SDTM variable following the ISO8601 format."><meta prope
     
     <a class="navbar-brand me-2" href="../index.html">sdtm.oak</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,7 @@ raw dataset to a target SDTM variable following the ISO8601 format."><meta prope
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/algorithms.html">Algorithms &amp; Sub-Algorithms</a>
+    <a class="dropdown-item" href="../articles/cnd_df.html">Conditioned Data Frames</a>
     <a class="dropdown-item" href="../articles/iso_8601.html">Converting dates, times or date-times to ISO 8601</a>
     <a class="dropdown-item" href="../articles/study_sdtm_spec.html">All about Metadata</a>
   </div>
@@ -63,12 +64,12 @@ raw dataset to a target SDTM variable following the ISO8601 format.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assign_datetime</span><span class="op">(</span></span>
+<span>  tgt_dat <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">tgt_var</span>,</span>
 <span>  <span class="va">raw_dat</span>,</span>
 <span>  <span class="va">raw_var</span>,</span>
 <span>  <span class="va">raw_fmt</span>,</span>
-<span>  <span class="va">tgt_var</span>,</span>
 <span>  raw_unk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN"</span>, <span class="st">"UNK"</span><span class="op">)</span>,</span>
-<span>  tgt_dat <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  id_vars <span class="op">=</span> <span class="fu"><a href="oak_id_vars.html">oak_id_vars</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  .warn <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -76,7 +77,18 @@ raw dataset to a target SDTM variable following the ISO8601 format.</p>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>raw_dat</dt>
+    <dl><dt>tgt_dat</dt>
+<dd><p>Target dataset: a data frame to be merged against <code>raw_dat</code> by
+the variables indicated in <code>id_vars</code>. This parameter is optional, see
+section Value for how the output changes depending on this argument value.</p></dd>
+
+
+<dt>tgt_var</dt>
+<dd><p>The target SDTM variable: a single string indicating the name
+of variable to be derived.</p></dd>
+
+
+<dt>raw_dat</dt>
 <dd><p>The raw dataset (dataframe); must include the
 variables passed in <code>id_vars</code> and <code>raw_var</code>.</p></dd>
 
@@ -96,20 +108,9 @@ vector of formats. The first vector of formats is used for parsing the
 first variable in <code>raw_var</code>, and so on.</p></dd>
 
 
-<dt>tgt_var</dt>
-<dd><p>The target SDTM variable: a single string indicating the name
-of variable to be derived.</p></dd>
-
-
 <dt>raw_unk</dt>
 <dd><p>A character vector of string literals to be regarded as
 missing values during parsing.</p></dd>
-
-
-<dt>tgt_dat</dt>
-<dd><p>Target dataset: a data frame to be merged against <code>raw_dat</code> by
-the variables indicated in <code>id_vars</code>. This parameter is optional, see
-section Value for how the output changes depending on this argument value.</p></dd>
 
 
 <dt>id_vars</dt>
@@ -162,11 +163,11 @@ derived variable, as indicated in <code>tgt_var</code>.</p></li>
 <span class="r-in"><span><span class="co"># indicating that these values are missing/unknown (unk).</span></span></span>
 <span class="r-in"><span><span class="va">cm1</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">assign_datetime</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMSTDTC"</span>,</span></span>
 <span class="r-in"><span>    raw_dat <span class="op">=</span> <span class="va">md1</span>,</span></span>
 <span class="r-in"><span>    raw_var <span class="op">=</span> <span class="st">"MDBDR"</span>,</span></span>
 <span class="r-in"><span>    raw_fmt <span class="op">=</span> <span class="st">"d-m-y"</span>,</span></span>
-<span class="r-in"><span>    raw_unk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN"</span>, <span class="st">"UNK"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMSTDTC"</span></span></span>
+<span class="r-in"><span>    raw_unk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN"</span>, <span class="st">"UNK"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">cm1</span></span></span>
@@ -244,11 +245,11 @@ derived variable, as indicated in <code>tgt_var</code>.</p></li>
 <span class="r-in"><span><span class="co"># data set `cm_inter`.</span></span></span>
 <span class="r-in"><span><span class="va">cm2</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">assign_datetime</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tgt_dat <span class="op">=</span> <span class="va">cm_inter</span>,</span></span>
+<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMSTDTC"</span>,</span></span>
 <span class="r-in"><span>    raw_dat <span class="op">=</span> <span class="va">md1</span>,</span></span>
 <span class="r-in"><span>    raw_var <span class="op">=</span> <span class="st">"MDBDR"</span>,</span></span>
-<span class="r-in"><span>    raw_fmt <span class="op">=</span> <span class="st">"d-m-y"</span>,</span></span>
-<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMSTDTC"</span>,</span></span>
-<span class="r-in"><span>    tgt_dat <span class="op">=</span> <span class="va">cm_inter</span></span></span>
+<span class="r-in"><span>    raw_fmt <span class="op">=</span> <span class="st">"d-m-y"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">cm2</span></span></span>
@@ -284,11 +285,11 @@ derived variable, as indicated in <code>tgt_var</code>.</p></li>
 <span class="r-in"><span><span class="co"># MDETM (correspondence is by positional matching).</span></span></span>
 <span class="r-in"><span><span class="va">cm3</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">assign_datetime</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMSTDTC"</span>,</span></span>
 <span class="r-in"><span>    raw_dat <span class="op">=</span> <span class="va">md1</span>,</span></span>
 <span class="r-in"><span>    raw_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"MDEDR"</span>, <span class="st">"MDETM"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    raw_fmt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d-m-y"</span>, <span class="st">"H:M:S"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    raw_unk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN"</span>, <span class="st">"UNK"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMSTDTC"</span></span></span>
+<span class="r-in"><span>    raw_unk <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"UN"</span>, <span class="st">"UNK"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">cm3</span></span></span>

@@ -24,7 +24,7 @@ following controlled terminology recoding.
     
     <a class="navbar-brand me-2" href="../index.html">sdtm.oak</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,7 @@ following controlled terminology recoding.
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/algorithms.html">Algorithms &amp; Sub-Algorithms</a>
+    <a class="dropdown-item" href="../articles/cnd_df.html">Conditioned Data Frames</a>
     <a class="dropdown-item" href="../articles/iso_8601.html">Converting dates, times or date-times to ISO 8601</a>
     <a class="dropdown-item" href="../articles/study_sdtm_spec.html">All about Metadata</a>
   </div>
@@ -78,34 +79,30 @@ following controlled terminology recoding.</p></li>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assign_no_ct</span><span class="op">(</span></span>
+<span>  tgt_dat <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">tgt_var</span>,</span>
 <span>  <span class="va">raw_dat</span>,</span>
 <span>  <span class="va">raw_var</span>,</span>
-<span>  <span class="va">tgt_var</span>,</span>
-<span>  tgt_dat <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  id_vars <span class="op">=</span> <span class="fu"><a href="oak_id_vars.html">oak_id_vars</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">assign_ct</span><span class="op">(</span></span>
+<span>  tgt_dat <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">tgt_var</span>,</span>
 <span>  <span class="va">raw_dat</span>,</span>
 <span>  <span class="va">raw_var</span>,</span>
-<span>  <span class="va">tgt_var</span>,</span>
 <span>  <span class="va">ct_spec</span>,</span>
 <span>  <span class="va">ct_clst</span>,</span>
-<span>  tgt_dat <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  id_vars <span class="op">=</span> <span class="fu"><a href="oak_id_vars.html">oak_id_vars</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>raw_dat</dt>
-<dd><p>The raw dataset (dataframe); must include the
-variables passed in <code>id_vars</code> and <code>raw_var</code>.</p></dd>
-
-
-<dt>raw_var</dt>
-<dd><p>The raw variable: a single string indicating the name of the
-raw variable in <code>raw_dat</code>.</p></dd>
+    <dl><dt>tgt_dat</dt>
+<dd><p>Target dataset: a data frame to be merged against <code>raw_dat</code> by
+the variables indicated in <code>id_vars</code>. This parameter is optional, see
+section Value for how the output changes depending on this argument value.</p></dd>
 
 
 <dt>tgt_var</dt>
@@ -113,10 +110,14 @@ raw variable in <code>raw_dat</code>.</p></dd>
 of variable to be derived.</p></dd>
 
 
-<dt>tgt_dat</dt>
-<dd><p>Target dataset: a data frame to be merged against <code>raw_dat</code> by
-the variables indicated in <code>id_vars</code>. This parameter is optional, see
-section Value for how the output changes depending on this argument value.</p></dd>
+<dt>raw_dat</dt>
+<dd><p>The raw dataset (dataframe); must include the
+variables passed in <code>id_vars</code> and <code>raw_var</code>.</p></dd>
+
+
+<dt>raw_var</dt>
+<dd><p>The raw variable: a single string indicating the name of the
+raw variable in <code>raw_dat</code>.</p></dd>
 
 
 <dt>id_vars</dt>
@@ -163,9 +164,9 @@ derived variable, as indicated in <code>tgt_var</code>.</p></li>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">assign_no_ct</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  raw_dat <span class="op">=</span> <span class="va">md1</span>,</span></span>
-<span class="r-in"><span>  raw_var <span class="op">=</span> <span class="st">"MDIND"</span>,</span></span>
 <span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"CMINDC"</span>,</span></span>
+<span class="r-in"><span>  raw_dat <span class="op">=</span> <span class="va">md1</span>,</span></span>
+<span class="r-in"><span>  raw_var <span class="op">=</span> <span class="st">"MDIND"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    oak_id raw_source patient_number CMINDC   </span>
@@ -244,12 +245,12 @@ derived variable, as indicated in <code>tgt_var</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   raw_codelist &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">assign_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  tgt_dat <span class="op">=</span> <span class="va">cm_inter</span>,</span></span>
+<span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"CMINDC"</span>,</span></span>
 <span class="r-in"><span>  raw_dat <span class="op">=</span> <span class="va">md1</span>,</span></span>
 <span class="r-in"><span>  raw_var <span class="op">=</span> <span class="st">"MDIND"</span>,</span></span>
-<span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"CMINDC"</span>,</span></span>
 <span class="r-in"><span>  ct_spec <span class="op">=</span> <span class="va">ct_spec</span>,</span></span>
-<span class="r-in"><span>  ct_clst <span class="op">=</span> <span class="st">"C66729"</span>,</span></span>
-<span class="r-in"><span>  tgt_dat <span class="op">=</span> <span class="va">cm_inter</span></span></span>
+<span class="r-in"><span>  ct_clst <span class="op">=</span> <span class="st">"C66729"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 14 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    oak_id raw_source patient_number CMTRT                         CMROUTE CMINDC</span>
