@@ -54,7 +54,6 @@
 #'
 #' @keywords internal
 new_cnd_df <- function(dat, cnd, .warn = TRUE) {
-
   admiraldev::assert_data_frame(dat)
   assert_logical_vector(cnd)
 
@@ -211,21 +210,21 @@ rm_cnd_df <- function(dat) {
 #' @seealso [ctl_new_rowid_pillar.cnd_df()].
 #'
 #' @examples
-#' df <- data.frame(x = 1:3, y = letters[1:3])
-#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-#' print(cnd_df)
+#' df <- data.frame(x = c(1L, NA_integer_, 3L))
+#' (cnd_df <- condition_add(dat = df, x >= 2L))
+#' pillar::tbl_sum(cnd_df)
 #'
 #' @export
 tbl_sum.cnd_df <- function(x, ...) {
   default_header <- NextMethod()
 
   tally <- get_cnd_df_cnd_sum(x)
-  h2 <- sprintf("%d/%d/%d", tally[1], tally[2], tally[3])
+  h2 <- sprintf("%d/%d/%d", tally[1L], tally[2L], tally[3L])
   c(default_header, "Cond. tbl" = h2)
 }
 
 lgl_to_chr <- function(x) {
-  ifelse(is.na(x), "-", ifelse(x, "T", "F"))
+  dplyr::case_match(x, TRUE ~ "T", FALSE ~ "F", NA ~ "-")
 }
 
 #' Conditioned tibble pillar print method
@@ -237,15 +236,14 @@ lgl_to_chr <- function(x) {
 #'
 #' @export
 ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
-
   out <- NextMethod()
   n_row <- nrow(x)
   idx <- seq_len(n_row)
   i <- sprintf("%d", idx)
   i_width <- nchar(as.character(i))
   i_max_width <- max(i_width)
-  max_width <- i_max_width + 2
-  ws <- strrep(" ", max_width - i_width - 1)
+  max_width <- i_max_width + 2L
+  ws <- strrep(" ", max_width - i_width - 1L)
   abb_lgl <- lgl_to_chr(attr(controller, "cnd")[idx])
 
   row_ids <- paste0(i, ws, abb_lgl)
@@ -256,8 +254,8 @@ ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
       type = out$type,
       data = pillar::pillar_component(
         pillar::new_pillar_shaft(list(row_ids = row_ids),
-                                 width = width,
-                                 class = "pillar_rif_shaft"
+          width = width,
+          class = "pillar_rif_shaft"
         )
       )
     ),
@@ -332,7 +330,6 @@ eval_conditions <- function(dat,
                             ...,
                             .na = NA,
                             .env = rlang::caller_env()) {
-
   conditions <- rlang::enexprs(...)
 
   # List (or data frame).
@@ -353,8 +350,10 @@ eval_conditions <- function(dat,
 #' Add filtering tags to a data set
 #'
 #' @description
-#' This function tags records in a data set, indicating which rows match the
-#' specified conditions, resulting in a conditioned data frame.
+#' `condition_add()` tags records in a data set, indicating which rows match the
+#' specified conditions, resulting in a conditioned data frame. Learn how to
+#' integrate conditioned data frames in your SDTM domain derivation in
+#' `vignette("cnd_df")`.
 #'
 #' @param dat A data frame.
 #' @param ... Conditions to filter the data frame.
@@ -366,13 +365,25 @@ eval_conditions <- function(dat,
 #' @returns A conditioned data frame, meaning a tibble with an additional class
 #'   `cnd_df` and a logical vector attribute indicating matching rows.
 #'
+#' @examples
+#' (df <- tibble::tibble(x = 1L:3L, y = letters[x]))
+#'
+#' # Mark rows for which `x` greater than `1`
+#' (cnd_df <- condition_add(dat = df, x > 1L))
+#'
 #' @export
 condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
+  admiraldev::assert_data_frame(dat)
+  # TODO: assertion for `...` (perhaps with admiraldev::assert_filter_cond()?)
+  # TODO: assertion for `.na`
+  # TODO: assertion for `.dat2`
 
   if (is_cnd_df(dat)) {
     rlang::warn(
-      c("`dat` is already a conditioned data frame (`cnd_df`).",
-      "The previous condition will be replaced by the new one.")
+      c(
+        "`dat` is already a conditioned data frame (`cnd_df`).",
+        "The previous condition will be replaced by the new one."
+      )
     )
   }
   .env <- .dat2
@@ -394,16 +405,24 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 #' @param .after Control where new columns should appear, i.e. after which
 #'   columns.
 #'
+#' @examples
+#' df <- tibble::tibble(x = 1L:3L, y = letters[x])
+#' cnd_df <- condition_add(df, x > 1L, y %in% c("a", "b"))
+#'
+#' # Because `cnd_df` is a conditioned data frame, dplyr::mutate() generic
+#' # dispatches this S3 method and mutates only the second row, as that is the
+#' # only record that fulfills simultaneously `x > 1L` and `y %in% c("a", "b")`.
+#' dplyr::mutate(cnd_df, z = "match")
+#'
 #' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate
-#' @export
+#' @keywords internal
 mutate.cnd_df <- function(.data,
                           ...,
                           .by = NULL,
                           .keep = c("all", "used", "unused", "none"),
                           .before = NULL,
                           .after = NULL) {
-
   if (!rlang::is_null(.by)) {
     rlang::abort("`.by` is not supported on conditioned data frames.")
   }
@@ -412,13 +431,13 @@ mutate.cnd_df <- function(.data,
     rlang::abort("`.before` is not supported on conditioned data frames, use `.after` instead.")
   }
 
-  cnd <- get_cnd_df_cnd(.data)
+  cnd <- get_cnd_df_cnd(.data) # nolint object_name_linter()
   dat <- rm_cnd_df(.data) # avoids recursive S3 method dispatch.
 
   derivations <- rlang::enquos(...)
   derived_vars <- names(derivations)
 
-  lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else({{cnd}}, !!.x, NA)))
+  lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else(!!cnd, !!.x, NA)))
   lst <- rlang::set_names(lst, derived_vars)
 
   dplyr::mutate(dat, !!!lst, .by = NULL, .keep = .keep, .after = .after)

@@ -37,7 +37,7 @@ braces:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{library(magrittr)
 
-1:10 \%>\% \{c(min(.), max(.))\}
+1:10 \%>\% \{ c(min(.), max(.)) \}
 }\if{html}{\out{</div>}}
 
 can be written as:
@@ -55,7 +55,10 @@ right-hand side (\code{rhs}).
 }
 \examples{
 
-iris \%.>\% subset(., 1:nrow(.) \%\% 2 == 0)  # Equivalent to subset(iris, 1:nrow(iris) \%\% 2 == 0)
-1:10 \%.>\% c(min(.), max(.))  # Equivalent to c(min(1:10), max(1:10))
+# Equivalent to `subset(head(iris), 1:nrow(head(iris)) \%\% 2 == 0)`
+head(iris) \%.>\% subset(., 1:nrow(.) \%\% 2 == 0)
+
+# Equivalent to `c(min(1:10), max(1:10))`
+1:10 \%.>\% c(min(.), max(.))
 
 }

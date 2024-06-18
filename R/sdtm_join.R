@@ -34,6 +34,4 @@ sdtm_join <- function(raw_dat,
       "__raw_dat_cond__", "__tgt_dat_cond__"
     ))) |>
     new_cnd_df(cnd = cnd, .warn = FALSE)
-
 }
-

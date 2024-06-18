@@ -178,9 +178,9 @@ assign_datetime <-
 
     tgt_val <-
       create_iso8601(!!!join_dat[raw_var],
-                     .format = raw_fmt,
-                     .na = raw_unk,
-                     .warn = .warn
+        .format = raw_fmt,
+        .na = raw_unk,
+        .warn = .warn
       )
 
     join_dat |>

@@ -31,3 +31,4 @@ A HTML table
 Output a dataset in a vignette with the pre-specified sdtm.oak format.
 }
 \keyword{dev_utility}
+\keyword{internal}

@@ -17,7 +17,7 @@
       "Package": "R.cache",
       "Version": "0.16.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "R.methodsS3",
@@ -32,7 +32,7 @@
       "Package": "R.methodsS3",
       "Version": "1.8.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "utils"
@@ -43,7 +43,7 @@
       "Package": "R.oo",
       "Version": "1.26.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "R.methodsS3",
@@ -56,7 +56,7 @@
       "Package": "R.utils",
       "Version": "2.12.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "R.methodsS3",
@@ -71,7 +71,7 @@
       "Package": "R6",
       "Version": "2.5.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -81,7 +81,7 @@
       "Package": "Rcpp",
       "Version": "1.0.10",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "methods",
         "utils"
@@ -92,7 +92,7 @@
       "Package": "askpass",
       "Version": "1.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "sys"
       ],
@@ -102,7 +102,7 @@
       "Package": "assertthat",
       "Version": "0.2.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "tools"
       ],
@@ -112,7 +112,7 @@
       "Package": "backports",
       "Version": "1.4.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -122,7 +122,7 @@
       "Package": "base64enc",
       "Version": "0.1-3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -132,7 +132,7 @@
       "Package": "bit",
       "Version": "4.0.5",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -142,7 +142,7 @@
       "Package": "bit64",
       "Version": "4.0.5",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "bit",
@@ -156,21 +156,21 @@
       "Package": "brew",
       "Version": "1.0-8",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "d69a786e85775b126bddbee185ae6084"
     },
     "brio": {
       "Package": "brio",
       "Version": "1.1.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "976cf154dfb043c012d87cddd8bca363"
     },
     "bslib": {
       "Package": "bslib",
       "Version": "0.4.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "base64enc",
@@ -190,7 +190,7 @@
       "Package": "cachem",
       "Version": "1.0.7",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "fastmap",
         "rlang"
@@ -201,7 +201,7 @@
       "Package": "callr",
       "Version": "3.7.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -214,7 +214,7 @@
       "Package": "checkmate",
       "Version": "2.1.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "backports",
@@ -226,7 +226,7 @@
       "Package": "cli",
       "Version": "3.6.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "utils"
@@ -237,7 +237,7 @@
       "Package": "clipr",
       "Version": "0.8.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "utils"
       ],
@@ -247,21 +247,21 @@
       "Package": "commonmark",
       "Version": "1.8.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "b6e3e947d1d7ebf3d2bdcea1bde63fe7"
     },
     "cpp11": {
       "Package": "cpp11",
       "Version": "0.4.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "ed588261931ee3be2c700d22e94a29ab"
     },
     "crayon": {
       "Package": "crayon",
       "Version": "1.5.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "grDevices",
         "methods",
@@ -273,7 +273,7 @@
       "Package": "credentials",
       "Version": "1.3.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "askpass",
         "curl",
@@ -287,7 +287,7 @@
       "Package": "curl",
       "Version": "5.0.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -297,7 +297,7 @@
       "Package": "desc",
       "Version": "1.4.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -311,7 +311,7 @@
       "Package": "devtools",
       "Version": "2.4.5",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -345,7 +345,7 @@
       "Package": "diffobj",
       "Version": "0.3.5",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "crayon",
@@ -360,7 +360,7 @@
       "Package": "digest",
       "Version": "0.6.31",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "utils"
@@ -371,7 +371,7 @@
       "Package": "downlit",
       "Version": "0.4.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "brio",
@@ -391,7 +391,7 @@
       "Package": "dplyr",
       "Version": "1.1.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -414,7 +414,7 @@
       "Package": "ellipsis",
       "Version": "0.3.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "rlang"
@@ -425,7 +425,7 @@
       "Package": "evaluate",
       "Version": "0.20",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "methods"
@@ -436,7 +436,7 @@
       "Package": "fansi",
       "Version": "1.0.4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "grDevices",
@@ -448,14 +448,14 @@
       "Package": "fastmap",
       "Version": "1.1.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "f7736a18de97dea803bde0a2daaafb27"
     },
     "fontawesome": {
       "Package": "fontawesome",
       "Version": "0.5.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "htmltools",
@@ -467,7 +467,7 @@
       "Package": "fs",
       "Version": "1.6.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "methods"
@@ -478,7 +478,7 @@
       "Package": "generics",
       "Version": "0.1.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "methods"
@@ -489,7 +489,7 @@
       "Package": "gert",
       "Version": "1.9.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "askpass",
         "credentials",
@@ -504,7 +504,7 @@
       "Package": "gh",
       "Version": "1.4.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -520,7 +520,7 @@
       "Package": "git2r",
       "Version": "0.31.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "graphics",
@@ -532,7 +532,7 @@
       "Package": "gitcreds",
       "Version": "0.1.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -542,7 +542,7 @@
       "Package": "glue",
       "Version": "1.6.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "methods"
@@ -553,7 +553,7 @@
       "Package": "highr",
       "Version": "0.10",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "xfun"
@@ -564,7 +564,7 @@
       "Package": "hms",
       "Version": "1.1.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "ellipsis",
         "lifecycle",
@@ -579,7 +579,7 @@
       "Package": "htmltools",
       "Version": "0.5.4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "base64enc",
@@ -596,7 +596,7 @@
       "Package": "htmlwidgets",
       "Version": "1.6.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "grDevices",
         "htmltools",
@@ -611,7 +611,7 @@
       "Package": "httpuv",
       "Version": "1.6.9",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -626,7 +626,7 @@
       "Package": "httr",
       "Version": "1.4.5",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -641,7 +641,7 @@
       "Package": "httr2",
       "Version": "0.2.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -660,7 +660,7 @@
       "Package": "hunspell",
       "Version": "3.0.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "Rcpp",
@@ -672,14 +672,14 @@
       "Package": "ini",
       "Version": "0.3.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "6154ec2223172bce8162d4153cda21f7"
     },
     "jquerylib": {
       "Package": "jquerylib",
       "Version": "0.1.4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "htmltools"
       ],
@@ -689,7 +689,7 @@
       "Package": "jsonlite",
       "Version": "1.8.4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "methods"
       ],
@@ -699,7 +699,7 @@
       "Package": "knitr",
       "Version": "1.42",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "evaluate",
@@ -715,7 +715,7 @@
       "Package": "later",
       "Version": "1.3.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "Rcpp",
         "rlang"
@@ -726,7 +726,7 @@
       "Package": "lifecycle",
       "Version": "1.0.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -739,7 +739,7 @@
       "Package": "lubridate",
       "Version": "1.9.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "generics",
@@ -752,7 +752,7 @@
       "Package": "magrittr",
       "Version": "2.0.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -762,7 +762,7 @@
       "Package": "memoise",
       "Version": "2.0.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "cachem",
         "rlang"
@@ -773,7 +773,7 @@
       "Package": "mime",
       "Version": "0.12",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "tools"
       ],
@@ -783,7 +783,7 @@
       "Package": "miniUI",
       "Version": "0.1.1.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "htmltools",
         "shiny",
@@ -795,7 +795,7 @@
       "Package": "openssl",
       "Version": "2.0.6",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "askpass"
       ],
@@ -805,7 +805,7 @@
       "Package": "pillar",
       "Version": "1.8.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "cli",
         "fansi",
@@ -822,7 +822,7 @@
       "Package": "pkgbuild",
       "Version": "1.4.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -841,7 +841,7 @@
       "Package": "pkgconfig",
       "Version": "2.0.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "utils"
       ],
@@ -851,7 +851,7 @@
       "Package": "pkgdown",
       "Version": "2.0.7",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "bslib",
@@ -881,7 +881,7 @@
       "Package": "pkgload",
       "Version": "1.3.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -901,21 +901,21 @@
       "Package": "praise",
       "Version": "1.0.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "a555924add98c99d2f411e37e7d25e9f"
     },
     "prettyunits": {
       "Package": "prettyunits",
       "Version": "1.1.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "95ef9167b75dde9d2ccc3c7528393e7e"
     },
     "processx": {
       "Package": "processx",
       "Version": "3.8.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -928,7 +928,7 @@
       "Package": "profvis",
       "Version": "0.3.7",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "htmlwidgets",
@@ -940,7 +940,7 @@
       "Package": "progress",
       "Version": "1.2.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R6",
         "crayon",
@@ -953,7 +953,7 @@
       "Package": "promises",
       "Version": "1.2.0.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R6",
         "Rcpp",
@@ -968,7 +968,7 @@
       "Package": "ps",
       "Version": "1.7.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "utils"
@@ -979,7 +979,7 @@
       "Package": "purrr",
       "Version": "1.0.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -994,7 +994,7 @@
       "Package": "ragg",
       "Version": "1.2.5",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "systemfonts",
         "textshaping"
@@ -1005,7 +1005,7 @@
       "Package": "rappdirs",
       "Version": "0.3.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -1015,7 +1015,7 @@
       "Package": "rcmdcheck",
       "Version": "1.4.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R6",
         "callr",
@@ -1037,7 +1037,7 @@
       "Package": "readr",
       "Version": "2.1.4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -1060,7 +1060,7 @@
       "Package": "rematch2",
       "Version": "2.1.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "tibble"
       ],
@@ -1070,7 +1070,7 @@
       "Package": "remotes",
       "Version": "2.5.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
         "methods",
@@ -1082,19 +1082,19 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "1.0.3",
+      "Version": "1.0.7",
       "Source": "Repository",
       "Repository": "RSPM",
       "Requirements": [
         "utils"
       ],
-      "Hash": "41b847654f567341725473431dd0d5ab"
+      "Hash": "397b7b2a265bc5a7a06852524dabae20"
     },
     "rlang": {
       "Package": "rlang",
       "Version": "1.1.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "utils"
@@ -1105,7 +1105,7 @@
       "Package": "rmarkdown",
       "Version": "2.20",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "bslib",
@@ -1154,7 +1154,7 @@
       "Package": "rprojroot",
       "Version": "2.0.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -1164,14 +1164,14 @@
       "Package": "rstudioapi",
       "Version": "0.14",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "690bd2acc42a9166ce34845884459320"
     },
     "rversions": {
       "Package": "rversions",
       "Version": "2.1.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "curl",
         "utils",
@@ -1183,7 +1183,7 @@
       "Package": "sass",
       "Version": "0.4.5",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R6",
         "fs",
@@ -1197,7 +1197,7 @@
       "Package": "sessioninfo",
       "Version": "1.2.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -1210,7 +1210,7 @@
       "Package": "shiny",
       "Version": "1.7.4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -1244,7 +1244,7 @@
       "Package": "sourcetools",
       "Version": "0.1.7-1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -1254,7 +1254,7 @@
       "Package": "spelling",
       "Version": "2.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "commonmark",
         "hunspell",
@@ -1300,7 +1300,7 @@
       "Package": "stringi",
       "Version": "1.7.12",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "stats",
@@ -1313,7 +1313,7 @@
       "Package": "stringr",
       "Version": "1.5.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -1349,14 +1349,14 @@
       "Package": "sys",
       "Version": "3.4.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "34c16f1ef796057bfa06d3f4ff818a5d"
     },
     "systemfonts": {
       "Package": "systemfonts",
       "Version": "1.0.4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cpp11"
@@ -1367,7 +1367,7 @@
       "Package": "testthat",
       "Version": "3.1.7",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R6",
@@ -1397,7 +1397,7 @@
       "Package": "textshaping",
       "Version": "0.3.6",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cpp11",
@@ -1409,7 +1409,7 @@
       "Package": "tibble",
       "Version": "3.2.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "fansi",
@@ -1428,7 +1428,7 @@
       "Package": "tidyr",
       "Version": "1.3.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -1451,7 +1451,7 @@
       "Package": "tidyselect",
       "Version": "1.2.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -1467,7 +1467,7 @@
       "Package": "timechange",
       "Version": "0.2.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cpp11"
@@ -1478,7 +1478,7 @@
       "Package": "tinytex",
       "Version": "0.44",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "xfun"
       ],
@@ -1488,7 +1488,7 @@
       "Package": "tzdb",
       "Version": "0.3.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cpp11"
@@ -1499,7 +1499,7 @@
       "Package": "urlchecker",
       "Version": "1.0.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -1513,7 +1513,7 @@
       "Package": "usethis",
       "Version": "2.1.6",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -1544,7 +1544,7 @@
       "Package": "utf8",
       "Version": "1.2.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R"
       ],
@@ -1554,7 +1554,7 @@
       "Package": "vctrs",
       "Version": "0.5.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "cli",
@@ -1568,7 +1568,7 @@
       "Package": "vroom",
       "Version": "1.6.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "bit64",
@@ -1594,7 +1594,7 @@
       "Package": "waldo",
       "Version": "0.4.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "cli",
         "diffobj",
@@ -1611,14 +1611,14 @@
       "Package": "whisker",
       "Version": "0.4.1",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "c6abfa47a46d281a7d5159d0a8891e88"
     },
     "withr": {
       "Package": "withr",
       "Version": "2.5.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "grDevices",
@@ -1631,7 +1631,7 @@
       "Package": "xfun",
       "Version": "0.37",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "stats",
         "tools"
@@ -1642,7 +1642,7 @@
       "Package": "xml2",
       "Version": "1.3.3",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "methods"
@@ -1653,7 +1653,7 @@
       "Package": "xopen",
       "Version": "1.0.0",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "processx"
@@ -1664,7 +1664,7 @@
       "Package": "xtable",
       "Version": "1.8-4",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "stats",
@@ -1676,14 +1676,14 @@
       "Package": "yaml",
       "Version": "2.3.7",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "0d0056cc5383fbc240ccd0cb584bf436"
     },
     "zip": {
       "Package": "zip",
       "Version": "2.2.2",
       "Source": "Repository",
-      "Repository": "RSPM",
+      "Repository": "repos",
       "Hash": "c42bfcec3fa6a0cce17ce1f8bc684f88"
     }
   }

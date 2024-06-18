@@ -75,5 +75,5 @@ test_that("assign_datetime: date and time conversion", {
     dplyr::select(dplyr::all_of(c("oak_id", "raw_source", "patient_number"))) |>
     dplyr::bind_cols(tibble::tibble(CMSTDTC = cmstdtc))
 
-  expect_equal(object = cm1, expected = expected)
+  expect_identical(object = cm1, expected = expected)
 })
