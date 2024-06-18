@@ -219,12 +219,12 @@ tbl_sum.cnd_df <- function(x, ...) {
   default_header <- NextMethod()
 
   tally <- get_cnd_df_cnd_sum(x)
-  h2 <- sprintf("%d/%d/%d", tally[1], tally[2], tally[3])
+  h2 <- sprintf("%d/%d/%d", tally[1L], tally[2L], tally[3L])
   c(default_header, "Cond. tbl" = h2)
 }
 
 lgl_to_chr <- function(x) {
-  ifelse(is.na(x), "-", ifelse(x, "T", "F"))
+  dplyr::case_match(x, TRUE ~ "T", FALSE ~ "F", NA ~ "-")
 }
 
 #' Conditioned tibble pillar print method
@@ -242,8 +242,8 @@ ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
   i <- sprintf("%d", idx)
   i_width <- nchar(as.character(i))
   i_max_width <- max(i_width)
-  max_width <- i_max_width + 2
-  ws <- strrep(" ", max_width - i_width - 1)
+  max_width <- i_max_width + 2L
+  ws <- strrep(" ", max_width - i_width - 1L)
   abb_lgl <- lgl_to_chr(attr(controller, "cnd")[idx])
 
   row_ids <- paste0(i, ws, abb_lgl)
@@ -392,6 +392,15 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 #' @param .after Control where new columns should appear, i.e. after which
 #'   columns.
 #'
+#' @examples
+#' df <- tibble::tibble(x = 1L:3L, y = letters[x])
+#' cnd_df <- condition_add(df, x > 1L, y %in% c("a", "b"))
+#'
+#' # Because `cnd_df` is a conditioned data frame, dplyr::mutate() generic
+#' # dispatches this S3 method and mutates only the second row, as that is the
+#' # only record that fulfills simultaneously `x > 1L` and `y %in% c("a", "b")`.
+#' dplyr::mutate(cnd_df, z = "match")
+#'
 #' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate
 #' @export
@@ -409,13 +418,13 @@ mutate.cnd_df <- function(.data,
     rlang::abort("`.before` is not supported on conditioned data frames, use `.after` instead.")
   }
 
-  cnd <- get_cnd_df_cnd(.data)
+  cnd <- get_cnd_df_cnd(.data) # nolint object_name_linter()
   dat <- rm_cnd_df(.data) # avoids recursive S3 method dispatch.
 
   derivations <- rlang::enquos(...)
   derived_vars <- names(derivations)
 
-  lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else({{ cnd }}, !!.x, NA)))
+  lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else(!!cnd, !!.x, NA)))
   lst <- rlang::set_names(lst, derived_vars)
 
   dplyr::mutate(dat, !!!lst, .by = NULL, .keep = .keep, .after = .after)

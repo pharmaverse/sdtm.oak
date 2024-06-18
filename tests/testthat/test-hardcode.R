@@ -14,7 +14,7 @@ oe_inter <- tibble::tribble(
   1L,      "RS1",       101L,
   3L,      "RS2",       103L,
   4L,      "RS2",       104L,
-  5L,      "RS3",       105L,
+  5L,      "RS3",       105L
 )
 
 test_that("hardcode_no_ct works as expected", {
@@ -40,7 +40,7 @@ test_that("hardcode_no_ct works as expected", {
     5L, "RS3", 105L, "Y"
   )
 
-  expect_equal(result, expected_result)
+  expect_identical(result, expected_result)
 })
 
 test_that("hardcode_ct works as expected", {
@@ -77,5 +77,5 @@ test_that("hardcode_ct works as expected", {
     5L, "RS3", 105L, NA_character_
   )
 
-  expect_equal(result, expected_result)
+  expect_identical(result, expected_result)
 })

@@ -1,15 +1,15 @@
 test_that("assign_ct works as expected with a conditioned `tgt_dat`", {
   vs_raw_dat <- tibble::tibble(
-    oak_id = 1:5,
+    oak_id = 1L:5L,
     raw_source = c("VS1", "VS2", "VS3", "VS4", "VS5"),
     patient_number = c(101L, 102L, 103L, 104L, 105L),
     TEMPLOC = c("Oral", "Axillary", "Rectal", "Tympanic", "Temporal")
   )
 
   vs_tgt_dat <- tibble::tibble(
-    oak_id = as.integer(rep(1:5, each = 4)),
-    raw_source = rep(c("VS1", "VS2", "VS3", "VS4", "VS5"), each = 4),
-    patient_number = as.integer(rep(c(101L, 102L, 103L, 104L, 105L), each = 4)),
+    oak_id = as.integer(rep(1L:5L, each = 4L)),
+    raw_source = rep(c("VS1", "VS2", "VS3", "VS4", "VS5"), each = 4L),
+    patient_number = as.integer(rep(c(101L, 102L, 103L, 104L, 105L), each = 4L)),
     VSTESTCD = c(
       "TEMP", "BPSYS", "BPDIAS", "HR",
       "TEMP", "BPSYS", "BPDIAS", "HR",
@@ -64,7 +64,7 @@ test_that("assign_ct works as expected with a conditioned `tgt_dat`", {
       VSLOC = vs_loc_tgt
     )
 
-  expect_equal(result, expected_result)
+  expect_identical(result, expected_result)
 })
 
 
@@ -79,17 +79,17 @@ test_that("assign_ct works as expected with both `raw_dat` and `tgt_dat` as cond
   )
 
   fa_raw_dat <- tibble::tibble(
-    oak_id = as.integer(1:5),
+    oak_id = as.integer(1L:5L),
     raw_source = c("FA1", "FA2", "FA3", "FA4", "FA5"),
-    patient_number = 101:105,
+    patient_number = 101L:105L,
     SPCNM = c("Nasopharyngeal Swab", "Blood", "Saliva", "Urine", "Tissue"),
     SPECTYP = c(NA, NA, "Swab", NA, NA)
   )
 
   fa_tgt_dat <- tibble::tibble(
-    oak_id = 1:5,
+    oak_id = 1L:5L,
     raw_source = c("FA1", "FA2", "FA3", "FA4", "FA5"),
-    patient_number = 101:105,
+    patient_number = 101L:105L,
     FATESTCD = c("STATUS", "OTHER", "STATUS", "STATUS", "OTHER"),
     FAOBJ = c(
       "Severe Acute Resp Syndrome Coronavirus 2",
@@ -118,21 +118,21 @@ test_that("assign_ct works as expected with both `raw_dat` and `tgt_dat` as cond
     fa_tgt_dat |>
     tibble::add_column(FASPEC = c("SWABBED MATERIAL", NA, NA, "URINE", NA))
 
-  expect_equal(result, expected_result)
+  expect_identical(result, expected_result)
 })
 
 test_that("assign_ct works as expected with conditions across both data sets", {
   cm_raw_dat <- tibble::tibble(
-    oak_id = 1:5,
-    raw_source = paste0("MD", 1:5),
-    patient_number = 101:105,
+    oak_id = 1L:5L,
+    raw_source = paste0("MD", 1L:5L),
+    patient_number = 101L:105L,
     CMMODIFY = c("ASPIRIN EC", "IBUPROFEN LYSINE", "PARACETAMOL", "DICLOFENAC", "NAPROXEN")
   )
 
   cm_tgt_dat <- tibble::tibble(
-    oak_id = 1:5,
-    raw_source = paste0("MD", 1:5),
-    patient_number = 101:105,
+    oak_id = 1L:5L,
+    raw_source = paste0("MD", 1L:5L),
+    patient_number = 101L:105L,
     CMTRT = c("ASPIRIN", "IBUPROFEN", "PARACETAMOL", "DICLOFENAC", "NAPROXEN")
   )
 
@@ -162,6 +162,6 @@ test_that("assign_ct works as expected with conditions across both data sets", {
     cm_tgt_dat |>
     tibble::add_column(CMMODIFY = c("ASPIRIN EC", "IBUPROFEN LYSINE", NA, NA, NA))
 
-  expect_equal(result1, expected_result)
-  expect_equal(result2, expected_result)
+  expect_identical(result1, expected_result)
+  expect_identical(result2, expected_result)
 })

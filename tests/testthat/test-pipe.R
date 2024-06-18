@@ -1,22 +1,22 @@
 `%>%` <- magrittr::`%>%`
 
 test_that("Basic operations work correctly", {
-  expect_equal(5 %.>% (2 + .), 5 %>%
+  expect_identical(5L %.>% (2L + .), 5L %>%
     {
-      2 + .
+      2L + .
     })
-  expect_equal("hello" %.>% toupper(.), "hello" %>%
+  expect_identical("hello" %.>% toupper(.), "hello" %>%
     {
       toupper(.)
     })
 })
 
 test_that("Nested operations work correctly", {
-  expect_equal(5 %.>% (2 + . + 3), 5 %>%
+  expect_identical(5L %.>% (2L + . + 3L), 5L %>%
     {
-      2 + . + 3
+      2L + . + 3L
     })
-  expect_equal("hello" %.>% paste(., "world"), "hello" %>%
+  expect_identical("hello" %.>% paste(., "world"), "hello" %>%
     {
       paste(., "world")
     })
@@ -24,105 +24,106 @@ test_that("Nested operations work correctly", {
 
 test_that("Piping with braces", {
   mtcars2 <- mtcars %.>% {
-    .$cyl <- .$cyl * 2
+    .$cyl <- .$cyl * 2L
     .
   }
-  expect_equal(mtcars2$cyl, mtcars$cyl * 2)
+  expect_identical(mtcars2$cyl, mtcars$cyl * 2L)
 })
 
 test_that("Dot used multiple times in rhs", {
-  expect_equal(5 %.>% (. * 2 + .), 5 %>%
+  expect_identical(5L %.>% (. * 2L + .), 5L %>%
     {
-      . * 2 + .
+      . * 2L + .
     })
-  expect_equal("hello" %.>% paste(., toupper(.)), "hello" %>%
+  expect_identical("hello" %.>% paste(., toupper(.)), "hello" %>%
     {
       paste(., toupper(.))
     })
 })
 
 test_that("Dot used in nested functions", {
-  expect_equal(mtcars %.>% subset(., 1:nrow(.) %% 2 == 0), mtcars %>%
+  expect_identical(mtcars %.>% subset(., seq_len(nrow(.)) %% 2L == 0L), mtcars %>%
     {
-      subset(., 1:nrow(.) %% 2 == 0)
+      subset(., seq_len(nrow(.)) %% 2L == 0L)
     })
-  expect_equal(1:10 %.>% c(min(.), max(.)), 1:10 %>%
+  expect_identical(1L:10L %.>% c(min(.), max(.)), 1L:10L %>%
     {
       c(min(.), max(.))
     })
 })
 
 test_that("Error when dot is not used in rhs", {
-  expect_error(5 %.>% (2 + 2))
+  expect_error(5L %.>% (2L + 2L))
   expect_error("hello" %.>% toupper)
 })
 
 test_that("Complex expressions work correctly", {
-  expect_equal(5 %.>% (2 + . + 3 + . * 2), 5 %>%
+  expect_identical(5L %.>% (2L + . + 3L + . * 2L), 5L %>%
     {
-      2 + . + 3 + . * 2
+      2L + . + 3L + . * 2L
     })
-  expect_equal(mtcars %.>% subset(., gear == 4 & mpg > mean(mpg)), mtcars %>%
+  expect_identical(mtcars %.>% subset(., gear == 4L & mpg > mean(mpg)), mtcars %>%
     {
-      subset(., gear == 4 & mpg > mean(mpg))
+      subset(., gear == 4L & mpg > mean(mpg))
     })
-  expect_equal(mtcars %.>% subset(., cyl == 6) %.>% nrow(.), mtcars %>%
+  expect_identical(mtcars %.>% subset(., cyl == 6L) %.>% nrow(.), mtcars %>%
     {
-      subset(., cyl == 6)
-    } %>% nrow())
+      subset(., cyl == 6L)
+    } %>%
+    nrow())
 })
 
 test_that("Functions returning functions", {
-  expect_equal(1:5 %.>% (sapply(., function(x) x * 2)), 1:5 %>%
+  expect_identical(1L:5L %.>% (sapply(., function(x) x * 2L)), 1L:5L %>%
     {
-      sapply(., function(x) x * 2)
+      sapply(., function(x) x * 2L)
     })
-  expect_equal(mtcars %.>% (apply(., 2, function(x) mean(x))), mtcars %>%
+  expect_identical(mtcars %.>% (apply(., 2L, function(x) mean(x))), mtcars %>%
     {
-      apply(., 2, function(x) mean(x))
+      apply(., 2L, function(x) mean(x))
     })
 })
 
 test_that("Dot used in custom functions", {
   custom_function <- function(x) {
-    x + 1
+    x + 1L
   }
-  expect_equal(5 %.>% custom_function(.), 5 %>%
+  expect_identical(5L %.>% custom_function(.), 5L %>%
     {
       custom_function(.)
     })
-  expect_equal(mtcars %.>% head(.), mtcars %>%
+  expect_identical(mtcars %.>% head(.), mtcars %>%
     {
       head(.)
     })
 })
 
 test_that("Anonymous functions with \\(x)", {
-  expect_equal(1:5 %.>% (purrr::map(., \(x) x * 2)), 1:5 %>%
+  expect_identical(1L:5L %.>% (purrr::map(., \(x) x * 2L)), 1L:5L %>%
     {
-      purrr::map(., \(x) x * 2)
+      purrr::map(., \(x) x * 2L)
     })
 })
 
 test_that("Anonymous functions with function(x)", {
-  expect_equal(1:5 %.>% (purrr::map(., function(x) x * 2)), 1:5 %>%
+  expect_identical(1L:5L %.>% (purrr::map(., function(x) x * 2L)), 1L:5L %>%
     {
-      purrr::map(., function(x) x * 2)
+      purrr::map(., function(x) x * 2L)
     })
 })
 
 test_that("Piping with environment-dependent functions", {
   env <- environment()
-  "x" %.>% assign(x = ., 100, envir = env)
-  expect_equal(x, 100)
+  "x" %.>% assign(x = ., 100L, envir = env)
+  expect_identical(x, 100L)
 })
 
 test_that("`.` is restored", {
-  1 %.>% identity(.)
+  1L %.>% identity(.)
   expect_error(., "not found")
 
   . <- "foo"
-  1 %.>% identity(.)
+  1L %.>% identity(.)
   expect_identical(., "foo")
 })
 

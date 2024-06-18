@@ -55,7 +55,7 @@ right-hand side (\code{rhs}).
 }
 \examples{
 
-iris \%.>\% subset(., 1:nrow(.) \%\% 2 == 0)  # Equivalent to subset(iris, 1:nrow(iris) \%\% 2 == 0)
-1:10 \%.>\% c(min(.), max(.))  # Equivalent to c(min(1:10), max(1:10))
+iris \%.>\% subset(., 1:nrow(.) \%\% 2 == 0) # Equivalent to subset(iris, 1:nrow(iris) \%\% 2 == 0)
+1:10 \%.>\% c(min(.), max(.)) # Equivalent to c(min(1:10), max(1:10))
 
 }
