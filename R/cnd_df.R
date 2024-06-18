@@ -373,7 +373,6 @@ eval_conditions <- function(dat,
 #'
 #' @export
 condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
-
   admiraldev::assert_data_frame(dat)
   # TODO: assertion for `...` (perhaps with admiraldev::assert_filter_cond()?)
   # TODO: assertion for `.na`
