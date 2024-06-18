@@ -16,6 +16,8 @@ derive_blfl(
 \arguments{
 \item{sdtm_in}{Input SDTM domain.}
 
+\item{dm_domain}{DM domain with the reference varaible \code{ref_var}}
+
 \item{tgt_var}{Name of variable to be derived (\code{--BLFL} or
 \code{--LOBXFL} where \verb{--} is domain).}
 

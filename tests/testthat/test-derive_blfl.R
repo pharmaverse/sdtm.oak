@@ -1,4 +1,3 @@
-dta <- function(env = parent.frame()) {
   dm <- tibble::tribble(
     ~USUBJID, ~RFSTDTC, ~RFXSTDTC,
     "test_study-375", "2020-09-28T10:10", "2020-09-28T10:10",
@@ -24,18 +23,10 @@ dta <- function(env = parent.frame()) {
       "VS", 3L, "VTLS1", 378L, "test_study-378", "2020-01-21T11:00", "PULSE", "105", NA, "SCREENING"
     )
 
-  withr::defer(
-    {
-      rm(d, envir = env)
-    },
-    envir = env
-  )
+  d <- list(sdtm_in = sdtm_in, dm = dm)
 
-  list(sdtm_in = sdtm_in, dm = dm)
-}
 
 test_that("derive_blfl example works", {
-  d <- dta()
 
   observed_output <- derive_blfl(
     sdtm_in = d$sdtm_in,
@@ -50,7 +41,6 @@ test_that("derive_blfl example works", {
 })
 
 test_that("derive_blfl sdmt_in validations work", {
-  d <- dta()
   sdmt_in_no_domain <-
     d$sdtm_in |>
     dplyr::select(-DOMAIN)
@@ -64,7 +54,7 @@ test_that("derive_blfl sdmt_in validations work", {
 
   sdmt_in_no_id_vars <-
     d$sdtm_in |>
-    dplyr::select(-sdtm.oak:::oak_id_vars())
+    dplyr::select(-sdtm.oak::oak_id_vars())
 
   expect_snapshot_error(derive_blfl(
     sdtm_in = sdmt_in_no_id_vars,
@@ -91,7 +81,6 @@ test_that("derive_blfl sdmt_in validations work", {
 })
 
 test_that("derive_blfl dm_domain validations work", {
-  d <- dta()
 
   dm_no_vars <-
     d$dm |>
@@ -106,7 +95,6 @@ test_that("derive_blfl dm_domain validations work", {
 })
 
 test_that("derive_blfl tgt_var and ref_var validations work", {
-  d <- dta()
 
   expect_snapshot_error(derive_blfl(
     sdtm_in = d$sdtm_in,
@@ -131,7 +119,6 @@ test_that("derive_blfl tgt_var and ref_var validations work", {
 })
 
 test_that("derive_blfl DOMAIN validation works", {
-  d <- dta()
 
   sdtm_in_bad_domain <-
     d$sdtm_in |>

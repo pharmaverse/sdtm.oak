@@ -142,6 +142,7 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'  - Join the baseline flag onto the input dataset based on oak id vars
 #'
 #' @param sdtm_in Input SDTM domain.
+#' @param dm_domain DM domain with the reference varaible `ref_var`
 #' @param tgt_var Name of variable to be derived (`--BLFL` or
 #'   `--LOBXFL` where `--` is domain).
 #' @param ref_var vector of a date/time from the
@@ -413,15 +414,15 @@ derive_blfl <- function(sdtm_in,
 
   # Split --DTC and ref_var into date and time parts
   # (partial or missing dates and times set to NA)
-  ds_mod$dom_dt <- dtc_datepart(ds_mod[[domain_prefixed_names["dtc"]]]) # nolint object_name_linter()
-  ds_mod$dom_tm <- dtc_timepart(ds_mod[[domain_prefixed_names["dtc"]]]) # nolint object_name_linter()
-  ds_mod$ref_dt <- dtc_datepart(ds_mod[[ref_var]]) # nolint object_name_linter()
-  ds_mod$ref_tm <- dtc_timepart(ds_mod[[ref_var]]) # nolint object_name_linter()
+  ds_mod$dom_dt <- dtc_datepart(ds_mod[[domain_prefixed_names["dtc"]]])
+  ds_mod$dom_tm <- dtc_timepart(ds_mod[[domain_prefixed_names["dtc"]]])
+  ds_mod$ref_dt <- dtc_datepart(ds_mod[[ref_var]])
+  ds_mod$ref_tm <- dtc_timepart(ds_mod[[ref_var]])
 
 
   # If VISIT not in data frame then assign it as "<unspecified>" for processing
   if (!"VISIT" %in% names(ds_mod)) {
-    ds_mod[["VISIT"]] <- "<unspecified>" # nolint object_name_linter()
+    ds_mod[["VISIT"]] <- "<unspecified>"
   }
 
   # If --TPT not in data frame then assign it as "<unspecified>" for processing
@@ -465,7 +466,7 @@ derive_blfl <- function(sdtm_in,
   ds_base <- rbind(ds_subset_lt, ds_subset_eq_1, ds_subset_eq_2)
 
   # Sort the rows in ascending order with respect to columns from con_col
-  ds_base <- dplyr::arrange_at(ds_base, c("USUBJID", con_col)) # nolint object_name_linter()
+  ds_base <- dplyr::arrange_at(ds_base, c("USUBJID", con_col))
 
   if (nrow(ds_base) == 0L) {
     message(paste0("There are no baseline records."))
@@ -480,7 +481,7 @@ derive_blfl <- function(sdtm_in,
     dplyr::slice_max(!!rlang::sym(domain_prefixed_names["dtc"]), na_rm = TRUE) |>
     dplyr::ungroup() |>
     dplyr::select(
-      dplyr::all_of(c(sdtm.oak:::oak_id_vars(), domain_prefixed_names[["testcd"]])),
+      dplyr::all_of(c(sdtm.oak::oak_id_vars(), domain_prefixed_names[["testcd"]])),
       dplyr::any_of(
         c(domain_prefixed_names[c(
           "cat",
@@ -501,7 +502,7 @@ derive_blfl <- function(sdtm_in,
   # Join baseline flag onto input dataset
   ds_out <- dplyr::left_join(sdtm_in, ds_blfl, by = c(
     domain_prefixed_names[["testcd"]],
-    sdtm.oak:::oak_id_vars()
+    sdtm.oak::oak_id_vars()
   ))
 
   # Assert that merged data frame has same number of rows as input data frame
