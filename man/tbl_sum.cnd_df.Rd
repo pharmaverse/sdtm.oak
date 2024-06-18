@@ -26,4 +26,3 @@ pillar::tbl_sum(cnd_df)
 \seealso{
 \code{\link[=ctl_new_rowid_pillar.cnd_df]{ctl_new_rowid_pillar.cnd_df()}}.
 }
-\keyword{internal}

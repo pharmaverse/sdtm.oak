@@ -214,7 +214,7 @@ rm_cnd_df <- function(dat) {
 #' (cnd_df <- condition_add(dat = df, x >= 2L))
 #' pillar::tbl_sum(cnd_df)
 #'
-#' @keywords internal
+#' @export
 tbl_sum.cnd_df <- function(x, ...) {
   default_header <- NextMethod()
 
@@ -234,7 +234,7 @@ lgl_to_chr <- function(x) {
 #'
 #' @seealso [tbl_sum.cnd_df()].
 #'
-#' @keywords internal
+#' @export
 ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
   out <- NextMethod()
   n_row <- nrow(x)
@@ -365,8 +365,20 @@ eval_conditions <- function(dat,
 #' @returns A conditioned data frame, meaning a tibble with an additional class
 #'   `cnd_df` and a logical vector attribute indicating matching rows.
 #'
+#' @examples
+#' (df <- tibble::tibble(x = 1L:3L, y = letters[x]))
+#'
+#' # Mark rows for which `x` greater than `1`
+#' (cnd_df <- condition_add(dat = df, x > 1L))
+#'
 #' @export
 condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
+
+  admiraldev::assert_data_frame(dat)
+  # TODO: assertion for `...` (perhaps with admiraldev::assert_filter_cond()?)
+  # TODO: assertion for `.na`
+  # TODO: assertion for `.dat2`
+
   if (is_cnd_df(dat)) {
     rlang::warn(
       c(

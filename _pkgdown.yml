@@ -13,10 +13,16 @@ reference:
   contents:
   - assign
   - harcode
-  - condition_add
   - derive_study_day
   - assign_datetime
   - oak_id_vars
+
+- title: Conditioned data frames
+  desc: Functions for conditioned data frames (`cnd_df`)
+  contents:
+  - condition_add
+  - ctl_new_rowid_pillar.cnd_df
+  - tbl_sum.cnd_df
 
 - title: Controlled terminology
   contents:
