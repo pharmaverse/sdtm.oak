@@ -210,11 +210,11 @@ rm_cnd_df <- function(dat) {
 #' @seealso [ctl_new_rowid_pillar.cnd_df()].
 #'
 #' @examples
-#' df <- data.frame(x = 1:3, y = letters[1:3])
-#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-#' print(cnd_df)
+#' df <- data.frame(x = c(1L, NA_integer_, 3L))
+#' (cnd_df <- condition_add(dat = df, x >= 2L))
+#' pillar::tbl_sum(cnd_df)
 #'
-#' @export
+#' @keywords internal
 tbl_sum.cnd_df <- function(x, ...) {
   default_header <- NextMethod()
 
@@ -234,7 +234,7 @@ lgl_to_chr <- function(x) {
 #'
 #' @seealso [tbl_sum.cnd_df()].
 #'
-#' @export
+#' @keywords internal
 ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
   out <- NextMethod()
   n_row <- nrow(x)
@@ -350,8 +350,10 @@ eval_conditions <- function(dat,
 #' Add filtering tags to a data set
 #'
 #' @description
-#' This function tags records in a data set, indicating which rows match the
-#' specified conditions, resulting in a conditioned data frame.
+#' `condition_add()` tags records in a data set, indicating which rows match the
+#' specified conditions, resulting in a conditioned data frame. Learn how to
+#' integrate conditioned data frames in your SDTM domain derivation in
+#' `vignette("cnd_df")`.
 #'
 #' @param dat A data frame.
 #' @param ... Conditions to filter the data frame.
@@ -403,7 +405,7 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 #'
 #' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate
-#' @export
+#' @keywords internal
 mutate.cnd_df <- function(.data,
                           ...,
                           .by = NULL,

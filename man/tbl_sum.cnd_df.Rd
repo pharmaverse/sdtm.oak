@@ -18,11 +18,12 @@ in the header of a tibble that indicates the tibble is a conditioned tibble
 of TRUE, FALSE and NA values: e.g., \code{1/1/1}.
 }
 \examples{
-df <- data.frame(x = 1:3, y = letters[1:3])
-cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-print(cnd_df)
+df <- data.frame(x = c(1L, NA_integer_, 3L))
+(cnd_df <- condition_add(dat = df, x >= 2L))
+pillar::tbl_sum(cnd_df)
 
 }
 \seealso{
 \code{\link[=ctl_new_rowid_pillar.cnd_df]{ctl_new_rowid_pillar.cnd_df()}}.
 }
+\keyword{internal}

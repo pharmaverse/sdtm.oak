@@ -22,6 +22,8 @@ A conditioned data frame, meaning a tibble with an additional class
 \code{cnd_df} and a logical vector attribute indicating matching rows.
 }
 \description{
-This function tags records in a data set, indicating which rows match the
-specified conditions, resulting in a conditioned data frame.
+\code{condition_add()} tags records in a data set, indicating which rows match the
+specified conditions, resulting in a conditioned data frame. Learn how to
+integrate conditioned data frames in your SDTM domain derivation in
+\code{vignette("cnd_df")}.
 }

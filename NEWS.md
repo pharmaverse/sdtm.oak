@@ -1,3 +1,11 @@
+# sdtm.oak 0.0.0.9004 (development version)
+
+## New Features
+
+* New function for creating conditioned data frames: `condition_add()`.
+* New pipe operator: `%.>%` for explicit dot placeholder placement.
+* `oak_id_vars()` is now an exported function.
+
 # sdtm.oak 0.0.0.9003 (development version)
 
 ## New Features

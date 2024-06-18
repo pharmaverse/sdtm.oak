@@ -9,12 +9,14 @@ navbar:
 
 reference:
 - title: SDTM derivation
-  desc: Set of functions to perform SDTM derivations
+  desc: Toolkit for SDTM derivations
   contents:
   - assign
   - harcode
+  - condition_add
   - derive_study_day
   - assign_datetime
+  - oak_id_vars
 
 - title: Controlled terminology
   contents:
@@ -29,6 +31,11 @@ reference:
   - fmt_cmp
   - dtc_formats
   - problems
+
+- title: Explicit dot pipe operator
+  desc: A simple alternative to `%>% {...}`
+  contents:
+  - "%.>%"
 
 - title: Package global state
   contents:
