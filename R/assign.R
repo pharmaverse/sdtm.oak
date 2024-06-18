@@ -21,7 +21,7 @@
 #'   the variables indicated in `id_vars`. This parameter is optional, see
 #'   section Value for how the output changes depending on this argument value.
 #' @param id_vars Key variables to be used in the join between the raw dataset
-#'   (`raw_dat`) and the target data set (`raw_dat`).
+#'   (`raw_dat`) and the target data set (`tgt_dat`).
 #'
 #' @returns The returned data set depends on the value of `tgt_dat`:
 #' - If no target dataset is supplied, meaning that `tgt_dat` defaults to
@@ -35,12 +35,12 @@
 #'
 #' @importFrom rlang :=
 #' @keywords internal
-sdtm_assign <- function(raw_dat,
-                        raw_var,
+sdtm_assign <- function(tgt_dat = NULL,
                         tgt_var,
+                        raw_dat,
+                        raw_var,
                         ct_spec = NULL,
                         ct_clst = NULL,
-                        tgt_dat = NULL,
                         id_vars = oak_id_vars()) {
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
@@ -53,29 +53,18 @@ sdtm_assign <- function(raw_dat,
   assert_ct_spec(ct_spec, optional = TRUE)
   assert_ct_clst(ct_spec = ct_spec, ct_clst = ct_clst, optional = TRUE)
 
-  # Recode the raw variable following terminology.
-  tgt_val <- ct_map(raw_dat[[raw_var]], ct_spec = ct_spec, ct_clst = ct_clst)
-
-  # Apply derivation by assigning `raw_var` to `tgt_var`.
-  # `der_dat`: derived dataset.
-  der_dat <-
+  join_dat <-
     raw_dat |>
-    dplyr::select(c(id_vars, raw_var)) |>
-    dplyr::mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
-    dplyr::select(-rlang::sym(raw_var))
+    dplyr::select(dplyr::all_of(c(id_vars, raw_var))) |>
+    sdtm_join(tgt_dat = tgt_dat, id_vars = id_vars)
 
-  # If a target dataset is supplied, then join the so far derived dataset with
-  # the target dataset (`tgt_dat`), otherwise leave it be.
-  der_dat <-
-    if (!is.null(tgt_dat)) {
-      der_dat |>
-        dplyr::right_join(y = tgt_dat, by = id_vars) |>
-        dplyr::relocate(tgt_var, .after = dplyr::last_col())
-    } else {
-      der_dat
-    }
+  # Recode the raw variable following terminology.
+  tgt_val <- ct_map(join_dat[[raw_var]], ct_spec = ct_spec, ct_clst = ct_clst)
 
-  der_dat
+  join_dat |>
+    mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
+    dplyr::select(-dplyr::any_of(setdiff(raw_var, tgt_var))) |>
+    dplyr::relocate(dplyr::all_of(tgt_var), .after = dplyr::last_col())
 }
 
 #' Derive an SDTM variable
@@ -127,9 +116,9 @@ sdtm_assign <- function(raw_dat,
 #'   )
 #'
 #' assign_no_ct(
-#'   raw_dat = md1,
-#'   raw_var = "MDIND",
 #'   tgt_var = "CMINDC",
+#'   raw_dat = md1,
+#'   raw_var = "MDIND"
 #' )
 #'
 #' cm_inter <-
@@ -175,12 +164,12 @@ sdtm_assign <- function(raw_dat,
 #' (ct_spec <- read_ct_spec_example("ct-01-cm"))
 #'
 #' assign_ct(
+#'   tgt_dat = cm_inter,
+#'   tgt_var = "CMINDC",
 #'   raw_dat = md1,
 #'   raw_var = "MDIND",
-#'   tgt_var = "CMINDC",
 #'   ct_spec = ct_spec,
-#'   ct_clst = "C66729",
-#'   tgt_dat = cm_inter
+#'   ct_clst = "C66729"
 #' )
 #'
 #' @name assign
@@ -189,10 +178,10 @@ NULL
 #' @order 1
 #' @export
 #' @rdname assign
-assign_no_ct <- function(raw_dat,
-                         raw_var,
+assign_no_ct <- function(tgt_dat = NULL,
                          tgt_var,
-                         tgt_dat = NULL,
+                         raw_dat,
+                         raw_var,
                          id_vars = oak_id_vars()) {
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
@@ -204,10 +193,10 @@ assign_no_ct <- function(raw_dat,
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
   sdtm_assign(
+    tgt_dat = tgt_dat,
+    tgt_var = tgt_var,
     raw_dat = raw_dat,
     raw_var = raw_var,
-    tgt_var = tgt_var,
-    tgt_dat = tgt_dat,
     id_vars = id_vars
   )
 }
@@ -215,12 +204,12 @@ assign_no_ct <- function(raw_dat,
 #' @order 2
 #' @export
 #' @rdname assign
-assign_ct <- function(raw_dat,
-                      raw_var,
+assign_ct <- function(tgt_dat = NULL,
                       tgt_var,
+                      raw_dat,
+                      raw_var,
                       ct_spec,
                       ct_clst,
-                      tgt_dat = NULL,
                       id_vars = oak_id_vars()) {
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
@@ -232,10 +221,10 @@ assign_ct <- function(raw_dat,
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
   sdtm_assign(
+    tgt_dat = tgt_dat,
+    tgt_var = tgt_var,
     raw_dat = raw_dat,
     raw_var = raw_var,
-    tgt_var = tgt_var,
-    tgt_dat = tgt_dat,
     id_vars = id_vars,
     ct_spec = ct_spec,
     ct_clst = ct_clst

@@ -5,25 +5,29 @@
 \title{Derive an SDTM variable with a hardcoded value}
 \usage{
 sdtm_hardcode(
+  tgt_dat = NULL,
+  tgt_var,
   raw_dat,
   raw_var,
-  tgt_var,
   tgt_val,
   ct_spec = NULL,
   ct_clst = NULL,
-  tgt_dat = NULL,
   id_vars = oak_id_vars()
 )
 }
 \arguments{
+\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
+the variables indicated in \code{id_vars}. This parameter is optional, see
+section Value for how the output changes depending on this argument value.}
+
+\item{tgt_var}{The target SDTM variable: a single string indicating the name
+of variable to be derived.}
+
 \item{raw_dat}{The raw dataset (dataframe); must include the
 variables passed in \code{id_vars} and \code{raw_var}.}
 
 \item{raw_var}{The raw variable: a single string indicating the name of the
 raw variable in \code{raw_dat}.}
-
-\item{tgt_var}{The target SDTM variable: a single string indicating the name
-of variable to be derived.}
 
 \item{tgt_val}{The target SDTM value to be hardcoded into the variable
 indicated in \code{tgt_var}.}
@@ -36,12 +40,8 @@ optional, if left as \code{NULL} no controlled terminology recoding is applied.}
 terminology to apply in the derivation. This parameter is optional, if left
 as \code{NULL}, all possible recodings in \code{ct_spec} are attempted.}
 
-\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
-the variables indicated in \code{id_vars}. This parameter is optional, see
-section Value for how the output changes depending on this argument value.}
-
 \item{id_vars}{Key variables to be used in the join between the raw dataset
-(\code{raw_dat}) and the target data set (\code{raw_dat}).}
+(\code{raw_dat}) and the target data set (\code{tgt_dat}).}
 }
 \value{
 The returned data set depends on the value of \code{tgt_dat}:

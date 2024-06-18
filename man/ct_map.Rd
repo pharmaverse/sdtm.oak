@@ -60,7 +60,7 @@ ct_map(x = terms, ct_spec = ct_spec)
 # Note that if the controlled terminology mapping is restricted to a codelist
 # code, e.g. C71113, then only `"/day"` and `"Every 2 hours"` get mapped to
 # `"QD"` and `"Q2H"`, respectively; remaining terms won't match given the
-# codelist code # restriction, and will be mapped to an uppercase version of
+# codelist code restriction, and will be mapped to an uppercase version of
 # the original terms.
 ct_map(x = terms, ct_spec = ct_spec, ct_clst = "C71113")
 

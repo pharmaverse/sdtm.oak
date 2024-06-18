@@ -16,17 +16,17 @@
 #' @examples
 #' # These two calls are equivalent and return all required variables in a
 #' # controlled terminology data set.
-#' sdtm.oak:::ct_spec_vars()
-#' sdtm.oak:::ct_spec_vars("all")
+#' ct_spec_vars()
+#' ct_spec_vars("all")
 #'
 #' # "Codelist code" variable name.
-#' sdtm.oak:::ct_spec_vars("ct_clst")
+#' ct_spec_vars("ct_clst")
 #'
 #' # "From" variables
-#' sdtm.oak:::ct_spec_vars("from")
+#' ct_spec_vars("from")
 #'
 #' # The "to" variable.
-#' sdtm.oak:::ct_spec_vars("to")
+#' ct_spec_vars("to")
 #'
 #' @keywords internal
 #' @export
@@ -232,10 +232,10 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
       values_to = "from",
       names_to = "type"
     ) |>
-    dplyr::select(c("type", "from", "to")) |>
+    dplyr::select(dplyr::all_of(c("type", "from", "to"))) |>
     dplyr::mutate(type = factor(.data$type, levels = cols)) |>
     dplyr::arrange(.data$type) |>
-    dplyr::select(-"type") |>
+    dplyr::select(-dplyr::all_of("type")) |>
     tidyr::drop_na("from") |>
     dplyr::mutate(from = str_split(.data$from)) |>
     tidyr::unnest(from) |>
@@ -289,7 +289,7 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
 #' # Note that if the controlled terminology mapping is restricted to a codelist
 #' # code, e.g. C71113, then only `"/day"` and `"Every 2 hours"` get mapped to
 #' # `"QD"` and `"Q2H"`, respectively; remaining terms won't match given the
-#' # codelist code # restriction, and will be mapped to an uppercase version of
+#' # codelist code restriction, and will be mapped to an uppercase version of
 #' # the original terms.
 #' ct_map(x = terms, ct_spec = ct_spec, ct_clst = "C71113")
 #'

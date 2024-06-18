@@ -9,11 +9,28 @@ navbar:
 
 reference:
 - title: SDTM derivation
-  desc: Set of functions to perform SDTM derivations
+  desc: Toolkit for SDTM derivations
   contents:
   - assign
   - harcode
+  - derive_seq
   - derive_study_day
+  - assign_datetime
+  - oak_id_vars
+  - sbj_vars
+
+- title: Conditioned data frames
+  desc: Functions for conditioned data frames (`cnd_df`)
+  contents:
+  - condition_add
+  - ctl_new_rowid_pillar.cnd_df
+  - tbl_sum.cnd_df
+
+- title: SDTM examples
+  desc: SDTM domain file examples
+  contents:
+  - domain_example
+  - read_domain_example
 
 - title: Controlled terminology
   contents:
@@ -28,6 +45,11 @@ reference:
   - fmt_cmp
   - dtc_formats
   - problems
+
+- title: Explicit dot pipe operator
+  desc: A simple alternative to `%>% {...}`
+  contents:
+  - "%.>%"
 
 - title: Package global state
   contents:
