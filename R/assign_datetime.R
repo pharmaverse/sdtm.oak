@@ -61,11 +61,11 @@
 #' # indicating that these values are missing/unknown (unk).
 #' cm1 <-
 #'   assign_datetime(
+#'     tgt_var = "CMSTDTC",
 #'     raw_dat = md1,
 #'     raw_var = "MDBDR",
 #'     raw_fmt = "d-m-y",
-#'     raw_unk = c("UN", "UNK"),
-#'     tgt_var = "CMSTDTC"
+#'     raw_unk = c("UN", "UNK")
 #'   )
 #'
 #' cm1
@@ -120,11 +120,11 @@
 #' # data set `cm_inter`.
 #' cm2 <-
 #'   assign_datetime(
+#'     tgt_dat = cm_inter,
+#'     tgt_var = "CMSTDTC",
 #'     raw_dat = md1,
 #'     raw_var = "MDBDR",
-#'     raw_fmt = "d-m-y",
-#'     tgt_var = "CMSTDTC",
-#'     tgt_dat = cm_inter
+#'     raw_fmt = "d-m-y"
 #'   )
 #'
 #' cm2
@@ -137,11 +137,11 @@
 #' # MDETM (correspondence is by positional matching).
 #' cm3 <-
 #'   assign_datetime(
+#'     tgt_var = "CMSTDTC",
 #'     raw_dat = md1,
 #'     raw_var = c("MDEDR", "MDETM"),
 #'     raw_fmt = c("d-m-y", "H:M:S"),
-#'     raw_unk = c("UN", "UNK"),
-#'     tgt_var = "CMSTDTC"
+#'     raw_unk = c("UN", "UNK")
 #'   )
 #'
 #' cm3
@@ -151,12 +151,12 @@
 #'
 #' @export
 assign_datetime <-
-  function(raw_dat,
+  function(tgt_dat = NULL,
+           tgt_var,
+           raw_dat,
            raw_var,
            raw_fmt,
-           tgt_var,
            raw_unk = c("UN", "UNK"),
-           tgt_dat = NULL,
            id_vars = oak_id_vars(),
            .warn = TRUE) {
     admiraldev::assert_character_vector(raw_var)
@@ -170,27 +170,20 @@ assign_datetime <-
     admiraldev::assert_character_vector(raw_unk)
     admiraldev::assert_logical_scalar(.warn)
 
+    join_dat <-
+      raw_dat |>
+      dplyr::select(dplyr::all_of(c(id_vars, raw_var))) |>
+      sdtm_join(tgt_dat = tgt_dat, id_vars = id_vars)
+
     tgt_val <-
-      create_iso8601(!!!raw_dat[raw_var],
+      create_iso8601(!!!join_dat[raw_var],
         .format = raw_fmt,
         .na = raw_unk,
         .warn = .warn
       )
 
-    der_dat <-
-      raw_dat |>
-      dplyr::select(c(id_vars, raw_var)) |>
-      dplyr::mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
-      dplyr::select(-raw_var)
-
-    der_dat <-
-      if (!is.null(tgt_dat)) {
-        der_dat |>
-          dplyr::right_join(y = tgt_dat, by = id_vars) |>
-          dplyr::relocate(tgt_var, .after = dplyr::last_col())
-      } else {
-        der_dat
-      }
-
-    der_dat
+    join_dat |>
+      mutate("{tgt_var}" := tgt_val) |> # nolint object_name_linter()
+      dplyr::select(-dplyr::any_of(setdiff(raw_var, tgt_var))) |>
+      dplyr::relocate(dplyr::all_of(tgt_var), .after = dplyr::last_col())
   }

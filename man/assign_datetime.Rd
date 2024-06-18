@@ -5,17 +5,24 @@
 \title{Derive an ISO8601 date-time variable}
 \usage{
 assign_datetime(
+  tgt_dat = NULL,
+  tgt_var,
   raw_dat,
   raw_var,
   raw_fmt,
-  tgt_var,
   raw_unk = c("UN", "UNK"),
-  tgt_dat = NULL,
   id_vars = oak_id_vars(),
   .warn = TRUE
 )
 }
 \arguments{
+\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
+the variables indicated in \code{id_vars}. This parameter is optional, see
+section Value for how the output changes depending on this argument value.}
+
+\item{tgt_var}{The target SDTM variable: a single string indicating the name
+of variable to be derived.}
+
 \item{raw_dat}{The raw dataset (dataframe); must include the
 variables passed in \code{id_vars} and \code{raw_var}.}
 
@@ -30,15 +37,8 @@ element is taken as parsing format for each variable indicated in
 vector of formats. The first vector of formats is used for parsing the
 first variable in \code{raw_var}, and so on.}
 
-\item{tgt_var}{The target SDTM variable: a single string indicating the name
-of variable to be derived.}
-
 \item{raw_unk}{A character vector of string literals to be regarded as
 missing values during parsing.}
-
-\item{tgt_dat}{Target dataset: a data frame to be merged against \code{raw_dat} by
-the variables indicated in \code{id_vars}. This parameter is optional, see
-section Value for how the output changes depending on this argument value.}
 
 \item{id_vars}{Key variables to be used in the join between the raw dataset
 (\code{raw_dat}) and the target data set (\code{tgt_dat}).}
@@ -88,11 +88,11 @@ md1 <-
 # indicating that these values are missing/unknown (unk).
 cm1 <-
   assign_datetime(
+    tgt_var = "CMSTDTC",
     raw_dat = md1,
     raw_var = "MDBDR",
     raw_fmt = "d-m-y",
-    raw_unk = c("UN", "UNK"),
-    tgt_var = "CMSTDTC"
+    raw_unk = c("UN", "UNK")
   )
 
 cm1
@@ -147,11 +147,11 @@ cm_inter <-
 # data set `cm_inter`.
 cm2 <-
   assign_datetime(
+    tgt_dat = cm_inter,
+    tgt_var = "CMSTDTC",
     raw_dat = md1,
     raw_var = "MDBDR",
-    raw_fmt = "d-m-y",
-    tgt_var = "CMSTDTC",
-    tgt_dat = cm_inter
+    raw_fmt = "d-m-y"
   )
 
 cm2
@@ -164,11 +164,11 @@ problems(cm2$CMSTDTC)
 # MDETM (correspondence is by positional matching).
 cm3 <-
   assign_datetime(
+    tgt_var = "CMSTDTC",
     raw_dat = md1,
     raw_var = c("MDEDR", "MDETM"),
     raw_fmt = c("d-m-y", "H:M:S"),
-    raw_unk = c("UN", "UNK"),
-    tgt_var = "CMSTDTC"
+    raw_unk = c("UN", "UNK")
   )
 
 cm3

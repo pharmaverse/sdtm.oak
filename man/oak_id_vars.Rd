@@ -22,9 +22,8 @@ oak_id, raw_source, and patient_number. Extra variable names may be
 indicated and passed in \code{extra_vars} which are appended to the default names.
 }
 \examples{
-sdtm.oak:::oak_id_vars()
+oak_id_vars()
 
-sdtm.oak:::oak_id_vars(extra_vars = "sample_id")
+oak_id_vars(extra_vars = "sample_id")
 
 }
-\keyword{internal}

@@ -1,7 +1,7 @@
 Package: sdtm.oak
 Type: Package
 Title: SDTM Data Transformation Engine
-Version: 0.0.0.9004
+Version: 0.0.0.9005
 Authors@R: c(
     person("Rammprasad", "Ganapathy", role = c("aut", "cre"),
     email = "ganapathy.rammprasad@gene.com"),
@@ -46,9 +46,12 @@ Imports:
     tibble,
     vctrs,
     readr,
-    glue
+    glue,
+    pillar
 Suggests:
     knitr,
+    lifecycle,
+    magrittr,
     rmarkdown,
     spelling,
     testthat (>= 3.1.7)

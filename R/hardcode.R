@@ -23,7 +23,7 @@
 #'   the variables indicated in `id_vars`. This parameter is optional, see
 #'   section Value for how the output changes depending on this argument value.
 #' @param id_vars Key variables to be used in the join between the raw dataset
-#'   (`raw_dat`) and the target data set (`raw_dat`).
+#'   (`raw_dat`) and the target data set (`tgt_dat`).
 #'
 #' @returns The returned data set depends on the value of `tgt_dat`:
 #' - If no target dataset is supplied, meaning that `tgt_dat` defaults to
@@ -36,13 +36,13 @@
 #'
 #' @importFrom rlang :=
 #' @keywords internal
-sdtm_hardcode <- function(raw_dat,
-                          raw_var,
+sdtm_hardcode <- function(tgt_dat = NULL,
                           tgt_var,
+                          raw_dat,
+                          raw_var,
                           tgt_val,
                           ct_spec = NULL,
                           ct_clst = NULL,
-                          tgt_dat = NULL,
                           id_vars = oak_id_vars()) {
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
@@ -56,29 +56,18 @@ sdtm_hardcode <- function(raw_dat,
   assert_ct_spec(ct_spec, optional = TRUE)
   assert_ct_clst(ct_spec = ct_spec, ct_clst = ct_clst, optional = TRUE)
 
+  join_dat <-
+    raw_dat |>
+    dplyr::select(dplyr::all_of(c(id_vars, raw_var))) |>
+    sdtm_join(tgt_dat = tgt_dat, id_vars = id_vars)
+
   # Recode the hardcoded value following terminology.
   tgt_val <- ct_map(tgt_val, ct_spec = ct_spec, ct_clst = ct_clst)
 
-  # Apply derivation of the hardcoded value.
-  # `der_dat`: derived dataset.
-  der_dat <-
-    raw_dat |>
-    dplyr::select(c(id_vars, raw_var)) |>
-    dplyr::mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |> # nolint object_name_linter()
-    dplyr::select(-rlang::sym(raw_var))
-
-  # If a target dataset is supplied, then join the so far derived dataset with
-  # the target dataset (`tgt_dat`), otherwise leave it be.
-  der_dat <-
-    if (!is.null(tgt_dat)) {
-      der_dat |>
-        dplyr::right_join(y = tgt_dat, by = id_vars) |>
-        dplyr::relocate(tgt_var, .after = dplyr::last_col())
-    } else {
-      der_dat
-    }
-
-  der_dat
+  join_dat |>
+    mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |> # nolint object_name_linter()
+    dplyr::select(-dplyr::any_of(setdiff(raw_var, tgt_var))) |>
+    dplyr::relocate(dplyr::all_of(tgt_var), .after = dplyr::last_col())
 }
 
 #' Derive an SDTM variable with a hardcoded value
@@ -133,10 +122,10 @@ sdtm_hardcode <- function(raw_dat,
 #' # Derive a new variable `CMCAT` by overwriting `MDRAW` with the
 #' # hardcoded value "GENERAL CONCOMITANT MEDICATIONS".
 #' hardcode_no_ct(
+#'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
 #'   raw_dat = md1,
 #'   raw_var = "MDRAW",
-#'   tgt_var = "CMCAT",
-#'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS"
+#'   tgt_var = "CMCAT"
 #' )
 #'
 #' cm_inter <-
@@ -153,11 +142,11 @@ sdtm_hardcode <- function(raw_dat,
 #' # hardcoded value "GENERAL CONCOMITANT MEDICATIONS" with a prior join to
 #' # `target_dataset`.
 #' hardcode_no_ct(
+#'   tgt_dat = cm_inter,
+#'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
 #'   raw_dat = md1,
 #'   raw_var = "MDRAW",
-#'   tgt_var = "CMCAT",
-#'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
-#'   tgt_dat = cm_inter
+#'   tgt_var = "CMCAT"
 #' )
 #'
 #' # Controlled terminology specification
@@ -167,13 +156,13 @@ sdtm_hardcode <- function(raw_dat,
 #' # involving terminology recoding. `NA` values in `MDRAW` are preserved in
 #' # `CMCAT`.
 #' hardcode_ct(
+#'   tgt_dat = cm_inter,
+#'   tgt_var = "CMCAT",
 #'   raw_dat = md1,
 #'   raw_var = "MDRAW",
-#'   tgt_var = "CMCAT",
 #'   tgt_val = "GENERAL CONCOMITANT MEDICATIONS",
 #'   ct_spec = ct_spec,
-#'   ct_clst = "C66729",
-#'   tgt_dat = cm_inter
+#'   ct_clst = "C66729"
 #' )
 #'
 #' @name harcode
@@ -181,11 +170,11 @@ NULL
 
 #' @export
 #' @rdname harcode
-hardcode_no_ct <- function(raw_dat,
+hardcode_no_ct <- function(tgt_dat = NULL,
+                           tgt_val,
+                           raw_dat,
                            raw_var,
                            tgt_var,
-                           tgt_val,
-                           tgt_dat = NULL,
                            id_vars = oak_id_vars()) {
   admiraldev::assert_character_scalar(raw_var)
   admiraldev::assert_character_scalar(tgt_var)
@@ -200,11 +189,11 @@ hardcode_no_ct <- function(raw_dat,
   admiraldev::assert_data_frame(tgt_dat, required_vars = rlang::syms(id_vars), optional = TRUE)
 
   sdtm_hardcode(
+    tgt_dat = tgt_dat,
+    tgt_val = tgt_val,
     raw_dat = raw_dat,
     raw_var = raw_var,
     tgt_var = tgt_var,
-    tgt_val = tgt_val,
-    tgt_dat = tgt_dat,
     id_vars = id_vars
   )
 }
@@ -212,13 +201,13 @@ hardcode_no_ct <- function(raw_dat,
 #' @export
 #' @rdname harcode
 hardcode_ct <-
-  function(raw_dat,
+  function(tgt_dat = NULL,
+           tgt_val,
+           raw_dat,
            raw_var,
            tgt_var,
-           tgt_val,
            ct_spec,
            ct_clst,
-           tgt_dat = NULL,
            id_vars = oak_id_vars()) {
     admiraldev::assert_character_scalar(raw_var)
     admiraldev::assert_character_scalar(tgt_var)
@@ -239,13 +228,13 @@ hardcode_ct <-
     assert_ct_clst(ct_spec = ct_spec, ct_clst = ct_clst, optional = FALSE)
 
     sdtm_hardcode(
+      tgt_dat = tgt_dat,
+      tgt_val = tgt_val,
       raw_dat = raw_dat,
       raw_var = raw_var,
       tgt_var = tgt_var,
-      tgt_val = tgt_val,
       ct_spec = ct_spec,
       ct_clst = ct_clst,
-      tgt_dat = tgt_dat,
       id_vars = id_vars
     )
   }

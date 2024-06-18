@@ -22,22 +22,22 @@ test_that("assign_datetime: date and time conversion", {
     r"{There were 12 parsing problems\. Run `problems\(\)` on parsed results for details\.}"
   expect_warning(rlang::with_interactive(
     assign_datetime(
+      tgt_var = "CMSTDTC",
       raw_dat = md1,
       raw_var = c("MDEDR", "MDETM"),
       raw_fmt = c("d-m-y", "H:M:S"),
-      raw_unk = c("UN", "UNK"),
-      tgt_var = "CMSTDTC"
+      raw_unk = c("UN", "UNK")
     )
   ), regexp = warning_msg)
 
   # If not run interactively then warnings should not be raised.
   expect_silent(
     cm1 <- assign_datetime(
+      tgt_var = "CMSTDTC",
       raw_dat = md1,
       raw_var = c("MDEDR", "MDETM"),
       raw_fmt = c("d-m-y", "H:M:S"),
-      raw_unk = c("UN", "UNK"),
-      tgt_var = "CMSTDTC"
+      raw_unk = c("UN", "UNK")
     )
   )
 
@@ -72,8 +72,8 @@ test_that("assign_datetime: date and time conversion", {
 
   expected <-
     cm1 |>
-    dplyr::select("oak_id", "raw_source", "patient_number") |>
+    dplyr::select(dplyr::all_of(c("oak_id", "raw_source", "patient_number"))) |>
     dplyr::bind_cols(tibble::tibble(CMSTDTC = cmstdtc))
 
-  expect_equal(object = cm1, expected = expected)
+  expect_identical(object = cm1, expected = expected)
 })
