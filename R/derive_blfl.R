@@ -25,7 +25,7 @@
 #'
 dtc_datepart <- function(dtc, partial_as_na = TRUE) {
   # Assert that dtc is a character vector
-  checkmate::assert_character(dtc)
+  admiraldev::assert_character_vector(dtc)
 
   # Extract date part from ISO 8601 date/time variable
   dt <- sub("^([^T]+).*", "\\1", dtc)
@@ -83,7 +83,7 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 #'
 dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
   # Assert that dtc is a character vector
-  checkmate::assert_character(dtc)
+  admiraldev::assert_character_vector(dtc)
 
   # Determine length of time part depending on ignore_seconds parameter
   tm_length <- ifelse(ignore_seconds, 5L, 8L)

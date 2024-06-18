@@ -28,7 +28,7 @@ include "RFSTDTC" (the date/time of the first study treatment) or
 \item{baseline_visits}{A character vector specifying the baseline visits within the study.
 These visits are identified as critical points for data collection at the start of the study,
 before any intervention is applied.  This allows the function to assign the baseline
-flag if thre --DTC matches to the reference date.}
+flag if the --DTC matches to the reference date.}
 
 \item{baseline_timepoints}{A character vector of timpoints values in --TPT that specifies
 the specific timepoints during the baseline visits when key assessments or measurements were taken.
@@ -84,36 +84,41 @@ exposure flag (\code{--LOBXFL}) variable to these rows.
 }
 \examples{
 dm <- tibble::tribble(
-~USUBJID,           ~RFSTDTC,          ~RFXSTDTC,
-"test_study-375", "2020-09-28T10:10", "2020-09-28T10:10",
-"test_study-376", "2020-09-21T11:00", "2020-09-21T11:00",
-"test_study-377",                 NA,                 NA,
-"test_study-378", "2020-01-20T10:00", "2020-01-20T10:00",
-"test_study-379",                 NA,                 NA,
+  ~USUBJID, ~RFSTDTC, ~RFXSTDTC,
+  "test_study-375", "2020-09-28T10:10", "2020-09-28T10:10",
+  "test_study-376", "2020-09-21T11:00", "2020-09-21T11:00",
+  "test_study-377", NA, NA,
+  "test_study-378", "2020-01-20T10:00", "2020-01-20T10:00",
+  "test_study-379", NA, NA,
 )
 
 dm
 
 sdtm_in <-
-tibble::tribble(
-~DOMAIN, ~oak_id, ~raw_source, ~patient_number,      ~USUBJID,             ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT,
-"VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-01T13:31",   "DIABP",     "90",      NA,
-"VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T11:20",   "DIABP",     "90",      NA,
-"VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-28T10:10",   "PULSE",     "ND",      NA,
-"VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T13:31",   "PULSE",     "85",      NA,
-"VS",      1L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:10",   "SYSBP",     "120",      NA,
-"VS",      2L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:05",   "SYSBP",     "120",      NA,
-"VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "DIABP",     "75",      NA,
-"VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",      NA,      "NOT DONE", #nolint
-"VS",      2L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",     "110",      NA
-)
+  tibble::tribble(
+    ~DOMAIN, ~oak_id, ~raw_source, ~patient_number, ~USUBJID, ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT, ~VISIT,
+    "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-01T13:31", "DIABP", "90", NA, "SCREENING",
+    "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T11:20", "DIABP", "90", NA, "SCREENING",
+    "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-28T10:10", "PULSE", "ND", NA, "SCREENING",
+    "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T13:31", "PULSE", "85", NA, "SCREENING",
+    "VS", 1L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:10", "SYSBP", "120", NA, "SCREENING",
+    "VS", 2L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:05", "SYSBP", "120", NA, "SCREENING",
+    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "DIABP", "75", NA, "SCREENING",
+    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", NA, "NOT DONE", "SCREENING", # nolint
+    "VS", 2L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", "110", NA, "SCREENING",
+    "VS", 2L, "VTLS1", 378L, "test_study-378", "2020-01-20T10:00", "PULSE", "110", NA, "SCREENING",
+    "VS", 3L, "VTLS1", 378L, "test_study-378", "2020-01-21T11:00", "PULSE", "105", NA, "SCREENING"
+  )
 
 sdtm_in
 
-observed_output <- derive_blfl(sdtm_in = sdtm_in,
-                               dm_domain = dm,
-                               tgt_var = "VSLOBXFL",
-                               ref_var = "RFXSTDTC")
+observed_output <- derive_blfl(
+  sdtm_in = sdtm_in,
+  dm_domain = dm,
+  tgt_var = "VSLOBXFL",
+  ref_var = "RFXSTDTC",
+  baseline_visits = c("SCREENING")
+)
 observed_output
 
 }

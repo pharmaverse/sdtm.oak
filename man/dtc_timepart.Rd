@@ -28,21 +28,21 @@ and not extracted.
 dtc_timepart(
   c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59")
 )
-  # |--> c(NA, NA, NA, NA, "12:30", "12:30")
+# |--> c(NA, NA, NA, NA, "12:30", "12:30")
 
 ## Prevent partial or missing times from being set to NA
 dtc_timepart(
   c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59"),
   partial_as_na = FALSE
 )
-  # |--> c(NA, "", "", "12", "12:30", "12:30")
+# |--> c(NA, "", "", "12", "12:30", "12:30")
 
 ## Do not ignore seconds, partial or missing times set to NA
 dtc_timepart(
   c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59"),
   ignore_seconds = FALSE
 )
-  # |--> c(NA, NA, NA, NA, NA, "12:30:59")
+# |--> c(NA, NA, NA, NA, NA, "12:30:59")
 
 ## Do not ignore seconds and prevent partial or missing times from being set to NA
 dtc_timepart(
@@ -50,6 +50,6 @@ dtc_timepart(
   partial_as_na = FALSE,
   ignore_seconds = FALSE
 )
-  # |--> c(NA, "", "", "12", "12:30", "12:30:59")
+# |--> c(NA, "", "", "12", "12:30", "12:30:59")
 
 }
