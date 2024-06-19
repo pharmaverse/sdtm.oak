@@ -8,7 +8,7 @@ navbar:
   title: "sdtm.oak"
 
 reference:
-- title: SDTM Mapping Algorithms/function
+- title: SDTM Mapping Algorithms/functions
   desc: Set of functions to perform SDTM Mappings
   contents:
   - assign

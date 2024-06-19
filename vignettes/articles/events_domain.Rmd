@@ -308,7 +308,8 @@ In this mapping, the `condition_add` function filters the cm domain created in t
 
 ```{r eval=TRUE}
 cm <- cm %>%
-  # Map qualifier CMDOSFRQ  Annotation text is If CMTRT is not null then map the collected value in raw dataset cm_raw and raw variable MDFRQ to CMDOSFRQ
+  # Map qualifier CMDOSFRQ  Annotation text is If CMTRT is not null then map
+  # the collected value in raw dataset cm_raw and raw variable MDFRQ to CMDOSFRQ
   {
     assign_ct(
       raw_dat = cm_raw,
@@ -358,7 +359,9 @@ The mapping logic for `CMMODIFY` is `If collected value in MODIFY in cm_raw is d
 
 ```{r eval=TRUE}
 cm <- cm %>%
-  # Map CMMODIFY  Annotation text  If collected value in MODIFY in cm_raw is different to CM.CMTRT then assign the collected value to CMMODIFY in CM domain (CM.CMMODIFY)
+  # Map CMMODIFY  Annotation text  If collected value in MODIFY in cm_raw is
+  # different to CM.CMTRT then assign the collected value to CMMODIFY in
+  # CM domain (CM.CMMODIFY)
   {
     assign_no_ct(
       raw_dat = cm_raw,
@@ -515,7 +518,10 @@ cm <- cm %>%
 sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
-    oak_id, raw_source, patient_number, CMTRT, CMGRPID, CMDOSU, CMSTDTC, CMSTRTPT, CMSTTPT, CMDOSFRQ, CMMODIFY, CMINDC, CMENDTC, CMENRTPT, CMENTPT, CMDOS, CMDOSTXT, CMDOSU, CMDOSFRM, CMROUTE, CMPROPH, CMDRG, CMDRGCD, CMDECOD, CMPNCD
+    oak_id, raw_source, patient_number, CMTRT, CMGRPID, CMDOSU, CMSTDTC,
+    CMSTRTPT, CMSTTPT, CMDOSFRQ, CMMODIFY, CMINDC, CMENDTC, CMENRTPT, CMENTPT,
+    CMDOS, CMDOSTXT, CMDOSU, CMDOSFRM, CMROUTE, CMPROPH, CMDRG, CMDRGCD,
+    CMDECOD, CMPNCD
   )
 )
 ```
@@ -563,7 +569,10 @@ cm <- cm %>%
 sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
-    oak_id, raw_source, patient_number, STUDYID, DOMAIN, USUBJID, CMGRPID, CMTRT, CMDOSU, CMSTDTC, CMSTRTPT, CMSTTPT, CMDOSFRQ, CMMODIFY, CMINDC, CMENDTC, CMENRTPT, CMENTPT, CMDOS, CMDOSTXT, CMDOSU, CMDOSFRM, CMROUTE, CMPROPH, CMDRG, CMDRGCD, CMDECOD, CMPNCD, CMSTDY, CMENDY
+    oak_id, raw_source, patient_number, STUDYID, DOMAIN, USUBJID, CMGRPID,
+    CMTRT, CMDOSU, CMSTDTC, CMSTRTPT, CMSTTPT, CMDOSFRQ, CMMODIFY, CMINDC,
+    CMENDTC, CMENRTPT, CMENTPT, CMDOS, CMDOSTXT, CMDOSU, CMDOSFRM, CMROUTE,
+    CMPROPH, CMDRG, CMDRGCD, CMDECOD, CMPNCD, CMSTDY, CMENDY
   )
 )
 ```

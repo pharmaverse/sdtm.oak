@@ -435,7 +435,7 @@ vs_oxysat <-
 # Map topic variable VSALL from raw variable ASMNTDN with the logic if ASMNTDN  == 1 then VSTESTCD = VSALL
 vs_vsall <-
   hardcode_ct(
-    raw_dat = condition_add(vs_raw, ASMNTDN == 1),
+    raw_dat = condition_add(vs_raw, ASMNTDN == 1L),
     raw_var = "ASMNTDN",
     tgt_var = "VSTESTCD",
     tgt_val = "VSALL",

@@ -28,7 +28,6 @@
 #' @keywords internal
 #'
 dataset_oak_vignette <- function(dataset, display_vars = NULL, filter = NULL) {
-
   filter <- admiraldev::assert_filter_cond(rlang::enexpr(filter), optional = TRUE)
 
   out <- dataset |>
