@@ -49,7 +49,6 @@ and not extracted.
 \keyword{by}
 \keyword{c(NA,}
 \keyword{default}
-\keyword{dtc_timepart(}
 \keyword{from}
 \keyword{ignore}
 \keyword{ignore_seconds}
@@ -61,6 +60,7 @@ and not extracted.
 \keyword{partial}
 \keyword{partial_as_na}
 \keyword{prevent}
+\keyword{sdtm.oak:::dtc_timepart(}
 \keyword{seconds}
 \keyword{seconds,}
 \keyword{set}
