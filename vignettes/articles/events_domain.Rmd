@@ -31,14 +31,12 @@ Raw datasets can be exported from the EDC systems in the format they are collect
 The raw dataset is presented below:
 
 ```{r eval=TRUE, echo=FALSE}
-#cm_raw <-  as_tibble(read.csv("cm_raw_data.csv", stringsAsFactors = FALSE))
-
-cm_raw <-  read.csv(system.file("cm_domain/cm_raw_data.csv",
+cm_raw <-  read.csv(system.file("raw_data/cm_raw_data.csv",
                                      package = "sdtm.oak"))
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm_raw,
   display_vars = exprs(
     PATNUM, FORML, MDNUM, MDRAW, MDIND, MDBDR, MDBTM, MDPRIOR, MDEDR, 
@@ -75,11 +73,8 @@ Repeat the above steps for different raw datasets before proceeding with the bel
 Read all the raw datasets into the environment. In this example, the raw dataset name is `cm_raw`. Users can read it from the package using the below code:
 
 ```{r eval=TRUE}
-cm_raw <-  read.csv(system.file("cm_domain/cm_raw_data.csv",
+cm_raw <-  read.csv(system.file("raw_data/cm_raw_data.csv",
                                      package = "sdtm.oak"))
-
-dm <-  read.csv(system.file("cm_domain/dm.csv",
-                            package = "sdtm.oak"))
 ```
 
 ## Create oak_id_vars {#oakidvars}
@@ -99,7 +94,7 @@ cm_raw <-  cm_raw %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm_raw,
   display_vars = exprs(
     oak_id, raw_source, patient_number, PATNUM, FORML, MDNUM, MDRAW
@@ -110,7 +105,8 @@ dataset_oak_vignette(
 Read in the DM domain
 
 ```{r eval=TRUE}
-dm <-  as_tibble(read.csv("dm.csv", stringsAsFactors = FALSE))
+dm <-  read.csv(system.file("raw_data/dm.csv",
+                            package = "sdtm.oak"))
 ```
 
 
@@ -118,17 +114,13 @@ dm <-  as_tibble(read.csv("dm.csv", stringsAsFactors = FALSE))
 
 Controlled Terminology is part of the SDTM specification and it is prepared by the user.  In this example, the study controlled terminology name is `sdtm_ct.csv`. Users can read it from the package using the below code:
 
-```{r eval=FALSE}
-study_ct <- read.csv(system.file("cm_domain/sdtm_ct.csv",
+```{r eval=TRUE}
+study_ct <- read.csv(system.file("raw_data/sdtm_ct.csv",
                                  package = "sdtm.oak"))
 ```
 
-```{r eval=TRUE}
-study_ct <-  as_tibble(read.csv("sdtm_ct.csv", stringsAsFactors = FALSE))
-```
-
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   study_ct,
   display_vars = exprs(
     codelist_code, term_code, term_value, collected_value, term_preferred_term, 
@@ -154,7 +146,7 @@ cm <-
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, CMTRT
@@ -182,7 +174,7 @@ cm <- cm %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, CMTRT, CMGRPID
@@ -210,7 +202,7 @@ cm <- cm %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, CMTRT, CMGRPID, CMDOSU
@@ -236,7 +228,7 @@ cm <- cm %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, CMTRT, CMGRPID, CMDOSU, CMSTDTC
@@ -265,7 +257,7 @@ cm <- cm %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, CMTRT, CMGRPID, CMDOSU, CMSTDTC, CMSTRTPT
@@ -292,7 +284,7 @@ cm <- cm %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, CMTRT, CMGRPID, CMDOSU, CMSTDTC, CMSTRTPT, CMSTTPT
@@ -323,7 +315,7 @@ cm <- cm %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, CMTRT, CMGRPID, CMDOSU, CMSTDTC, CMSTRTPT, CMSTTPT, CMDOSFRQ
@@ -369,7 +361,7 @@ cm <- cm %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, CMTRT, CMGRPID, CMDOSU, CMSTDTC, CMSTRTPT, CMSTTPT, CMDOSFRQ, CMMODIFY
@@ -510,7 +502,7 @@ cm <- cm %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, CMTRT, CMGRPID, CMDOSU, CMSTDTC, CMSTRTPT, CMSTTPT, CMDOSFRQ, CMMODIFY, CMINDC, CMENDTC, CMENRTPT, CMENTPT, CMDOS, CMDOSTXT, CMDOSU, CMDOSFRM, CMROUTE, CMPROPH, CMDRG, CMDRGCD, CMDECOD, CMPNCD
@@ -558,7 +550,7 @@ The SDTM derived variables or any SDTM mapping that is applicable to all the rec
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   cm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, STUDYID, DOMAIN, USUBJID, CMGRPID, CMTRT, CMDOSU, CMSTDTC, CMSTRTPT, CMSTTPT, CMDOSFRQ, CMMODIFY, CMINDC, CMENDTC, CMENRTPT, CMENTPT, CMDOS, CMDOSTXT, CMDOSU, CMDOSFRM, CMROUTE, CMPROPH, CMDRG, CMDRGCD, CMDECOD, CMPNCD, CMSTDY, CMENDY

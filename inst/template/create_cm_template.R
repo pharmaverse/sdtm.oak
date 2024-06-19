@@ -13,17 +13,17 @@ library(dplyr)
 
 # Read Specification
 
-study_ct <- read.csv(system.file("cm_domain/sdtm_ct.csv",
+study_ct <- read.csv(system.file("raw_data/sdtm_ct.csv",
                                  package = "sdtm.oak"))
 
 # Read in raw data
 
-cm_raw <-  read.csv(system.file("cm_domain/cm_raw_data.csv",
+cm_raw <-  read.csv(system.file("raw_data/cm_raw_data.csv",
                                      package = "sdtm.oak")) %>%
   generate_oak_id_vars(pat_var = "PATNUM",
                        raw_src = "cm_raw")
 
-dm <-  read.csv(system.file("cm_domain/dm.csv",
+dm <-  read.csv(system.file("raw_data/dm.csv",
                             package = "sdtm.oak"))
 
 # Create CM domain. The first step in creating CM domain is to create the topic variable

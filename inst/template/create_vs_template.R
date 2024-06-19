@@ -13,17 +13,17 @@ library(dplyr)
 
 # Read Specification
 
-study_ct <- read.csv(system.file("cm_domain/sdtm_ct.csv",
+study_ct <- read.csv(system.file("raw_data/sdtm_ct.csv",
                                  package = "sdtm.oak"))
 
 # Read in raw data
 
-vs_raw <-  read.csv(system.file("cm_domain/vitals_raw_data.csv",
+vs_raw <-  read.csv(system.file("raw_data/vitals_raw_data.csv",
                                      package = "sdtm.oak")) %>%
   generate_oak_id_vars(pat_var = "PATNUM",
                        raw_src = "vitals")
 
-dm <-  read.csv(system.file("cm_domain/dm.csv",
+dm <-  read.csv(system.file("raw_data/dm.csv",
                             package = "sdtm.oak"))
 
 # Create VS domain.

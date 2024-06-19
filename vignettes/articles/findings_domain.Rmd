@@ -30,7 +30,7 @@ In this article, we will dive directly into programming and provide further expl
 
 # Programming workflow
 
-In {sdtm.oak} we process one raw dataset at a time. Similar raw datasets (example Concomitant medications (OID - cm_raw), Targeted Concomitant Medications (OID - cm_t_raw)) can be stacked together before processing.
+In {sdtm.oak} we process one raw dataset at a time. Similar raw datasets (example Vital Signs - Screening (OID - vs_raw), Vital Signs - Treatment (OID - vs_t_raw)) can be stacked together before processing.
 
 * [Read in data](#readdata)
 * [Create oak_id_vars](#oakidvars)
@@ -46,22 +46,16 @@ Repeat the above steps for different raw datasets before proceeding with the bel
 
 ## Read in data {#readdata}
 
-Read all the raw datasets into the environment. In this example, the raw dataset name is `cm_raw`. Users can read it from the package using the below code:
+Read all the raw datasets into the environment. In this example, the raw dataset name is `vs_raw`. Users can read it from the package using the below code:
 
 ```{r eval=TRUE}
-vs_raw <-  read.csv(system.file("cm_domain/vitals_raw_data.csv",
+vs_raw <-  read.csv(system.file("raw_data/vitals_raw_data.csv",
                                 package = "sdtm.oak"))
-
-dm <-  read.csv(system.file("cm_domain/dm.csv",
-                            package = "sdtm.oak"))
 ```
 
-```{r eval=FALSE, echo=FALSE}
-#vs_raw <-  as_tibble(read.csv("vitals_raw_data.csv", stringsAsFactors = FALSE))
-```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   vs_raw,
   display_vars = exprs(
     PATNUM, FORML, ASMNTDN, TMPTC, VTLD, VTLTM, SUBPOS, SYS_BP, DIA_BP, 
@@ -79,7 +73,7 @@ vs_raw <-  vs_raw %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   vs_raw,
   display_vars = exprs(
     oak_id, raw_source, patient_number, PATNUM, FORML, SYS_BP, DIA_BP
@@ -90,7 +84,8 @@ dataset_oak_vignette(
 Read in the DM domain
 
 ```{r eval=TRUE, echo=FALSE}
-dm <-  as_tibble(read.csv("dm.csv", stringsAsFactors = FALSE))
+dm <-  read.csv(system.file("raw_data/dm.csv",
+                            package = "sdtm.oak"))
 ```
 
 
@@ -98,17 +93,13 @@ dm <-  as_tibble(read.csv("dm.csv", stringsAsFactors = FALSE))
 
 Controlled Terminology is part of the SDTM specification and it is prepared by the user.  In this example, the study controlled terminology name is `sdtm_ct.csv`. Users can read it from the package using the below code:
 
-```{r eval=FALSE}
-study_ct <- read.csv(system.file("cm_domain/sdtm_ct.csv",
+```{r eval=TRUE}
+study_ct <- read.csv(system.file("raw_data/sdtm_ct.csv",
                                  package = "sdtm.oak"))
 ```
 
-```{r eval=TRUE, echo=FALSE}
-study_ct <-  as_tibble(read.csv("sdtm_ct.csv", stringsAsFactors = FALSE))
-```
-
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   study_ct,
   display_vars = exprs(
     codelist_code, term_code, term_value, collected_value, term_preferred_term, 
@@ -138,7 +129,7 @@ vs_sysbp <-
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   vs_sysbp,
   display_vars = exprs(
     oak_id, raw_source, patient_number, VSTESTCD
@@ -192,7 +183,7 @@ vs_sysbp <- vs_sysbp %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   vs_sysbp,
   display_vars = exprs(
     oak_id, raw_source, patient_number, VSTESTCD, VSTEST, VSORRES, VSORRESU, VSPOS
@@ -513,7 +504,7 @@ vs <- dplyr::bind_rows(vs_vsall, vs_sysbp, vs_diabp, vs_pulse, vs_resp,
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   vs,
   display_vars = exprs(
     oak_id, raw_source, patient_number, VSTESTCD, VSTEST, VSORRES, VSORRESU, VSPOS,
@@ -535,7 +526,7 @@ vs <- vs %>%
     USUBJID = paste0("test_study", "-", .data$patient_number)
   )  %>%
   # derive_seq(tgt_var = "VSSEQ",
-  #            rec_vars= c("USUBJID", "CMTRT")) %>%
+  #            rec_vars= c("USUBJID", "VSTRT")) %>%
   derive_study_day(
     sdtm_in = .,
     dm_domain = dm,
@@ -547,7 +538,7 @@ vs <- vs %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-dataset_oak_vignette(
+sdtm.oak:::dataset_oak_vignette(
   vs,
   display_vars = exprs(
     STUDYID, DOMAIN, USUBJID, VSTESTCD, VSTEST, VSORRES, VSORRESU, VSPOS,
