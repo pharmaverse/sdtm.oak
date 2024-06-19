@@ -31,15 +31,16 @@ Raw datasets can be exported from the EDC systems in the format they are collect
 The raw dataset is presented below:
 
 ```{r eval=TRUE, echo=FALSE}
-cm_raw <-  read.csv(system.file("raw_data/cm_raw_data.csv",
-                                     package = "sdtm.oak"))
+cm_raw <- read.csv(system.file("raw_data/cm_raw_data.csv",
+  package = "sdtm.oak"
+))
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
 sdtm.oak:::dataset_oak_vignette(
   cm_raw,
   display_vars = exprs(
-    PATNUM, FORML, MDNUM, MDRAW, MDIND, MDBDR, MDBTM, MDPRIOR, MDEDR, 
+    PATNUM, FORML, MDNUM, MDRAW, MDIND, MDBDR, MDBTM, MDPRIOR, MDEDR,
     MDETM, MDONG, DOS, DOSU, MDFORM, MDRTE, MDFRQ, MDPROPH
   )
 )
@@ -73,8 +74,9 @@ Repeat the above steps for different raw datasets before proceeding with the bel
 Read all the raw datasets into the environment. In this example, the raw dataset name is `cm_raw`. Users can read it from the package using the below code:
 
 ```{r eval=TRUE}
-cm_raw <-  read.csv(system.file("raw_data/cm_raw_data.csv",
-                                     package = "sdtm.oak"))
+cm_raw <- read.csv(system.file("raw_data/cm_raw_data.csv",
+  package = "sdtm.oak"
+))
 ```
 
 ## Create oak_id_vars {#oakidvars}
@@ -88,9 +90,11 @@ raw_source:- Type: Character- Value: equal to the raw dataset (eCRF) name or eDT
 patient_number:- Type: numeric- Value: equal to the subject number in CRF or NonCRF data source.
 
 ```{r eval=TRUE}
-cm_raw <-  cm_raw %>% 
-  generate_oak_id_vars(pat_var = "PATNUM",
-                       raw_src = "cm_raw")
+cm_raw <- cm_raw %>%
+  generate_oak_id_vars(
+    pat_var = "PATNUM",
+    raw_src = "cm_raw"
+  )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -105,8 +109,9 @@ sdtm.oak:::dataset_oak_vignette(
 Read in the DM domain
 
 ```{r eval=TRUE}
-dm <-  read.csv(system.file("raw_data/dm.csv",
-                            package = "sdtm.oak"))
+dm <- read.csv(system.file("raw_data/dm.csv",
+  package = "sdtm.oak"
+))
 ```
 
 
@@ -116,14 +121,15 @@ Controlled Terminology is part of the SDTM specification and it is prepared by t
 
 ```{r eval=TRUE}
 study_ct <- read.csv(system.file("raw_data/sdtm_ct.csv",
-                                 package = "sdtm.oak"))
+  package = "sdtm.oak"
+))
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
 sdtm.oak:::dataset_oak_vignette(
   study_ct,
   display_vars = exprs(
-    codelist_code, term_code, term_value, collected_value, term_preferred_term, 
+    codelist_code, term_code, term_value, collected_value, term_preferred_term,
     term_synonyms
   )
 )
@@ -136,7 +142,7 @@ The topic variable is mapped as a first step in the mapping process. It is the p
 This mapping does not involve any controlled terminology. The `assign_no_ct` function is used for mapping. Once the topic variable is mapped, the Qualifier, Identifier, and Timing variables can be mapped.
 
 ```{r eval=TRUE}
-cm <- 
+cm <-
   # Map topic variable
   assign_no_ct(
     raw_dat = cm_raw,
@@ -190,7 +196,7 @@ The mapping logic for `CMDOSU` is `Map the collected value in the cm_raw dataset
 
 ```{r eval=TRUE}
 cm <- cm %>%
- # Map qualifier CMDOSU
+  # Map qualifier CMDOSU
   assign_ct(
     raw_dat = cm_raw,
     raw_var = "DOSU",
@@ -198,7 +204,7 @@ cm <- cm %>%
     ct_spec = study_ct,
     ct_clst = "C71620",
     id_vars = oak_id_vars()
-  ) 
+  )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -216,15 +222,15 @@ The mapping logic for `CMSTDTC` is `Map the collected value in the cm_raw datase
 
 ```{r eval=TRUE}
 cm <- cm %>%
-# Map CMSTDTC. This function calls create_iso8601
+  # Map CMSTDTC. This function calls create_iso8601
   assign_datetime(
     raw_dat = cm_raw,
     raw_var = c("MDBDR", "MDBTM"),
     tgt_var = "CMSTDTC",
-    raw_fmt = c(list(c("d-m-y", "dd mmm yyyy")),  "H:M"),
+    raw_fmt = c(list(c("d-m-y", "dd mmm yyyy")), "H:M"),
     raw_unk = c("UN", "UNK"),
     id_vars = oak_id_vars()
-  ) 
+  )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -303,15 +309,17 @@ In this mapping, the `condition_add` function filters the cm domain created in t
 ```{r eval=TRUE}
 cm <- cm %>%
   # Map qualifier CMDOSFRQ  Annotation text is If CMTRT is not null then map the collected value in raw dataset cm_raw and raw variable MDFRQ to CMDOSFRQ
-  {assign_ct(
-    raw_dat = cm_raw,
-    raw_var = "MDFRQ",
-    tgt_dat =  condition_add(. , !is.na(CMTRT)),
-    tgt_var = "CMDOSFRQ",
-    ct_spec = study_ct,
-    ct_clst = "C66728",
-    id_vars = oak_id_vars()
-  )}
+  {
+    assign_ct(
+      raw_dat = cm_raw,
+      raw_var = "MDFRQ",
+      tgt_dat =  condition_add(., !is.na(CMTRT)),
+      tgt_var = "CMDOSFRQ",
+      ct_spec = study_ct,
+      ct_clst = "C66728",
+      id_vars = oak_id_vars()
+    )
+  }
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -339,7 +347,7 @@ cm <- cm %>%
     ct_spec = study_ct,
     ct_clst = "C71620",
     id_vars = oak_id_vars()
-  ) 
+  )
 ```
 
 ### condition_add involving raw dataset and target domain {#condition_add_raw_tar}
@@ -351,13 +359,15 @@ The mapping logic for `CMMODIFY` is `If collected value in MODIFY in cm_raw is d
 ```{r eval=TRUE}
 cm <- cm %>%
   # Map CMMODIFY  Annotation text  If collected value in MODIFY in cm_raw is different to CM.CMTRT then assign the collected value to CMMODIFY in CM domain (CM.CMMODIFY)
-  {assign_no_ct(
-    raw_dat = cm_raw,
-    raw_var = "MODIFY",
-    tgt_dat =  condition_add(. , MODIFY != CMTRT, .dat2 = cm_raw),
-    tgt_var = "CMMODIFY",
-    id_vars = oak_id_vars()
-  )}
+  {
+    assign_no_ct(
+      raw_dat = cm_raw,
+      raw_var = "MODIFY",
+      tgt_dat = condition_add(., MODIFY != CMTRT, .dat2 = cm_raw),
+      tgt_var = "CMMODIFY",
+      id_vars = oak_id_vars()
+    )
+  }
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -379,7 +389,7 @@ cm <- cm %>%
     raw_var = "MODIFY",
     tgt_var = "CMMODIFY",
     id_vars = oak_id_vars()
-  ) 
+  )
 ```
 
 Now, complete mapping the rest of the SDTM variables.
@@ -426,7 +436,7 @@ cm <- cm %>%
     raw_var = "DOS",
     tgt_var = "CMDOS",
     id_vars = oak_id_vars()
-    ) %>%
+  ) %>%
   # Map qualifier CMDOS as If collected value in raw_var DOS is character then CM.CMDOSTXT
   assign_no_ct(
     raw_dat = condition_add(cm_raw, is.character(DOS)),
@@ -451,7 +461,7 @@ cm <- cm %>%
     ct_spec = study_ct,
     ct_clst = "C66726",
     id_vars = oak_id_vars()
-    ) %>%
+  ) %>%
   # Map CMROUTE as the collected value in the cm_raw dataset MDRTE variable to CM.CMROUTE
   assign_ct(
     raw_dat = cm_raw,
@@ -470,7 +480,7 @@ cm <- cm %>%
     ct_spec = study_ct,
     ct_clst = "C66742",
     id_vars = oak_id_vars()
-  )  %>%
+  ) %>%
   # Map CMDRG as the collected value in the cm_raw dataset CMDRG variable to CM.CMDRG
   assign_no_ct(
     raw_dat = cm_raw,
@@ -519,7 +529,7 @@ There is only one topic variable in this raw data source, and there are no addit
 The SDTM derived variables or any SDTM mapping that is applicable to all the records in the `cm` dataset produced in the previous step cam be created now. In this example, we will create the `CMSEQ` variable. The mapping logic is `Create a sequence number for each record in the CM domain`.
 
 ```{r eval=TRUE}
- cm <- cm %>%
+cm <- cm %>%
   # The below mappings are applicable to all the records in the cm domain,
   # hence can be derived using mutate statement.
   dplyr::mutate(
@@ -527,7 +537,7 @@ The SDTM derived variables or any SDTM mapping that is applicable to all the rec
     DOMAIN = "CM",
     CMCAT = "GENERAL CONMED",
     USUBJID = paste0("test_study", "-", cm_raw$PATNUM)
-  )  %>%
+  ) %>%
   # derive sequence number
   # derive_seq(tgt_var = "CMSEQ",
   #            rec_vars= c("USUBJID", "CMGRPID")) %>%
@@ -546,7 +556,7 @@ The SDTM derived variables or any SDTM mapping that is applicable to all the rec
     study_day_var = "CMSTDY"
   ) %>%
   # Add code for derive Baseline flag.
-  dplyr::select("STUDYID", "DOMAIN" , "USUBJID", everything())
+  dplyr::select("STUDYID", "DOMAIN", "USUBJID", everything())
 ```
 
 ```{r, eval=TRUE, echo=FALSE}

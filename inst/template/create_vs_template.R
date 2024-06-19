@@ -14,17 +14,22 @@ library(dplyr)
 # Read Specification
 
 study_ct <- read.csv(system.file("raw_data/sdtm_ct.csv",
-                                 package = "sdtm.oak"))
+  package = "sdtm.oak"
+))
 
 # Read in raw data
 
-vs_raw <-  read.csv(system.file("raw_data/vitals_raw_data.csv",
-                                     package = "sdtm.oak")) %>%
-  generate_oak_id_vars(pat_var = "PATNUM",
-                       raw_src = "vitals")
+vs_raw <- read.csv(system.file("raw_data/vitals_raw_data.csv",
+  package = "sdtm.oak"
+)) %>%
+  generate_oak_id_vars(
+    pat_var = "PATNUM",
+    raw_src = "vitals"
+  )
 
-dm <-  read.csv(system.file("raw_data/dm.csv",
-                            package = "sdtm.oak"))
+dm <- read.csv(system.file("raw_data/dm.csv",
+  package = "sdtm.oak"
+))
 
 # Create VS domain.
 # Create the topic variable and corresponding qualifiers for the VS domain.
@@ -333,8 +338,10 @@ vs_vsall <-
   )
 
 # Combine all the topic variables into a single data frame.
-vs_combined <- dplyr::bind_rows(vs_vsall, vs_sysbp, vs_diabp, vs_pulse, vs_resp,
-                                vs_temp, vs_oxysat)
+vs_combined <- dplyr::bind_rows(
+  vs_vsall, vs_sysbp, vs_diabp, vs_pulse, vs_resp,
+  vs_temp, vs_oxysat
+)
 
 # Map qualifiers common to all topic variables
 
@@ -344,9 +351,9 @@ vs <- vs_combined %>%
     raw_dat = vs_raw,
     raw_var = c("VTLD", "VTLTM"),
     tgt_var = "VSDTC",
-    raw_fmt = c(list(c("d-m-y", "dd-mmm-yyyy")),  "H:M")
+    raw_fmt = c(list(c("d-m-y", "dd-mmm-yyyy")), "H:M")
   ) %>%
- # Map VSTPT from TMPTC using assign_ct
+  # Map VSTPT from TMPTC using assign_ct
   assign_ct(
     raw_dat = vs_raw,
     raw_var = "TMPTC",
@@ -387,7 +394,7 @@ vs <- vs_combined %>%
     DOMAIN = "VS",
     VSCAT = "VITAL SIGNS",
     USUBJID = paste0("test_study", "-", .data$patient_number)
-  )  %>%
+  ) %>%
   # derive_seq(tgt_var = "VSSEQ",
   #            rec_vars= c("USUBJID", "CMTRT")) %>%
   derive_study_day(
@@ -398,5 +405,3 @@ vs <- vs_combined %>%
     study_day_var = "VSDY"
   ) %>%
   dplyr::select("STUDYID", "DOMAIN", "USUBJID", everything())
-
-

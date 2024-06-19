@@ -23,12 +23,12 @@
 #' @return A HTML table
 #'
 #' @keywords dev_utility
+#' @importFrom rlang exprs
 #'
 #' @keywords internal
 #'
 dataset_oak_vignette <- function(dataset, display_vars = NULL, filter = NULL) {
-
-  #assert_data_frame(dataset, required_vars = display_vars)
+  # assert_data_frame(dataset, required_vars = display_vars)
   filter <- admiraldev::assert_filter_cond(rlang::enexpr(filter), optional = TRUE)
 
   out <- dataset %>%
@@ -40,12 +40,12 @@ dataset_oak_vignette <- function(dataset, display_vars = NULL, filter = NULL) {
     if (is.null(display_vars)) {
       return(knitr::kable(utils::head(out, 10)))
     } else {
-      return(knitr::kable(utils::head(select(out, !!!display_vars), 10)))
+      return(knitr::kable(utils::head(dplyr::select(out, !!!display_vars), 10)))
     }
   }
 
   if (!is.null(display_vars)) {
-    hide_columns <- which(!(colnames(out) %in% vars2chr(display_vars)))
+    hide_columns <- which(!(colnames(out) %in% admiraldev::vars2chr(display_vars)))
     cols_to_hide <- list(list(targets = hide_columns - 1, visible = FALSE))
   } else {
     cols_to_hide <- list()

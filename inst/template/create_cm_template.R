@@ -14,17 +14,22 @@ library(dplyr)
 # Read Specification
 
 study_ct <- read.csv(system.file("raw_data/sdtm_ct.csv",
-                                 package = "sdtm.oak"))
+  package = "sdtm.oak"
+))
 
 # Read in raw data
 
-cm_raw <-  read.csv(system.file("raw_data/cm_raw_data.csv",
-                                     package = "sdtm.oak")) %>%
-  generate_oak_id_vars(pat_var = "PATNUM",
-                       raw_src = "cm_raw")
+cm_raw <- read.csv(system.file("raw_data/cm_raw_data.csv",
+  package = "sdtm.oak"
+)) %>%
+  generate_oak_id_vars(
+    pat_var = "PATNUM",
+    raw_src = "cm_raw"
+  )
 
-dm <-  read.csv(system.file("raw_data/dm.csv",
-                            package = "sdtm.oak"))
+dm <- read.csv(system.file("raw_data/dm.csv",
+  package = "sdtm.oak"
+))
 
 # Create CM domain. The first step in creating CM domain is to create the topic variable
 
@@ -34,7 +39,7 @@ cm <-
     raw_dat = cm_raw,
     raw_var = "MDRAW",
     tgt_var = "CMTRT"
-  )  %>%
+  ) %>%
   # Derive CMGRPID
   assign_no_ct(
     raw_dat = cm_raw,
@@ -54,7 +59,7 @@ cm <-
     raw_dat = cm_raw,
     raw_var = c("MDBDR", "MDBTM"),
     tgt_var = "CMSTDTC",
-    raw_fmt = c(list(c("d-m-y", "dd mmm yyyy")),  "H:M"),
+    raw_fmt = c(list(c("d-m-y", "dd mmm yyyy")), "H:M"),
     raw_unk = c("UN", "UNK")
   ) %>%
   # Derive qualifier CMSTRTPT  Annotation text is If MDPRIOR == 1 then CM.CMSTRTPT = 'BEFORE'
@@ -107,7 +112,7 @@ cm <-
     raw_var = "DOS",
     tgt_var = "CMDOS",
     id_vars = oak_id_vars()
-    ) %>%
+  ) %>%
   # Derive qualifier CMDOS If collected value in raw_var DOS is character then CM.CMDOSTXT
   assign_no_ct(
     raw_dat = condition_add(cm_raw, is.character(DOS)),
@@ -132,7 +137,7 @@ cm <-
     ct_spec = study_ct,
     ct_clst = "C66726",
     id_vars = oak_id_vars()
-    ) %>%
+  ) %>%
   # DERIVE CMROUTE
   assign_ct(
     raw_dat = cm_raw,
@@ -164,13 +169,15 @@ cm <-
   # Derive qualifier CMMODIFY  Annotation text  If collected value in MODIFY
   # in cm_raw is different to CM.CMTRT then
   # assign the collected value to CMMODIFY in CM domain (CM.CMMODIFY)
-  {assign_no_ct(
-    raw_dat = cm_raw,
-    raw_var = "MODIFY",
-    tgt_dat =  condition_add(. , MODIFY != CMTRT, .dat2 = cm_raw),
-    tgt_var = "CMMODIFY",
-    id_vars = oak_id_vars()
-  )} %>%
+  {
+    assign_no_ct(
+      raw_dat = cm_raw,
+      raw_var = "MODIFY",
+      tgt_dat = condition_add(., MODIFY != CMTRT, .dat2 = cm_raw),
+      tgt_var = "CMMODIFY",
+      id_vars = oak_id_vars()
+    )
+  } %>%
   # Derive CMDRG
   assign_no_ct(
     raw_dat = cm_raw,
@@ -204,7 +211,7 @@ cm <-
     DOMAIN = "CM",
     CMCAT = "GENERAL CONMED",
     USUBJID = paste0("test_study", "-", cm_raw$PATNUM)
-  )  %>%
+  ) %>%
   # derive_seq(tgt_var = "VSSEQ",
   #            rec_vars= c("USUBJID", "CMTRT")) %>%
   derive_study_day(

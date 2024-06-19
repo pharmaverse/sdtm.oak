@@ -191,10 +191,10 @@ algorithms <- data.frame(
     ),
     paste("Remove duplicates on the Vital signs raw dataset based on subject number"),
     paste("EC = 'Exposure as Collected'"),
-  paste(
+    paste(
       "Merge AE raw dataset with SAE based on Subject number."
     )
-  ),stringsAsFactors = TRUE
+  ), stringsAsFactors = TRUE
 )
 knitr::kable(algorithms)
 ```

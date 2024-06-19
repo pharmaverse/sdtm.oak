@@ -49,8 +49,9 @@ Repeat the above steps for different raw datasets before proceeding with the bel
 Read all the raw datasets into the environment. In this example, the raw dataset name is `vs_raw`. Users can read it from the package using the below code:
 
 ```{r eval=TRUE}
-vs_raw <-  read.csv(system.file("raw_data/vitals_raw_data.csv",
-                                package = "sdtm.oak"))
+vs_raw <- read.csv(system.file("raw_data/vitals_raw_data.csv",
+  package = "sdtm.oak"
+))
 ```
 
 
@@ -58,7 +59,7 @@ vs_raw <-  read.csv(system.file("raw_data/vitals_raw_data.csv",
 sdtm.oak:::dataset_oak_vignette(
   vs_raw,
   display_vars = exprs(
-    PATNUM, FORML, ASMNTDN, TMPTC, VTLD, VTLTM, SUBPOS, SYS_BP, DIA_BP, 
+    PATNUM, FORML, ASMNTDN, TMPTC, VTLD, VTLTM, SUBPOS, SYS_BP, DIA_BP,
     PULSE, RESPRT, TEMP, TEMPLOC, OXY_SAT, LAT, LOC
   )
 )
@@ -67,9 +68,11 @@ sdtm.oak:::dataset_oak_vignette(
 ## Create oak_id_vars {#oakidvars}
 
 ```{r eval=TRUE}
-vs_raw <-  vs_raw %>% 
-  generate_oak_id_vars(pat_var = "PATNUM",
-                       raw_src = "vitals")
+vs_raw <- vs_raw %>%
+  generate_oak_id_vars(
+    pat_var = "PATNUM",
+    raw_src = "vitals"
+  )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -84,8 +87,9 @@ sdtm.oak:::dataset_oak_vignette(
 Read in the DM domain
 
 ```{r eval=TRUE, echo=FALSE}
-dm <-  read.csv(system.file("raw_data/dm.csv",
-                            package = "sdtm.oak"))
+dm <- read.csv(system.file("raw_data/dm.csv",
+  package = "sdtm.oak"
+))
 ```
 
 
@@ -95,14 +99,15 @@ Controlled Terminology is part of the SDTM specification and it is prepared by t
 
 ```{r eval=TRUE}
 study_ct <- read.csv(system.file("raw_data/sdtm_ct.csv",
-                                 package = "sdtm.oak"))
+  package = "sdtm.oak"
+))
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
 sdtm.oak:::dataset_oak_vignette(
   study_ct,
   display_vars = exprs(
-    codelist_code, term_code, term_value, collected_value, term_preferred_term, 
+    codelist_code, term_code, term_value, collected_value, term_preferred_term,
     term_synonyms
   )
 )
@@ -453,19 +458,21 @@ vs_vsall <-
 Now that all the topic variable and its qualifier mappings are complete, combine all the datasets and proceed with mapping qualifiers, identifiers and timing variables appicable to all topic variables.
 
 ```{r, eval=TRUE}
-# Combine all the topic variables into a single data frame and map qualifiers 
+# Combine all the topic variables into a single data frame and map qualifiers
 # applicable to all topic variables
-vs <- dplyr::bind_rows(vs_vsall, vs_sysbp, vs_diabp, vs_pulse, vs_resp,
-                                vs_temp, vs_oxysat) %>%
+vs <- dplyr::bind_rows(
+  vs_vsall, vs_sysbp, vs_diabp, vs_pulse, vs_resp,
+  vs_temp, vs_oxysat
+) %>%
   # Map qualifiers common to all topic variables
   # Map VSDTC using assign_ct algorithm
   assign_datetime(
     raw_dat = vs_raw,
     raw_var = c("VTLD", "VTLTM"),
     tgt_var = "VSDTC",
-    raw_fmt = c(list(c("d-m-y", "dd-mmm-yyyy")),  "H:M")
+    raw_fmt = c(list(c("d-m-y", "dd-mmm-yyyy")), "H:M")
   ) %>%
- # Map VSTPT from TMPTC using assign_ct
+  # Map VSTPT from TMPTC using assign_ct
   assign_ct(
     raw_dat = vs_raw,
     raw_var = "TMPTC",
@@ -524,7 +531,7 @@ vs <- vs %>%
     DOMAIN = "VS",
     VSCAT = "VITAL SIGNS",
     USUBJID = paste0("test_study", "-", .data$patient_number)
-  )  %>%
+  ) %>%
   # derive_seq(tgt_var = "VSSEQ",
   #            rec_vars= c("USUBJID", "VSTRT")) %>%
   derive_study_day(
