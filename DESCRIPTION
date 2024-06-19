@@ -50,6 +50,8 @@ Imports:
     pillar
 Suggests:
     knitr,
+    DT,
+    htmltools,
     lifecycle,
     magrittr,
     rmarkdown,

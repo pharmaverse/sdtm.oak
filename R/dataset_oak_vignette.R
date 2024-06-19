@@ -28,25 +28,25 @@
 #' @keywords internal
 #'
 dataset_oak_vignette <- function(dataset, display_vars = NULL, filter = NULL) {
-  # assert_data_frame(dataset, required_vars = display_vars)
+
   filter <- admiraldev::assert_filter_cond(rlang::enexpr(filter), optional = TRUE)
 
-  out <- dataset %>%
-    admiraldev::filter_if(filter) %>%
-    dplyr::mutate(across(where(is.character), as.factor))
+  out <- dataset |>
+    admiraldev::filter_if(filter) |>
+    dplyr::mutate(dplyr::across(dplyr::where(is.character), as.factor))
 
   # Create a short markdown table when this function is called outside {pkgdown}
   if (!identical(Sys.getenv("IN_PKGDOWN"), "true")) {
     if (is.null(display_vars)) {
-      return(knitr::kable(utils::head(out, 10)))
+      return(knitr::kable(utils::head(out, 10L)))
     } else {
-      return(knitr::kable(utils::head(dplyr::select(out, !!!display_vars), 10)))
+      return(knitr::kable(utils::head(dplyr::select(out, !!!display_vars), 10L)))
     }
   }
 
   if (!is.null(display_vars)) {
     hide_columns <- which(!(colnames(out) %in% admiraldev::vars2chr(display_vars)))
-    cols_to_hide <- list(list(targets = hide_columns - 1, visible = FALSE))
+    cols_to_hide <- list(list(targets = hide_columns - 1L, visible = FALSE))
   } else {
     cols_to_hide <- list()
   }
@@ -69,8 +69,8 @@ dataset_oak_vignette <- function(dataset, display_vars = NULL, filter = NULL) {
         columnDefs = cols_to_hide,
         searchHighlight = TRUE,
         searching = TRUE,
-        pageLength = 5,
-        lengthMenu = c(5, 10, 15, 20, 50, 100),
+        pageLength = 5L,
+        lengthMenu = c(5L, 10L, 15L, 20L, 50L, 100L),
         dom = "<Bfr<\"dt-scroll\"t>ipl>",
         buttons = list(list(
           extend = "colvis",

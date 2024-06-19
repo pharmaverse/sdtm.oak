@@ -93,4 +93,6 @@ generate_oak_id_vars <- function(raw_dat,
       raw_source = raw_src
     ) |>
     dplyr::select(oak_id_vars(), dplyr::everything())
+
+  return(raw_oak_id_vars)
 }

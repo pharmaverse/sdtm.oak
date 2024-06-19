@@ -55,11 +55,6 @@ test_that("`derive_study_day()` works as expected for invalid input", {
     stringsAsFactors = FALSE
   )
 
-  # Commenting the test case pending code fix
-  # expect_warning(
-  #   derive_study_day(ae, dm2, "AESTDTC", "RFSTDTC", "AESTDY"),
-  #   "Encountered errors when converting refdt to dates."
-  # )
 })
 
 test_that("`calculate_study_day()` works as expected for valid input", {

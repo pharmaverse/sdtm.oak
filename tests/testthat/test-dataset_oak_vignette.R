@@ -6,10 +6,10 @@ test_that("dataset_oak_vignette Test 1: A 'knitr_kable' object is outputted when
 
   dm <- dplyr::tribble(
     ~STUDYID, ~PATNUM, ~COUNTRY,
-    "STUDY1", "1",      "USA",
-    "STUDY1", "2",      "USA",
-    "STUDY1", "3",      "USA",
-    "STUDY1", "4",      "USA"
+    "STUDY1", "1", "USA",
+    "STUDY1", "2", "USA",
+    "STUDY1", "3", "USA",
+    "STUDY1", "4", "USA"
   )
 
   expect_s3_class(dataset_oak_vignette(dm), "knitr_kable")
@@ -23,10 +23,10 @@ test_that("dataset_oak_vignette Test 2: A 'shiny.tag.list' is outputted when run
 
   dm <- dplyr::tribble(
     ~STUDYID, ~PATNUM, ~COUNTRY,
-    "STUDY1", "1",      "USA",
-    "STUDY1", "2",      "USA",
-    "STUDY1", "3",      "USA",
-    "STUDY1", "4",      "USA"
+    "STUDY1", "1", "USA",
+    "STUDY1", "2", "USA",
+    "STUDY1", "3", "USA",
+    "STUDY1", "4", "USA"
   )
 
 
@@ -38,10 +38,10 @@ test_that("dataset_oak_vignette Test 2: A 'shiny.tag.list' is outputted when run
 test_that("dataset_oak_vignette Test 3: An error is outputted when calling variable not in dataset", {
   dm <- dplyr::tribble(
     ~STUDYID, ~PATNUM, ~COUNTRY,
-    "STUDY1", "1",      "USA",
-    "STUDY1", "2",      "USA",
-    "STUDY1", "3",      "USA",
-    "STUDY1", "4",      "USA"
+    "STUDY1", "1", "USA",
+    "STUDY1", "2", "USA",
+    "STUDY1", "3", "USA",
+    "STUDY1", "4", "USA"
   )
 
   expect_error(dataset_oak_vignette(dm, display_vars = exprs(AGE)))

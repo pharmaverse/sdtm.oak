@@ -22,15 +22,17 @@ A function to generate oak_id_vars
 \examples{
 raw_dataset <-
   tibble::tribble(
-  ~patnum          , ~MDRAW,
-   101L,            "BABY ASPIRIN",
-   102L,            "CORTISPORIN",
-   103L,            NA_character_,
-   104L,            "DIPHENHYDRAMINE HCL"
+    ~patnum, ~MDRAW,
+    101L, "BABY ASPIRIN",
+    102L, "CORTISPORIN",
+    103L, NA_character_,
+    104L, "DIPHENHYDRAMINE HCL"
   )
 
-#Generate oak_id_vars
-generate_oak_id_vars(raw_dat = raw_dataset,
-pat_var = "patnum",
-raw_src = "Concomitant Medication")
+# Generate oak_id_vars
+generate_oak_id_vars(
+  raw_dat = raw_dataset,
+  pat_var = "patnum",
+  raw_src = "Concomitant Medication"
+)
 }
