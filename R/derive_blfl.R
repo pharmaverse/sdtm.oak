@@ -22,7 +22,7 @@
 #'   partial_as_na = FALSE
 #' )
 #' # |--> c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25")
-#' @export
+#' @keywords internal
 dtc_datepart <- function(dtc, partial_as_na = TRUE) {
   # Assert that dtc is a character vector
   admiraldev::assert_character_vector(dtc)
@@ -53,7 +53,7 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 #' @return Character vector containing ISO 8601 times.
 #' @export
 #'
-#' @examples
+#' @keywords internal
 #' ## Partial or missing times set to NA and seconds ignored by default
 #' dtc_timepart(
 #'   c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59")
