@@ -47,10 +47,10 @@ Imports:
     vctrs,
     readr,
     glue,
+    DT,
     pillar
 Suggests:
     knitr,
-    DT,
     htmltools,
     lifecycle,
     magrittr,
