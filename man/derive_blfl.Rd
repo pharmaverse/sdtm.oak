@@ -16,7 +16,7 @@ derive_blfl(
 \arguments{
 \item{sdtm_in}{Input SDTM domain.}
 
-\item{dm_domain}{DM domain with the reference varaible \code{ref_var}}
+\item{dm_domain}{DM domain with the reference variable \code{ref_var}}
 
 \item{tgt_var}{Name of variable to be derived (\code{--BLFL} or
 \code{--LOBXFL} where \verb{--} is domain).}
@@ -32,7 +32,7 @@ These visits are identified as critical points for data collection at the start 
 before any intervention is applied.  This allows the function to assign the baseline
 flag if the --DTC matches to the reference date.}
 
-\item{baseline_timepoints}{A character vector of timpoints values in --TPT that specifies
+\item{baseline_timepoints}{A character vector of timepoints values in --TPT that specifies
 the specific timepoints during the baseline visits when key assessments or measurements were taken.
 This allows the function to assign the baseline flag if the --DTC matches to the reference date.}
 }

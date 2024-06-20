@@ -142,7 +142,7 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'  - Join the baseline flag onto the input dataset based on oak id vars
 #'
 #' @param sdtm_in Input SDTM domain.
-#' @param dm_domain DM domain with the reference varaible `ref_var`
+#' @param dm_domain DM domain with the reference variable `ref_var`
 #' @param tgt_var Name of variable to be derived (`--BLFL` or
 #'   `--LOBXFL` where `--` is domain).
 #' @param ref_var vector of a date/time from the
@@ -154,7 +154,7 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'   These visits are identified as critical points for data collection at the start of the study,
 #'   before any intervention is applied.  This allows the function to assign the baseline
 #'   flag if the --DTC matches to the reference date.
-#' @param baseline_timepoints A character vector of timpoints values in --TPT that specifies
+#' @param baseline_timepoints A character vector of timepoints values in --TPT that specifies
 #'   the specific timepoints during the baseline visits when key assessments or measurements were taken.
 #'   This allows the function to assign the baseline flag if the --DTC matches to the reference date.
 #'
