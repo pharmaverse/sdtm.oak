@@ -50,6 +50,8 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/algorithms.html">Algorithms &amp; Sub-Algorithms</a>
     <a class="dropdown-item" href="../articles/cnd_df.html">Conditioned Data Frames</a>
+    <a class="dropdown-item" href="../articles/events_domain.html">Creating an Events SDTM domain</a>
+    <a class="dropdown-item" href="../articles/findings_domain.html">Creating an Findings SDTM domain</a>
     <a class="dropdown-item" href="../articles/iso_8601.html">Converting dates, times or date-times to ISO 8601</a>
     <a class="dropdown-item" href="../articles/study_sdtm_spec.html">All about Metadata</a>
   </div>
@@ -95,15 +97,15 @@
 </h2>
 <p>SDTM mappings are defined as algorithms that transform the collected
 (eCRF, eDT) source data into the target SDTM data model. Mapping
-algorithms are the backbone of the sdtm.oak - SDTM data transformation
+algorithms are the backbone of the {sdtm.oak} - SDTM data transformation
 engine.</p>
 <p><strong>Key Points:</strong></p>
 <ul>
 <li><p>Algorithms can be re-used across multiple SDTM domains.</p></li>
 <li><p>Algorithms are pre-specified for data collection standards in MDR
-(if applicable)</p></li>
+(if applicable) to facilitate automation.</p></li>
 <li><p>Programming language agnostic - this concept does not rely on a
-specific programming language for implementation. The OAK team
+specific programming language for implementation. The {sdtm.oak} team
 implemented them as R functions.</p></li>
 </ul>
 <p>Here is an example of reusing an algorithm across multiple domains,
@@ -113,11 +115,17 @@ variables, and also to a non-standard</p>
 <div class="section level2">
 <h2 id="list-of-algorithms">List of Algorithms<a class="anchor" aria-label="anchor" href="#list-of-algorithms"></a>
 </h2>
+<p>This release of {sdtm.oak} supports the following algorithms:
+assign_no_ct, assign_ct, hardcode_no_ct, hardcode_ct, assign_datetime,
+condition_add. Rest of the algorithms will be developed in the
+subsequent releases.</p>
+<p>The following table provides a brief description of each
+algorithm.</p>
 <table class="table">
 <colgroup>
-<col width="1%">
-<col width="51%">
-<col width="46%">
+<col width="2%">
+<col width="66%">
+<col width="30%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">Algorithm.Name</th>
@@ -126,17 +134,14 @@ variables, and also to a non-standard</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">ASSIGN_NO_CT</td>
+<td align="left">assign_no_ct</td>
 <td align="left">One-to-one mapping between the raw source and a target
 SDTM variable that has no controlled terminology restrictions. Just a
-simple assignment statement. This algorithm will also handle the
-concatenation of multiple items into a target SDTM variable.</td>
-<td align="left">MH.MHTERM<br> VS.VSDTC<br> MH.MHTERM = [LNGCAHX1.HSTYP]
-|| ’ ’ || ‘NON-METASTATIC LUNG CANCER’<br> CM.CMINDC = [MD9.MDCIND] || ’
-’ || [MD9.MDCINDSP]</td>
+simple assignment statement.</td>
+<td align="left">MH.MHTERM<br> AE.AETERM</td>
 </tr>
 <tr class="even">
-<td align="left">ASSIGN_CT</td>
+<td align="left">assign_ct</td>
 <td align="left">One-to-one mapping between the raw source and a target
 SDTM variable that is subject to controlled terminology restrictions. A
 simple assign statement and applying controlled terminology. This will
@@ -145,7 +150,44 @@ terminology.</td>
 <td align="left">VS.VSPOS<br> VS.VSLAT</td>
 </tr>
 <tr class="odd">
-<td align="left">AE_AEREL</td>
+<td align="left">assign_datetime</td>
+<td align="left">One-to-one mapping between the raw source and a target
+that involves mapping a Date or time or datetime component. This mapping
+algorithm also takes care of handling unknown dates and converting them
+into. ISO8601 format.</td>
+<td align="left">MH.MHSTDTC<br> AE.AEENDTC</td>
+</tr>
+<tr class="even">
+<td align="left">hardcode_ct</td>
+<td align="left">Mapping a hardcoded value to a target SDTM variable
+that is subject to terminology restrictions. This will be used only if
+the SDTM variable has an associated controlled terminology.</td>
+<td align="left">MH.MHPRESP = ‘Y’<br><br>VS.VSTEST = ‘Systolic Blood
+Pressure’<br><br>VS.VSORRESU = ‘mmHg’<br>
+</td>
+</tr>
+<tr class="odd">
+<td align="left">hardcode_no_ct</td>
+<td align="left">Mapping a hardcoded value to a target SDTM variable
+that has no terminology restrictions.</td>
+<td align="left">FA.FASCAT = ‘COVID-19 PROBABLE CASE’<br><br>CM.CMTRT =
+‘FLUIDS’</td>
+</tr>
+<tr class="even">
+<td align="left">condition_add</td>
+<td align="left">Algorithm that is used to filter the source data and/or
+target domain based on a condition. The mapping will be applied only if
+the condition is met. The filter can be applied either at the source
+dataset or at target dataset or both. This algorithm has to be used in
+conjunction with other algorithms, that is if the condition is met
+perform the mapping using algorithms like assign_ct, assign_no_ct,
+hardcode_ct, hardcode_no_ct, assign_datetime.</td>
+<td align="left">If If MDPRIOR == 1 then CM.CMSTRTPT = ‘BEFORE’.<br><br>VS.VSMETHOD when VSTESTCD = ‘TEMP’<br><br>If collected value in raw
+variable DOS is numeric then CM.CMDOSE<br><br>If collected value in raw
+variable MOD is different to CMTRT then map to CM.CMMODIFY</td>
+</tr>
+<tr class="odd">
+<td align="left">ae_aerel</td>
 <td align="left">Algorithm that is currently unique to AE.AEREL,
 particularly when more than one drug is used in the study.<br> If any
 collected study drug causalities are ‘Yes’ then AE.AEREL is Y. <br>If
@@ -156,82 +198,41 @@ causality responses are stored in AERELn in SUPPAE.</td>
 <td align="left">For AE.AEREL and AERELn in SUPPAE</td>
 </tr>
 <tr class="even">
-<td align="left">HARDCODE_CT</td>
-<td align="left">Mapping a hardcoded value to a target SDTM variable
-that is subject to terminology restrictions. This will be used only if
-the SDTM variable has an associated controlled terminology.</td>
-<td align="left">MH.MHPRESP = ‘Y’<br> VS.VSTEST = ‘Systolic Blood
-Pressure’<br> VS.VSORRESU = ‘mmHg’<br>
-</td>
-</tr>
-<tr class="odd">
-<td align="left">HARDCODE_NO_CT</td>
-<td align="left">Mapping a hardcoded value to a target SDTM variable
-that has no terminology restrictions.</td>
-<td align="left">FA.FASCAT = ‘COVID-19 PROBABLE CASE’<br> CM.CMTRT =
-‘FLUIDS’</td>
-</tr>
-<tr class="even">
-<td align="left">DATASET_LEVEL</td>
+<td align="left">dataset_level</td>
 <td align="left">Indicates a dataset-level mapping. These mappings will
-be applied to all SDTM records created from that source. Also called a
+be applied to all SDTM records created from that source. Also called an
 eCRF-level mappings in eCRF and dataset-level mappings in eDT</td>
-<td align="left">VS = ‘Vital Signs’<br> MH.MHCAT = ‘PROSTATE CANCER
+<td align="left">VS = ‘Vital Signs’<br><br>MH.MHCAT = ‘PROSTATE CANCER
 HISTORY’<br>
 </td>
 </tr>
 <tr class="odd">
-<td align="left">NOTSUBMITTED</td>
-<td align="left">Instruction that <code>sdtm.oak</code> should not map
+<td align="left">not_submitted</td>
+<td align="left">Instruction that <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> should not map
 the collected item to SDTM at all.</td>
 <td align="left"></td>
 </tr>
 <tr class="even">
-<td align="left">IF_THEN_ELSE</td>
-<td align="left">Represents the If then else statement. This can be an
-if statement with no else or with the else condition. This algorithm
-will be used for the annotations where a condition has to be evaluated
-before a mapping is performed. A sub-algorithm is required. If the
-condition resolves to <code>TRUE</code>, the sub-algorithm will be
-executed.</td>
-<td align="left">If ‘Ongoing’ then MH.MHENRTPT = ‘ONGOING’ <br> Else
-MH.MHENRTPT = ‘BEFORE’<br><br> If [HX1.STATUS] is present then
-MH.MHENTPT = ‘FIRST DOSE OF STUDY DRUG’<br><br> If checked then
-MH.MHSTTPT = ‘SCREENING’ <br> Else NOT SUBMITTED <br><br> VS.VSMETHOD
-when VS.VSTESTCD = ‘TEMP’ (Though the annotation text does not have the
-If condition, we need to map VSMETHOD only if the VSTESTCD is TEMP. The
-IF_THEN_ELSE will be used as the Algorithm for such cases even the ‘If’
-condition is not explicitly defined in the annotation text)</td>
-</tr>
-<tr class="odd">
-<td align="left">MERGE</td>
-<td align="left">To indicate a join condition with a secondary source or
-multiple sources. Merges are expressed at the domain level only (not at
-data point or variable level). This is a sub-algorithm and can only be
-used with algorithm DATASET_LEVEL.</td>
-<td align="left">AE = ‘Adverse Events’ on the early phase SAE eCRF</td>
-</tr>
-<tr class="even">
-<td align="left">RELREC</td>
+<td align="left">relrec</td>
 <td align="left">Associate two domains based on the variables in each
 domain and how those are related. Specifies the name of two domains that
 are related via RELREC.</td>
 <td align="left">BE record related to BS record via RELREC</td>
 </tr>
 <tr class="odd">
-<td align="left">MULTIPLE_RESPONSES</td>
+<td align="left">multiple_responses</td>
 <td align="left">Consolidate the responses from more than one source
 variable into one target variable. Used when multiple responses may be
-given for a single SDTM column. <code>sdtm.oak</code> will populate all
-target variable(s) after determining the number of responses
+given for a single SDTM column. <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> will populate
+all target variable(s) after determining the number of responses
 provided.</td>
-<td align="left">AE.AERELNST/ AERELNSn IN SUPPAE<br><br> DM.RACE, if
-only one value is selected.<br> DM.RACE = MULTIPLE, if more than one
+<td align="left">AE.AERELNST/ AERELNSn IN SUPPAE<br><br><br>DM.RACE,
+if only one value is selected.<br> DM.RACE = MULTIPLE, if more than one
 value is selected.<br> RACEn in SUPPDM where n = 1 to N selected
 values</td>
 </tr>
 <tr class="even">
-<td align="left">SPLIT_TO_SUPPQUAL</td>
+<td align="left">split_to_suppqual</td>
 <td align="left">Consolidates the responses from more than one source
 variable into more than one target variable (always a
 suppqual/non-standard variable). There is no ‘parent’ target variable
@@ -241,24 +242,34 @@ that is populated with ‘MULTIPLE’.</td>
 CRACE1 will be ‘CHINESE’.</td>
 </tr>
 <tr class="odd">
-<td align="left">REMOVE_DUP</td>
+<td align="left">remove_dup</td>
 <td align="left">Sub-algorithm at the domain level that indicates some
-source records may be removed during the <code>sdtm.oak</code> mapping
+source records may be removed during the <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> mapping
 process if determined to be duplicate records.</td>
-<td align="left">AE = ‘Adverse Events’ on early phase SAE form</td>
+<td align="left">Remove duplicates on the Vital signs raw dataset based
+on subject number</td>
 </tr>
 <tr class="even">
-<td align="left">GROUP_BY</td>
+<td align="left">group_by</td>
 <td align="left">Sub-algorithm used at the domain level to group source
 records before mapping to SDTM. This is used in the event we need to
 collapse data collected across multiple rows into one row in SDTM but it
 is not a simple un-duplication effort. For example, the way infusion
 study drug administration data requires us to create 1 SDTM record in EC
-from 1 or more source records in the mixed log form. When there is more
-than one source record, we need to take the earliest collected infusion
-start date (for ECSTDTC) and the latest collected infusion end date
-within an eCRF instance.</td>
+from 1 or more sources records. When there is more than one source
+record, we need to take the earliest collected infusion start date (for
+ECSTDTC) and the latest collected infusion end date within an eCRF
+instance.</td>
 <td align="left">EC = ‘Exposure as Collected’</td>
+</tr>
+<tr class="odd">
+<td align="left">merge_datasets</td>
+<td align="left">To indicate a join condition with a secondary source or
+multiple sources. Merges are expressed at the domain level only (not at
+data point or variable level). This is a sub-algorithm and can only be
+used with algorithm DATASET_LEVEL.</td>
+<td align="left">Merge AE raw dataset with SAE based on Subject
+number.</td>
 </tr>
 </tbody>
 </table>
@@ -266,18 +277,18 @@ within an eCRF instance.</td>
 <div class="section level2">
 <h2 id="sub-algorithms">Sub-algorithms<a class="anchor" aria-label="anchor" href="#sub-algorithms"></a>
 </h2>
-<p>sdtm.oak supports two levels for defining algorithms. For example,
+<p>{sdtm.oak} supports two levels for defining algorithms. For example,
 there are some SDTM mappings where a certain action has to be taken only
 when a condition is met. In such cases, the primary algorithm checks for
 the condition, and the sub-algorithm executes the mappings when the
 condition is met.</p>
-<p>Currently, sub-algorithms must be provided for these main
+<p>Currently, sub-algorithms must be provided for this main
 algorithms.</p>
 <ul>
-<li>IF_THEN_ELSE</li>
-<li>DATASET_LEVEL</li>
+<li>condition_add</li>
+<li>dataset_level</li>
 </ul>
-<p>Algorithms can be interchangeably used as algorithms and as
+<p>Some algorithms can be interchangeably used as algorithms and as
 sub-algorithms as seen below (not an exhaustive list)</p>
 <p><img src="algo_sub_algo_combo.jpg" width="650"></p>
 <p>The permutation &amp; combination of algorithms &amp; sub-algorithms

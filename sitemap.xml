@@ -19,6 +19,12 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/articles/cnd_df.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/articles/events_domain.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/articles/findings_domain.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/articles/index.html</loc>
   </url>
   <url>
@@ -100,6 +106,9 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/ctl_new_rowid_pillar.cnd_df.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/dataset_oak_vignette.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/derive_seq.html</loc>
   </url>
   <url>
@@ -131,6 +140,9 @@
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/format_iso8601.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/generate_oak_id_vars.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/get_cnd_df_cnd.html</loc>
