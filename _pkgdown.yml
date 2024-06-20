@@ -8,8 +8,8 @@ navbar:
   title: "sdtm.oak"
 
 reference:
-- title: SDTM derivation
-  desc: Toolkit for SDTM derivations
+- title: SDTM Mapping Algorithms/functions
+  desc: Set of functions to perform SDTM Mappings
   contents:
   - assign
   - harcode
@@ -54,3 +54,6 @@ reference:
 - title: Package global state
   contents:
   - clear_cache
+  - generate_oak_id_vars
+  - oak_id_vars
+  - %.>%
