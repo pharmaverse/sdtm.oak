@@ -1,0 +1,75 @@
+codelist_code,term_code,term_value,collected_value,term_preferred_term,term_synonyms
+C66726,C25158,CAPSULE,Capsule,Capsule Dosage Form,cap
+C66726,C25394,PILL,Pill,Pill Dosage Form,
+C66726,C29167,LOTION,Lotion,Lotion Dosage Form,
+C66726,C42887,AEROSOL,Aerosol,Aerosol Dosage Form,aer
+C66726,C42944,INHALANT,Inhalant,Inhalant Dosage Form,
+C66726,C42946,INJECTION,Injection,Injectable Dosage Form,
+C66726,C42953,LIQUID,Liquid,Liquid Dosage Form,
+C66726,C42998,TABLET,Tablet,Tablet Dosage Form,tab
+C66728,C25629,BEFORE,Prior,Prior,
+C66728,C53279,ONGOING,Continue,Continue,Continuous
+C66729,C28161,INTRAMUSCULAR,IM (Intramuscular),Intramuscular Route of Administration,
+C66729,C38210,EPIDURAL,EP (Epidural),Epidural Route of Administration,
+C66729,C38222,INTRA-ARTERIAL,IA (Intra-arterial),Intraarterial Route of Administration,
+C66729,C38223,INTRA-ARTICULAR,IJ (Intra-articular),Intraarticular Route of Administration,
+C66729,C38287,OPHTHALMIC,OP (Ophthalmic),Ophthalmic Route of Administration,
+C66729,C38288,ORAL,PO (Oral),Oral Route of Administration,Intraoral Route of Administration; PO
+C66729,C38305,TRANSDERMAL,DE (Transdermal),Transdermal Route of Administration,
+C66729,C38311,UNKNOWN,Unknown,Unknown Route of Administration,
+C66734,C49568,CM,Concomitant Medication Domain,Concomitant Medication Domain,Concomitant/Prior Medications
+C66741,C174446,TEMP,Body Temperature,Body Temperature,Body Temperature; Temperature
+C66741,C25298,SYSBP,Systolic Blood Pressure,Systolic Blood Pressure,Systolic Blood Pressure
+C66741,C25299,DIABP,Diastolic Blood Pressure,Diastolic Blood Pressure,Diastolic Blood Pressure
+C66741,C49676,PULSE,Pulse Rate,Pulse Rate,Pulse Rate
+C66741,C49678,RESP,Respiratory Rate,Respiratory Rate,Respiratory Rate
+C66741,C60832,OXYSAT,Oxygen Saturation Measurement,Oxygen Saturation Measurement,Oxygen Saturation
+C66741,V00224,VSALL,VS Domain ALL Tests,VS Domain ALL Tests,
+C66742,C49488,Y,Yes,Yes,Yes
+C66770,C25613,%,Percentage,Percentage,Percentage
+C66770,C42559,C,Degree Celsius,Degree Celsius,Degree Celsius
+C66770,C49670,mmHg,Millimeter of Mercury,Millimeter of Mercury,Millimeter of Mercury
+C66770,C49673,beats/min,Beats per Minute,Beats per Minute,Beats per Minute; BPM; bpm
+C66770,C49674,breaths/min,Breaths per Minute,Breaths per Minute,Breaths per Minute
+C66789,C49484,NOT DONE,Not Done,Not Done,
+C67153,C174446,Temperature,Body Temperature,Body Temperature,Body Temperature; Temperature
+C67153,C25298,Systolic Blood Pressure,Systolic Blood Pressure,Systolic Blood Pressure,Systolic Blood Pressure
+C67153,C25299,Diastolic Blood Pressure,Diastolic Blood Pressure,Diastolic Blood Pressure,Diastolic Blood Pressure
+C67153,C49676,Pulse Rate,Pulse Rate,Pulse Rate,Pulse Rate
+C67153,C49678,Respiratory Rate,Respiratory Rate,Respiratory Rate,Respiratory Rate
+C67153,C60832,Oxygen Saturation,Oxygen Saturation Measurement,Oxygen Saturation Measurement,Oxygen Saturation
+C67153,V00224,Vital Signs,VS Domain ALL Tests,VS Domain ALL Tests,
+C71113,C25473,QD,QD (Every Day),Daily,/day; Daily; Per Day
+C71113,C64496,BID,BID (Twice a Day),Twice Daily,BD; Twice per day
+C71113,C64499,PRN,PRN (As Needed),As Needed,As needed
+C71113,C64516,Q2H,Q2H (Every 2 Hours),Every Two Hours,Every 2 hours
+C71113,C64530,QID,QID (4 Times a Day),Four Times Daily,4 times per day
+C71148,C111310,SEMI-RECUMBENT,Semi-Supine,Semi-Supine,Semi-Supine
+C71148,C62122,SITTING,Sitting,Sitting,Sitting
+C71148,C62165,PRONE,Prone,Prone,Prone
+C71148,C62166,STANDING,Standing,Standing,Orthostatic; Standing
+C71148,C62167,SUPINE,Supine,Supine,Supine
+C71620,C25613,%,%,Percentage,Percentage
+C71620,C28253,mg,mg,Milligram,Milligram
+C71620,C28254,mL,mL,Milliliter,cm3; Milliliter
+C71620,C48155,g,g,Gram,Gram
+C71620,C48480,CAPSULE,Capsule,Capsule Dosing Unit,cap; Capsule Dosing Unit
+C71620,C48542,TABLET,Tablet,Tablet Dosing Unit,tab; Tablet Dosing Unit
+C71620,C48579,IU,IU,International Unit,IE; International Unit
+C74456,C12390,RECTUM,Rectum,Rectum,
+C74456,C12421,ORAL CAVITY,Oral Cavity,Oral Cavity,Buccal cavity; Mouth
+C74456,C12470,SKIN,Skin,Skin,Integument; Skin
+C74456,C12502,TYMPANIC MEMBRANE,Tympanic Membrane,Tympanic Membrane,Tympanic Membrane
+C74456,C12674,AXILLA,Axilla,Axilla,Armpit; Axilla
+C74456,C32608,FINGER,FINGER,FINGER,Finger
+C74456,C89803,FOREHEAD,Forehead,Forehead,Forehead
+C99073,C25228,RIGHT,Right,Right,
+C99073,C25229,LEFT,Left,Left,
+TPT,TPT,PREDOSE,Pre-dose,,
+TPT,TPT,POSTDOSE,Post-dose,,
+TPTNUM,TPTNUM,1,Pre-dose,,
+TPTNUM,TPTNUM,2,Post-dose,,
+VISITNUM,VISITNUM,1,Screening,,
+VISITNUM,VISITNUM,2,Visit 1,,
+VISIT,VISIT,SCREENING,Screening,,
+VISIT,VISIT,VISIT 1,Visit 1,,

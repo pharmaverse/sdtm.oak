@@ -47,9 +47,11 @@ Imports:
     vctrs,
     readr,
     glue,
+    DT,
     pillar
 Suggests:
     knitr,
+    htmltools,
     lifecycle,
     magrittr,
     rmarkdown,

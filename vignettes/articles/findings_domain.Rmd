@@ -1,0 +1,559 @@
+---
+title: "Creating an Findings SDTM domain"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating an Findings SDTM domain}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(sdtm.oak)
+library(admiraldev)
+library(rlang)
+library(dplyr, warn.conflicts = FALSE)
+```
+
+# Introduction
+
+This article describes how to create a Findings SDTM domain using the {sdtm.oak} package. Examples are currently presented and tested in the context of the VS domain.
+
+Before reading this article, it is recommended that users review the "Creating an Events Domain" article, which provides a detailed explanation of various concepts in {sdtm.oak}, such as `oak_id_vars`, `condition_add`, etc. It also offers guidance on which mapping algorithms or functions to use for different mappings and provides a more detailed explanation of how these mapping algorithms or functions work.
+
+In this article, we will dive directly into programming and provide further explanation only where it is required.
+
+# Programming workflow
+
+In {sdtm.oak} we process one raw dataset at a time. Similar raw datasets (example Vital Signs - Screening (OID - vs_raw), Vital Signs - Treatment (OID - vs_t_raw)) can be stacked together before processing.
+
+* [Read in data](#readdata)
+* [Create oak_id_vars](#oakidvars)
+* [Read in CT](#readct)
+* [Map Topic Variable](#maptopic)
+* [Map Rest of the Variables](#maprest)
+* [Repeat Map Topic and Map Rest](#repeatsteps)
+
+Repeat the above steps for different raw datasets before proceeding with the below steps.
+
+* [Create SDTM derived variables](#derivedvars)
+* [Add Labels and Attributes](#attributes)
+
+## Read in data {#readdata}
+
+Read all the raw datasets into the environment. In this example, the raw dataset name is `vs_raw`. Users can read it from the package using the below code:
+
+```{r eval=TRUE}
+vs_raw <- read.csv(system.file("raw_data/vitals_raw_data.csv",
+  package = "sdtm.oak"
+))
+```
+
+
+```{r, eval=TRUE, echo=FALSE}
+sdtm.oak:::dataset_oak_vignette(
+  vs_raw,
+  display_vars = exprs(
+    PATNUM, FORML, ASMNTDN, TMPTC, VTLD, VTLTM, SUBPOS, SYS_BP, DIA_BP,
+    PULSE, RESPRT, TEMP, TEMPLOC, OXY_SAT, LAT, LOC
+  )
+)
+```
+
+## Create oak_id_vars {#oakidvars}
+
+```{r eval=TRUE}
+vs_raw <- vs_raw %>%
+  generate_oak_id_vars(
+    pat_var = "PATNUM",
+    raw_src = "vitals"
+  )
+```
+
+```{r, eval=TRUE, echo=FALSE}
+sdtm.oak:::dataset_oak_vignette(
+  vs_raw,
+  display_vars = exprs(
+    oak_id, raw_source, patient_number, PATNUM, FORML, SYS_BP, DIA_BP
+  )
+)
+```
+
+Read in the DM domain
+
+```{r eval=TRUE, echo=FALSE}
+dm <- read.csv(system.file("raw_data/dm.csv",
+  package = "sdtm.oak"
+))
+```
+
+
+## Read in CT {#readct}
+
+Controlled Terminology is part of the SDTM specification and it is prepared by the user.  In this example, the study controlled terminology name is `sdtm_ct.csv`. Users can read it from the package using the below code:
+
+```{r eval=TRUE}
+study_ct <- read.csv(system.file("raw_data/sdtm_ct.csv",
+  package = "sdtm.oak"
+))
+```
+
+```{r, eval=TRUE, echo=FALSE}
+sdtm.oak:::dataset_oak_vignette(
+  study_ct,
+  display_vars = exprs(
+    codelist_code, term_code, term_value, collected_value, term_preferred_term,
+    term_synonyms
+  )
+)
+```
+
+## Map Topic Variable {#maptopic}
+
+This raw dataset has multiple topic variables. Lets start with the first topic variable. Map topic variable SYSBP from the raw variable SYS_BP.
+
+```{r eval=TRUE}
+# Map topic variable SYSBP and its qualifiers.
+vs_sysbp <-
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "SYS_BP",
+    tgt_var = "VSTESTCD",
+    tgt_val = "SYSBP",
+    ct_spec = study_ct,
+    ct_clst = "C66741"
+  ) %>%
+  # Filter for records where VSTESTCD is not empty.
+  # Only these records need qualifier mappings.
+  dplyr::filter(!is.na(.data$VSTESTCD))
+```
+
+```{r, eval=TRUE, echo=FALSE}
+sdtm.oak:::dataset_oak_vignette(
+  vs_sysbp,
+  display_vars = exprs(
+    oak_id, raw_source, patient_number, VSTESTCD
+  )
+)
+```
+
+## Map Rest of the Variables {#maprest}
+
+Map rest of the variables applicable to the topic variable SYSBP. This can include qualifiers, identifier and timing variables.
+
+```{r eval=TRUE}
+# Map topic variable SYSBP and its qualifiers.
+vs_sysbp <- vs_sysbp %>%
+  # Map VSTEST using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "SYS_BP",
+    tgt_var = "VSTEST",
+    tgt_val = "Systolic Blood Pressure",
+    ct_spec = study_ct,
+    ct_clst = "C67153",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRES using assign_no_ct algorithm
+  assign_no_ct(
+    raw_dat = vs_raw,
+    raw_var = "SYS_BP",
+    tgt_var = "VSORRES",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRESU using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "SYS_BP",
+    tgt_var = "VSORRESU",
+    tgt_val = "mmHg",
+    ct_spec = study_ct,
+    ct_clst = "C66770",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSPOS using assign_ct algorithm
+  assign_ct(
+    raw_dat = vs_raw,
+    raw_var = "SUBPOS",
+    tgt_var = "VSPOS",
+    ct_spec = study_ct,
+    ct_clst = "C71148",
+    id_vars = oak_id_vars()
+  )
+```
+
+```{r, eval=TRUE, echo=FALSE}
+sdtm.oak:::dataset_oak_vignette(
+  vs_sysbp,
+  display_vars = exprs(
+    oak_id, raw_source, patient_number, VSTESTCD, VSTEST, VSORRES, VSORRESU, VSPOS
+  )
+)
+```
+
+## Repeat Map Topic and Map Rest {#repeatsteps}
+
+This raw data source has other topic variables DIABP, PULSE, RESP, TEMP, OXYSAT, VSALL and its corresponding qualifiers. Repeat mapping topic and qualifiers for each topic variable.
+
+```{r eval=TRUE}
+# Map topic variable DIABP and its qualifiers.
+vs_diabp <-
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "DIA_BP",
+    tgt_var = "VSTESTCD",
+    tgt_val = "DIABP",
+    ct_spec = study_ct,
+    ct_clst = "C66741"
+  ) %>%
+  dplyr::filter(!is.na(.data$VSTESTCD)) %>%
+  # Map VSTEST using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "DIA_BP",
+    tgt_var = "VSTEST",
+    tgt_val = "Diastolic Blood Pressure",
+    ct_spec = study_ct,
+    ct_clst = "C67153",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRES using assign_no_ct algorithm
+  assign_no_ct(
+    raw_dat = vs_raw,
+    raw_var = "DIA_BP",
+    tgt_var = "VSORRES",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRESU using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "DIA_BP",
+    tgt_var = "VSORRESU",
+    tgt_val = "mmHg",
+    ct_spec = study_ct,
+    ct_clst = "C66770",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSPOS using assign_ct algorithm
+  assign_ct(
+    raw_dat = vs_raw,
+    raw_var = "SUBPOS",
+    tgt_var = "VSPOS",
+    ct_spec = study_ct,
+    ct_clst = "C71148",
+    id_vars = oak_id_vars()
+  )
+
+# Map topic variable PULSE and its qualifiers.
+vs_pulse <-
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "PULSE",
+    tgt_var = "VSTESTCD",
+    tgt_val = "PULSE",
+    ct_spec = study_ct,
+    ct_clst = "C66741"
+  ) %>%
+  dplyr::filter(!is.na(.data$VSTESTCD)) %>%
+  # Map VSTEST using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "PULSE",
+    tgt_var = "VSTEST",
+    tgt_val = "Pulse Rate",
+    ct_spec = study_ct,
+    ct_clst = "C67153",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRES using assign_no_ct algorithm
+  assign_no_ct(
+    raw_dat = vs_raw,
+    raw_var = "PULSE",
+    tgt_var = "VSORRES",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRESU using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "PULSE",
+    tgt_var = "VSORRESU",
+    tgt_val = "beats/min",
+    ct_spec = study_ct,
+    ct_clst = "C66770",
+    id_vars = oak_id_vars()
+  )
+
+# Map topic variable RESP from the raw variable RESPRT and its qualifiers.
+vs_resp <-
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "RESPRT",
+    tgt_var = "VSTESTCD",
+    tgt_val = "RESP",
+    ct_spec = study_ct,
+    ct_clst = "C66741"
+  ) %>%
+  dplyr::filter(!is.na(.data$VSTESTCD)) %>%
+  # Map VSTEST using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "RESPRT",
+    tgt_var = "VSTEST",
+    tgt_val = "Respiratory Rate",
+    ct_spec = study_ct,
+    ct_clst = "C67153",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRES using assign_no_ct algorithm
+  assign_no_ct(
+    raw_dat = vs_raw,
+    raw_var = "RESPRT",
+    tgt_var = "VSORRES",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRESU using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "RESPRT",
+    tgt_var = "VSORRESU",
+    tgt_val = "breaths/min",
+    ct_spec = study_ct,
+    ct_clst = "C66770",
+    id_vars = oak_id_vars()
+  )
+
+# Map topic variable TEMP from raw variable TEMP and its qualifiers.
+vs_temp <-
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "TEMP",
+    tgt_var = "VSTESTCD",
+    tgt_val = "TEMP",
+    ct_spec = study_ct,
+    ct_clst = "C66741"
+  ) %>%
+  dplyr::filter(!is.na(.data$VSTESTCD)) %>%
+  # Map VSTEST using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "TEMP",
+    tgt_var = "VSTEST",
+    tgt_val = "Temperature",
+    ct_spec = study_ct,
+    ct_clst = "C67153",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRES using assign_no_ct algorithm
+  assign_no_ct(
+    raw_dat = vs_raw,
+    raw_var = "TEMP",
+    tgt_var = "VSORRES",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRESU using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "TEMP",
+    tgt_var = "VSORRESU",
+    tgt_val = "C",
+    ct_spec = study_ct,
+    ct_clst = "C66770",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSLOC from TEMPLOC using assign_ct
+  assign_ct(
+    raw_dat = vs_raw,
+    raw_var = "TEMPLOC",
+    tgt_var = "VSLOC",
+    ct_spec = study_ct,
+    ct_clst = "C74456",
+    id_vars = oak_id_vars()
+  )
+
+# Map topic variable OXYSAT from raw variable OXY_SAT and its qualifiers.
+vs_oxysat <-
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "OXY_SAT",
+    tgt_var = "VSTESTCD",
+    tgt_val = "OXYSAT",
+    ct_spec = study_ct,
+    ct_clst = "C66741"
+  ) %>%
+  dplyr::filter(!is.na(.data$VSTESTCD)) %>%
+  # Map VSTEST using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "OXY_SAT",
+    tgt_var = "VSTEST",
+    tgt_val = "Oxygen Saturation",
+    ct_spec = study_ct,
+    ct_clst = "C67153",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRES using assign_no_ct algorithm
+  assign_no_ct(
+    raw_dat = vs_raw,
+    raw_var = "OXY_SAT",
+    tgt_var = "VSORRES",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSORRESU using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "OXY_SAT",
+    tgt_var = "VSORRESU",
+    tgt_val = "%",
+    ct_spec = study_ct,
+    ct_clst = "C66770",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSLAT using assign_ct from raw variable LAT
+  assign_ct(
+    raw_dat = vs_raw,
+    raw_var = "LAT",
+    tgt_var = "VSLAT",
+    ct_spec = study_ct,
+    ct_clst = "C99073",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSLOC using assign_ct from raw variable LOC
+  assign_ct(
+    raw_dat = vs_raw,
+    raw_var = "LOC",
+    tgt_var = "VSLOC",
+    ct_spec = study_ct,
+    ct_clst = "C74456",
+    id_vars = oak_id_vars()
+  )
+
+# Map topic variable VSALL from raw variable ASMNTDN with the logic if ASMNTDN  == 1 then VSTESTCD = VSALL
+vs_vsall <-
+  hardcode_ct(
+    raw_dat = condition_add(vs_raw, ASMNTDN == 1L),
+    raw_var = "ASMNTDN",
+    tgt_var = "VSTESTCD",
+    tgt_val = "VSALL",
+    ct_spec = study_ct,
+    ct_clst = "C66741"
+  ) %>%
+  dplyr::filter(!is.na(.data$VSTESTCD)) %>%
+  # Map VSTEST using hardcode_ct algorithm
+  hardcode_ct(
+    raw_dat = vs_raw,
+    raw_var = "ASMNTDN",
+    tgt_var = "VSTEST",
+    tgt_val = "Vital Signs",
+    ct_spec = study_ct,
+    ct_clst = "C67153",
+    id_vars = oak_id_vars()
+  )
+```
+
+Now that all the topic variable and its qualifier mappings are complete, combine all the datasets and proceed with mapping qualifiers, identifiers and timing variables applicable to all topic variables.
+
+```{r, eval=TRUE}
+# Combine all the topic variables into a single data frame and map qualifiers
+# applicable to all topic variables
+vs <- dplyr::bind_rows(
+  vs_vsall, vs_sysbp, vs_diabp, vs_pulse, vs_resp,
+  vs_temp, vs_oxysat
+) %>%
+  # Map qualifiers common to all topic variables
+  # Map VSDTC using assign_ct algorithm
+  assign_datetime(
+    raw_dat = vs_raw,
+    raw_var = c("VTLD", "VTLTM"),
+    tgt_var = "VSDTC",
+    raw_fmt = c(list(c("d-m-y", "dd-mmm-yyyy")), "H:M")
+  ) %>%
+  # Map VSTPT from TMPTC using assign_ct
+  assign_ct(
+    raw_dat = vs_raw,
+    raw_var = "TMPTC",
+    tgt_var = "VSTPT",
+    ct_spec = study_ct,
+    ct_clst = "TPT",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VSTPTNUM from TMPTC using assign_ct
+  assign_ct(
+    raw_dat = vs_raw,
+    raw_var = "TMPTC",
+    tgt_var = "VSTPTNUM",
+    ct_spec = study_ct,
+    ct_clst = "TPTNUM",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VISIT from INSTANCE using assign_ct
+  assign_ct(
+    raw_dat = vs_raw,
+    raw_var = "INSTANCE",
+    tgt_var = "VISIT",
+    ct_spec = study_ct,
+    ct_clst = "VISIT",
+    id_vars = oak_id_vars()
+  ) %>%
+  # Map VISITNUM from INSTANCE using assign_ct
+  assign_ct(
+    raw_dat = vs_raw,
+    raw_var = "INSTANCE",
+    tgt_var = "VISITNUM",
+    ct_spec = study_ct,
+    ct_clst = "VISITNUM",
+    id_vars = oak_id_vars()
+  )
+```
+
+```{r, eval=TRUE, echo=FALSE}
+sdtm.oak:::dataset_oak_vignette(
+  vs,
+  display_vars = exprs(
+    oak_id, raw_source, patient_number, VSTESTCD, VSTEST, VSORRES, VSORRESU, VSPOS,
+    VSLAT, VSDTC, VSTPT, VSTPTNUM, VISIT, VISITNUM
+  )
+)
+```
+
+## Create SDTM derived variables {#derivedvars}
+
+Create derived variables applicable to all topic variables.
+
+```{r eval=TRUE}
+vs <- vs %>%
+  dplyr::mutate(
+    STUDYID = "test_study",
+    DOMAIN = "VS",
+    VSCAT = "VITAL SIGNS",
+    USUBJID = paste0("test_study", "-", .data$patient_number)
+  ) %>%
+  # derive_seq(tgt_var = "VSSEQ",
+  #            rec_vars= c("USUBJID", "VSTRT")) %>%
+  derive_study_day(
+    sdtm_in = .,
+    dm_domain = dm,
+    tgdt = "VSDTC",
+    refdt = "RFXSTDTC",
+    study_day_var = "VSDY"
+  ) %>%
+  dplyr::select("STUDYID", "DOMAIN", "USUBJID", everything())
+```
+
+```{r, eval=TRUE, echo=FALSE}
+sdtm.oak:::dataset_oak_vignette(
+  vs,
+  display_vars = exprs(
+    STUDYID, DOMAIN, USUBJID, VSTESTCD, VSTEST, VSORRES, VSORRESU, VSPOS,
+    VSLAT, VSTPT, VSTPTNUM, VISIT, VISITNUM, VSDTC, VSDY
+  )
+)
+```
+
+## Add Labels and Attributes {#attributes}
+
+Yet to be developed.
