@@ -271,7 +271,7 @@ sdtm.oak:::dataset_oak_vignette(
 )
 ```
 
-The `condition_add` function adds additional metadata to the records in the raw dataset that meets the condition. Refer to the function documentation for more details. `hardcode_ct` function uses the addtional metadata to find the records that meet the criteria and map them accordingly.
+The `condition_add` function adds additional metadata to the records in the raw dataset that meets the condition. Refer to the function documentation for more details. `hardcode_ct` function uses the additional metadata to find the records that meet the criteria and map them accordingly.
 
 ### hardcode_no_ct and condition_add {#hardcode_no_ct}
 

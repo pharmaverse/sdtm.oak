@@ -455,7 +455,7 @@ vs_vsall <-
   )
 ```
 
-Now that all the topic variable and its qualifier mappings are complete, combine all the datasets and proceed with mapping qualifiers, identifiers and timing variables appicable to all topic variables.
+Now that all the topic variable and its qualifier mappings are complete, combine all the datasets and proceed with mapping qualifiers, identifiers and timing variables applicable to all topic variables.
 
 ```{r, eval=TRUE}
 # Combine all the topic variables into a single data frame and map qualifiers
@@ -556,4 +556,4 @@ sdtm.oak:::dataset_oak_vignette(
 
 ## Add Labels and Attributes {#attributes}
 
-Yet to be devleoped.
+Yet to be developed.
