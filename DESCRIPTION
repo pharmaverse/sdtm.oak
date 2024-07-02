@@ -16,6 +16,8 @@ Authors@R: c(
     role = "aut", comment = c(ORCID = "0000-0001-5226-3441")),
     person("Kamil", "Sijko", email = "kamil.sijko@ttsi.com.pl",
     role = "aut", comment = c(ORCID = "0000-0002-2203-1065")),
+    person("Shiyu", "Chen", email = "Shiyu.Chen@atorusresearch.com", 
+    role = "aut"),
     person("Pattern Institute", role = c("cph", "fnd")),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")),
     person("Pfizer Inc", role = c("cph", "fnd")),
