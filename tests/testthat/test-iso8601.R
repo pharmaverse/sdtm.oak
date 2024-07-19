@@ -48,7 +48,7 @@ test_that("`iso8601_year()`: basic usage", {
   expect_identical(
     iso8601_year(c("0", "1", "2", "50", "68", "69", "90", "99", "00")),
     c("2000", "2001", "2002", "2050", "2068", "1969", "1990", "1999", "2000")
-    )
+  )
 
   # By default, `cutoff_2000` is at 68.
   expect_identical(
@@ -62,11 +62,11 @@ test_that("`iso8601_year()`: basic usage", {
   )
 
   # Set cutoff_2000 to something else
-  expect_identical(iso8601_year(as.character(0:50), cutoff_2000 = 25),
-                   as.character(c(2000:2025, 1926:1950)))
+  expect_identical(iso8601_year(as.character(0L:50L), cutoff_2000 = 25L),
+                   as.character(c(2000L:2025L, 1926L:1950L)))
 
-  expect_identical(iso8601_year(as.character(1900:1950), cutoff_2000 = 25),
-                   as.character(c(1900:1950)))
+  expect_identical(iso8601_year(as.character(1900L:1950L), cutoff_2000 = 25L),
+                   as.character(c(1900L:1950L)))
 
 })
 
@@ -87,7 +87,7 @@ test_that("`iso8601_mon()`: basic usage", {
 
   mon <- month.abb
   expect_identical(iso8601_mon(mon),
-                   "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
+                   c("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"))
 
 })
 
@@ -95,7 +95,7 @@ test_that("`iso8601_sec()`: basic usage", {
 
   expect_identical(
     iso8601_sec(c(NA, "0", "1", "10", "59", "99", "100")),
-    c( NA, "00", "01", "10", "59", "99", NA)
+    c(NA, "00", "01", "10", "59", "99", NA)
   )
 })
 

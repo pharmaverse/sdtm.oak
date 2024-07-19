@@ -312,8 +312,7 @@ test_that("`parse_dttm_fmt` works as expected", {
   observed_cus <- parse_dttm_fmt("year month day",
                                  fmt_cmp(year = "year",
                                          mon = "month",
-                                         mday = "day")
-                                 )
+                                         mday = "day"))
 
   expected_cus <- tibble::tribble(
     ~fmt_c,    ~pat,    ~cap, ~start, ~end, ~len, ~ord,
@@ -326,5 +325,3 @@ test_that("`parse_dttm_fmt` works as expected", {
 
   expect_identical(observed_cus, expected_cus)
 })
-
-

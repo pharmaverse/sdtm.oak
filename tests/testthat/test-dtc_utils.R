@@ -25,18 +25,18 @@ test_that("`assert_capture_matrix()`: basic usage", {
   expect_identical(assert_capture_matrix(m), m)
 
   expect_error(assert_capture_matrix(character()))
-  expect_error(assert_capture_matrix(matrix(data = NA_character_, nrow = 0, ncol = 0)))
-  expect_error(assert_capture_matrix(matrix(data = NA_character_, nrow = 1)))
+  expect_error(assert_capture_matrix(matrix(data = NA_character_, nrow = 0L, ncol = 0L)))
+  expect_error(assert_capture_matrix(matrix(data = NA_character_, nrow = 1L)))
 })
 
 test_that("`complete_capture_matrix()`: basic usage", {
 
   # Input with no cols and rows
-  input <- matrix(data = NA_character_, nrow = 0, ncol = 0)
+  input <- matrix(data = NA_character_, nrow = 0L, ncol = 0L)
   expected_output <- matrix(
     data = NA_character_,
-    nrow = 0,
-    ncol = 6,
+    nrow = 0L,
+    ncol = 6L,
     dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
   )
 
@@ -44,11 +44,11 @@ test_that("`complete_capture_matrix()`: basic usage", {
                    expected_output)
 
   # Input with no cols and 1 row
-  input <- matrix(data = NA_character_, nrow = 1)
+  input <- matrix(data = NA_character_, nrow = 1L)
   expected_output <- matrix(
     data = NA_character_,
-    nrow = 1,
-    ncol = 6,
+    nrow = 1L,
+    ncol = 6L,
     dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
   )
 
@@ -59,15 +59,15 @@ test_that("`complete_capture_matrix()`: basic usage", {
   input <-
     matrix(
       NA_character_,
-      nrow = 1,
-      ncol = 2,
+      nrow = 1L,
+      ncol = 2L,
       dimnames = list(NULL, c("year", "sec"))
     )
 
   expected_output <- matrix(
     data = NA_character_,
-    nrow = 1,
-    ncol = 6,
+    nrow = 1L,
+    ncol = 6L,
     dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
   )
 
@@ -78,16 +78,16 @@ test_that("`complete_capture_matrix()`: basic usage", {
   input <-
     matrix(
       c("2020", "10"),
-      nrow = 1,
-      ncol = 2,
+      nrow = 1L,
+      ncol = 2L,
       dimnames = list(NULL, c("year", "sec"))
     )
 
   expected_output <-
     matrix(
-      data = c("2020", rep(NA, 4), "10"),
-      nrow = 1,
-      ncol = 6,
+      data = c("2020", rep(NA, 4L), "10"),
+      nrow = 1L,
+      ncol = 6L,
       dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
     )
 
@@ -98,15 +98,15 @@ test_that("`complete_capture_matrix()`: basic usage", {
   input <-
     matrix(
       c("2020", "10"),
-      nrow = 1,
-      ncol = 2,
+      nrow = 1L,
+      ncol = 2L,
       dimnames = list(NULL, c("semester", "quarter"))
     )
 
   expected_output <- matrix(
     data = NA_character_,
-    nrow = 1,
-    ncol = 6,
+    nrow = 1L,
+    ncol = 6L,
     dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
   )
 
@@ -151,7 +151,7 @@ test_that("`coalesce_capture_matrices()`: basic usage", {
 
   expected_output <- tibble::tribble(
     ~year,  ~mon, ~mday, ~hour, ~min, ~sec,
-    NA,       NA,    NA,  "10", "00", "05",
+    NA,       NA,    NA,  "10", "00", "05"
   ) |>
     as.matrix()
 

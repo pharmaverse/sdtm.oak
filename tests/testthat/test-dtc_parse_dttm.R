@@ -22,8 +22,8 @@ test_that("`parse_dttm()` works as expected", {
 
   # Year, Month, Day
   expected_ymd <- tibble::tribble(
-    ~year, ~mon, ~mday, ~hour, ~min, ~sec,
-   "2020", "05",  "11",    NA,   NA,   NA
+    ~year,  ~mon, ~mday, ~hour, ~min, ~sec,
+    "2020", "05",  "11",    NA,   NA,   NA
   ) |>
     as.matrix()
 
@@ -59,7 +59,7 @@ test_that("`parse_dttm()` works as expected", {
   expected_ymdhm_1 <- tibble::tribble(
     ~year, ~mon, ~mday, ~hour, ~min,  ~sec,
     "2002", "05",  "11", "11", "45",    NA,
-        NA,   NA,    NA,   NA,   NA,    NA
+    NA,       NA,    NA,   NA,   NA,    NA
   ) |>
     as.matrix()
 
@@ -69,7 +69,7 @@ test_that("`parse_dttm()` works as expected", {
   expected_ymdhm_2 <- tibble::tribble(
     ~year, ~mon, ~mday, ~hour, ~min, ~sec,
     NA,      NA,    NA,   NA,   NA,    NA,
-    NA,    "05",  "11", "11", "45",    NA,
+    NA,    "05",  "11", "11", "45",    NA
   ) |>
     as.matrix()
 
@@ -81,19 +81,19 @@ test_that("`parse_dttm()` works as expected", {
   expected_ymdhm_3 <- tibble::tribble(
     ~year, ~mon, ~mday, ~hour, ~min,  ~sec,
     "2002", "05",  "11", "11", "45",    NA,
-        NA, "05",  "11", "11", "45",    NA
+    NA,     "05",  "11", "11", "45",    NA
   ) |>
     as.matrix()
 
   expect_identical(
     parse_dttm(c("2002-05-11 11:45", "-05-11 11:45"), c("y-m-d H:M", "-m-d H:M")),
     expected_ymdhm_3
-    )
+  )
 
   # Different date formats
   expected_ymdhm_4 <- tibble::tribble(
     ~year,   ~mon, ~mday, ~hour, ~min,  ~sec,
-    "1985", "feb",  "05",  "12", "55",  "02",
+    "1985", "feb",  "05",  "12", "55",  "02"
   ) |>
     as.matrix()
 
@@ -108,7 +108,7 @@ test_that("`parse_dttm()` works as expected", {
     ~year,   ~mon, ~mday, ~hour, ~min,  ~sec,
     "2020",  "05",  "18",    NA,   NA,    NA,
     NA,        NA,    NA,    NA,   NA,    NA,
-    NA,        NA,    NA,    NA,   NA,    NA,
+    NA,        NA,    NA,    NA,   NA,    NA
   ) |>
     as.matrix()
 
@@ -118,7 +118,7 @@ test_that("`parse_dttm()` works as expected", {
     ~year,   ~mon, ~mday, ~hour, ~min,  ~sec,
     "2020",  "05",  "18",    NA,   NA,    NA,
     "2020",  "UN",  "18",    NA,   NA,    NA,
-    NA,        NA,    NA,    NA,   NA,    NA,
+    NA,        NA,    NA,    NA,   NA,    NA
   ) |>
     as.matrix()
 
@@ -131,7 +131,7 @@ test_that("`parse_dttm()` works as expected", {
     ~year,   ~mon, ~mday, ~hour, ~min,  ~sec,
     "2020",  "05",  "18",    NA,   NA,    NA,
     "2020",  "UN",  "18",    NA,   NA,    NA,
-    "2020", "UNK",  "UN",    NA,   NA,    NA,
+    "2020", "UNK",  "UN",    NA,   NA,    NA
   ) |>
     as.matrix()
 
