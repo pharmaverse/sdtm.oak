@@ -1,4 +1,4 @@
-test_that("derive_seq works as expected", {
+test_that("`derive_seq()` works as expected", {
   # Test for VSSEQ derivation
   vs <- read_domain_example("vs")
 
@@ -40,7 +40,7 @@ test_that("derive_seq works as expected", {
   expect_identical(observed_apseq, expected_apseq)
 })
 
-test_that("is_seq_name works as expected", {
+test_that("`is_seq_name()`: basic usage", {
   expect_true(is_seq_name("AESEQ"))
 
   expect_false(is_seq_name("AEseq"))

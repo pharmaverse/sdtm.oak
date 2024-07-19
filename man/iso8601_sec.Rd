@@ -15,8 +15,4 @@ A character vector.
 \description{
 \code{\link[=iso8601_sec]{iso8601_sec()}} converts a character vector whose values represent seconds.
 }
-\examples{
-sdtm.oak:::iso8601_sec(c(NA, "0", "1", "10", "59", "99", "100"))
-
-}
 \keyword{internal}

@@ -30,14 +30,4 @@ date/time format components (as returned by \code{\link[=parse_dttm_fmt]{parse_d
 mapping of date/time component formats to regexps and generates a single
 regular expression with groups for matching each of the date/time components.
 }
-\examples{
-sdtm.oak:::dttm_fmt_to_regex("y")
-sdtm.oak:::dttm_fmt_to_regex("y", anchored = FALSE)
-
-sdtm.oak:::dttm_fmt_to_regex("m")
-sdtm.oak:::dttm_fmt_to_regex("ymd")
-
-sdtm.oak:::dttm_fmt_to_regex("ymd HH:MM:SS")
-
-}
 \keyword{internal}

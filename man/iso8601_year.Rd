@@ -20,16 +20,4 @@ A character vector.
 \code{\link[=iso8601_year]{iso8601_year()}} converts a character vector whose values represent years to
 four-digit years.
 }
-\examples{
-sdtm.oak:::iso8601_year(c("0", "1", "2", "50", "68", "69", "90", "99", "00"))
-
-# Be default, `cutoff_2000` is at 68.
-sdtm.oak:::iso8601_year(c("67", "68", "69", "70"))
-sdtm.oak:::iso8601_year(c("1967", "1968", "1969", "1970"))
-
-# Change it to something else, e.g. `cutoff_2000 = 25`.
-sdtm.oak:::iso8601_year(as.character(0:50), cutoff_2000 = 25)
-sdtm.oak:::iso8601_year(as.character(1900:1950), cutoff_2000 = 25)
-
-}
 \keyword{internal}

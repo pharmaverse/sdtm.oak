@@ -11,8 +11,6 @@
 #'   of the matched values from the `from` vector. If an element in `x` does not
 #'   match any value in `from`, the corresponding position in the output will be
 #'   `NA`. This index information is critical for subsequent recoding operations.
-#' @examples
-#' sdtm.oak:::index_for_recode(x = 1:5, from = c(2, 4))
 #'
 #' @keywords internal
 index_for_recode <- function(x, from) {
@@ -32,25 +30,6 @@ index_for_recode <- function(x, from) {
 #' @param .na Value to be used to recode missing values.
 #'
 #' @returns A vector of recoded values.
-#'
-#' @examples
-#' x <- c("male", "female", "x", NA)
-#' sdtm.oak:::recode(x,
-#'   from = c("male", "female"),
-#'   to = c("M", "F")
-#' )
-#' sdtm.oak:::recode(
-#'   x,
-#'   from = c("male", "female"),
-#'   to = c("M", "F"),
-#'   .no_match = "?"
-#' )
-#' sdtm.oak:::recode(
-#'   x,
-#'   from = c("male", "female"),
-#'   to = c("M", "F"),
-#'   .na = "missing"
-#' )
 #'
 #' @keywords internal
 recode <- function(

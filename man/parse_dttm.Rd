@@ -64,31 +64,4 @@ A character matrix of six columns: \code{"year"}, \code{"mon"}, \code{"mday"},
 \code{\link[=parse_dttm]{parse_dttm()}} extracts date and time components. \code{\link[=parse_dttm]{parse_dttm()}} wraps around
 \code{\link[=parse_dttm_]{parse_dttm_()}}, which is not vectorized over \code{fmt}.
 }
-\examples{
-sdtm.oak:::parse_dttm("2020", "y")
-sdtm.oak:::parse_dttm("2020-05", "y")
-
-sdtm.oak:::parse_dttm("2020-05", "y-m")
-sdtm.oak:::parse_dttm("2020-05-11", "y-m-d")
-
-sdtm.oak:::parse_dttm("2020 05 11", "y m d")
-sdtm.oak:::parse_dttm("2020  05  11", "y m d")
-sdtm.oak:::parse_dttm("2020  05  11", "y\\\\s+m\\\\s+d")
-sdtm.oak:::parse_dttm("2020      05     11", "y\\\\s+m\\\\s+d")
-
-sdtm.oak:::parse_dttm("2020-05-11 11:45", "y-m-d H:M")
-sdtm.oak:::parse_dttm("2020-05-11 11:45:15.6", "y-m-d H:M:S")
-
-sdtm.oak:::parse_dttm(c("2002-05-11 11:45", "-05-11 11:45"), "y-m-d H:M")
-sdtm.oak:::parse_dttm(c("2002-05-11 11:45", "-05-11 11:45"), "-m-d H:M")
-sdtm.oak:::parse_dttm(c("2002-05-11 11:45", "-05-11 11:45"), c("y-m-d H:M", "-m-d H:M"))
-
-sdtm.oak:::parse_dttm("05 feb 1985 12 55 02", "d m y H M S")
-sdtm.oak:::parse_dttm("12 55 02 05 feb 1985", "H M S d m y")
-
-sdtm.oak:::parse_dttm(c("2020-05-18", "2020-UN-18", "2020-UNK-UN"), "y-m-d")
-sdtm.oak:::parse_dttm(c("2020-05-18", "2020-UN-18", "2020-UNK-UN"), "y-m-d", na = "UN")
-sdtm.oak:::parse_dttm(c("2020-05-18", "2020-UN-18", "2020-UNK-UN"), "y-m-d", na = c("UN", "UNK"))
-
-}
 \keyword{internal}

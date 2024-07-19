@@ -18,19 +18,4 @@ A character matrix that contains the columns \code{year}, \code{mon}, \code{mday
 \code{\link[=complete_capture_matrix]{complete_capture_matrix()}} completes the missing, if any, columns of the
 capture matrix.
 }
-\examples{
-sdtm.oak:::complete_capture_matrix(matrix(data = NA_character_, nrow = 0, ncol = 0))
-sdtm.oak:::complete_capture_matrix(matrix(data = NA_character_, nrow = 1))
-
-# m <- matrix(NA_character_, nrow = 1, ncol = 2, dimnames = list(NULL, c("year", "sec")))
-# sdtm.oak:::complete_capture_matrix(m)
-
-# m <- matrix(c("2020", "10"), nrow = 1, ncol = 2, dimnames = list(NULL, c("year", "sec")))
-# sdtm.oak:::complete_capture_matrix(m)
-
-# Any other existing columns are dropped.
-# m <- matrix(c("2020", "10"), nrow = 1, ncol = 2, dimnames = list(NULL, c("semester", "quarter")))
-# sdtm.oak:::complete_capture_matrix(m)
-
-}
 \keyword{internal}

@@ -24,20 +24,4 @@ invisibly.
 \code{\link[=assert_ct_clst]{assert_ct_clst()}} asserts the validity of a codelist code in the context of
 a controlled terminology specification.
 }
-\examples{
-# Load a controlled terminology example.
-(ct_spec <- read_ct_spec_example("ct-01-cm"))
-
-# Should work fine.
-sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = "C71113")
-
-# In certain cases, you might allow `ct_clst` to be `NULL` as to indicate absence,
-# in that case, set `optional` to `TRUE` to make `assert_ct_clst()` more
-# forgiving.
-sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = NULL, optional = TRUE)
-
-# Otherwise it would err.
-try(sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = NULL, optional = FALSE))
-
-}
 \keyword{internal}

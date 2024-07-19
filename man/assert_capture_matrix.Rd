@@ -27,17 +27,4 @@ returned by \code{\link[=parse_dttm]{parse_dttm()}}: capture matrix.
 This function checks that the capture matrix is a matrix and that it contains
 six columns: \code{year}, \code{mon}, \code{mday}, \code{hour}, \code{min} and \code{sec}.
 }
-\examples{
-cols <- c("year", "mon", "mday", "hour", "min", "sec")
-m <- matrix(NA_character_, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
-sdtm.oak:::assert_capture_matrix(m)
-
-# These commands should throw an error
-if (FALSE) {
-  sdtm.oak:::assert_capture_matrix(character())
-  sdtm.oak:::assert_capture_matrix(matrix(data = NA_character_, nrow = 0, ncol = 0))
-  sdtm.oak:::assert_capture_matrix(matrix(data = NA_character_, nrow = 1))
-}
-
-}
 \keyword{internal}

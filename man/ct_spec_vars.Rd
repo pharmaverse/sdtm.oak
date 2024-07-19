@@ -20,20 +20,4 @@ request this subset of variables by passing the argument value \code{"from"}. If
 only the mapping-to variable is to be requested, then simply pass \code{"to"}. If
 only the codelist code variable name is needed then pass \code{"ct_clst"}.
 }
-\examples{
-# These two calls are equivalent and return all required variables in a
-# controlled terminology data set.
-ct_spec_vars()
-ct_spec_vars("all")
-
-# "Codelist code" variable name.
-ct_spec_vars("ct_clst")
-
-# "From" variables
-ct_spec_vars("from")
-
-# The "to" variable.
-ct_spec_vars("to")
-
-}
 \keyword{internal}

@@ -123,3 +123,9 @@ test_that("recode(): notable cases", {
     .na = "X"
   ), rep("X", 4L))
 })
+
+test_that("index_for_recode(): basic usage", {
+  expect_identical(index_for_recode(x = 1:5, from = c(2, 4)),
+                   as.integer(c(NA, 1, NA, 2, NA)))
+
+})

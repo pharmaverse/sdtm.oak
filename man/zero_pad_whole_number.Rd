@@ -19,12 +19,4 @@ A character vector.
 them to character with zero padding. Negative numbers and numbers greater
 than the width specified by the number of digits \code{n} are converted to \code{NA}.
 }
-\examples{
-sdtm.oak:::zero_pad_whole_number(c(-1, 0, 1))
-
-sdtm.oak:::zero_pad_whole_number(c(-1, 0, 1, 10, 99, 100), n = 2)
-
-sdtm.oak:::zero_pad_whole_number(c(-1, 0, 1, 10, 99, 100), n = 3)
-
-}
 \keyword{internal}

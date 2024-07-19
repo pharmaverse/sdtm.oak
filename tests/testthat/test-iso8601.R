@@ -42,3 +42,103 @@ test_that("`iso8601_two_digits()`: basic usage", {
   y <- c("00", "00", "01", "01", "42", NA, NA, NA)
   expect_identical(iso8601_two_digits(x), y)
 })
+
+test_that("`iso8601_year()`: basic usage", {
+
+  expect_identical(
+    iso8601_year(c("0", "1", "2", "50", "68", "69", "90", "99", "00")),
+    c("2000", "2001", "2002", "2050", "2068", "1969", "1990", "1999", "2000")
+    )
+
+  # By default, `cutoff_2000` is at 68.
+  expect_identical(
+    iso8601_year(c("67", "68", "69", "70")),
+    c("2067", "2068", "1969", "1970")
+  )
+
+  expect_identical(
+    iso8601_year(c("1967", "1968", "1969", "1970")),
+    c("1967", "1968", "1969", "1970")
+  )
+
+  # Set cutoff_2000 to something else
+  expect_identical(iso8601_year(as.character(0:50), cutoff_2000 = 25),
+                   as.character(c(2000:2025, 1926:1950)))
+
+  expect_identical(iso8601_year(as.character(1900:1950), cutoff_2000 = 25),
+                   as.character(c(1900:1950)))
+
+})
+
+test_that("`iso8601_mon()`: basic usage", {
+
+  expect_identical(
+    iso8601_mon(c(NA, "0", "1", "2", "10", "11", "12")),
+    c(NA, "00", "01", "02", "10", "11", "12")
+  )
+
+  # No semantic validation is performed on the numeric months, so `"13"` stays
+  # `"13"` but representations that can't be represented as two-digit numbers
+  # become `NA`.
+  expect_identical(
+    iso8601_mon(c("13", "99", "100", "-1")),
+    c("13", "99", NA, NA)
+  )
+
+  mon <- month.abb
+  expect_identical(iso8601_mon(mon),
+                   "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12")
+
+})
+
+test_that("`iso8601_sec()`: basic usage", {
+
+  expect_identical(
+    iso8601_sec(c(NA, "0", "1", "10", "59", "99", "100")),
+    c( NA, "00", "01", "10", "59", "99", NA)
+  )
+})
+
+test_that("`iso8601_truncate()`: basic usage", {
+
+  x <-
+    c(
+      "1999-01-01T15:20:01",
+      "1999-01-01T15:20:-",
+      "1999-01-01T15:-:-",
+      "1999-01-01T-:-:-",
+      "1999-01--T-:-:-",
+      "1999----T-:-:-",
+      "-----T-:-:-"
+    )
+
+  expect_identical(
+    iso8601_truncate(x),
+    c("1999-01-01T15:20:01", "1999-01-01T15:20", "1999-01-01T15", "1999-01-01",
+      "1999-01", "1999", NA)
+  )
+
+  # With `empty_as_na = FALSE` empty strings are not replaced with `NA`
+  expect_true(is.na(iso8601_truncate("-----T-:-:-", empty_as_na = TRUE)))
+  expect_identical(iso8601_truncate("-----T-:-:-", empty_as_na = FALSE), "")
+
+  # Truncation only happens if missing components are the right most end,
+  # otherwise they remain unaltered.
+  expect_identical(
+    iso8601_truncate(
+      c(
+        "1999----T15:20:01",
+        "1999-01-01T-:20:01",
+        "1999-01-01T-:-:01",
+        "1999-01-01T-:-:-"
+      )
+    ),
+    c(
+      "1999----T15:20:01",
+      "1999-01-01T-:20:01",
+      "1999-01-01T-:-:01",
+      "1999-01-01"
+    )
+  )
+
+})

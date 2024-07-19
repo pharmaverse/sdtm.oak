@@ -19,22 +19,4 @@ Each argument of \code{...} should be a capture matrix in the sense of the outpu
 by \code{\link[=complete_capture_matrix]{complete_capture_matrix()}}, meaning a character matrix of six columns
 whose names are: \code{year}, \code{mon}, \code{mday}, \code{hour}, \code{min} or \code{sec}.
 }
-\examples{
-cols <- c("year", "mon", "mday", "hour", "min", "sec")
-dates <- c("2020", "01", "01", "20", NA, NA)
-times <- c(NA, NA, NA, "10", "00", "05")
-m_dates <- matrix(dates, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
-m_times <- matrix(times, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
-
-# Note how the hour "20" takes precedence over "10"
-sdtm.oak:::coalesce_capture_matrices(m_dates, m_times)
-
-# Reverse the order of the inputs and now hour "10" takes precedence
-sdtm.oak:::coalesce_capture_matrices(m_times, m_dates)
-
-# Single inputs should result in the same output as the input
-sdtm.oak:::coalesce_capture_matrices(m_dates)
-sdtm.oak:::coalesce_capture_matrices(m_times)
-
-}
 \keyword{internal}

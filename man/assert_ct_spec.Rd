@@ -22,24 +22,4 @@ In addition, it will also check if the data frame is not empty (no rows), and
 whether the columns \code{codelist_code} and \code{term_value} do
 not contain any \code{NA} values.
 }
-\examples{
-# If `ct_spec` is a valid controlled terminology then it is returned invisibly.
-ct_spec_01 <- read_ct_spec_example("ct-01-cm")
-all.equal(ct_spec_01, sdtm.oak:::assert_ct_spec(ct_spec_01))
-
-# A minimal set of variables needs to be present in `ct_spec` for it to pass the
-# assertion; `sdtm.oak:::ct_spec_vars()` defines their names.
-(req_vars <- sdtm.oak:::ct_spec_vars())
-
-# Other (facultative) variables also present in the controlled terminology
-# example.
-(opt_vars <- setdiff(colnames(ct_spec_01), req_vars))
-
-# With only the mandatory variables, the assertion still passes.
-sdtm.oak:::assert_ct_spec(ct_spec_01[req_vars])
-
-# Not having the required variables results in an error.
-try(sdtm.oak:::assert_ct_spec(ct_spec_01[opt_vars]))
-
-}
 \keyword{internal}

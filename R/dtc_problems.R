@@ -31,16 +31,6 @@
 #'   or an annotated `x`, meaning having a `problems` attribute that holds
 #'   parsing issues (see the Details section).
 #'
-#' @examples
-#' date <- c("2000-01-05", "", "1980-06-18", "1979-09-07")
-#' time <- c("001221", "22:35:05", "03:00:15", "07:09:00")
-#' dtc <- list(date, time)
-#' dttm <- c("2000-01-05", "T22:35:05", "1980-06-18T03:00:15", "1979-09-07T07:09:00")
-#' is_problem <- c(TRUE, TRUE, FALSE, FALSE)
-#'
-#' dttm2 <- sdtm.oak:::add_problems(dttm, is_problem, dtc)
-#' sdtm.oak:::problems(dttm2)
-#'
 #' @keywords internal
 add_problems <- function(x, is_problem, dtc) {
   is_x_na <- is_problem
@@ -88,30 +78,6 @@ add_problems <- function(x, is_problem, dtc) {
 #' @returns A `logical` whose length matches the number of underlying date/times
 #'   passed as inputs to [create_iso8601()], i.e. whose length matches the
 #'   number of rows of the capture matrices in `cap_matrices`.
-#'
-#' @examples
-#' # No problem (return value is `FALSE`).
-#' sdtm.oak:::any_problems(list(sdtm.oak:::parse_dttm("1980-06-18", "y-m-d")))
-#'
-#' # Now the parsing fails (return value is `TRUE`).
-#' sdtm.oak:::any_problems(list(sdtm.oak:::parse_dttm("1980-06-18", "ymd")))
-#'
-#' # Find if there has been a problem in either in the `date` or `time` inputs.
-#' # The following problems are expected with:
-#' #   - `"2001/12/25"` as it won't be parsed with the format `"y-m-d"`
-#' #   - `"00h12m21"` as it won't be parsed with the format `"H:M:S"`.
-#' #
-#' date <- c("2000-01-05", "2001/12/25", "1980-06-18", "1979-09-07")
-#' time <- c("00h12m21", "22:35:05", "03:00:15", "07:09:00")
-#'
-#' cap_matrix_date <- sdtm.oak:::parse_dttm(date, "y-m-d")
-#' cap_matrix_time <- sdtm.oak:::parse_dttm(time, "H:M:S")
-#'
-#' (cap_matrices <- list(cap_matrix_date, cap_matrix_time))
-#'
-#' # `any_problems()` returns `TRUE` for the first two elements because of the
-#' # failure to parse `"2001/12/25"` and `"00h12m21"`, respectively.
-#' sdtm.oak:::any_problems(cap_matrices)
 #'
 #' @keywords internal
 any_problems <- function(cap_matrices, .cutoff_2000 = 68L) {

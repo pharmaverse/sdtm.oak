@@ -56,21 +56,4 @@ each date/time component.
 \code{\link[=fmt_rg]{fmt_rg()}} creates a character vector of named patterns to match individual
 date/time components.
 }
-\examples{
-# Default regexps
-sdtm.oak:::fmt_rg()
-
-# You may change the way months are matched, e.g. you might not want to match
-# month abbreviations, i.e. only numerical months. So pass an explicit regex
-# for numerical months:
-sdtm.oak:::fmt_rg(mon = r"[\b\d|\d{2}]")
-
-# Make date/time components accept `"UNK"` as a possible pattern (useful
-# to match funny codes for `NA`).
-sdtm.oak:::fmt_rg(na = "UNK")
-
-# Or be more specific and use `"UNK"` for the year component only.
-sdtm.oak:::fmt_rg(year_na = "UNK")
-
-}
 \keyword{internal}

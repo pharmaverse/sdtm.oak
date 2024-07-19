@@ -183,14 +183,6 @@ assert_fmt_c <- function(x) {
 #'
 #' @returns A character scalar of the resulting regex.
 #'
-#' @examples
-#' # A regex for matching either "jan" or "feb"
-#' sdtm.oak:::regex_or(c("jan", "feb"))
-#'
-#' # Setting `.open` and/or `.close` to `TRUE` can be handy if this regex
-#' # is to be combined into a larger regex.
-#' paste0(sdtm.oak:::regex_or(c("jan", "feb"), .close = TRUE), r"{\d{2}}")
-#'
 #' @keywords internal
 regex_or <- function(x, .open = FALSE, .close = FALSE) {
   admiraldev::assert_character_vector(x)
@@ -225,22 +217,6 @@ regex_or <- function(x, .open = FALSE, .close = FALSE) {
 #'
 #' @returns A named character vector of named patterns (regexps) for matching
 #'   each date/time component.
-#'
-#' @examples
-#' # Default regexps
-#' sdtm.oak:::fmt_rg()
-#'
-#' # You may change the way months are matched, e.g. you might not want to match
-#' # month abbreviations, i.e. only numerical months. So pass an explicit regex
-#' # for numerical months:
-#' sdtm.oak:::fmt_rg(mon = r"[\b\d|\d{2}]")
-#'
-#' # Make date/time components accept `"UNK"` as a possible pattern (useful
-#' # to match funny codes for `NA`).
-#' sdtm.oak:::fmt_rg(na = "UNK")
-#'
-#' # Or be more specific and use `"UNK"` for the year component only.
-#' sdtm.oak:::fmt_rg(year_na = "UNK")
 #'
 #' @keywords internal
 fmt_rg <- function(
@@ -346,28 +322,6 @@ parse_dttm_fmt_ <- function(fmt, pattern) {
 #' Each row is for either a date/time format component or a "delimiter" string
 #' or pattern in-between format components.
 #'
-#' @examples
-#' sdtm.oak:::parse_dttm_fmt("ymd")
-#' sdtm.oak:::parse_dttm_fmt("H:M:S")
-#'
-#' sdtm.oak:::parse_dttm_fmt("ymd HMS")
-#'
-#' # Repeating the same special patterns, e.g. "yy" still counts as one pattern
-#' # only.
-#' sdtm.oak:::parse_dttm_fmt("yymmdd HHMMSS")
-#'
-#' # Note that `"y"`, `"m"`, `"d"`, `"H"`, `"M"` or `"S"` are reserved patterns
-#' # that are matched first and interpreted as format components. # Example: the
-#' # first "y" in "year" is parsed as meaning year followed by "ear y". The
-#' # second "y" is not longer matched because a first match already # succeded.
-#' sdtm.oak:::parse_dttm_fmt("year y")
-#'
-#' # Specify custom patterns
-#' sdtm.oak:::parse_dttm_fmt(
-#'   "year month day",
-#'   fmt_cmp(year = "year", mon = "month", mday = "day")
-#' )
-#'
 #' @keywords internal
 parse_dttm_fmt <- function(fmt, patterns = fmt_cmp()) {
   admiraldev::assert_character_scalar(fmt)
@@ -427,15 +381,6 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_cmp()) {
 #'
 #' @returns A string containing a regular expression for matching date/time
 #' components according to a format.
-#'
-#' @examples
-#' sdtm.oak:::dttm_fmt_to_regex("y")
-#' sdtm.oak:::dttm_fmt_to_regex("y", anchored = FALSE)
-#'
-#' sdtm.oak:::dttm_fmt_to_regex("m")
-#' sdtm.oak:::dttm_fmt_to_regex("ymd")
-#'
-#' sdtm.oak:::dttm_fmt_to_regex("ymd HH:MM:SS")
 #'
 #' @keywords internal
 dttm_fmt_to_regex <- function(fmt, fmt_regex = fmt_rg(), fmt_c = fmt_cmp(), anchored = TRUE) {

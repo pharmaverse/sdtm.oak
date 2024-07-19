@@ -14,13 +14,4 @@ assert_dtc_fmt(fmt)
 the formats are supported, meaning it checks if they are one of the formats
 listed in column \code{fmt} of \link{dtc_formats}, failing with an error otherwise.
 }
-\examples{
-sdtm.oak:::assert_dtc_fmt(c("ymd", "y m d", "dmy", "HM", "H:M:S", "y-m-d H:M:S"))
-
-# This example is guarded to avoid throwing errors
-if (FALSE) {
-  sdtm.oak:::assert_dtc_fmt("y years m months d days")
-}
-
-}
 \keyword{internal}

@@ -22,16 +22,4 @@ Otherwise, it returns \code{.format} invisibly.
 \code{\link[=assert_dtc_format]{assert_dtc_format()}} is an internal helper function aiding with the checking
 of the \code{.format} parameter of \code{\link[=create_iso8601]{create_iso8601()}}.
 }
-\examples{
-sdtm.oak:::assert_dtc_format("ymd")
-sdtm.oak:::assert_dtc_format(c("ymd", "y-m-d"))
-sdtm.oak:::assert_dtc_format(list(c("ymd", "y-m-d"), "H:M:S"))
-
-# These commands should throw an error
-if (FALSE) {
-  # Note that `"year, month, day"` is not a supported format.
-  sdtm.oak:::assert_dtc_format("year, month, day")
-}
-
-}
 \keyword{internal}

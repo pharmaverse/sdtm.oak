@@ -17,18 +17,4 @@ A logical scalar value.
 the raw dataset key variable names, i.e. the so called Oak identifier
 variables --- these are defined by the return value of \code{\link[=oak_id_vars]{oak_id_vars()}}.
 }
-\examples{
-# `oak_id_vars()` is the function that defines what are the minimal set of
-# oak keys. Hence, by definition, the following code should always return
-# `TRUE`.
-sdtm.oak:::contains_oak_id_vars(oak_id_vars())
-
-# Returns `FALSE`.
-sdtm.oak:::contains_oak_id_vars(character())
-
-# Another example that returns `FALSE` because it is missing
-# `"patient_number"`.
-sdtm.oak:::contains_oak_id_vars(c("oak_id", "raw_source"))
-
-}
 \keyword{internal}

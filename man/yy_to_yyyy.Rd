@@ -19,17 +19,4 @@ An integer vector.
 \description{
 \code{\link[=yy_to_yyyy]{yy_to_yyyy()}} converts two-digit years to four-digit years.
 }
-\examples{
-sdtm.oak:::yy_to_yyyy(0:5)
-sdtm.oak:::yy_to_yyyy(2000:2005)
-
-sdtm.oak:::yy_to_yyyy(90:99)
-sdtm.oak:::yy_to_yyyy(1990:1999)
-
-# NB: change in behavior after 68
-sdtm.oak:::yy_to_yyyy(65:72)
-
-sdtm.oak:::yy_to_yyyy(1965:1972)
-
-}
 \keyword{internal}

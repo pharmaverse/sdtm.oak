@@ -19,18 +19,4 @@ Character vector containing ISO8601 dates.
 The date part is extracted from an ISO8601 date/time variable.
 By default, partial or missing dates are set to NA.
 }
-\examples{
-## Partial or missing dates set to NA by default
-sdtm.oak:::dtc_datepart(
-  c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25T12:00:00")
-)
-# |-->  c(NA, NA, NA, NA, "2021-12-25", "2021-12-25")
-
-## Prevent partial or missing dates from being set to NA
-sdtm.oak:::dtc_datepart(
-  c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25T12:00:00"),
-  partial_as_na = FALSE
-)
-# |--> c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25")
-}
 \keyword{internal}
