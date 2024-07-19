@@ -207,21 +207,30 @@ test_that("`fmt_rg`: basic usage", {
 })
 
 test_that("`dttm_fmt_to_regex`: basic usage", {
+  expect_identical(
+    dttm_fmt_to_regex("y"),
+    "^(?<year>(\\d{2})?\\d{2})$"
+  )
 
-  expect_identical(dttm_fmt_to_regex("y"),
-                   "^(?<year>(\\d{2})?\\d{2})$")
-
-  expect_identical(dttm_fmt_to_regex("y", anchored = FALSE),
-                   "(?<year>(\\d{2})?\\d{2})")
+  expect_identical(
+    dttm_fmt_to_regex("y", anchored = FALSE),
+    "(?<year>(\\d{2})?\\d{2})"
+  )
   # nolint start
-  expect_identical(dttm_fmt_to_regex("m"),
-                   "^(?<mon>\\d\\d|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])$")
+  expect_identical(
+    dttm_fmt_to_regex("m"),
+    "^(?<mon>\\d\\d|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])$"
+  )
 
-  expect_identical(dttm_fmt_to_regex("ymd"),
-                   "^(?<year>(\\d{2})?\\d{2})(?<mon>\\d\\d|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])(?<mday>\\b\\d|\\d{2})$")
+  expect_identical(
+    dttm_fmt_to_regex("ymd"),
+    "^(?<year>(\\d{2})?\\d{2})(?<mon>\\d\\d|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])(?<mday>\\b\\d|\\d{2})$"
+  )
 
-  expect_identical(dttm_fmt_to_regex("ymd HH:MM:SS"),
-                   "^(?<year>(\\d{2})?\\d{2})(?<mon>\\d\\d|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])(?<mday>\\b\\d|\\d{2}) (?<hour>\\d?\\d):(?<min>(\\b\\d|\\d{2})):(?<sec>(\\b\\d|\\d{2})(\\.\\d*)?)$")
+  expect_identical(
+    dttm_fmt_to_regex("ymd HH:MM:SS"),
+    "^(?<year>(\\d{2})?\\d{2})(?<mon>\\d\\d|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])(?<mday>\\b\\d|\\d{2}) (?<hour>\\d?\\d):(?<min>(\\b\\d|\\d{2})):(?<sec>(\\b\\d|\\d{2})(\\.\\d*)?)$"
+  )
   # nolint end
 })
 
@@ -230,8 +239,10 @@ test_that("`regrex_or`: basic usage", {
 
   # Setting `.open` and/or `.close` to `TRUE` can be handy if this regex
   # is to be combined into a larger regex.
-  expect_identical(paste0(regex_or(c("jan", "feb"), .close = TRUE), r"{\d{2}}"),
-                   "jan|feb|\\d{2}")
+  expect_identical(
+    paste0(regex_or(c("jan", "feb"), .close = TRUE), r"{\d{2}}"),
+    "jan|feb|\\d{2}"
+  )
 })
 
 test_that("`parse_dttm_fmt`: empty fmt", {
@@ -309,10 +320,14 @@ test_that("`parse_dttm_fmt` works as expected", {
   expect_identical(observed_y, expected_y)
 
   # Specify custom patterns
-  observed_cus <- parse_dttm_fmt("year month day",
-                                 fmt_cmp(year = "year",
-                                         mon = "month",
-                                         mday = "day"))
+  observed_cus <- parse_dttm_fmt(
+    "year month day",
+    fmt_cmp(
+      year = "year",
+      mon = "month",
+      mday = "day"
+    )
+  )
 
   expected_cus <- tibble::tribble(
     ~fmt_c,    ~pat,    ~cap, ~start, ~end, ~len, ~ord,

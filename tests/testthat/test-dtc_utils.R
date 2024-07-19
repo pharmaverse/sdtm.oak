@@ -1,25 +1,25 @@
 test_that("`assert_dtc_fmt()`: basic usage", {
-
   fmt <- c("ymd", "y m d", "dmy", "HM", "H:M:S", "y-m-d H:M:S")
-  expect_identical(assert_dtc_fmt(fmt),
-                   fmt)
+  expect_identical(
+    assert_dtc_fmt(fmt),
+    fmt
+  )
 
   expect_error(assert_dtc_fmt("y years m months d days"))
 })
 
 test_that("`assert_dtc_format()`: basic usage", {
-
   expect_identical(assert_dtc_format("ymd"), "ymd")
   expect_identical(assert_dtc_format(c("ymd", "y-m-d")), c("ymd", "y-m-d"))
-  expect_identical(assert_dtc_format(list(c("ymd", "y-m-d"), "H:M:S")),
-                   list(c("ymd", "y-m-d"), "H:M:S"))
+  expect_identical(
+    assert_dtc_format(list(c("ymd", "y-m-d"), "H:M:S")),
+    list(c("ymd", "y-m-d"), "H:M:S")
+  )
 
   expect_error(assert_dtc_format("year, month, day"))
-
 })
 
 test_that("`assert_capture_matrix()`: basic usage", {
-
   cols <- c("year", "mon", "mday", "hour", "min", "sec")
   m <- matrix(NA_character_, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
   expect_identical(assert_capture_matrix(m), m)
@@ -30,7 +30,6 @@ test_that("`assert_capture_matrix()`: basic usage", {
 })
 
 test_that("`complete_capture_matrix()`: basic usage", {
-
   # Input with no cols and rows
   input <- matrix(data = NA_character_, nrow = 0L, ncol = 0L)
   expected_output <- matrix(
@@ -40,8 +39,10 @@ test_that("`complete_capture_matrix()`: basic usage", {
     dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
   )
 
-  expect_identical(complete_capture_matrix(input),
-                   expected_output)
+  expect_identical(
+    complete_capture_matrix(input),
+    expected_output
+  )
 
   # Input with no cols and 1 row
   input <- matrix(data = NA_character_, nrow = 1L)
@@ -52,8 +53,10 @@ test_that("`complete_capture_matrix()`: basic usage", {
     dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
   )
 
-  expect_identical(complete_capture_matrix(input),
-                   expected_output)
+  expect_identical(
+    complete_capture_matrix(input),
+    expected_output
+  )
 
   # Input with incomplete cols
   input <-
@@ -71,8 +74,10 @@ test_that("`complete_capture_matrix()`: basic usage", {
     dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
   )
 
-  expect_identical(complete_capture_matrix(input),
-                   expected_output)
+  expect_identical(
+    complete_capture_matrix(input),
+    expected_output
+  )
 
   # Input with year and second specified
   input <-
@@ -91,8 +96,10 @@ test_that("`complete_capture_matrix()`: basic usage", {
       dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
     )
 
-  expect_identical(complete_capture_matrix(input),
-                   expected_output)
+  expect_identical(
+    complete_capture_matrix(input),
+    expected_output
+  )
 
   # Any other existing columns are dropped.
   input <-
@@ -110,12 +117,13 @@ test_that("`complete_capture_matrix()`: basic usage", {
     dimnames = list(NULL, c("year", "mon", "mday", "hour", "min", "sec"))
   )
 
-  expect_identical(complete_capture_matrix(input),
-                   expected_output)
+  expect_identical(
+    complete_capture_matrix(input),
+    expected_output
+  )
 })
 
 test_that("`coalesce_capture_matrices()`: basic usage", {
-
   cols <- c("year", "mon", "mday", "hour", "min", "sec")
   dates <- c("2020", "01", "01", "20", NA, NA)
   times <- c(NA, NA, NA, "10", "00", "05")

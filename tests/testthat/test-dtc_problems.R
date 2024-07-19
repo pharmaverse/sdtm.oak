@@ -24,6 +24,8 @@ test_that("`any_problems()`: basic usage", {
   cap_matrix_time <- parse_dttm(time, "H:M:S")
 
   cap_matrices <- list(cap_matrix_date, cap_matrix_time)
-  expect_identical(any_problems(cap_matrices),
-                   c(TRUE, TRUE, FALSE, FALSE))
+  expect_identical(
+    any_problems(cap_matrices),
+    c(TRUE, TRUE, FALSE, FALSE)
+  )
 })

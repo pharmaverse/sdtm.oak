@@ -125,7 +125,8 @@ test_that("recode(): notable cases", {
 })
 
 test_that("index_for_recode(): basic usage", {
-  expect_identical(index_for_recode(x = 1L:5L, from = c(2L, 4L)),
-                   as.integer(c(NA, 1L, NA, 2L, NA)))
-
+  expect_identical(
+    index_for_recode(x = 1L:5L, from = c(2L, 4L)),
+    as.integer(c(NA, 1L, NA, 2L, NA))
+  )
 })
