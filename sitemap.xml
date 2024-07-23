@@ -109,6 +109,9 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/dataset_oak_vignette.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/derive_blfl.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/derive_seq.html</loc>
   </url>
   <url>
@@ -121,7 +124,13 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/dot_pipe.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/dtc_datepart.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/dtc_formats.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/dtc_timepart.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/dttm_fmt_to_regex.html</loc>
