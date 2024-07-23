@@ -5,7 +5,7 @@ assert_logical_vector <- function(arg, optional = FALSE) {
   }
 
   if (!is.logical(arg)) {
-    cli::cli_abort('`arg` must be a logical vector but is {.obj_type_friendly {arg}}')
+    cli::cli_abort("`arg` must be a logical vector but is {.obj_type_friendly {arg}}")
   }
 
   invisible(arg)

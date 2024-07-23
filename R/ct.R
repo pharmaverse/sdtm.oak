@@ -340,7 +340,7 @@ ct_map <-
 #'
 #' @export
 read_ct_spec <- function(file = stop("`file` must be specified")) {
-  ct_spec <- read.csv(file = file, na.strings = c("NA", ""), colClasses = "character") |>
+  ct_spec <- utils::read.csv(file = file, na.strings = c("NA", ""), colClasses = "character") |>
     tibble::as_tibble()
   assert_ct_spec(ct_spec)
 

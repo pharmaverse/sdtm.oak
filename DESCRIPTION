@@ -45,7 +45,8 @@ Imports:
     stringr (>= 1.4.0),
     memoise (>= 2.0.1),
     assertthat,
-    pillar
+    pillar,
+    cli
 Suggests:
     knitr,
     htmltools,
