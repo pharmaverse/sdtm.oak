@@ -36,18 +36,15 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Depends: R (>= 4.2)
 Imports: 
-    admiraldev,
+    admiraldev (>= 1.1.0),
     dplyr (>= 1.0.0),
-    memoise,
-    assertthat,
-    purrr (>= 0.3.3),
-    rlang (>= 0.4.4),
+    purrr (>= 1.0.1),
+    rlang (>= 1.0.2),
+    tibble (>= 3.2.0),
+    vctrs (>= 0.5.0),
     stringr (>= 1.4.0),
-    tibble,
-    vctrs,
-    readr,
-    glue,
-    DT,
+    memoise (>= 2.0.1),
+    assertthat,
     pillar
 Suggests:
     knitr,
@@ -56,7 +53,9 @@ Suggests:
     magrittr,
     rmarkdown,
     spelling,
-    testthat (>= 3.1.7)
+    testthat (>= 3.1.7),
+    DT,
+    readr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true

@@ -5,11 +5,7 @@ assert_logical_vector <- function(arg, optional = FALSE) {
   }
 
   if (!is.logical(arg)) {
-    err_msg <- sprintf(
-      "`arg` must be a logical vector but is %s.",
-      admiraldev::what_is_it(arg)
-    )
-    rlang::abort(err_msg)
+    cli::cli_abort('`arg` must be a logical vector but is {.obj_type_friendly {arg}}')
   }
 
   invisible(arg)

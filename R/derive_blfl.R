@@ -54,6 +54,8 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 #' @export
 #'
 #' @keywords internal
+#'
+#' @examples
 #' ## Partial or missing times set to NA and seconds ignored by default
 #' sdtm.oak:::dtc_timepart(
 #'   c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59")

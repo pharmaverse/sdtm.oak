@@ -80,7 +80,7 @@ domain_example <- function(example) {
 
   if (identical(local_path, "")) {
     stop(
-      glue::glue(
+      stringr::str_glue(
         "'{example}' does not match any domain example files. Run `domain_example()` for options."
       ),
       call. = FALSE
@@ -125,5 +125,8 @@ read_domain_example <- function(example) {
   }
 
   path <- domain_example(example)
-  readr::read_rds(file = path)
+  con <- file(path)
+  on.exit(close(con))
+
+  readRDS(con)
 }
