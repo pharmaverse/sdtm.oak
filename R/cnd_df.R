@@ -340,7 +340,7 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 #'
 #' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate
-#' @keywords internal
+#' @export
 mutate.cnd_df <- function(.data,
                           ...,
                           .by = NULL,
@@ -364,5 +364,5 @@ mutate.cnd_df <- function(.data,
   lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else(!!cnd, !!.x, NA)))
   lst <- rlang::set_names(lst, derived_vars)
 
-  dplyr::mutate(dat, !!!lst, .by = NULL, .keep = .keep, .after = .after)
+  dplyr::mutate(dat, !!!lst, .by = NULL, .keep = .keep, .after = dplyr::all_of(.after))
 }
