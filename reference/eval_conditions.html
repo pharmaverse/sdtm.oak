@@ -119,52 +119,6 @@ will be coerced to an environment internally.</p></dd>
 <p>A logical vector reflecting matching rows in <code>dat</code>.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Create a sample data frame</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="cn">NA_integer_</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Simple condition on one column</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">eval_conditions</span><span class="op">(</span><span class="va">df</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE    NA  TRUE  TRUE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Combined conditions on multiple columns</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">eval_conditions</span><span class="op">(</span><span class="va">df</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="fl">2</span> <span class="op">&amp;</span> <span class="va">y</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE    NA FALSE  TRUE</span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">eval_conditions</span><span class="op">(</span><span class="va">df</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="fl">2</span>, <span class="va">y</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE    NA FALSE  TRUE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Using conditions with NA handling</span></span></span>
-<span class="r-in"><span><span class="va">df_with_na</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="cn">NA</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">eval_conditions</span><span class="op">(</span><span class="va">df_with_na</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="fl">2</span>, .na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE FALSE  TRUE  TRUE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># The environment where `eval_conditions()` is called is also inspected</span></span></span>
-<span class="r-in"><span><span class="co"># when evaluating conditions in `...`.</span></span></span>
-<span class="r-in"><span><span class="va">w</span> <span class="op">&lt;-</span> <span class="fl">1</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">eval_conditions</span><span class="op">(</span><span class="va">df</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="va">w</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE  TRUE    NA  TRUE  TRUE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Using an environment</span></span></span>
-<span class="r-in"><span><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/env.html" class="external-link">env</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">eval_conditions</span><span class="op">(</span><span class="va">df</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="va">w</span>, .env <span class="op">=</span> <span class="va">env</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE    NA  TRUE  TRUE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># In place of an environment, you may alternatively pass a list or data frame.</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">eval_conditions</span><span class="op">(</span><span class="va">df</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="va">w</span>, .env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE    NA  TRUE  TRUE</span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">eval_conditions</span><span class="op">(</span><span class="va">df</span>, <span class="va">x</span> <span class="op">&gt;</span> <span class="va">w</span>, .env <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>w <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE FALSE    NA FALSE  TRUE</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

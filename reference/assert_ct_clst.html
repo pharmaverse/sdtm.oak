@@ -93,43 +93,6 @@ given the controlled terminology data set; otherwise, <code>ct_clst</code> is re
 invisibly.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Load a controlled terminology example.</span></span></span>
-<span class="r-in"><span><span class="op">(</span><span class="va">ct_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="read_ct_spec_example.html">read_ct_spec_example</a></span><span class="op">(</span><span class="st">"ct-01-cm"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 33 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    codelist_code term_code CodedData term_value collected_value    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> C71113        C25473    QD        QD         QD (Every Day)     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> C71113        C64496    BID       BID        BID (Twice a Day)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> C71113        C64499    PRN       PRN        PRN (As Needed)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> C71113        C64516    Q2H       Q2H        Q2H (Every 2 Hours)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> C71113        C64530    QID       QID        QID (4 Times a Day)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> C66726        C25158    CAPSULE   CAPSULE    Capsule            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> C66726        C25394    PILL      PILL       Pill               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> C66726        C29167    LOTION    LOTION     Lotion             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> C66726        C42887    AEROSOL   AEROSOL    Aerosol            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> C66726        C42944    INHALANT  INHALANT   Inhalant           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 23 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: term_preferred_term &lt;chr&gt;, term_synonyms &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   raw_codelist &lt;chr&gt;</span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Should work fine.</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">assert_ct_clst</span><span class="op">(</span>ct_spec <span class="op">=</span> <span class="va">ct_spec</span>, ct_clst <span class="op">=</span> <span class="st">"C71113"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "C71113"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># In certain cases, you might allow `ct_clst` to be `NULL` as to indicate absence,</span></span></span>
-<span class="r-in"><span><span class="co"># in that case, set `optional` to `TRUE` to make `assert_ct_clst()` more</span></span></span>
-<span class="r-in"><span><span class="co"># forgiving.</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">assert_ct_clst</span><span class="op">(</span>ct_spec <span class="op">=</span> <span class="va">ct_spec</span>, ct_clst <span class="op">=</span> <span class="cn">NULL</span>, optional <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Otherwise it would err.</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">assert_ct_clst</span><span class="op">(</span>ct_spec <span class="op">=</span> <span class="va">ct_spec</span>, ct_clst <span class="op">=</span> <span class="cn">NULL</span>, optional <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = NULL,  : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `ct_clst` is a required parameter.</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

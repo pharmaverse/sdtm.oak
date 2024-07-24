@@ -88,19 +88,6 @@ than the width specified by the number of digits <code>n</code> are converted to
 <p>A character vector.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">zero_pad_whole_number</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA   "00" "01"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">zero_pad_whole_number</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">99</span>, <span class="fl">100</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA   "00" "01" "10" "99" NA  </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">zero_pad_whole_number</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">99</span>, <span class="fl">100</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA    "000" "001" "010" "099" "100"</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

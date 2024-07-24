@@ -84,45 +84,6 @@ missing components.</p>
 <p>A character vector.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="st">"1999-01-01T15:20:01"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"1999-01-01T15:20:-"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"1999-01-01T15:-:-"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"1999-01-01T-:-:-"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"1999-01--T-:-:-"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"1999----T-:-:-"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"-----T-:-:-"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">iso8601_truncate</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1999-01-01T15:20:01" "1999-01-01T15:20"    "1999-01-01T15"      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "1999-01-01"          "1999-01"             "1999"               </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [7] NA                   </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># With `empty_as_na = FALSE` empty strings are not replaced with `NA`</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">iso8601_truncate</span><span class="op">(</span><span class="st">"-----T-:-:-"</span>, empty_as_na <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA</span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">iso8601_truncate</span><span class="op">(</span><span class="st">"-----T-:-:-"</span>, empty_as_na <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Truncation only happens if missing components are the right most end,</span></span></span>
-<span class="r-in"><span><span class="co"># otherwise they remain unaltered.</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">iso8601_truncate</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    <span class="st">"1999----T15:20:01"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"1999-01-01T-:20:01"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"1999-01-01T-:-:01"</span>,</span></span>
-<span class="r-in"><span>    <span class="st">"1999-01-01T-:-:-"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1999----T15:20:01"  "1999-01-01T-:20:01" "1999-01-01T-:-:01" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "1999-01-01"        </span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

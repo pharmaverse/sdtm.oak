@@ -103,23 +103,6 @@ component.</p></dd>
 components according to a format.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dttm_fmt_to_regex</span><span class="op">(</span><span class="st">"y"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ^(?&lt;year&gt;(\d{2})?\d{2})$</span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dttm_fmt_to_regex</span><span class="op">(</span><span class="st">"y"</span>, anchored <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "(?&lt;year&gt;(\\d{2})?\\d{2})"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dttm_fmt_to_regex</span><span class="op">(</span><span class="st">"m"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ^(?&lt;mon&gt;\d\d|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])$</span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dttm_fmt_to_regex</span><span class="op">(</span><span class="st">"ymd"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ^(?&lt;year&gt;(\d{2})?\d{2})(?&lt;mon&gt;\d\d|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])(?&lt;mday&gt;\b\d|\d{2})$</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dttm_fmt_to_regex</span><span class="op">(</span><span class="st">"ymd HH:MM:SS"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ^(?&lt;year&gt;(\d{2})?\d{2})(?&lt;mon&gt;\d\d|[Jj][Aa][Nn]|[Ff][Ee][Bb]|[Mm][Aa][Rr]|[Aa][Pp][Rr]|[Mm][Aa][Yy]|[Jj][Uu][Nn]|[Jj][Uu][Ll]|[Aa][Uu][Gg]|[Ss][Ee][Pp]|[Oo][Cc][Tt]|[Nn][Oo][Vv]|[Dd][Ee][Cc])(?&lt;mday&gt;\b\d|\d{2}) (?&lt;hour&gt;\d?\d):(?&lt;min&gt;(\b\d|\d{2})):(?&lt;sec&gt;(\b\d|\d{2})(\.\d*)?)$</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

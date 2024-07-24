@@ -86,26 +86,6 @@ partial dates should be set to NA (default is <code>TRUE</code>).</p></dd>
 <p>Character vector containing ISO8601 dates.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Partial or missing dates set to NA by default</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dtc_datepart</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">""</span>, <span class="st">"2021"</span>, <span class="st">"2021-12"</span>, <span class="st">"2021-12-25"</span>, <span class="st">"2021-12-25T12:00:00"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA           NA           NA           NA           "2021-12-25"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "2021-12-25"</span>
-<span class="r-in"><span><span class="co"># |--&gt;  c(NA, NA, NA, NA, "2021-12-25", "2021-12-25")</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Prevent partial or missing dates from being set to NA</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dtc_datepart</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">""</span>, <span class="st">"2021"</span>, <span class="st">"2021-12"</span>, <span class="st">"2021-12-25"</span>, <span class="st">"2021-12-25T12:00:00"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  partial_as_na <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA           ""           "2021"       "2021-12"    "2021-12-25"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "2021-12-25"</span>
-<span class="r-in"><span><span class="co"># |--&gt; c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25")</span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

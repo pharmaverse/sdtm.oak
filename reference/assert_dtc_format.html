@@ -83,20 +83,6 @@ of the <code>.format</code> parameter of <code><a href="create_iso8601.html">cre
 </ul><p>Otherwise, it returns <code>.format</code> invisibly.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">assert_dtc_format</span><span class="op">(</span><span class="st">"ymd"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">assert_dtc_format</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ymd"</span>, <span class="st">"y-m-d"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">assert_dtc_format</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ymd"</span>, <span class="st">"y-m-d"</span><span class="op">)</span>, <span class="st">"H:M:S"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># These commands should throw an error</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="co"># Note that `"year, month, day"` is not a supported format.</span></span></span>
-<span class="r-in"><span>  <span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">assert_dtc_format</span><span class="op">(</span><span class="st">"year, month, day"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

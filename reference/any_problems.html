@@ -105,50 +105,6 @@ passed as inputs to <code><a href="create_iso8601.html">create_iso8601()</a></co
 number of rows of the capture matrices in <code>cap_matrices</code>.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># No problem (return value is `FALSE`).</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">any_problems</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu"><a href="parse_dttm.html">parse_dttm</a></span><span class="op">(</span><span class="st">"1980-06-18"</span>, <span class="st">"y-m-d"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Now the parsing fails (return value is `TRUE`).</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">any_problems</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu"><a href="parse_dttm.html">parse_dttm</a></span><span class="op">(</span><span class="st">"1980-06-18"</span>, <span class="st">"ymd"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Find if there has been a problem in either in the `date` or `time` inputs.</span></span></span>
-<span class="r-in"><span><span class="co"># The following problems are expected with:</span></span></span>
-<span class="r-in"><span><span class="co">#   - `"2001/12/25"` as it won't be parsed with the format `"y-m-d"`</span></span></span>
-<span class="r-in"><span><span class="co">#   - `"00h12m21"` as it won't be parsed with the format `"H:M:S"`.</span></span></span>
-<span class="r-in"><span><span class="co">#</span></span></span>
-<span class="r-in"><span><span class="va">date</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2000-01-05"</span>, <span class="st">"2001/12/25"</span>, <span class="st">"1980-06-18"</span>, <span class="st">"1979-09-07"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"00h12m21"</span>, <span class="st">"22:35:05"</span>, <span class="st">"03:00:15"</span>, <span class="st">"07:09:00"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">cap_matrix_date</span> <span class="op">&lt;-</span> <span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu"><a href="parse_dttm.html">parse_dttm</a></span><span class="op">(</span><span class="va">date</span>, <span class="st">"y-m-d"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">cap_matrix_time</span> <span class="op">&lt;-</span> <span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu"><a href="parse_dttm.html">parse_dttm</a></span><span class="op">(</span><span class="va">time</span>, <span class="st">"H:M:S"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="op">(</span><span class="va">cap_matrices</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">cap_matrix_date</span>, <span class="va">cap_matrix_time</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      year   mon  mday hour min sec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] "2000" "01" "05" NA   NA  NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] NA     NA   NA   NA   NA  NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] "1980" "06" "18" NA   NA  NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] "1979" "09" "07" NA   NA  NA </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      year mon mday hour min  sec </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] NA   NA  NA   NA   NA   NA  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] NA   NA  NA   "22" "35" "05"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] NA   NA  NA   "03" "00" "15"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] NA   NA  NA   "07" "09" "00"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># `any_problems()` returns `TRUE` for the first two elements because of the</span></span></span>
-<span class="r-in"><span><span class="co"># failure to parse `"2001/12/25"` and `"00h12m21"`, respectively.</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">any_problems</span><span class="op">(</span><span class="va">cap_matrices</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  TRUE  TRUE FALSE FALSE</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

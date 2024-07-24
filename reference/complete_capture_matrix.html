@@ -83,23 +83,6 @@ following columns: <code>year</code>, <code>mon</code>, <code>mday</code>, <code
 <code>hour</code>, <code>min</code> and <code>sec</code>. Any other existing columns are dropped.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">complete_capture_matrix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="cn">NA_character_</span>, nrow <span class="op">=</span> <span class="fl">0</span>, ncol <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">complete_capture_matrix</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span>data <span class="op">=</span> <span class="cn">NA_character_</span>, nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># m &lt;- matrix(NA_character_, nrow = 1, ncol = 2, dimnames = list(NULL, c("year", "sec")))</span></span></span>
-<span class="r-in"><span><span class="co"># sdtm.oak:::complete_capture_matrix(m)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># m &lt;- matrix(c("2020", "10"), nrow = 1, ncol = 2, dimnames = list(NULL, c("year", "sec")))</span></span></span>
-<span class="r-in"><span><span class="co"># sdtm.oak:::complete_capture_matrix(m)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Any other existing columns are dropped.</span></span></span>
-<span class="r-in"><span><span class="co"># m &lt;- matrix(c("2020", "10"), nrow = 1, ncol = 2, dimnames = list(NULL, c("semester", "quarter")))</span></span></span>
-<span class="r-in"><span><span class="co"># sdtm.oak:::complete_capture_matrix(m)</span></span></span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

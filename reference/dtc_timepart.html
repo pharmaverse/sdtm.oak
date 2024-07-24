@@ -94,41 +94,6 @@ seconds should be ignored (default is <code>TRUE</code>).</p></dd>
 <p>Character vector containing ISO 8601 times.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Partial or missing times set to NA and seconds ignored by default</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dtc_timepart</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">""</span>, <span class="st">"2021-12-25"</span>, <span class="st">"2021-12-25T12"</span>, <span class="st">"2021-12-25T12:30"</span>, <span class="st">"2021-12-25T12:30:59"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA      NA      NA      NA      "12:30" "12:30"</span>
-<span class="r-in"><span><span class="co"># |--&gt; c(NA, NA, NA, NA, "12:30", "12:30")</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Prevent partial or missing times from being set to NA</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dtc_timepart</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">""</span>, <span class="st">"2021-12-25"</span>, <span class="st">"2021-12-25T12"</span>, <span class="st">"2021-12-25T12:30"</span>, <span class="st">"2021-12-25T12:30:59"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  partial_as_na <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA      ""      ""      "12"    "12:30" "12:30"</span>
-<span class="r-in"><span><span class="co"># |--&gt; c(NA, "", "", "12", "12:30", "12:30")</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Do not ignore seconds, partial or missing times set to NA</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dtc_timepart</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">""</span>, <span class="st">"2021-12-25"</span>, <span class="st">"2021-12-25T12"</span>, <span class="st">"2021-12-25T12:30"</span>, <span class="st">"2021-12-25T12:30:59"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  ignore_seconds <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA         NA         NA         NA         NA         "12:30:59"</span>
-<span class="r-in"><span><span class="co"># |--&gt; c(NA, NA, NA, NA, NA, "12:30:59")</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">## Do not ignore seconds and prevent partial or missing times from being set to NA</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">dtc_timepart</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="st">""</span>, <span class="st">"2021-12-25"</span>, <span class="st">"2021-12-25T12"</span>, <span class="st">"2021-12-25T12:30"</span>, <span class="st">"2021-12-25T12:30:59"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  partial_as_na <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
-<span class="r-in"><span>  ignore_seconds <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] NA         ""         ""         "12"       "12:30"    "12:30:59"</span>
-<span class="r-in"><span><span class="co"># |--&gt; c(NA, "", "", "12", "12:30", "12:30:59")</span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 

@@ -88,34 +88,6 @@ whose names are: <code>year</code>, <code>mon</code>, <code>mday</code>, <code>h
 sense of <a href="https://dplyr.tidyverse.org/reference/coalesce.html" class="external-link">coalesce()</a>.</p>
     </div>
 
-    <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"year"</span>, <span class="st">"mon"</span>, <span class="st">"mday"</span>, <span class="st">"hour"</span>, <span class="st">"min"</span>, <span class="st">"sec"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2020"</span>, <span class="st">"01"</span>, <span class="st">"01"</span>, <span class="st">"20"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="st">"10"</span>, <span class="st">"00"</span>, <span class="st">"05"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">m_dates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">dates</span>, nrow <span class="op">=</span> <span class="fl">1L</span>, ncol <span class="op">=</span> <span class="fl">6L</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="va">cols</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">m_times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">times</span>, nrow <span class="op">=</span> <span class="fl">1L</span>, ncol <span class="op">=</span> <span class="fl">6L</span>, dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="va">cols</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Note how the hour "20" takes precedence over "10"</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">coalesce_capture_matrices</span><span class="op">(</span><span class="va">m_dates</span>, <span class="va">m_times</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      year   mon  mday hour min  sec </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] "2020" "01" "01" "20" "00" "05"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Reverse the order of the inputs and now hour "10" takes precedence</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">coalesce_capture_matrices</span><span class="op">(</span><span class="va">m_times</span>, <span class="va">m_dates</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      year   mon  mday hour min  sec </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] "2020" "01" "01" "10" "00" "05"</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Single inputs should result in the same output as the input</span></span></span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">coalesce_capture_matrices</span><span class="op">(</span><span class="va">m_dates</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      year   mon  mday hour min sec</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] "2020" "01" "01" "20" NA  NA </span>
-<span class="r-in"><span><span class="fu">sdtm.oak</span><span class="fu">:::</span><span class="fu">coalesce_capture_matrices</span><span class="op">(</span><span class="va">m_times</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      year mon mday hour min  sec </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] NA   NA  NA   "10" "00" "05"</span>
-<span class="r-in"><span></span></span>
-</code></pre></div>
-    </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
 
