@@ -65,4 +65,3 @@ cnd_df <- condition_add(df, x > 1L, y \%in\% c("a", "b"))
 dplyr::mutate(cnd_df, z = "match")
 
 }
-\keyword{internal}

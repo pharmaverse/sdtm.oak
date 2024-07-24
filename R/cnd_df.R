@@ -416,7 +416,7 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 #'
 #' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate
-#' @keywords internal
+#' @export
 mutate.cnd_df <- function(.data,
                           ...,
                           .by = NULL,
