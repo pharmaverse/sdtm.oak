@@ -32,7 +32,7 @@ jobs:
 
       - name: Get changed files in renv/profiles
         id: changed-files
-        uses: tj-actions/changed-files@v35
+        uses: tj-actions/changed-files@v41
         with:
           files: renv/profiles/**/renv.lock
 
@@ -86,7 +86,7 @@ jobs:
           else
               echo "platforms=linux/amd64" >> $GITHUB_OUTPUT
           fi
-          
+
 
       - name: Call deploy docker image action for every renv
         uses: insightsengineering/r-image-creator@v1

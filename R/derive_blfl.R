@@ -40,7 +40,6 @@ dtc_datepart <- function(dtc, partial_as_na = TRUE) {
 #' @return Character vector containing ISO 8601 times.
 #'
 #' @keywords internal
-
 dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
   # Assert that dtc is a character vector
   admiraldev::assert_character_vector(dtc)

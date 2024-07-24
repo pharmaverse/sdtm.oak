@@ -14,9 +14,14 @@ Authors@R: c(
     person("Omar", "Garcia", email = "ogcalderon@cdisc.org", role = "aut"),
     person("Ramiro", "Magno", email = "rmagno@pattern.institute",
     role = "aut", comment = c(ORCID = "0000-0001-5226-3441")),
+    person("Kamil", "Sijko", email = "kamil.sijko@ttsi.com.pl",
+    role = "aut", comment = c(ORCID = "0000-0002-2203-1065")),
+    person("Shiyu", "Chen", email = "Shiyu.Chen@atorusresearch.com", 
+    role = "aut"),
     person("Pattern Institute", role = c("cph", "fnd")),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd")),
-    person("Pfizer Inc", role = c("cph", "fnd"))
+    person("Pfizer Inc", role = c("cph", "fnd")),
+    person("Transition Technologies Science", role = c("cph", "fnd"))
     )
 Maintainer: Rammprasad Ganapathy <ganapathy.rammprasad@gene.com>
 Description: An EDC and Data Standard-agnostic SDTM data transformation engine
@@ -33,22 +38,20 @@ URL: https://pharmaverse.github.io/sdtm.oak/, https://github.com/pharmaverse/sdt
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Depends: R (>= 4.2)
 Imports: 
-    admiraldev,
+    admiraldev (>= 1.1.0),
     dplyr (>= 1.0.0),
-    memoise,
-    assertthat,
-    purrr (>= 0.3.3),
-    rlang (>= 0.4.4),
+    purrr (>= 1.0.1),
+    rlang (>= 1.0.2),
+    tibble (>= 3.2.0),
+    vctrs (>= 0.5.0),
     stringr (>= 1.4.0),
-    tibble,
-    vctrs,
-    readr,
-    glue,
-    DT,
-    pillar
+    memoise (>= 2.0.1),
+    assertthat,
+    pillar,
+    cli
 Suggests:
     knitr,
     htmltools,
@@ -56,7 +59,9 @@ Suggests:
     magrittr,
     rmarkdown,
     spelling,
-    testthat (>= 3.1.7)
+    testthat (>= 3.1.7),
+    DT,
+    readr
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true

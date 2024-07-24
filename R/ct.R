@@ -69,11 +69,11 @@ assert_ct_spec <- function(ct_spec, optional = FALSE) {
   }
 
   if (!is.null(ct_spec) && anyNA(ct_spec[[ct_spec_vars("ct_clst")]])) {
-    rlang::abort(glue::glue("`{ct_spec_vars('ct_clst')}` can't have any NA values."))
+    rlang::abort(stringr::str_glue("`{ct_spec_vars('ct_clst')}` can't have any NA values."))
   }
 
   if (!is.null(ct_spec) && anyNA(ct_spec[[ct_spec_vars("to")]])) {
-    rlang::abort(glue::glue("`{ct_spec_vars('to')}` can't have any NA values."))
+    rlang::abort(stringr::str_glue("`{ct_spec_vars('to')}` can't have any NA values."))
   }
 
   invisible(ct_spec)
@@ -279,7 +279,8 @@ ct_map <-
 #'
 #' @export
 read_ct_spec <- function(file = stop("`file` must be specified")) {
-  ct_spec <- readr::read_csv(file = file, col_types = "c")
+  ct_spec <- utils::read.csv(file = file, na.strings = c("NA", ""), colClasses = "character") |>
+    tibble::as_tibble()
   assert_ct_spec(ct_spec)
 
   ct_spec
@@ -327,7 +328,7 @@ ct_spec_example <- function(example) {
 
   if (identical(local_path, "")) {
     stop(
-      glue::glue(
+      stringr::str_glue(
         "'{example}' does not match any ct spec files. Run `ct_spec_example()` for options."
       ),
       call. = FALSE
