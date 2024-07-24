@@ -30,6 +30,8 @@ Authors:
   \item Yogesh Gupta
   \item Omar Garcia \email{ogcalderon@cdisc.org}
   \item Ramiro Magno \email{rmagno@pattern.institute} (\href{https://orcid.org/0000-0001-5226-3441}{ORCID})
+  \item Kamil Sijko \email{kamil.sijko@ttsi.com.pl} (\href{https://orcid.org/0000-0002-2203-1065}{ORCID})
+  \item Shiyu Chen \email{Shiyu.Chen@atorusresearch.com}
 }
 
 Other contributors:
@@ -37,6 +39,7 @@ Other contributors:
   \item Pattern Institute [copyright holder, funder]
   \item F. Hoffmann-La Roche AG [copyright holder, funder]
   \item Pfizer Inc [copyright holder, funder]
+  \item Transition Technologies Science [copyright holder, funder]
 }
 
 }
