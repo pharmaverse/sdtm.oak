@@ -21,9 +21,3 @@ datasets. By default, the set of names is
 oak_id, raw_source, and patient_number. Extra variable names may be
 indicated and passed in \code{extra_vars} which are appended to the default names.
 }
-\examples{
-oak_id_vars()
-
-oak_id_vars(extra_vars = "sample_id")
-
-}

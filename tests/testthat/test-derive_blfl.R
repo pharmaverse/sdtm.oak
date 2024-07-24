@@ -127,3 +127,84 @@ test_that("derive_blfl DOMAIN validation works", {
     ref_var = "RFXSTDTC"
   ))
 })
+
+test_that("`dtc_datepart`: basic usage", {
+  expect_identical(
+    dtc_datepart(
+      c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25T12:00:00")
+    ),
+    c(NA, NA, NA, NA, "2021-12-25", "2021-12-25")
+  )
+
+  ## Prevent partial or missing dates from being set to NA
+  expect_identical(
+    dtc_datepart(
+      c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25T12:00:00"),
+      partial_as_na = FALSE
+    ),
+    c(NA, "", "2021", "2021-12", "2021-12-25", "2021-12-25")
+  )
+})
+
+test_that("`dtc_timepart`: basic usage", {
+  # Partial or missing times set to NA and seconds ignored by default
+  expect_identical(dtc_timepart(
+    c(
+      NA,
+      "",
+      "2021-12-25",
+      "2021-12-25T12",
+      "2021-12-25T12:30",
+      "2021-12-25T12:30:59"
+    )
+  ), c(NA, NA, NA, NA, "12:30", "12:30"))
+
+  # Prevent partial or missing times from being set to NA
+  expect_identical(
+    dtc_timepart(
+      c(
+        NA,
+        "",
+        "2021-12-25",
+        "2021-12-25T12",
+        "2021-12-25T12:30",
+        "2021-12-25T12:30:59"
+      ),
+      partial_as_na = FALSE
+    ),
+    c(NA, "", "", "12", "12:30", "12:30")
+  )
+
+  # Do not ignore seconds, partial or missing times set to NA
+  expect_identical(
+    dtc_timepart(
+      c(
+        NA,
+        "",
+        "2021-12-25",
+        "2021-12-25T12",
+        "2021-12-25T12:30",
+        "2021-12-25T12:30:59"
+      ),
+      ignore_seconds = FALSE
+    ),
+    c(NA, NA, NA, NA, NA, "12:30:59")
+  )
+
+  # Do not ignore seconds and prevent partial or missing times from being set to NA
+  expect_identical(
+    dtc_timepart(
+      c(
+        NA,
+        "",
+        "2021-12-25",
+        "2021-12-25T12",
+        "2021-12-25T12:30",
+        "2021-12-25T12:30:59"
+      ),
+      partial_as_na = FALSE,
+      ignore_seconds = FALSE
+    ),
+    c(NA, "", "", "12", "12:30", "12:30:59")
+  )
+})

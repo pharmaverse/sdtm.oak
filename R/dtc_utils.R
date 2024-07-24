@@ -6,14 +6,6 @@
 #'
 #' @param fmt A character vector.
 #'
-#' @examples
-#' sdtm.oak:::assert_dtc_fmt(c("ymd", "y m d", "dmy", "HM", "H:M:S", "y-m-d H:M:S"))
-#'
-#' # This example is guarded to avoid throwing errors
-#' if (FALSE) {
-#'   sdtm.oak:::assert_dtc_fmt("y years m months d days")
-#' }
-#'
 #' @keywords internal
 assert_dtc_fmt <- function(fmt) {
   rlang::arg_match(fmt,
@@ -34,17 +26,6 @@ assert_dtc_fmt <- function(fmt) {
 #' - A list of character vectors of formats permitted by [assert_dtc_fmt()].
 #'
 #' Otherwise, it returns `.format` invisibly.
-#'
-#' @examples
-#' sdtm.oak:::assert_dtc_format("ymd")
-#' sdtm.oak:::assert_dtc_format(c("ymd", "y-m-d"))
-#' sdtm.oak:::assert_dtc_format(list(c("ymd", "y-m-d"), "H:M:S"))
-#'
-#' # These commands should throw an error
-#' if (FALSE) {
-#'   # Note that `"year, month, day"` is not a supported format.
-#'   sdtm.oak:::assert_dtc_format("year, month, day")
-#' }
 #'
 #' @keywords internal
 assert_dtc_format <- function(.format) {
@@ -79,18 +60,6 @@ assert_dtc_format <- function(.format) {
 #'
 #' Otherwise, it returns `m` invisibly.
 #'
-#' @examples
-#' cols <- c("year", "mon", "mday", "hour", "min", "sec")
-#' m <- matrix(NA_character_, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
-#' sdtm.oak:::assert_capture_matrix(m)
-#'
-#' # These commands should throw an error
-#' if (FALSE) {
-#'   sdtm.oak:::assert_capture_matrix(character())
-#'   sdtm.oak:::assert_capture_matrix(matrix(data = NA_character_, nrow = 0, ncol = 0))
-#'   sdtm.oak:::assert_capture_matrix(matrix(data = NA_character_, nrow = 1))
-#' }
-#'
 #' @keywords internal
 assert_capture_matrix <- function(m) {
   # `m` must be of character type.
@@ -119,20 +88,6 @@ assert_capture_matrix <- function(m) {
 #'
 #' @returns A character matrix that contains the columns `year`, `mon`, `mday`,
 #'   `hour`, `min` and `sec`. Any other existing columns are dropped.
-#'
-#' @examples
-#' sdtm.oak:::complete_capture_matrix(matrix(data = NA_character_, nrow = 0, ncol = 0))
-#' sdtm.oak:::complete_capture_matrix(matrix(data = NA_character_, nrow = 1))
-#'
-#' # m <- matrix(NA_character_, nrow = 1, ncol = 2, dimnames = list(NULL, c("year", "sec")))
-#' # sdtm.oak:::complete_capture_matrix(m)
-#'
-#' # m <- matrix(c("2020", "10"), nrow = 1, ncol = 2, dimnames = list(NULL, c("year", "sec")))
-#' # sdtm.oak:::complete_capture_matrix(m)
-#'
-#' # Any other existing columns are dropped.
-#' # m <- matrix(c("2020", "10"), nrow = 1, ncol = 2, dimnames = list(NULL, c("semester", "quarter")))
-#' # sdtm.oak:::complete_capture_matrix(m)
 #'
 #' @keywords internal
 complete_capture_matrix <-
@@ -171,23 +126,6 @@ complete_capture_matrix <-
 #'
 #' @returns A single capture matrix whose values have been coalesced in the
 #' sense of [coalesce()][dplyr::coalesce].
-#'
-#' @examples
-#' cols <- c("year", "mon", "mday", "hour", "min", "sec")
-#' dates <- c("2020", "01", "01", "20", NA, NA)
-#' times <- c(NA, NA, NA, "10", "00", "05")
-#' m_dates <- matrix(dates, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
-#' m_times <- matrix(times, nrow = 1L, ncol = 6L, dimnames = list(NULL, cols))
-#'
-#' # Note how the hour "20" takes precedence over "10"
-#' sdtm.oak:::coalesce_capture_matrices(m_dates, m_times)
-#'
-#' # Reverse the order of the inputs and now hour "10" takes precedence
-#' sdtm.oak:::coalesce_capture_matrices(m_times, m_dates)
-#'
-#' # Single inputs should result in the same output as the input
-#' sdtm.oak:::coalesce_capture_matrices(m_dates)
-#' sdtm.oak:::coalesce_capture_matrices(m_times)
 #'
 #' @keywords internal
 coalesce_capture_matrices <- function(...) {

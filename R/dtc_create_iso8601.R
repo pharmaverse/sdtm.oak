@@ -9,9 +9,6 @@ mon_abb_to_mon_num <- stats::setNames(sprintf("%02d", seq_along(month.abb)), tol
 #'
 #' @returns A character vector.
 #'
-#' @examples
-#' sdtm.oak:::iso8601_na(c("10", NA_character_))
-#'
 #' @keywords internal
 iso8601_na <- function(x) {
   admiraldev::assert_character_vector(x)
@@ -29,13 +26,6 @@ iso8601_na <- function(x) {
 #' @param n Number of digits in the output, including zero padding.
 #'
 #' @returns A character vector.
-#'
-#' @examples
-#' sdtm.oak:::zero_pad_whole_number(c(-1, 0, 1))
-#'
-#' sdtm.oak:::zero_pad_whole_number(c(-1, 0, 1, 10, 99, 100), n = 2)
-#'
-#' sdtm.oak:::zero_pad_whole_number(c(-1, 0, 1, 10, 99, 100), n = 3)
 #'
 #' @keywords internal
 zero_pad_whole_number <- function(x, n = 2L) {
@@ -69,18 +59,6 @@ zero_pad_whole_number <- function(x, n = 2L) {
 #'
 #' @returns An integer vector.
 #'
-#' @examples
-#' sdtm.oak:::yy_to_yyyy(0:5)
-#' sdtm.oak:::yy_to_yyyy(2000:2005)
-#'
-#' sdtm.oak:::yy_to_yyyy(90:99)
-#' sdtm.oak:::yy_to_yyyy(1990:1999)
-#'
-#' # NB: change in behavior after 68
-#' sdtm.oak:::yy_to_yyyy(65:72)
-#'
-#' sdtm.oak:::yy_to_yyyy(1965:1972)
-#'
 #' @keywords internal
 yy_to_yyyy <- function(x, cutoff_2000 = 68L) {
   # Check `x`
@@ -105,10 +83,6 @@ yy_to_yyyy <- function(x, cutoff_2000 = 68L) {
 #'
 #' @returns A character vector of the same size as `x`.
 #'
-#' @examples
-#' x <- c("0", "00", "1", "01", "42", "100", NA_character_, "1.")
-#' sdtm.oak:::iso8601_two_digits(x)
-#'
 #' @keywords internal
 iso8601_two_digits <- function(x) {
   admiraldev::assert_character_vector(x)
@@ -132,17 +106,6 @@ iso8601_min <- iso8601_two_digits
 #'
 #' @returns A character vector.
 #'
-#' @examples
-#' sdtm.oak:::iso8601_year(c("0", "1", "2", "50", "68", "69", "90", "99", "00"))
-#'
-#' # Be default, `cutoff_2000` is at 68.
-#' sdtm.oak:::iso8601_year(c("67", "68", "69", "70"))
-#' sdtm.oak:::iso8601_year(c("1967", "1968", "1969", "1970"))
-#'
-#' # Change it to something else, e.g. `cutoff_2000 = 25`.
-#' sdtm.oak:::iso8601_year(as.character(0:50), cutoff_2000 = 25)
-#' sdtm.oak:::iso8601_year(as.character(1900:1950), cutoff_2000 = 25)
-#'
 #' @keywords internal
 iso8601_year <- function(x, cutoff_2000 = 68L) {
   admiraldev::assert_character_vector(x)
@@ -161,17 +124,6 @@ iso8601_year <- function(x, cutoff_2000 = 68L) {
 #'
 #' @returns A character vector.
 #'
-#' @examples
-#' sdtm.oak:::iso8601_mon(c(NA, "0", "1", "2", "10", "11", "12"))
-#'
-#' # No semantic validation is performed on the numeric months, so `"13"` stays
-#' # `"13"` but representations that can't be represented as two-digit numbers
-#' # become `NA`.
-#' sdtm.oak:::iso8601_mon(c("13", "99", "100", "-1"))
-#'
-#' (mon <- month.abb)
-#' sdtm.oak:::iso8601_mon(mon)
-#'
 #' @keywords internal
 iso8601_mon <- function(x) {
   x <- tolower(x)
@@ -189,9 +141,6 @@ iso8601_mon <- function(x) {
 #' @param x A character vector.
 #'
 #' @returns A character vector.
-#'
-#' @examples
-#' sdtm.oak:::iso8601_sec(c(NA, "0", "1", "10", "59", "99", "100"))
 #'
 #' @keywords internal
 iso8601_sec <- function(x) {
@@ -212,36 +161,6 @@ iso8601_sec <- function(x) {
 #' @param x A character vector.
 #'
 #' @returns A character vector.
-#'
-#' @examples
-#' x <-
-#'   c(
-#'     "1999-01-01T15:20:01",
-#'     "1999-01-01T15:20:-",
-#'     "1999-01-01T15:-:-",
-#'     "1999-01-01T-:-:-",
-#'     "1999-01--T-:-:-",
-#'     "1999----T-:-:-",
-#'     "-----T-:-:-"
-#'   )
-#'
-#' sdtm.oak:::iso8601_truncate(x)
-#'
-#' # With `empty_as_na = FALSE` empty strings are not replaced with `NA`
-#' sdtm.oak:::iso8601_truncate("-----T-:-:-", empty_as_na = TRUE)
-#' sdtm.oak:::iso8601_truncate("-----T-:-:-", empty_as_na = FALSE)
-#'
-#' # Truncation only happens if missing components are the right most end,
-#' # otherwise they remain unaltered.
-#' sdtm.oak:::iso8601_truncate(
-#'   c(
-#'     "1999----T15:20:01",
-#'     "1999-01-01T-:20:01",
-#'     "1999-01-01T-:-:01",
-#'     "1999-01-01T-:-:-"
-#'   )
-#' )
-#'
 #' @keywords internal
 iso8601_truncate <- function(x, empty_as_na = TRUE) {
   x <- stringr::str_remove(x, "[^\\d]*$")
@@ -264,23 +183,6 @@ iso8601_truncate <- function(x, empty_as_na = TRUE) {
 #'   though starting with `19`.
 #'
 #' @returns A character vector with date-times following the ISO8601 format.
-#'
-#' @examples
-#' cols <- c("year", "mon", "mday", "hour", "min", "sec")
-#' m <- matrix(
-#'   c(
-#'     "99", "00", "01",
-#'     "Jan", "feb", "03",
-#'     "1", "01", "31",
-#'     "00", "12", "23",
-#'     "00", "59", "10",
-#'     "42", "5.15", NA
-#'   ),
-#'   ncol = 6,
-#'   dimnames = list(c(), cols)
-#' )
-#'
-#' sdtm.oak:::format_iso8601(m)
 #'
 #' @keywords internal
 format_iso8601 <- function(m, .cutoff_2000 = 68L) {

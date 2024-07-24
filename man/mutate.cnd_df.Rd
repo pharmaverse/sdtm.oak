@@ -55,13 +55,4 @@ generic on conditioned data frames. This function implements a conditional
 mutate by only changing rows for which the condition stored in the
 conditioned data frame is \code{TRUE}.
 }
-\examples{
-df <- tibble::tibble(x = 1L:3L, y = letters[x])
-cnd_df <- condition_add(df, x > 1L, y \%in\% c("a", "b"))
-
-# Because `cnd_df` is a conditioned data frame, dplyr::mutate() generic
-# dispatches this S3 method and mutates only the second row, as that is the
-# only record that fulfills simultaneously `x > 1L` and `y \%in\% c("a", "b")`.
-dplyr::mutate(cnd_df, z = "match")
-
-}
+\keyword{internal}

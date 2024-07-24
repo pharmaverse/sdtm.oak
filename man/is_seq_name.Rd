@@ -15,16 +15,4 @@ A logical vector.
 \description{
 \code{\link[=is_seq_name]{is_seq_name()}} returns which variable names end in \code{"SEQ"}.
 }
-\examples{
-# A valid SEQ name.
-sdtm.oak:::is_seq_name("AESEQ")
-
-# Not valid sequence number (`--SEQ`) variable names.
-# Case matters.
-sdtm.oak:::is_seq_name("AEseq")
-
-# A valid name has to end in "SEQ".
-sdtm.oak:::is_seq_name("AESEQUENCE")
-
-}
 \keyword{internal}

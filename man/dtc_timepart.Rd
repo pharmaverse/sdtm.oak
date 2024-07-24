@@ -23,33 +23,4 @@ The time part is extracted from an ISO 8601 date/time variable.
 By default, partial or missing times are set to NA, and seconds are ignored
 and not extracted.
 }
-\examples{
-## Partial or missing times set to NA and seconds ignored by default
-sdtm.oak:::dtc_timepart(
-  c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59")
-)
-# |--> c(NA, NA, NA, NA, "12:30", "12:30")
-
-## Prevent partial or missing times from being set to NA
-sdtm.oak:::dtc_timepart(
-  c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59"),
-  partial_as_na = FALSE
-)
-# |--> c(NA, "", "", "12", "12:30", "12:30")
-
-## Do not ignore seconds, partial or missing times set to NA
-sdtm.oak:::dtc_timepart(
-  c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59"),
-  ignore_seconds = FALSE
-)
-# |--> c(NA, NA, NA, NA, NA, "12:30:59")
-
-## Do not ignore seconds and prevent partial or missing times from being set to NA
-sdtm.oak:::dtc_timepart(
-  c(NA, "", "2021-12-25", "2021-12-25T12", "2021-12-25T12:30", "2021-12-25T12:30:59"),
-  partial_as_na = FALSE,
-  ignore_seconds = FALSE
-)
-# |--> c(NA, "", "", "12", "12:30", "12:30:59")
-}
 \keyword{internal}

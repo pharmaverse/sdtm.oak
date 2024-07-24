@@ -25,24 +25,4 @@ A vector of recoded values.
 \code{\link[=recode]{recode()}} recodes values in \code{x} by matching elements in \code{from} onto values
 in \code{to}.
 }
-\examples{
-x <- c("male", "female", "x", NA)
-sdtm.oak:::recode(x,
-  from = c("male", "female"),
-  to = c("M", "F")
-)
-sdtm.oak:::recode(
-  x,
-  from = c("male", "female"),
-  to = c("M", "F"),
-  .no_match = "?"
-)
-sdtm.oak:::recode(
-  x,
-  from = c("male", "female"),
-  to = c("M", "F"),
-  .na = "missing"
-)
-
-}
 \keyword{internal}

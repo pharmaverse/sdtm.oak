@@ -20,13 +20,4 @@ A character scalar of the resulting regex.
 \code{\link[=regex_or]{regex_or()}} takes a set of patterns and binds them with the Or (\code{"|"})
 pattern for an easy regex of alternative patterns.
 }
-\examples{
-# A regex for matching either "jan" or "feb"
-sdtm.oak:::regex_or(c("jan", "feb"))
-
-# Setting `.open` and/or `.close` to `TRUE` can be handy if this regex
-# is to be combined into a larger regex.
-paste0(sdtm.oak:::regex_or(c("jan", "feb"), .close = TRUE), r"{\d{2}}")
-
-}
 \keyword{internal}

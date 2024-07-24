@@ -16,16 +16,4 @@ A character vector.
 \code{\link[=iso8601_mon]{iso8601_mon()}} converts a character vector whose values represent numeric
 or abbreviated month names to zero-padded numeric months.
 }
-\examples{
-sdtm.oak:::iso8601_mon(c(NA, "0", "1", "2", "10", "11", "12"))
-
-# No semantic validation is performed on the numeric months, so `"13"` stays
-# `"13"` but representations that can't be represented as two-digit numbers
-# become `NA`.
-sdtm.oak:::iso8601_mon(c("13", "99", "100", "-1"))
-
-(mon <- month.abb)
-sdtm.oak:::iso8601_mon(mon)
-
-}
 \keyword{internal}

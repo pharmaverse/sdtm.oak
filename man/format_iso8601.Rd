@@ -24,22 +24,4 @@ converting years to a four digit number, and month, day, hours, minutes and
 seconds to two-digit numbers. Not available (\code{NA}) components are converted
 to \code{"-"}.
 }
-\examples{
-cols <- c("year", "mon", "mday", "hour", "min", "sec")
-m <- matrix(
-  c(
-    "99", "00", "01",
-    "Jan", "feb", "03",
-    "1", "01", "31",
-    "00", "12", "23",
-    "00", "59", "10",
-    "42", "5.15", NA
-  ),
-  ncol = 6,
-  dimnames = list(c(), cols)
-)
-
-sdtm.oak:::format_iso8601(m)
-
-}
 \keyword{internal}

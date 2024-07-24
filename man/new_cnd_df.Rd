@@ -32,11 +32,6 @@ that this function extends the data frame passed as argument by storing a
 logical vector \code{cnd} (as attribute) that marks rows for posterior conditional
 transformation by methods that support \emph{conditioned} data frames.
 }
-\examples{
-df <- data.frame(x = 1:3, y = letters[1:3])
-sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-
-}
 \seealso{
 \code{\link[=is_cnd_df]{is_cnd_df()}}, \code{\link[=get_cnd_df_cnd]{get_cnd_df_cnd()}}, \code{\link[=get_cnd_df_cnd_sum]{get_cnd_df_cnd_sum()}},
 \code{\link[=rm_cnd_df]{rm_cnd_df()}}.

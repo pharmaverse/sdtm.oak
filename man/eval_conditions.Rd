@@ -36,40 +36,4 @@ expressions to be evaluated in the context of \code{dat} and \code{.env}.
 Variables are looked up in \code{dat}, then in \code{.env}, then in the calling
 function's environment, followed by its parent environments.
 }
-\examples{
-# Create a sample data frame
-df <- data.frame(
-  x = c(1, 2, NA_integer_, 4, 5),
-  y = c(TRUE, FALSE, TRUE, FALSE, TRUE),
-  z = c("a", "b", "a", "b", "a")
-)
-
-# Simple condition on one column
-sdtm.oak:::eval_conditions(df, x > 2)
-
-# Combined conditions on multiple columns
-sdtm.oak:::eval_conditions(df, x > 2 & y)
-sdtm.oak:::eval_conditions(df, x > 2, y)
-
-# Using conditions with NA handling
-df_with_na <- data.frame(
-  x = c(1, 2, NA, 4, 5),
-  y = c(TRUE, FALSE, TRUE, FALSE, TRUE)
-)
-sdtm.oak:::eval_conditions(df_with_na, x > 2, .na = FALSE)
-
-# The environment where `eval_conditions()` is called is also inspected
-# when evaluating conditions in `...`.
-w <- 1
-sdtm.oak:::eval_conditions(df, x > w)
-
-# Using an environment
-env <- rlang::env(w = 2)
-sdtm.oak:::eval_conditions(df, x > w, .env = env)
-
-# In place of an environment, you may alternatively pass a list or data frame.
-sdtm.oak:::eval_conditions(df, x > w, .env = list(w = 3))
-sdtm.oak:::eval_conditions(df, x > w, .env = tibble::tibble(w = 4))
-
-}
 \keyword{internal}

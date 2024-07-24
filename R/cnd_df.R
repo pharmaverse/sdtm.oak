@@ -48,10 +48,6 @@
 #' @seealso [is_cnd_df()], [get_cnd_df_cnd()], [get_cnd_df_cnd_sum()],
 #'   [rm_cnd_df()].
 #'
-#' @examples
-#' df <- data.frame(x = 1:3, y = letters[1:3])
-#' sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-#'
 #' @keywords internal
 new_cnd_df <- function(dat, cnd, .warn = TRUE) {
   admiraldev::assert_data_frame(dat)
@@ -98,13 +94,6 @@ new_cnd_df <- function(dat, cnd, .warn = TRUE) {
 #' @seealso [new_cnd_df()], [get_cnd_df_cnd()], [get_cnd_df_cnd_sum()],
 #'   [rm_cnd_df()].
 #'
-#' @examples
-#' df <- data.frame(x = 1:3, y = letters[1:3])
-#' sdtm.oak:::is_cnd_df(df)
-#'
-#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-#' sdtm.oak:::is_cnd_df(cnd_df)
-#'
 #' @keywords internal
 is_cnd_df <- function(dat) {
   inherits(dat, "cnd_df")
@@ -122,13 +111,6 @@ is_cnd_df <- function(dat) {
 #'
 #' @seealso [new_cnd_df()], [is_cnd_df()], [get_cnd_df_cnd_sum()],
 #'   [rm_cnd_df()].
-#'
-#' @examples
-#' df <- data.frame(x = 1:3, y = letters[1:3])
-#' sdtm.oak:::get_cnd_df_cnd(df)
-#'
-#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-#' sdtm.oak:::get_cnd_df_cnd(cnd_df)
 #'
 #' @keywords internal
 get_cnd_df_cnd <- function(dat) {
@@ -151,13 +133,6 @@ get_cnd_df_cnd <- function(dat) {
 #'
 #' @seealso [new_cnd_df()], [is_cnd_df()], [get_cnd_df_cnd()], [rm_cnd_df()].
 #'
-#' @examples
-#' df <- data.frame(x = 1:3, y = letters[1:3])
-#' sdtm.oak:::get_cnd_df_cnd_sum(df)
-#'
-#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-#' sdtm.oak:::get_cnd_df_cnd_sum(cnd_df)
-#'
 #' @keywords internal
 get_cnd_df_cnd_sum <- function(dat) {
   if (is_cnd_df(dat)) {
@@ -177,13 +152,6 @@ get_cnd_df_cnd_sum <- function(dat) {
 #'
 #' @seealso [new_cnd_df()], [is_cnd_df()], [get_cnd_df_cnd()],
 #'   [get_cnd_df_cnd_sum()].
-#'
-#' @examples
-#' df <- data.frame(x = 1:3, y = letters[1:3])
-#' cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-#'
-#' sdtm.oak:::is_cnd_df(cnd_df)
-#' sdtm.oak:::is_cnd_df(sdtm.oak:::rm_cnd_df(cnd_df))
 #'
 #' @keywords internal
 rm_cnd_df <- function(dat) {
@@ -290,41 +258,6 @@ ctl_new_rowid_pillar.cnd_df <- function(controller, x, width, ...) {
 #'
 #' @returns A logical vector reflecting matching rows in `dat`.
 #'
-#' @examples
-#' # Create a sample data frame
-#' df <- data.frame(
-#'   x = c(1, 2, NA_integer_, 4, 5),
-#'   y = c(TRUE, FALSE, TRUE, FALSE, TRUE),
-#'   z = c("a", "b", "a", "b", "a")
-#' )
-#'
-#' # Simple condition on one column
-#' sdtm.oak:::eval_conditions(df, x > 2)
-#'
-#' # Combined conditions on multiple columns
-#' sdtm.oak:::eval_conditions(df, x > 2 & y)
-#' sdtm.oak:::eval_conditions(df, x > 2, y)
-#'
-#' # Using conditions with NA handling
-#' df_with_na <- data.frame(
-#'   x = c(1, 2, NA, 4, 5),
-#'   y = c(TRUE, FALSE, TRUE, FALSE, TRUE)
-#' )
-#' sdtm.oak:::eval_conditions(df_with_na, x > 2, .na = FALSE)
-#'
-#' # The environment where `eval_conditions()` is called is also inspected
-#' # when evaluating conditions in `...`.
-#' w <- 1
-#' sdtm.oak:::eval_conditions(df, x > w)
-#'
-#' # Using an environment
-#' env <- rlang::env(w = 2)
-#' sdtm.oak:::eval_conditions(df, x > w, .env = env)
-#'
-#' # In place of an environment, you may alternatively pass a list or data frame.
-#' sdtm.oak:::eval_conditions(df, x > w, .env = list(w = 3))
-#' sdtm.oak:::eval_conditions(df, x > w, .env = tibble::tibble(w = 4))
-#'
 #' @keywords internal
 eval_conditions <- function(dat,
                             ...,
@@ -404,15 +337,6 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 #' @param .before Not used, use `.after` instead.
 #' @param .after Control where new columns should appear, i.e. after which
 #'   columns.
-#'
-#' @examples
-#' df <- tibble::tibble(x = 1L:3L, y = letters[x])
-#' cnd_df <- condition_add(df, x > 1L, y %in% c("a", "b"))
-#'
-#' # Because `cnd_df` is a conditioned data frame, dplyr::mutate() generic
-#' # dispatches this S3 method and mutates only the second row, as that is the
-#' # only record that fulfills simultaneously `x > 1L` and `y %in% c("a", "b")`.
-#' dplyr::mutate(cnd_df, z = "match")
 #'
 #' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate

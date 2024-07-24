@@ -39,27 +39,4 @@ the components of the format \code{fmt} that refer to date/time components.
 \code{\link[=parse_dttm_fmt_]{parse_dttm_fmt_()}} is similar to \code{\link[=parse_dttm_fmt]{parse_dttm_fmt()}} but is not vectorized
 over \code{fmt}.
 }
-\examples{
-sdtm.oak:::parse_dttm_fmt("ymd")
-sdtm.oak:::parse_dttm_fmt("H:M:S")
-
-sdtm.oak:::parse_dttm_fmt("ymd HMS")
-
-# Repeating the same special patterns, e.g. "yy" still counts as one pattern
-# only.
-sdtm.oak:::parse_dttm_fmt("yymmdd HHMMSS")
-
-# Note that `"y"`, `"m"`, `"d"`, `"H"`, `"M"` or `"S"` are reserved patterns
-# that are matched first and interpreted as format components. # Example: the
-# first "y" in "year" is parsed as meaning year followed by "ear y". The
-# second "y" is not longer matched because a first match already # succeded.
-sdtm.oak:::parse_dttm_fmt("year y")
-
-# Specify custom patterns
-sdtm.oak:::parse_dttm_fmt(
-  "year month day",
-  fmt_cmp(year = "year", mon = "month", mday = "day")
-)
-
-}
 \keyword{internal}

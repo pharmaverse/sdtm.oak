@@ -15,8 +15,4 @@ A character vector.
 \description{
 \code{\link[=iso8601_na]{iso8601_na()}} takes a character vector and converts \code{NA} values to \code{"-"}.
 }
-\examples{
-sdtm.oak:::iso8601_na(c("10", NA_character_))
-
-}
 \keyword{internal}

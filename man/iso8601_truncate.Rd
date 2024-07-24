@@ -17,34 +17,4 @@ A character vector.
 date-times that might be partial and truncates the format by removing those
 missing components.
 }
-\examples{
-x <-
-  c(
-    "1999-01-01T15:20:01",
-    "1999-01-01T15:20:-",
-    "1999-01-01T15:-:-",
-    "1999-01-01T-:-:-",
-    "1999-01--T-:-:-",
-    "1999----T-:-:-",
-    "-----T-:-:-"
-  )
-
-sdtm.oak:::iso8601_truncate(x)
-
-# With `empty_as_na = FALSE` empty strings are not replaced with `NA`
-sdtm.oak:::iso8601_truncate("-----T-:-:-", empty_as_na = TRUE)
-sdtm.oak:::iso8601_truncate("-----T-:-:-", empty_as_na = FALSE)
-
-# Truncation only happens if missing components are the right most end,
-# otherwise they remain unaltered.
-sdtm.oak:::iso8601_truncate(
-  c(
-    "1999----T15:20:01",
-    "1999-01-01T-:20:01",
-    "1999-01-01T-:-:01",
-    "1999-01-01T-:-:-"
-  )
-)
-
-}
 \keyword{internal}

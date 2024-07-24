@@ -18,14 +18,6 @@ a conditioned data frame (\code{cnd_df}).
 \code{\link[=get_cnd_df_cnd_sum]{get_cnd_df_cnd_sum()}} extracts the tally of the conditioning vector from a
 conditioned data frame.
 }
-\examples{
-df <- data.frame(x = 1:3, y = letters[1:3])
-sdtm.oak:::get_cnd_df_cnd_sum(df)
-
-cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-sdtm.oak:::get_cnd_df_cnd_sum(cnd_df)
-
-}
 \seealso{
 \code{\link[=new_cnd_df]{new_cnd_df()}}, \code{\link[=is_cnd_df]{is_cnd_df()}}, \code{\link[=get_cnd_df_cnd]{get_cnd_df_cnd()}}, \code{\link[=rm_cnd_df]{rm_cnd_df()}}.
 }

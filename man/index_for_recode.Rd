@@ -23,8 +23,4 @@ any of the values specified in the \code{from} vector. This function is primaril
 used to facilitate the recoding of values by pinpointing which elements in
 \code{x} correspond to the \code{from} values and thus need to be replaced or updated.
 }
-\examples{
-sdtm.oak:::index_for_recode(x = 1:5, from = c(2, 4))
-
-}
 \keyword{internal}

@@ -16,14 +16,6 @@ The input \code{dat} without the \code{cnd_df} class and associated attributes.
 This function removes the \code{cnd_df} class, along with its attributes, if
 applicable.
 }
-\examples{
-df <- data.frame(x = 1:3, y = letters[1:3])
-cnd_df <- sdtm.oak:::new_cnd_df(dat = df, cnd = c(FALSE, NA, TRUE))
-
-sdtm.oak:::is_cnd_df(cnd_df)
-sdtm.oak:::is_cnd_df(sdtm.oak:::rm_cnd_df(cnd_df))
-
-}
 \seealso{
 \code{\link[=new_cnd_df]{new_cnd_df()}}, \code{\link[=is_cnd_df]{is_cnd_df()}}, \code{\link[=get_cnd_df_cnd]{get_cnd_df_cnd()}},
 \code{\link[=get_cnd_df_cnd_sum]{get_cnd_df_cnd_sum()}}.

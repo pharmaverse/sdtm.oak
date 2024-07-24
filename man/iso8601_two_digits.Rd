@@ -17,9 +17,4 @@ A character vector of the same size as \code{x}.
 two digit, 0-padded, number. Failing to parse the input as a two digit number
 results in \code{NA}.
 }
-\examples{
-x <- c("0", "00", "1", "01", "42", "100", NA_character_, "1.")
-sdtm.oak:::iso8601_two_digits(x)
-
-}
 \keyword{internal}

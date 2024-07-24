@@ -13,21 +13,6 @@
 #' @param set A scalar character (string), one of: `"all"` (default), `"ct_clst"`,
 #'   `"from"` or `"to"`.
 #'
-#' @examples
-#' # These two calls are equivalent and return all required variables in a
-#' # controlled terminology data set.
-#' ct_spec_vars()
-#' ct_spec_vars("all")
-#'
-#' # "Codelist code" variable name.
-#' ct_spec_vars("ct_clst")
-#'
-#' # "From" variables
-#' ct_spec_vars("from")
-#'
-#' # The "to" variable.
-#' ct_spec_vars("to")
-#'
 #' @keywords internal
 #' @export
 ct_spec_vars <- function(set = c("all", "ct_clst", "from", "to")) {
@@ -71,25 +56,6 @@ ct_spec_vars <- function(set = c("all", "ct_clst", "from", "to")) {
 #' @returns The function throws an error if `ct_spec` is not a valid controlled
 #'   terminology data set; otherwise, `ct_spec` is returned invisibly.
 #'
-#' @examples
-#' # If `ct_spec` is a valid controlled terminology then it is returned invisibly.
-#' ct_spec_01 <- read_ct_spec_example("ct-01-cm")
-#' all.equal(ct_spec_01, sdtm.oak:::assert_ct_spec(ct_spec_01))
-#'
-#' # A minimal set of variables needs to be present in `ct_spec` for it to pass the
-#' # assertion; `sdtm.oak:::ct_spec_vars()` defines their names.
-#' (req_vars <- sdtm.oak:::ct_spec_vars())
-#'
-#' # Other (facultative) variables also present in the controlled terminology
-#' # example.
-#' (opt_vars <- setdiff(colnames(ct_spec_01), req_vars))
-#'
-#' # With only the mandatory variables, the assertion still passes.
-#' sdtm.oak:::assert_ct_spec(ct_spec_01[req_vars])
-#'
-#' # Not having the required variables results in an error.
-#' try(sdtm.oak:::assert_ct_spec(ct_spec_01[opt_vars]))
-#'
 #' @keywords internal
 assert_ct_spec <- function(ct_spec, optional = FALSE) {
   admiraldev::assert_data_frame(
@@ -127,21 +93,6 @@ assert_ct_spec <- function(ct_spec, optional = FALSE) {
 #' @returns The function throws an error if `ct_clst` is not a valid codelist code
 #'   given the controlled terminology data set; otherwise, `ct_clst` is returned
 #'   invisibly.
-#'
-#' @examples
-#' # Load a controlled terminology example.
-#' (ct_spec <- read_ct_spec_example("ct-01-cm"))
-#'
-#' # Should work fine.
-#' sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = "C71113")
-#'
-#' # In certain cases, you might allow `ct_clst` to be `NULL` as to indicate absence,
-#' # in that case, set `optional` to `TRUE` to make `assert_ct_clst()` more
-#' # forgiving.
-#' sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = NULL, optional = TRUE)
-#'
-#' # Otherwise it would err.
-#' try(sdtm.oak:::assert_ct_clst(ct_spec = ct_spec, ct_clst = NULL, optional = FALSE))
 #'
 #' @keywords internal
 assert_ct_clst <- function(ct_spec, ct_clst, optional = FALSE) {
@@ -205,18 +156,6 @@ assert_ct_clst <- function(ct_spec, ct_clst, optional = FALSE) {
 #'
 #' @returns A [tibble][tibble::tibble-package] with two columns, `from` and
 #'   `to`, indicating the mapping of values, one per row.
-#'
-#' @examples
-#' # Read in a bundled controlled terminology spec example (ex. 01).
-#' (ct_spec_01 <- read_ct_spec_example("ct-01-cm"))
-#'
-#' # Generate mappings from the terminology specification.
-#' sdtm.oak:::ct_mappings(ct_spec = ct_spec_01)
-#'
-#' # Take a glimpse at those mappings where an actual recoding happens.
-#' sdtm.oak:::ct_mappings(ct_spec = ct_spec_01) |>
-#'   dplyr::filter(from != to) |>
-#'   print(n = 20)
 #'
 #' @importFrom rlang .data
 #' @keywords internal

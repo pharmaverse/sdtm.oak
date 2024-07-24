@@ -12,11 +12,6 @@
 #' @returns A character vector of column names to be regarded
 #' as keys in raw datasets.
 #'
-#' @examples
-#' oak_id_vars()
-#'
-#' oak_id_vars(extra_vars = "sample_id")
-#'
 #' @export
 oak_id_vars <- function(extra_vars = NULL) {
   admiraldev::assert_character_vector(extra_vars, optional = TRUE)
@@ -32,19 +27,6 @@ oak_id_vars <- function(extra_vars = NULL) {
 #' @param x A character vector.
 #'
 #' @returns A logical scalar value.
-#'
-#' @examples
-#' # `oak_id_vars()` is the function that defines what are the minimal set of
-#' # oak keys. Hence, by definition, the following code should always return
-#' # `TRUE`.
-#' sdtm.oak:::contains_oak_id_vars(oak_id_vars())
-#'
-#' # Returns `FALSE`.
-#' sdtm.oak:::contains_oak_id_vars(character())
-#'
-#' # Another example that returns `FALSE` because it is missing
-#' # `"patient_number"`.
-#' sdtm.oak:::contains_oak_id_vars(c("oak_id", "raw_source"))
 #'
 #' @keywords internal
 contains_oak_id_vars <- function(x) {

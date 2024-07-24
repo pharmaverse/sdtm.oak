@@ -41,15 +41,4 @@ in \code{x}, and as many extra columns as there were inputs (passed in \code{dtc
 \code{dtc} is named, then those names are used to name the extra columns,
 otherwise they get named sequentially like so \code{..var1}, \code{..var2}, etc..
 }
-\examples{
-date <- c("2000-01-05", "", "1980-06-18", "1979-09-07")
-time <- c("001221", "22:35:05", "03:00:15", "07:09:00")
-dtc <- list(date, time)
-dttm <- c("2000-01-05", "T22:35:05", "1980-06-18T03:00:15", "1979-09-07T07:09:00")
-is_problem <- c(TRUE, TRUE, FALSE, FALSE)
-
-dttm2 <- sdtm.oak:::add_problems(dttm, is_problem, dtc)
-sdtm.oak:::problems(dttm2)
-
-}
 \keyword{internal}
