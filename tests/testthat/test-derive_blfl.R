@@ -34,12 +34,23 @@ test_that("derive_blfl example works", {
     ref_var = "RFXSTDTC",
     baseline_visits = c("SCREENING")
   )
-  observed_output
 
- # expect_snapshot_value(observed_output, style = "json2")
-  expected_output <- observed_output
+  expected_output <- tibble::tribble(
+    ~DOMAIN, ~oak_id, ~raw_source, ~patient_number,         ~USUBJID,             ~VSDTC, ~VSTESTCD, ~VSORRES,    ~VSSTAT,      ~VISIT, ~VSLOBXFL,  # nolint
+    "VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-01T13:31",   "DIABP",     "90",         NA, "SCREENING",       "Y",  # nolint
+    "VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T11:20",   "DIABP",     "90",         NA, "SCREENING",        NA,  # nolint
+    "VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-28T10:10",   "PULSE",     "ND",         NA, "SCREENING",        NA,  # nolint
+    "VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T13:31",   "PULSE",     "85",         NA, "SCREENING",        NA,  # nolint
+    "VS",      1L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:10",   "SYSBP",    "120",         NA, "SCREENING",       "Y",  # nolint
+    "VS",      2L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:05",   "SYSBP",    "120",         NA, "SCREENING",        NA,  # nolint
+    "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "DIABP",     "75",         NA, "SCREENING",       "Y",  # nolint
+    "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",       NA, "NOT DONE", "SCREENING",        NA,  # nolint
+    "VS",      2L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",    "110",         NA, "SCREENING",       "Y",  # nolint
+    "VS",      2L,     "VTLS1",            378L, "test_study-378", "2020-01-20T10:00",   "PULSE",    "110",         NA, "SCREENING",       "Y",  # nolint
+    "VS",      3L,     "VTLS1",            378L, "test_study-378", "2020-01-21T11:00",   "PULSE",    "105",         NA, "SCREENING",        NA  # nolint
+  )
 
-  testthat::expect_equal(expected_output, observed_output)
+  testthat::expect_identical(expected_output, observed_output)
 })
 
 test_that("derive_blfl sdmt_in validations work", {
@@ -54,13 +65,6 @@ test_that("derive_blfl sdmt_in validations work", {
     ref_var = "RFXSTDTC"
   ), ".*Required variable `DOMAIN` is missing in `sdtm_in`.*")
 
-  # expect_snapshot_error(derive_blfl(
-  #   sdtm_in = sdmt_in_no_domain,
-  #   dm_domain = d$dm,
-  #   tgt_var = "VSLOBXFL",
-  #   ref_var = "RFXSTDTC"
-  # ))
-
   sdmt_in_no_id_vars <-
     d$sdtm_in |>
     dplyr::select(-sdtm.oak::oak_id_vars())
@@ -70,14 +74,8 @@ test_that("derive_blfl sdmt_in validations work", {
     dm_domain = d$dm,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
-  ))
+  ), ".*Required variables `oak_id`, `raw_source`, and `patient_number` are missing in `sdtm_in`.*")
 
-  # expect_snapshot_error(derive_blfl(
-  #   sdtm_in = sdmt_in_no_id_vars,
-  #   dm_domain = d$dm,
-  #   tgt_var = "VSLOBXFL",
-  #   ref_var = "RFXSTDTC"
-  # ))
 
   sdmt_in_no_vs_vars <-
     d$sdtm_in |>
@@ -93,14 +91,8 @@ test_that("derive_blfl sdmt_in validations work", {
     dm_domain = d$dm,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
-  ))
+  ), ".*Required variables `VSORRES`, `VSSTAT`, `VSTESTCD`, and `VSDTC` are missing in `sdtm_in`.*")
 
-  # expect_snapshot_error(derive_blfl(
-  #   sdtm_in = sdmt_in_no_vs_vars,
-  #   dm_domain = d$dm,
-  #   tgt_var = "VSLOBXFL",
-  #   ref_var = "RFXSTDTC"
-  # ))
 })
 
 test_that("derive_blfl dm_domain validations work", {
@@ -113,14 +105,8 @@ test_that("derive_blfl dm_domain validations work", {
     dm_domain = dm_no_vars,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
-  ))
+  ), ".*Required variables `USUBJID` and `RFXSTDTC` are missing in `dm_domain`.*")
 
-  # expect_snapshot_error(derive_blfl(
-  #   sdtm_in = d$sdtm_in,
-  #   dm_domain = dm_no_vars,
-  #   tgt_var = "VSLOBXFL",
-  #   ref_var = "RFXSTDTC"
-  # ))
 })
 
 test_that("derive_blfl tgt_var and ref_var validations work", {
@@ -130,42 +116,22 @@ test_that("derive_blfl tgt_var and ref_var validations work", {
     dm_domain = d$dm,
     tgt_var = list("bad"),
     ref_var = "RFXSTDTC"
-  ))
-
-  # expect_snapshot_error(derive_blfl(
-  #   sdtm_in = d$sdtm_in,
-  #   dm_domain = d$dm,
-  #   tgt_var = list("bad"),
-  #   ref_var = "RFXSTDTC"
-  # ))
+  ), ".*Argument `tgt_var` must be a scalar of class*")
 
   expect_error(derive_blfl(
     sdtm_in = d$sdtm_in,
     dm_domain = d$dm,
     tgt_var = "VSLOBXFL",
     ref_var = d$dm
-  ))
-
-  # expect_snapshot_error(derive_blfl(
-  #   sdtm_in = d$sdtm_in,
-  #   dm_domain = d$dm,
-  #   tgt_var = "VSLOBXFL",
-  #   ref_var = d$dm
-  # ))
+  ), ".*Argument `ref_var` must be a scalar of class*")
 
   expect_error(derive_blfl(
     sdtm_in = d$sdtm_in,
     dm_domain = d$dm,
     tgt_var = "DMLOBXFL",
     ref_var = "RFXSTDTC"
-  ))
+  ), ".*Argument `tgt_var` must be equal to one of.*")
 
-  # expect_snapshot_error(derive_blfl(
-  #   sdtm_in = d$sdtm_in,
-  #   dm_domain = d$dm,
-  #   tgt_var = "DMLOBXFL",
-  #   ref_var = "RFXSTDTC"
-  # ))
 })
 
 test_that("derive_blfl DOMAIN validation works", {
@@ -178,14 +144,8 @@ test_that("derive_blfl DOMAIN validation works", {
     dm_domain = d$dm,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
-  ))
+  ), ".*Argument `domain` must be a scalar of class.*")
 
-  # expect_snapshot_error(derive_blfl(
-  #   sdtm_in = sdtm_in_bad_domain,
-  #   dm_domain = d$dm,
-  #   tgt_var = "VSLOBXFL",
-  #   ref_var = "RFXSTDTC"
-  # ))
 })
 
 test_that("`dtc_datepart`: basic usage", {
