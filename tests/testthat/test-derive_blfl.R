@@ -36,18 +36,18 @@ test_that("derive_blfl example works", {
   )
 
   expected_output <- tibble::tribble(
-    ~DOMAIN, ~oak_id, ~raw_source, ~patient_number,         ~USUBJID,             ~VSDTC, ~VSTESTCD, ~VSORRES,    ~VSSTAT,      ~VISIT, ~VSLOBXFL,  # nolint
-    "VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-01T13:31",   "DIABP",     "90",         NA, "SCREENING",       "Y",  # nolint
-    "VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T11:20",   "DIABP",     "90",         NA, "SCREENING",        NA,  # nolint
-    "VS",      1L,     "VTLS1",            375L, "test_study-375", "2020-09-28T10:10",   "PULSE",     "ND",         NA, "SCREENING",        NA,  # nolint
-    "VS",      2L,     "VTLS1",            375L, "test_study-375", "2020-10-01T13:31",   "PULSE",     "85",         NA, "SCREENING",        NA,  # nolint
-    "VS",      1L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:10",   "SYSBP",    "120",         NA, "SCREENING",       "Y",  # nolint
-    "VS",      2L,     "VTLS2",            375L, "test_study-375", "2020-09-28T10:05",   "SYSBP",    "120",         NA, "SCREENING",        NA,  # nolint
-    "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "DIABP",     "75",         NA, "SCREENING",       "Y",  # nolint
-    "VS",      1L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",       NA, "NOT DONE", "SCREENING",        NA,  # nolint
-    "VS",      2L,     "VTLS1",            376L, "test_study-376",       "2020-09-20",   "PULSE",    "110",         NA, "SCREENING",       "Y",  # nolint
-    "VS",      2L,     "VTLS1",            378L, "test_study-378", "2020-01-20T10:00",   "PULSE",    "110",         NA, "SCREENING",       "Y",  # nolint
-    "VS",      3L,     "VTLS1",            378L, "test_study-378", "2020-01-21T11:00",   "PULSE",    "105",         NA, "SCREENING",        NA  # nolint
+    ~DOMAIN, ~oak_id, ~raw_source, ~patient_number, ~USUBJID, ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT, ~VISIT, ~VSLOBXFL, # nolint
+    "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-01T13:31", "DIABP", "90", NA, "SCREENING", "Y", # nolint
+    "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T11:20", "DIABP", "90", NA, "SCREENING", NA, # nolint
+    "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-28T10:10", "PULSE", "ND", NA, "SCREENING", NA, # nolint
+    "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T13:31", "PULSE", "85", NA, "SCREENING", NA, # nolint
+    "VS", 1L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:10", "SYSBP", "120", NA, "SCREENING", "Y", # nolint
+    "VS", 2L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:05", "SYSBP", "120", NA, "SCREENING", NA, # nolint
+    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "DIABP", "75", NA, "SCREENING", "Y", # nolint
+    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", NA, "NOT DONE", "SCREENING", NA, # nolint
+    "VS", 2L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", "110", NA, "SCREENING", "Y", # nolint
+    "VS", 2L, "VTLS1", 378L, "test_study-378", "2020-01-20T10:00", "PULSE", "110", NA, "SCREENING", "Y", # nolint
+    "VS", 3L, "VTLS1", 378L, "test_study-378", "2020-01-21T11:00", "PULSE", "105", NA, "SCREENING", NA # nolint
   )
 
   testthat::expect_identical(expected_output, observed_output)
@@ -92,7 +92,6 @@ test_that("derive_blfl sdmt_in validations work", {
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
   ), ".*Required variables `VSORRES`, `VSSTAT`, `VSTESTCD`, and `VSDTC` are missing in `sdtm_in`.*")
-
 })
 
 test_that("derive_blfl dm_domain validations work", {
@@ -106,11 +105,9 @@ test_that("derive_blfl dm_domain validations work", {
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
   ), ".*Required variables `USUBJID` and `RFXSTDTC` are missing in `dm_domain`.*")
-
 })
 
 test_that("derive_blfl tgt_var and ref_var validations work", {
-
   expect_error(derive_blfl(
     sdtm_in = d$sdtm_in,
     dm_domain = d$dm,
@@ -131,7 +128,6 @@ test_that("derive_blfl tgt_var and ref_var validations work", {
     tgt_var = "DMLOBXFL",
     ref_var = "RFXSTDTC"
   ), ".*Argument `tgt_var` must be equal to one of.*")
-
 })
 
 test_that("derive_blfl DOMAIN validation works", {
@@ -145,7 +141,6 @@ test_that("derive_blfl DOMAIN validation works", {
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
   ), ".*Argument `domain` must be a scalar of class.*")
-
 })
 
 test_that("`dtc_datepart`: basic usage", {
