@@ -345,7 +345,7 @@ derive_blfl <- function(sdtm_in,
     ))
 
   if (nrow(ds_mod) == 0L) {
-    stop(paste0(
+    rlang::abort(paste0(
       "No rows for which both --ORRES is not missing\n  and --STAT not equals to NOT DONE.\n",
       "  Not able to derive Baseline Flag or Last Observation Before Exposure Flag"
     ))
@@ -428,7 +428,7 @@ derive_blfl <- function(sdtm_in,
   ds_base <- dplyr::arrange_at(ds_base, c("USUBJID", con_col))
 
   if (nrow(ds_base) == 0L) {
-    message(paste0("There are no baseline records."))
+    rlang::inform("There are no baseline records.")
   }
 
   # Group by USUBJID and --TESTCD and filter on the rows that have max value
@@ -466,12 +466,10 @@ derive_blfl <- function(sdtm_in,
 
   # Assert that merged data frame has same number of rows as input data frame
   if (nrow(ds_out) != nrow(sdtm_in)) {
-    stop(sprintf(
+    cli::cli_abort(
       "Internal error: The processed dataset was expected to have the same
-      number of rows (%d) as the input dataset (sdtm_in), but it actually has %d rows.",
-      nrow(sdtm_in),
-      nrow(ds_out)
-    ))
+      number of rows ({nrow(sdtm_in)}) as the input dataset (sdtm_in), but it actually has {nrow(ds_out)} rows."
+    )
   }
 
   return(ds_out)

@@ -278,7 +278,7 @@ ct_map <-
 #' read_ct_spec(file = path)
 #'
 #' @export
-read_ct_spec <- function(file = stop("`file` must be specified")) {
+read_ct_spec <- function(file = rlang::abort("`file` must be specified")) {
   ct_spec <- utils::read.csv(file = file, na.strings = c("NA", ""), colClasses = "character") |>
     tibble::as_tibble()
   assert_ct_spec(ct_spec)
@@ -327,12 +327,7 @@ ct_spec_example <- function(example) {
   local_path <- system.file(path, package = "sdtm.oak")
 
   if (identical(local_path, "")) {
-    stop(
-      stringr::str_glue(
-        "'{example}' does not match any ct spec files. Run `ct_spec_example()` for options."
-      ),
-      call. = FALSE
-    )
+    cli::cli_abort("'{example}' does not match any ct spec files. Run `ct_spec_example()` for options.", call = NULL)
   } else {
     local_path <-
       system.file(path, package = "sdtm.oak", mustWork = TRUE)
