@@ -1,7 +1,7 @@
 Package: sdtm.oak
 Type: Package
 Title: SDTM Data Transformation Engine
-Version: 0.0.0.9005
+Version: 0.1.0
 Authors@R: c(
     person("Rammprasad", "Ganapathy", role = c("aut", "cre"),
     email = "ganapathy.rammprasad@gene.com"),
