@@ -345,7 +345,7 @@ derive_blfl <- function(sdtm_in,
     ))
 
   if (nrow(ds_mod) == 0L) {
-    rlang::abort(paste0(
+    cli::cli_abort(paste0(
       "No rows for which both --ORRES is not missing\n  and --STAT not equals to NOT DONE.\n",
       "  Not able to derive Baseline Flag or Last Observation Before Exposure Flag"
     ))
@@ -428,7 +428,7 @@ derive_blfl <- function(sdtm_in,
   ds_base <- dplyr::arrange_at(ds_base, c("USUBJID", con_col))
 
   if (nrow(ds_base) == 0L) {
-    rlang::inform("There are no baseline records.")
+    cli::cli_inform("There are no baseline records.")
   }
 
   # Group by USUBJID and --TESTCD and filter on the rows that have max value

@@ -60,7 +60,7 @@
 `%.>%` <- function(lhs, rhs) {
   rhs_expr <- rlang::enexpr(rhs)
   if (!contains_dot(rhs_expr)) {
-    rlang::abort("The right-hand side (rhs) of `%.>%` must contain at least one dot (.) placeholder.")
+    cli::cli_abort("The right-hand side (rhs) of `%.>%` must contain at least one dot (.) placeholder.")
   }
 
   rlang::eval_tidy(rhs_expr, list(. = lhs), env = rlang::caller_env())

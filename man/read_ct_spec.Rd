@@ -4,7 +4,7 @@
 \alias{read_ct_spec}
 \title{Read in a controlled terminology}
 \usage{
-read_ct_spec(file = rlang::abort("`file` must be specified"))
+read_ct_spec(file = cli::cli_abort("`file` must be specified"))
 }
 \arguments{
 \item{file}{A path to a file containing a controlled terminology

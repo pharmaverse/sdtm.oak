@@ -57,13 +57,13 @@ new_cnd_df <- function(dat, cnd, .warn = TRUE) {
     msg <- c(
       "Number of rows in `dat` must match length of `cnd`."
     )
-    rlang::abort(message = msg)
+    cli::cli_abort(message = msg)
   }
 
   is_cnd_df <- inherits(dat, "cnd_df")
   if (.warn && is_cnd_df) {
     msg <- "`dat` is already a conditioned data frame (`cnd_df`)."
-    rlang::warn(message = msg)
+    cli::cli_warn(message = msg)
   }
 
   if (!is_cnd_df) {
@@ -312,7 +312,7 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
   # TODO: assertion for `.dat2`
 
   if (is_cnd_df(dat)) {
-    rlang::warn(
+    cli::cli_warn(
       c(
         "`dat` is already a conditioned data frame (`cnd_df`).",
         "The previous condition will be replaced by the new one."
@@ -340,7 +340,7 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 #'
 #' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate
-#' @keywords internal
+#' @export
 mutate.cnd_df <- function(.data,
                           ...,
                           .by = NULL,
@@ -348,11 +348,11 @@ mutate.cnd_df <- function(.data,
                           .before = NULL,
                           .after = NULL) {
   if (!rlang::is_null(.by)) {
-    rlang::abort("`.by` is not supported on conditioned data frames.")
+    cli::cli_abort("`.by` is not supported on conditioned data frames.")
   }
 
   if (!rlang::is_null(.before)) {
-    rlang::abort("`.before` is not supported on conditioned data frames, use `.after` instead.")
+    cli::cli_abort("`.before` is not supported on conditioned data frames, use `.after` instead.")
   }
 
   cnd <- get_cnd_df_cnd(.data) # nolint object_name_linter()

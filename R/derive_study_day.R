@@ -62,7 +62,7 @@ derive_study_day <- function(sdtm_in,
   assertthat::assert_that(is.character(study_day_var))
   # check tgdt and study_day_var matching, for example, CMSTDTC matches CMSTDY
   if (gsub("DTC", "", tgdt, fixed = TRUE) != gsub("DY", "", study_day_var, fixed = TRUE)) {
-    rlang::warn(
+    cli::cli_warn(
       paste(
         "Target date and the returned study day doesn't match.",
         "Expecting matching date and study day, for example, CMENDTC and CMENDY"
@@ -79,7 +79,7 @@ derive_study_day <- function(sdtm_in,
       dplyr::group_by(dplyr::pick({{ merge_key }})) |>
       dplyr::filter(dplyr::n() > 1L)
     if (nrow(check_refdt_uniqueness) > 0L) {
-      rlang::warn(
+      cli::cli_warn(
         paste(
           "Reference date is not unique for each patient!",
           "Patient without unique reference date will be ingored.",
@@ -106,7 +106,7 @@ derive_study_day <- function(sdtm_in,
   sdtm_in[[refdt]] <- tryCatch(
     as.Date(sdtm_in[[refdt]], "%Y-%m-%d"),
     error = function(e) {
-      rlang::warn(
+      cli::cli_warn(
         paste(
           "Encountered errors when converting refdt to dates.",
           "The warning message is",
@@ -120,7 +120,7 @@ derive_study_day <- function(sdtm_in,
   sdtm_in[[tgdt]] <- tryCatch(
     as.Date(sdtm_in[[tgdt]], "%Y-%m-%d"),
     error = function(e) {
-      rlang::warn(
+      cli::cli_warn(
         paste(
           "Encountered errors when converting tgdt to dates.",
           "The warning message is",

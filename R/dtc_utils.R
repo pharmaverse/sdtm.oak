@@ -34,7 +34,7 @@ assert_dtc_format <- function(.format) {
   switch(typeof(.format),
     character = assert_dtc_fmt(.format),
     list = purrr::map(.format, assert_dtc_format),
-    rlang::abort(abort_msg)
+    cli::cli_abort(abort_msg)
   )
 
   invisible(.format)
@@ -66,13 +66,13 @@ assert_capture_matrix <- function(m) {
   admiraldev::assert_character_vector(m)
 
   if (!is.matrix(m)) {
-    rlang::abort("`m` must be a matrix.")
+    cli::cli_abort("`m` must be a matrix.")
   }
 
   col_names <- c("year", "mon", "mday", "hour", "min", "sec")
   m_col_names <- colnames(m)
   if (is.null(m_col_names) || !all(m_col_names == col_names)) {
-    rlang::abort("`m` must have the following colnames: `year`, `mon`, `mday`, `hour`, `min` and `sec`.")
+    cli::cli_abort("`m` must have the following colnames: `year`, `mon`, `mday`, `hour`, `min` and `sec`.")
   }
 
   invisible(m)
@@ -132,7 +132,7 @@ coalesce_capture_matrices <- function(...) {
   dots <- rlang::list2(...)
 
   if (rlang::is_empty(dots)) {
-    rlang::abort("At least one input must be passed.")
+    cli::cli_abort("At least one input must be passed.")
   }
 
   # Assert that every argument in `...` is a capture matrix

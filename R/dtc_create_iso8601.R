@@ -30,11 +30,11 @@ iso8601_na <- function(x) {
 #' @keywords internal
 zero_pad_whole_number <- function(x, n = 2L) {
   # Check `x`
-  if (!rlang::is_integerish(x)) rlang::abort("`x` must be integerish.")
+  if (!rlang::is_integerish(x)) cli::cli_abort("`x` must be integerish.")
 
   # Check `n`
   admiraldev::assert_integer_scalar(n)
-  if (n < 1L) rlang::abort("`n` must be positive.")
+  if (n < 1L) cli::cli_abort("`n` must be positive.")
 
   # Negative numbers are not allowed, and hence get converted to NA.
   x[x < 0L] <- NA_integer_
@@ -62,10 +62,10 @@ zero_pad_whole_number <- function(x, n = 2L) {
 #' @keywords internal
 yy_to_yyyy <- function(x, cutoff_2000 = 68L) {
   # Check `x`
-  if (!rlang::is_integerish(x)) rlang::abort("`x` must be integerish.")
+  if (!rlang::is_integerish(x)) cli::cli_abort("`x` must be integerish.")
 
   if (any(x < 0L, na.rm = TRUE)) {
-    rlang::abort("`x` cannot have negative years.")
+    cli::cli_abort("`x` cannot have negative years.")
   }
 
   x <- dplyr::if_else(x <= cutoff_2000, x + 2000L, x)
@@ -318,17 +318,17 @@ create_iso8601 <-
 
     # Check if all vectors in `dots` are of character type.
     if (!identical(unique(sapply(dots, typeof)), "character")) {
-      rlang::abort("All vectors in `...` must be of type character.")
+      cli::cli_abort("All vectors in `...` must be of type character.")
     }
 
     # Check if all vectors in `dots` are of the same length.
     n <- unique(lengths(dots))
     if (!identical(length(n), 1L)) {
-      rlang::abort("All vectors in `...` must be of the same length.")
+      cli::cli_abort("All vectors in `...` must be of the same length.")
     }
 
     if (!identical(length(dots), length(.format))) {
-      rlang::abort("Number of vectors in `...` should match length of `.format`.")
+      cli::cli_abort("Number of vectors in `...` should match length of `.format`.")
     }
 
     # Check that the `.format` is either a character vector or a list of

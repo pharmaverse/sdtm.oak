@@ -50,7 +50,7 @@ derive_seq <-
            start_at = 1L) {
     admiraldev::assert_character_scalar(tgt_var)
     if (!is_seq_name(tgt_var)) {
-      rlang::warn("Target variable name (`tgt_var`) should end in 'SEQ'.")
+      cli::cli_warn("Target variable name (`tgt_var`) should end in 'SEQ'.")
     }
 
     admiraldev::assert_character_vector(rec_vars)
