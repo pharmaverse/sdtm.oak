@@ -79,11 +79,9 @@ domain_example <- function(example) {
   local_path <- system.file(path, package = "sdtm.oak")
 
   if (identical(local_path, "")) {
-    stop(
-      stringr::str_glue(
-        "'{example}' does not match any domain example files. Run `domain_example()` for options."
-      ),
-      call. = FALSE
+    cli::cli_abort(
+      "'{example}' does not match any domain example files. Run `domain_example()` for options.",
+      call = NULL
     )
   } else {
     local_path <-

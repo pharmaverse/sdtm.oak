@@ -168,7 +168,7 @@ warn_problems <- function(x) {
       sprintf("There were %d parsing problems.", n_probs),
       "Run `problems()` on parsed results for details."
     )
-    rlang::warn(msg)
+    cli::cli_warn(msg)
   }
 
   invisible(NULL)

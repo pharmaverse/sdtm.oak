@@ -55,4 +55,3 @@ generic on conditioned data frames. This function implements a conditional
 mutate by only changing rows for which the condition stored in the
 conditioned data frame is \code{TRUE}.
 }
-\keyword{internal}
