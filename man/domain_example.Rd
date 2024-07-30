@@ -33,29 +33,11 @@ constructed ad-hoc by the
 are bundled with \code{{sdtm.oak}}, thus obviating a dependence on
 \code{{pharmaversesdtm}}.
 \subsection{Example SDTM domains}{
-
-\describe{
-\item{\code{"ae_ophtha"}}{Ophthalmology Adverse Events Dataset.}
-\item{\code{"ae"}}{Adverse Events Dataset-updated.}
-\item{\code{"ce_vaccine"}}{Clinical Events Dataset for Vaccine Studies.}
-\item{\code{"cm"}}{Concomitant Medication Dataset.}
-\item{\code{"dm_vaccine"}}{Demographics Dataset for Vaccine Studies.}
-\item{\code{"dm"}}{Demography Dataset.}
-\item{\code{"ds"}}{Disposition Dataset-updated.}
-\item{\code{"eg"}}{	Electrocardiogram Dataset.}
-\item{\code{"ex_ophtha"}}{Ophthalmology Exposure Dataset.}
-\item{\code{"ex_vaccine"}}{Exposures Dataset for Vaccine Studies.}
-\item{\code{"ex"}}{Exposure Dataset.}
-\item{\code{"face_vaccine"}}{Findings About Clinical Events Dataset for Vaccine Studies.}
-\item{\code{"is_vaccine"}}{Immunogenicity Specimen Assessments Dataset for Vaccine Studies.}
-\item{\code{"lb"}}{Laboratory Measurements Dataset.}
-\item{\code{"mh"}}{Medical History Dataset-updated.}
-\item{\code{"oe_ophtha"}}{Ophthalmology Adverse Events Dataset.}
-\item{\code{"pc"}}{Pharmacokinetics Concentrations Dataset.}
-\item{\code{"pp"}}{Pharmacokinetics Parameters Dataset.}
-\item{\code{"qs_ophtha"}}{Ophthalmology Questionnaire Dataset.}
-\item{\code{"rs_onco_irecist"}}{Disease Response Dataset (iRECIST).}
-\item{\code{"rs_onco"}}{Disease Response Dataset.}
+\itemize{
+\item \code{"ae"}: Adverse Events (AE) data set.
+\item \code{"apsc"}: Associated Persons Subject Characteristics (APSC) data set.
+\item \code{"cm"}: Concomitant Medications (CM) data set.
+\item \code{"vs"}: Vital Signs (VS) data set.
 }
 }
 }

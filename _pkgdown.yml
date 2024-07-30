@@ -27,6 +27,7 @@ reference:
   - condition_add
   - ctl_new_rowid_pillar.cnd_df
   - tbl_sum.cnd_df
+  - mutate.cnd_df
 
 - title: SDTM examples
   desc: SDTM domain file examples
