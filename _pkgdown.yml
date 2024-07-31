@@ -57,3 +57,9 @@ reference:
 - title: Package global state
   contents:
   - clear_cache
+
+authors:
+  Ramiro Magno:
+    href: https://www.pattern.institute/team/rmagno/
+  Pattern Institute:
+    href: https://www.pattern.institute
