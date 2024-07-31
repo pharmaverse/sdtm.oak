@@ -74,8 +74,8 @@ metadata-driven approach based on a standard SDTM specification format.
 
 ## Road Map
 
-This Release: The V0.1 release of `{sdtm.oak}` users can create the
-majority of the SDTM domains. Domains that are NOT in scope for the V0.1
+This Release: The V0.1.0 release of `{sdtm.oak}` users can create the
+majority of the SDTM domains. Domains that are NOT in scope for the V0.1.0
 release are DM, Trial Design Domains, SV, SE, RELREC, Associated Person
 domains, and EPOCH Variable across all domains.
 
@@ -99,6 +99,8 @@ specification.
 - Please go to [Create Findings
   Domain](https://pharmaverse.github.io/sdtm.oak/articles/findings_domain.html)
   to learn about step by step process to create an Events domain.
+- Please go to [Path to Automation](https://pharmaverse.github.io/sdtm.oak/articles/study_sdtm_spec.html)
+  to learn about how the foundational release sets up the stage for automation.
 
 ## Feedback
 
