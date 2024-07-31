@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# sdtm.oak <a href="https://pharmaverse.github.io/sdtm.oak"><img src="man/figures/logo.svg" align="right" height="139" /></a>
+# sdtm.oak <a href="https://pharmaverse.github.io/sdtm.oak/"><img src="man/figures/logo.svg" align="right" height="139" /></a>
 
 <!-- badges: start -->
 
