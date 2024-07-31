@@ -101,3 +101,9 @@ jobs:
     if: github.event_name == 'pull_request'
     with:
       r-version: "4.3"
+  vbump:
+    name: Version Bump 🤜🤛
+    if: github.event_name == 'push'
+    uses: insightsengineering/r.pkg.template/.github/workflows/version-bump.yaml@main
+    secrets:
+      REPO_GITHUB_TOKEN: ${{ secrets.PHARMAVERSE_BOT }}
