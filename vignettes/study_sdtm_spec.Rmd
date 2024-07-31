@@ -2,7 +2,7 @@
 title: "Path to Automation"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{All about Metadata}
+  %\VignetteIndexEntry{Path to Automation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
