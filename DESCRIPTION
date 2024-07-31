@@ -35,7 +35,7 @@ Description: An EDC-agnostic and data standard-agnostic SDTM data transformation
 Language: en-US
 License: Apache License (>= 2)
 BugReports: https://github.com/pharmaverse/sdtm.oak/issues/
-URL: https://pharmaverse.github.io/sdtm.oak/, https://pharmaverse.github.io/sdtm.oak/
+URL: https://pharmaverse.github.io/sdtm.oak/
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
