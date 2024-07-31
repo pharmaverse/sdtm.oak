@@ -6,14 +6,14 @@
 \alias{sdtm.oak-package}
 \title{sdtm.oak: SDTM Data Transformation Engine}
 \description{
-An EDC and Data Standard-agnostic SDTM data transformation engine designed for SDTM programming in R. Powered by metadata sdtm.oak can automate the conversion of raw clinical data to SDTM through standardized mapping algorithms. SDTM is one of the required standards for data submission to FDA (U.S.) and PMDA (Japan). SDTM standards are implemented in accordance with the SDTM Implementation Guide as defined by CDISC \url{https://www.cdisc.org/standards/foundational/sdtmig}.
+An EDC-agnostic and data standard-agnostic SDTM data transformation engine that provides a framework for modular programming of SDTM in R. Powered by metadata and standard specification sdtm.oak can potentially automate the conversion of raw clinical data to SDTM through standardized mapping algorithms. SDTM is one of the required standards for data submission to the FDA (U.S.) and PMDA (Japan). SDTM standards are implemented following the SDTM Implementation Guide as defined by CDISC \url{https://www.cdisc.org/standards/foundational/sdtmig}.
 }
 \seealso{
 Useful links:
 \itemize{
   \item \url{https://pharmaverse.github.io/sdtm.oak/}
-  \item \url{https://github.com/pharmaverse/sdtm.oak}
-  \item Report bugs at \url{https://github.com/pharmaverse/sdtm.oak/issues}
+  \item \url{https://pharmaverse.github.io/sdtm.oak/}
+  \item Report bugs at \url{https://github.com/pharmaverse/sdtm.oak/issues/}
 }
 
 }
