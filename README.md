@@ -46,7 +46,7 @@ programming SDTM datasets.
 
 ## GOAL
 
-{sdtm.oak} aims to address this issue by providing an EDC-agnostic,
+`{sdtm.oak}` aims to address this issue by providing an EDC-agnostic,
 standards-agnostic solution. It is an open-source R package that offers
 a framework for the modular programming of SDTM in R. With future
 releases; it will also strive to automate the creation of SDTM datasets
@@ -55,7 +55,7 @@ specifications.
 
 ## Scope
 
-Our goal is to use {sdtm.oak} to program most of the domains specified
+Our goal is to use `{sdtm.oak}` to program most of the domains specified
 in SDTMIG (Study Data Tabulation Model Implementation Guide: Human
 Clinical Trials) and SDTMIG-AP (Study Data Tabulation Model
 Implementation Guide: Associated Persons). This R package is based on
@@ -64,9 +64,9 @@ carrying out the SDTM mappings for any domains listed in the CDISC
 SDTMIG and across different versions of SDTM IGs. The design of these
 functions allows users to specify a raw dataset and a variable name(s)
 as parameters, making it EDC (Electronic Data Capture) agnostic. As long
-as the raw dataset and variable name(s) exist, {sdtm.oak} will execute
+as the raw dataset and variable name(s) exist, `{sdtm.oak}` will execute
 the SDTM mapping using the selected function. It’s important to note
-that {sdtm.oak} may not handle sponsor-specific details related to
+that `{sdtm.oak}` may not handle sponsor-specific details related to
 managing metadata for LAB tests, unit conversions, and coding
 information, as many companies have unique business processes. With
 subsequent releases, strive to automate SDTM creation using a
@@ -74,7 +74,7 @@ metadata-driven approach based on a standard SDTM specification format.
 
 ## Road Map
 
-This Release: The V0.1 release of {sdtm.oak} users can create the
+This Release: The V0.1 release of `{sdtm.oak}` users can create the
 majority of the SDTM domains. Domains that are NOT in scope for the V0.1
 release are DM, Trial Design Domains, SV, SE, RELREC, Associated Person
 domains, and EPOCH Variable across all domains.
@@ -102,9 +102,9 @@ specification.
 
 ## Feedback
 
-We ask users to follow the mentioned approach and try {sdtm.oak} to map
-any SDTM domains supported in this release. Users can also utilize the
-test data in the package to become familiar with the concepts before
+We ask users to follow the mentioned approach and try `{sdtm.oak}` to
+map any SDTM domains supported in this release. Users can also utilize
+the test data in the package to become familiar with the concepts before
 attempting on their own data. Please get in touch with us using one of
 the recommended approaches listed below:
 
@@ -114,7 +114,7 @@ the recommended approaches listed below:
 ## Acknowledgments
 
 We thank the contributors and authors of the package. We also thank the
-CDISC COSA for sponsoring the {sdtm.oak}. Additionally, we would like to
-sincerely thank the volunteers from Roche, Pfizer, GSK, Vertex, and
+CDISC COSA for sponsoring the `{sdtm.oak}`. Additionally, we would like
+to sincerely thank the volunteers from Roche, Pfizer, GSK, Vertex, and
 Merck for their valuable input as integral members of the CDISC COSA -
 OAK leadership team.
