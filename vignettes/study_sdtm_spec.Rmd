@@ -1,8 +1,8 @@
 ---
-title: "All about Metadata"
+title: "Path to Automation"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{All about Metadata}
+  %\VignetteIndexEntry{Path to Automation}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -25,8 +25,17 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
-{sdtm.oak} is a metadata-driven solution that is designed to be Electronic Data 
-Capture (EDC) and standards agnostic. Throughout this article, the term "metadata" 
+The initial release of {sdtm.oak} provides a framework for modular programming of SDTM in R and sets the stage for potential automation of SDTM creation following the standardized SDTM specification. In the future, the automation workflow could involve preparing specifications and then making automated function calls to generate SDTM domains.
+
+The future workflow for automation could look like:
+
+1. Prepare SDTM specification: Users can define the raw data source, target SDTM domain, target SDTM variables, and algorithms used for automation. A template is still under development; details are also provided in this article.
+2. Prepare SDTM-controlled Terminology: Users can define the SDTM-controlled terms applicable to the study. A template is still under development.
+3. An automated process to read the specification and make {sdtm.oak} function calls can create the code required to generate SDTM datasets or the datasets themselves.
+
+This article provides an overview of metadata and a draft version of the standard SDTM specification. We plan to demonstrate the creation of standard SDTM specs from the CDISC library in collaboration with CDISC COSA. Sponsors may need to establish the necessary tools to generate this SDTM specification from their MDR to utilize the automation features of {sdtm.oak}. It's worth mentioning that this concept draws inspiration from Roche's existing implementation of the SDTM automation process using OAK. I would like to inform you that further development is required for this concept.
+
+Throughout this article, the term "metadata" 
 is used several times. In this context, "metadata" refers to the specific 
 metadata used by {sdtm.oak}. This article aims to provide users with a more 
 detailed understanding of the {sdtm.oak} metadata.
@@ -96,7 +105,6 @@ definition <- data.frame(
     "raw_variable_ordinal",
     "raw_variable_type",
     "raw_data_format",
-    "raw_codelist",
     "study_specific",
     "annotation_ordinal",
     "mapping_is_dataset",
@@ -115,28 +123,14 @@ definition <- data.frame(
     "sub_algorithm",
     "target_hardcoded_value",
     "target_term_value",
-    "target_term_code",
-    "condition_ordinal",
-    "condition_group_ordinal",
-    "condition_left_raw_dataset",
-    "condition_left_raw_variable",
-    "condition_left_sdtm_domain",
-    "condition_left_sdtm_variable",
-    "condition_operator",
-    "condition_right_text_value",
-    "condition_right_sdtm_domain",
-    "condition_right_sdtm_variable",
-    "condition_right_raw_dataset",
-    "condition_right_raw_variable",
-    "condition_next_logical_operator",
+    "condition_add_raw_dat",
+    "condition_add_tgt_dat",
     "merge_type",
     "merge_left",
     "merge_right",
     "merge_condition",
     "unduplicate_keys",
-    "groupby_keys",
-    "target_resource_dataset",
-    "target_resource_variable"
+    "groupby_keys"
   ),
   `Description_of_the_variable` = c(
     "Study Number",
@@ -152,10 +146,6 @@ definition <- data.frame(
     ),
     "Type of the Raw Variable",
     "Data format of the raw variable",
-    paste(
-      "Dictionary name which is assigned to the ",
-      "eCRF field or a eDT variable"
-    ),
     paste(
       "`TRUE` indicates that the source is study specific. ",
       "`FALSE` indicates that the raw variable is part of data standards"
@@ -189,40 +179,12 @@ definition <- data.frame(
       "hardcoded text"
     ),
     paste(
-      "NCI code or sponsor code of the hardcoded value"
+      "Condition that has to be applied at a raw dataset ",
+      " before applying a mapping. Can be a valid R filter statement."
     ),
     paste(
-      "Ordinal of a (sub)condition, increasing when there ",
-      "are more than one sub-conditions (e.g. X AND Y)"
-    ),
-    paste(
-      "Ordinal of a group of sub-conditions, used to ",
-      "disambiguate complex conditions such as (A AND B) OR C. ",
-      "The ordinal increases in each group and gives the final ",
-      "precedence of the logical operators."
-    ),
-    "Name of the raw dataset on the left part of the condition",
-    "Name of the raw variable on the left part of the condition",
-    "Name of the SDTM variable used in the left part of the condition.",
-    paste(
-      "Name of the SDTM domain of the variable that is used in ",
-      "the left part of the condition."
-    ),
-    "Operator between the left and right part of the condition",
-    paste(
-      "A text that applies to the right part of the condition as ",
-      "indicated per `condition_operator`."
-    ),
-    "Name of the SDTM variable used in the right part of the condition.",
-    paste(
-      "Name of the SDTM domain of the variable that is used ",
-      "in the right part of the condition."
-    ),
-    "Name of the raw dataset on the right part of the condition",
-    "Name of the raw variable on the right part of the condition",
-    paste(
-      "The logical operator that applies to the next ",
-      "sub-conditions, typically AND, OR"
+      "Condition that has to be applied at a target dataset ",
+      " before applying a mapping. Can be a valid R filter statement."
     ),
     "Specifies the type of join",
     "Specifies the left component of the merge",
@@ -239,16 +201,6 @@ definition <- data.frame(
     paste(
       "Raw Variables or aggregation functions (i.e. earliest, ",
       "latest) to group source data records before mapping to SDTM"
-    ),
-    paste(
-      "Raw dataset name of the raw variable. This will be used when ",
-      " values are assigned from a from a different source",
-      "other than the source the mapping is associated with"
-    ),
-    paste(
-      "Raw variable name. This will be used when ",
-      "values are assigned from a from a different source",
-      "other than the source the mapping is associated with"
     )
   ),
   Example_Values = c(
@@ -262,7 +214,6 @@ definition <- data.frame(
     "1, 2, 3, etc",
     "Text Box,<br> Date control",
     "$200,<br> dd MON YYYY",
-    "SEX, ETHNIC",
     "TRUE, FALSE",
     "1, 2, 3, etc",
     "TRUE, FALSE",
@@ -274,36 +225,27 @@ definition <- data.frame(
     "(AGEU)<br>ISO 8601<br>(SEX)",
     "1, 2, 3",
     "Derived, <br>Assigned, <br>Collected, <br>Predecessor",
-    "DATASET_LEVEL<br>ASSIGN_CT<br>AE_AEREL<br>HARDCODE_CT",
-    "ASSIGN_NO_CT<br>HARCODE_CT",
+    "condition_add<br>assign_ct<br>ae_aerel<br>hardcode_ct",
+    "assign_no_ct<br>hardcode_ct",
     "ALZHEIMER'S DISEASE HISTORY",
     "Y, <br>beats/min, <br>INFORMED CONSENT OBTAINED",
-    "C49488",
-    "1, 2, 3",
-    "1, 2, 3",
-    "VTLS1",
-    "POSITION",
-    "AE",
-    "AEENRTPT",
     paste(
-      "Checked<br>Not_checked<br>Is_null<br>Is_not_null",
-      "<br>Equals_to<br>Different_to<br>is_numeric<br>in",
-      "<br>not_in"
+      "Map qualifier CMSTRTPT  Annotation text is If MDPRIOR == 1  ",
+      "then CM.CMSTRTPT = 'BEFORE'",
+      "raw_dat parameter as condition_add(cm_raw, MDPRIOR == 1)"
     ),
-    "('Not Recovered/Not Resolved','Recovering/Resolving')<br>HOSPITALIZATION",
-    "AE",
-    "AETERM",
-    "SMKHX",
-    "SUNAM",
-    "and, or",
+    paste(
+      "Map qualifier CMDOSFRQ  Annotation text is If CMTRT is not null",
+      " then map  the collected value in raw dataset cm_raw and",
+      "raw variable MDFRQ to CMDOSFRQ",
+      "tgt_dat parameter as  condition_add(., !is.na(CMTRT))"
+    ),
     "left_join<br>right_join<br>full_join<br>visit_join<br>subject_join",
     "VTLS1",
     "VACREC",
     "VTLS1.SUBJECT = VACREC.SUBJECT,<br>MD1.MDNUM = VACREC.MDNUM",
     "VTLS1.SUBJECT,<br>VTLS1.DATAPAGEID",
-    "TXINF1.DATAPGID, <br>Earliest",
-    "AEDE",
-    "DATAPAGEID"
+    "TXINF1.DATAPGID, <br>Earliest"
   ),
   Association_with_mapping_Algorithms = c(
     "Generic Use",
@@ -314,7 +256,6 @@ definition <- data.frame(
     "Generic Use",
     "Generic Use",
     "Generic Use",
-    "Required for all mapping algorithms",
     "Required for all mapping algorithms",
     "Required for all mapping algorithms",
     "Generic Use",
@@ -329,31 +270,17 @@ definition <- data.frame(
     "Required for all mapping algorithms",
     "Used for define.xml",
     "Required for all mapping algorithms",
-    "Only when Mapping Algorithm is <br>IF_THEN_ELSE<br>DATASET_LEVEL",
-    "ASSIGN_NO_CT<br>HARDCODE_NO_CT",
-    "HARDCODE_CT",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
-    "IF_THEN_ELSE",
+    "Only when Mapping Algorithm is <br>condition_add<br>dataset_level",
+    "assign_no_ct<br>hardcode_no_ct",
+    "harcode_ct",
+    "condition_add",
+    "condition_add",
     "MERGE",
     "MERGE",
     "MERGE",
     "MERGE",
     "REMOVE_DUP",
-    "GROUP_BY",
-    "ASSIGN_NO_CT",
-    "ASSIGN_NO_CT"
+    "GROUP_BY"
   ),
   stringsAsFactors = TRUE
 )
