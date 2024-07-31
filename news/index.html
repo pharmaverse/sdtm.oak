@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sdtm.oak</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +29,7 @@
     <a class="dropdown-item" href="../articles/events_domain.html">Creating an Events SDTM domain</a>
     <a class="dropdown-item" href="../articles/findings_domain.html">Creating an Findings SDTM domain</a>
     <a class="dropdown-item" href="../articles/iso_8601.html">Converting dates, times or date-times to ISO 8601</a>
-    <a class="dropdown-item" href="../articles/study_sdtm_spec.html">All about Metadata</a>
+    <a class="dropdown-item" href="../articles/study_sdtm_spec.html">Path to Automation</a>
   </div>
 </li>
 <li class="active nav-item">
@@ -56,37 +56,59 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9005" id="sdtmoak-0009005-development-version">sdtm.oak 0.0.0.9005 (development version)<a class="anchor" aria-label="anchor" href="#sdtmoak-0009005-development-version"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.0" id="sdtmoak-v010">sdtm.oak V0.1.0<a class="anchor" aria-label="anchor" href="#sdtmoak-v010"></a></h2>
+<p>The V0.1.0 release of {sdtm.oak} users can create the majority of the SDTM domains. Domains that are <em>NOT</em> in scope for the V0.1.0 release are DM, Trial Design Domains, SV, SE, RELREC, Associated Person domains, and EPOCH Variable across all domains.</p>
+<ul><li>Functions for commonly used SDTM mapping Algorithms
+<ul><li>
+<code><a href="../reference/assign.html">assign_no_ct()</a></code> to process assign_no_ct algorithm</li>
+<li>
+<code><a href="../reference/assign.html">assign_ct()</a></code> to process assign_ct algorithm</li>
+<li>
+<code><a href="../reference/harcode.html">hardcode_no_ct()</a></code> to process hardcode_no_ct algorithm</li>
+<li>
+<code><a href="../reference/harcode.html">hardcode_ct()</a></code> to process hardcode_ct algorithm</li>
+<li>
+<code><a href="../reference/assign_datetime.html">assign_datetime()</a></code> to process assign_datetime algorithm</li>
+<li>
+<code><a href="../reference/condition_add.html">condition_add()</a></code> to process condition_add algorithm (if/else conditions)</li>
+</ul></li>
+<li>Functions for SDTM derived variables
+<ul><li>
+<code><a href="../reference/derive_blfl.html">derive_blfl()</a></code> to Derive Baseline Flag or Last Observation Before Exposure Flag</li>
+<li>
+<code><a href="../reference/derive_seq.html">derive_seq()</a></code> to Derive the sequence number (–SEQ) variable</li>
+<li>
+<code><a href="../reference/derive_study_day.html">derive_study_day()</a></code> to Derive study day</li>
+<li>
+<code><a href="../reference/create_iso8601.html">create_iso8601()</a></code> for ISO8601 date, datetime conversion.</li>
+</ul></li>
+<li>Functions to support {sdtm.oak}
+<ul><li>
+<code><a href="../reference/generate_oak_id_vars.html">generate_oak_id_vars()</a></code> to derive oak id variables</li>
+<li>
+<code><a href="../reference/read_ct_spec.html">read_ct_spec()</a></code> to read the controlled terminology spec</li>
+<li>Functions to create conditioned dataframes to support if then else conditions in SDTM mappings</li>
+</ul></li>
+<li>Articles
+<ul><li>Algorithms</li>
+<li>Creating an Events SDTM domain</li>
+<li>Creating a Findings SDTM domain</li>
+<li>Conditioned Data Frames</li>
+<li>Converting dates, times or date-times to ISO 8601</li>
+<li>Path to Automation</li>
+</ul></li>
+</ul><div class="section level3">
+<h3 id="further-details-on-this-release-0-1-0">Further details on this Release<a class="anchor" aria-label="anchor" href="#further-details-on-this-release-0-1-0"></a></h3>
 <ul><li>New function for creating conditioned data frames: <code><a href="../reference/condition_add.html">condition_add()</a></code>.</li>
 <li>New pipe operator: <code>%.&gt;%</code> for explicit dot placeholder placement.</li>
 <li>
 <code><a href="../reference/oak_id_vars.html">oak_id_vars()</a></code> is now an exported function.</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9004" id="sdtmoak-0009004-development-version">sdtm.oak 0.0.0.9004 (development version)<a class="anchor" aria-label="anchor" href="#sdtmoak-0009004-development-version"></a></h2>
-<ul><li>New function: <code><a href="../reference/derive_seq.html">derive_seq()</a></code> for deriving a sequence number variable.</li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9003" id="sdtmoak-0009003-development-version">sdtm.oak 0.0.0.9003 (development version)<a class="anchor" aria-label="anchor" href="#sdtmoak-0009003-development-version"></a></h2>
-<div class="section level3">
-<h3 id="new-features-0-0-0-9003">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9003"></a></h3>
-<ul><li>New function: <code><a href="../reference/assign_datetime.html">assign_datetime()</a></code> for deriving an ISO8601 date-time variable.</li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9002" id="sdtmoak-0009002-development-version">sdtm.oak 0.0.0.9002 (development version)<a class="anchor" aria-label="anchor" href="#sdtmoak-0009002-development-version"></a></h2>
-<div class="section level3">
-<h3 id="new-features-0-0-0-9002">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9002"></a></h3>
-<ul><li><p>New function: <code><a href="../reference/derive_study_day.html">derive_study_day()</a></code> for study day calculation.</p></li>
-<li><p>New functions for basic SDTM derivations: <code><a href="../reference/assign.html">assign_no_ct()</a></code>, <code><a href="../reference/assign.html">assign_ct()</a></code>, <code><a href="../reference/harcode.html">hardcode_no_ct()</a></code> and <code><a href="../reference/harcode.html">hardcode_ct()</a></code>.</p></li>
-<li><p>New functions for handling controlled terminologies: <code><a href="../reference/read_ct_spec.html">read_ct_spec()</a></code>, <code><a href="../reference/read_ct_spec_example.html">read_ct_spec_example()</a></code>, <code><a href="../reference/ct_spec_example.html">ct_spec_example()</a></code> and <code><a href="../reference/ct_map.html">ct_map()</a></code>.</p></li>
-</ul></div>
-</div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.0.0.9001" id="sdtmoak-0009001-development-version">sdtm.oak 0.0.0.9001 (development version)<a class="anchor" aria-label="anchor" href="#sdtmoak-0009001-development-version"></a></h2>
-<div class="section level3">
-<h3 id="new-features-0-0-0-9001">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-0-0-9001"></a></h3>
-<ul><li>New function <code><a href="../reference/create_iso8601.html">create_iso8601()</a></code> for conversion of vectors of dates, times or date-times to ISO8601 format.</li>
+<li>New function: <code><a href="../reference/derive_seq.html">derive_seq()</a></code> for deriving a sequence number variable.</li>
+<li>New function: <code><a href="../reference/assign_datetime.html">assign_datetime()</a></code> for deriving an ISO8601 date-time variable.</li>
+<li>New function: <code><a href="../reference/derive_study_day.html">derive_study_day()</a></code> for study day calculation.</li>
+<li>New functions for basic SDTM derivations: <code><a href="../reference/assign.html">assign_no_ct()</a></code>, <code><a href="../reference/assign.html">assign_ct()</a></code>, <code><a href="../reference/harcode.html">hardcode_no_ct()</a></code> and <code><a href="../reference/harcode.html">hardcode_ct()</a></code>.</li>
+<li>New functions for handling controlled terminologies: <code><a href="../reference/read_ct_spec.html">read_ct_spec()</a></code>, <code><a href="../reference/read_ct_spec_example.html">read_ct_spec_example()</a></code>, <code><a href="../reference/ct_spec_example.html">ct_spec_example()</a></code> and <code><a href="../reference/ct_map.html">ct_map()</a></code>.</li>
+<li>New function <code><a href="../reference/create_iso8601.html">create_iso8601()</a></code> for conversion of vectors of dates, times or date-times to ISO8601 format.</li>
 </ul></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -94,7 +116,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Rammprasad Ganapathy, Adam Forys, Edgar Manukyan, Rosemary Li, Preetesh Parikh, Lisa Houterloot, Yogesh Gupta, Omar Garcia, Ramiro Magno, Kamil Sijko, Shiyu Chen, Pattern Institute, F. Hoffmann-La Roche AG, Pfizer Inc, Transition Technologies Science.</p>
+  <p></p><p>Developed by Rammprasad Ganapathy, Adam Forys, <a href="https://www.linkedin.com/in/edgar-manukyan-20987927" class="external-link">Edgar Manukyan</a>, Rosemary Li, Preetesh Parikh, Lisa Houterloot, Yogesh Gupta, Omar Garcia, <a href="https://www.pattern.institute/team/rmagno/" class="external-link">Ramiro Magno</a>, Kamil Sijko, <a href="https://www.linkedin.com/in/shiyu-chen-55a55410a/" class="external-link">Shiyu Chen</a>, <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a>, F. Hoffmann-La Roche AG, Pfizer Inc, Transition Technologies Science.</p>
 </div>
 
 <div class="pkgdown-footer-right">
