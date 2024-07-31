@@ -18,29 +18,10 @@
 #'
 #' ### Example SDTM domains
 #'
-#' \describe{
-#' \item{`"ae_ophtha"`}{Ophthalmology Adverse Events Dataset.}
-#' \item{`"ae"`}{Adverse Events Dataset-updated.}
-#' \item{`"ce_vaccine"`}{Clinical Events Dataset for Vaccine Studies.}
-#' \item{`"cm"`}{Concomitant Medication Dataset.}
-#' \item{`"dm_vaccine"`}{Demographics Dataset for Vaccine Studies.}
-#' \item{`"dm"`}{Demography Dataset.}
-#' \item{`"ds"`}{Disposition Dataset-updated.}
-#' \item{`"eg"`}{	Electrocardiogram Dataset.}
-#' \item{`"ex_ophtha"`}{Ophthalmology Exposure Dataset.}
-#' \item{`"ex_vaccine"`}{Exposures Dataset for Vaccine Studies.}
-#' \item{`"ex"`}{Exposure Dataset.}
-#' \item{`"face_vaccine"`}{Findings About Clinical Events Dataset for Vaccine Studies.}
-#' \item{`"is_vaccine"`}{Immunogenicity Specimen Assessments Dataset for Vaccine Studies.}
-#' \item{`"lb"`}{Laboratory Measurements Dataset.}
-#' \item{`"mh"`}{Medical History Dataset-updated.}
-#' \item{`"oe_ophtha"`}{Ophthalmology Adverse Events Dataset.}
-#' \item{`"pc"`}{Pharmacokinetics Concentrations Dataset.}
-#' \item{`"pp"`}{Pharmacokinetics Parameters Dataset.}
-#' \item{`"qs_ophtha"`}{Ophthalmology Questionnaire Dataset.}
-#' \item{`"rs_onco_irecist"`}{Disease Response Dataset (iRECIST).}
-#' \item{`"rs_onco"`}{Disease Response Dataset.}
-#' }
+#' - `"ae"`: Adverse Events (AE) data set.
+#' - `"apsc"`: Associated Persons Subject Characteristics (APSC) data set.
+#' - `"cm"`: Concomitant Medications (CM) data set.
+#' - `"vs"`: Vital Signs (VS) data set.
 #'
 #' @param example A string with either the basename, file name, or relative path
 #'   to a SDTM domain example file bundled with `{stdm.oak}`, e.g. `"cm"`
@@ -79,11 +60,9 @@ domain_example <- function(example) {
   local_path <- system.file(path, package = "sdtm.oak")
 
   if (identical(local_path, "")) {
-    stop(
-      stringr::str_glue(
-        "'{example}' does not match any domain example files. Run `domain_example()` for options."
-      ),
-      call. = FALSE
+    cli::cli_abort(
+      "'{example}' does not match any domain example files. Run `domain_example()` for options.",
+      call = NULL
     )
   } else {
     local_path <-

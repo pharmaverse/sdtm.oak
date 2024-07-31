@@ -1,5 +1,11 @@
 ---
 title: "Converting dates, times or date-times to ISO 8601"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Converting dates, times or date-times to ISO 8601}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r, include = FALSE}

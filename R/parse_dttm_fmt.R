@@ -18,7 +18,7 @@
 #' @keywords internal
 find_int_gap <- function(x, xmin = min(x), xmax = max(x)) {
   if (!rlang::is_integerish(x)) {
-    rlang::abort("`x` must be integer-ish")
+    cli::cli_abort("`x` must be integer-ish")
   }
 
   if (rlang::is_empty(x)) {
@@ -166,7 +166,7 @@ fmt_cmp <- function(sec = "S+",
 
 assert_fmt_c <- function(x) {
   if (!inherits(x, "fmt_c")) {
-    rlang::abort("`x` must be an object created with `fmt_cmp()`.")
+    cli::cli_abort("`x` must be an object created with `fmt_cmp()`.")
   }
 
   invisible(x)
@@ -282,7 +282,7 @@ parse_dttm_fmt_ <- function(fmt, pattern) {
   admiraldev::assert_character_scalar(pattern)
 
   if (identical(nchar(pattern), 0L)) {
-    rlang::abort("`pattern` must be a literal string of at least one char.")
+    cli::cli_abort("`pattern` must be a literal string of at least one char.")
   }
 
   match_data <- regexpr(pattern, fmt)
@@ -333,7 +333,7 @@ parse_dttm_fmt <- function(fmt, patterns = fmt_cmp()) {
   # Check if patterns have matching overlap, i.e. whether they are not
   # mutually exclusive (as they should).
   if (anyDuplicated(pseq(fmt_dttmc$start, fmt_dttmc$end))) {
-    rlang::abort("Patterns in `fmt_c` have overlapping matches.")
+    cli::cli_abort("Patterns in `fmt_c` have overlapping matches.")
   }
 
   # Get captures' ranks while leaving NA as NA (`rank()` won't do this.)

@@ -27,6 +27,7 @@ reference:
   - condition_add
   - ctl_new_rowid_pillar.cnd_df
   - tbl_sum.cnd_df
+  - mutate.cnd_df
 
 - title: SDTM examples
   desc: SDTM domain file examples
@@ -56,3 +57,13 @@ reference:
 - title: Package global state
   contents:
   - clear_cache
+
+authors:
+  Ramiro Magno:
+    href: https://www.pattern.institute/team/rmagno/
+  Pattern Institute:
+    href: https://www.pattern.institute
+  Edgar Manukyan:
+    href: https://www.linkedin.com/in/edgar-manukyan-20987927
+   Shiyu Chen:
+    href: https://www.linkedin.com/in/shiyu-chen-55a55410a/

@@ -62,9 +62,11 @@ derive_study_day <- function(sdtm_in,
   assertthat::assert_that(is.character(study_day_var))
   # check tgdt and study_day_var matching, for example, CMSTDTC matches CMSTDY
   if (gsub("DTC", "", tgdt, fixed = TRUE) != gsub("DY", "", study_day_var, fixed = TRUE)) {
-    warning(
-      "Target date and the returned study day doesn't match. ",
-      "Expecting matching date and study day, for example, CMENDTC and CMENDY"
+    cli::cli_warn(
+      paste(
+        "Target date and the returned study day doesn't match.",
+        "Expecting matching date and study day, for example, CMENDTC and CMENDY"
+      )
     )
   }
 
@@ -77,10 +79,12 @@ derive_study_day <- function(sdtm_in,
       dplyr::group_by(dplyr::pick({{ merge_key }})) |>
       dplyr::filter(dplyr::n() > 1L)
     if (nrow(check_refdt_uniqueness) > 0L) {
-      warning(
-        "Reference date is not unique for each patient! ",
-        "Patient without unique reference date will be ingored. ",
-        "NA will be returned for such records."
+      cli::cli_warn(
+        paste(
+          "Reference date is not unique for each patient!",
+          "Patient without unique reference date will be ingored.",
+          "NA will be returned for such records."
+        )
       )
       dm_domain <- dm_domain[
         !dm_domain[[merge_key]] %in% check_refdt_uniqueness[[merge_key]],
@@ -102,11 +106,13 @@ derive_study_day <- function(sdtm_in,
   sdtm_in[[refdt]] <- tryCatch(
     as.Date(sdtm_in[[refdt]], "%Y-%m-%d"),
     error = function(e) {
-      warning(
-        "Encountered errors when converting refdt to dates. ",
-        "The warning message is ",
-        e$message,
-        call. = FALSE
+      cli::cli_warn(
+        paste(
+          "Encountered errors when converting refdt to dates.",
+          "The warning message is",
+          e$message
+        ),
+        call = NULL
       )
       sdtm_in[[refdt]]
     }
@@ -114,11 +120,13 @@ derive_study_day <- function(sdtm_in,
   sdtm_in[[tgdt]] <- tryCatch(
     as.Date(sdtm_in[[tgdt]], "%Y-%m-%d"),
     error = function(e) {
-      warning(
-        "Encountered errors when converting tgdt to dates. ",
-        "The warning message is ",
-        e$message,
-        call. = FALSE
+      cli::cli_warn(
+        paste(
+          "Encountered errors when converting tgdt to dates.",
+          "The warning message is",
+          e$message
+        ),
+        call = NULL
       )
       sdtm_in[[tgdt]]
     }

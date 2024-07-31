@@ -65,15 +65,15 @@ assert_ct_spec <- function(ct_spec, optional = FALSE) {
   )
 
   if (!is.null(ct_spec) && nrow(ct_spec) == 0L) {
-    rlang::abort("`ct_spec` can't be empty.")
+    cli::cli_abort("`ct_spec` can't be empty.")
   }
 
   if (!is.null(ct_spec) && anyNA(ct_spec[[ct_spec_vars("ct_clst")]])) {
-    rlang::abort(stringr::str_glue("`{ct_spec_vars('ct_clst')}` can't have any NA values."))
+    cli::cli_abort("`{ct_spec_vars('ct_clst')}` can't have any NA values.")
   }
 
   if (!is.null(ct_spec) && anyNA(ct_spec[[ct_spec_vars("to")]])) {
-    rlang::abort(stringr::str_glue("`{ct_spec_vars('to')}` can't have any NA values."))
+    cli::cli_abort("`{ct_spec_vars('to')}` can't have any NA values.")
   }
 
   invisible(ct_spec)
@@ -107,11 +107,11 @@ assert_ct_clst <- function(ct_spec, ct_clst, optional = FALSE) {
   }
 
   if (is_required_ct_clst_missing) {
-    rlang::abort("`ct_clst` is a required parameter.")
+    cli::cli_abort("`ct_clst` is a required parameter.")
   }
 
   if (is_ct_clst_without_ct_spec) {
-    rlang::abort("`ct_spec` must be a valid controlled terminology if `ct_clst` is supplied.")
+    cli::cli_abort("`ct_spec` must be a valid controlled terminology if `ct_clst` is supplied.")
   }
 
   if (is_ct_clst_missing) {
@@ -119,7 +119,7 @@ assert_ct_clst <- function(ct_spec, ct_clst, optional = FALSE) {
   }
 
   if (!is_ct_spec_missing && is.na(ct_clst)) {
-    rlang::abort("`ct_clst` can't be NA. Did you mean `NULL`?")
+    cli::cli_abort("`ct_clst` can't be NA. Did you mean `NULL`?")
   }
 
   if (are_ct_spec_ct_clst_available) {
@@ -278,7 +278,7 @@ ct_map <-
 #' read_ct_spec(file = path)
 #'
 #' @export
-read_ct_spec <- function(file = stop("`file` must be specified")) {
+read_ct_spec <- function(file = cli::cli_abort("`file` must be specified")) {
   ct_spec <- utils::read.csv(file = file, na.strings = c("NA", ""), colClasses = "character") |>
     tibble::as_tibble()
   assert_ct_spec(ct_spec)
@@ -327,12 +327,7 @@ ct_spec_example <- function(example) {
   local_path <- system.file(path, package = "sdtm.oak")
 
   if (identical(local_path, "")) {
-    stop(
-      stringr::str_glue(
-        "'{example}' does not match any ct spec files. Run `ct_spec_example()` for options."
-      ),
-      call. = FALSE
-    )
+    cli::cli_abort("'{example}' does not match any ct spec files. Run `ct_spec_example()` for options.", call = NULL)
   } else {
     local_path <-
       system.file(path, package = "sdtm.oak", mustWork = TRUE)

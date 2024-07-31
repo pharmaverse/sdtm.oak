@@ -80,33 +80,33 @@
 
 # derive_blfl sdmt_in validations work
 
-    Required variable `DOMAIN` is missing
+    Required variable `DOMAIN` is missing in `sdtm_in`
 
 ---
 
-    Required variables `oak_id`, `raw_source` and `patient_number` are missing
+    Required variables `oak_id`, `raw_source`, and `patient_number` are missing in `sdtm_in`
 
 ---
 
-    Required variables `VSORRES`, `VSSTAT`, `VSTESTCD` and `VSDTC` are missing
+    Required variables `VSORRES`, `VSSTAT`, `VSTESTCD`, and `VSDTC` are missing in `sdtm_in`
 
 # derive_blfl dm_domain validations work
 
-    Required variables `USUBJID` and `RFXSTDTC` are missing
+    Required variables `USUBJID` and `RFXSTDTC` are missing in `dm_domain`
 
 # derive_blfl tgt_var and ref_var validations work
 
-    `tgt_var` must be a character scalar but is a list
+    Argument `tgt_var` must be a scalar of class <character>, but is a list.
 
 ---
 
-    `ref_var` must be a character scalar but is a data frame
+    Argument `ref_var` must be a scalar of class <character>, but is a tibble.
 
 ---
 
-    `tgt_var` must be one of 'VSBLFL' or 'VSLOBXFL' but is 'DMLOBXFL'
+    Argument `tgt_var` must be equal to one of "VSBLFL" or "VSLOBXFL".
 
 # derive_blfl DOMAIN validation works
 
-    `domain` must be a character scalar but is `4`
+    Argument `domain` must be a scalar of class <character>, but is an integer.
 
