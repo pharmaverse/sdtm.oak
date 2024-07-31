@@ -74,7 +74,7 @@ We are planning to develop the below features in the subsequent releases.\
 
 We ask users to follow the mentioned approach and try {sdtm.oak} to map any SDTM domains supported in this release. Users can also utilize the test data in the package to become familiar with the concepts before attempting on their own data. Please get in touch with us using one of the recommended approaches listed below.
 
-[Slack](https://oakgarden.slack.com)
+[Slack](https://oakgarden.slack.com/)
 
 [GitHub](https://github.com/pharmaverse/sdtm.oak/issues)
 
