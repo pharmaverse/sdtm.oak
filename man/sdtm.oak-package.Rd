@@ -12,7 +12,6 @@ An EDC-agnostic and data standard-agnostic SDTM data transformation engine that 
 Useful links:
 \itemize{
   \item \url{https://pharmaverse.github.io/sdtm.oak/}
-  \item \url{https://pharmaverse.github.io/sdtm.oak/}
   \item Report bugs at \url{https://github.com/pharmaverse/sdtm.oak/issues/}
 }
 
