@@ -55,7 +55,7 @@ Our goal is to use {sdtm.oak} to program most of the domains specified in SDTMIG
 
 ## Road Map
 
-This Release: The V0.1 release of {sdtm.oak} users can create the majority of the SDTM domains. Domains that are NOT in scope for the V0.1 release are DM, Trial Design Domains, SV, SE, Associated Person domains, and EPOCH Variable across all domains.
+This Release: The V0.1 release of {sdtm.oak} users can create the majority of the SDTM domains. Domains that are NOT in scope for the V0.1 release are DM, Trial Design Domains, SV, SE, RELREC, Associated Person domains, and EPOCH Variable across all domains.
 
 Subsequent Releases:
 We are planning to develop the below features in the subsequent releases.\

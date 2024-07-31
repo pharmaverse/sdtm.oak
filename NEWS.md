@@ -1,5 +1,7 @@
 # sdtm.oak 0.1
 
+The V0.1 release of {sdtm.oak} users can create the majority of the SDTM domains. Domains that are *NOT* in scope for the V0.1 release are DM, Trial Design Domains, SV, SE, RELREC, Associated Person domains, and EPOCH Variable across all domains.
+
 -   Functions for commonly used SDTM mapping Algorithms
     -   assign_no_ct\
     -   assign_ct\
@@ -22,7 +24,7 @@
     - Creating a Findings SDTM domain
     - Conditioned Data Frames
     - Converting dates, times or date-times to ISO 8601
-    - All about Metadata
+    - Path to Automation
 
 # sdtm.oak 0.0.0.9005 (development version)
 
