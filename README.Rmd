@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 An EDC and Data Standard agnostic solution that enables the pharmaceutical
 programming community to develop SDTM datasets in R. The reusable algorithms
-concept in ``{sdtm.oak}`` provides a framework for modular programming and also
+concept in `{sdtm.oak}` provides a framework for modular programming and also
 can automate SDTM creation based on the standard SDTM spec.
 
 ## Installation
@@ -32,7 +32,7 @@ The package is available from CRAN and can be installed with:
 install.packages("sdtm.oak")
 ```
 
-You can install the development version of ``{sdtm.oak}`` from [GitHub](https://github.com/pharmaverse/sdtm.oak/) with:
+You can install the development version of `{sdtm.oak}` from [GitHub](https://github.com/pharmaverse/sdtm.oak/) with:
 
 ``` r
 # install.packages("remotes")
