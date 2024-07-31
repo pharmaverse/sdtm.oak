@@ -17,6 +17,12 @@ standard SDTM spec.
 
 ## Installation
 
+The package is available from CRAN and can be installed with:
+
+``` r
+install.packages("sdtm.oak")
+```
+
 You can install the development version of `{sdtm.oak}` from
 [GitHub](https://github.com/pharmaverse/sdtm.oak/) with:
 
@@ -70,8 +76,8 @@ metadata-driven approach based on a standard SDTM specification format.
 
 This Release: The V0.1 release of {sdtm.oak} users can create the
 majority of the SDTM domains. Domains that are NOT in scope for the V0.1
-release are DM, Trial Design Domains, SV, SE, Associated Person domains,
-and EPOCH Variable across all domains.
+release are DM, Trial Design Domains, SV, SE, RELREC, Associated Person
+domains, and EPOCH Variable across all domains.
 
 Subsequent Releases: We are planning to develop the below features in
 the subsequent releases.  
@@ -100,8 +106,15 @@ We ask users to follow the mentioned approach and try {sdtm.oak} to map
 any SDTM domains supported in this release. Users can also utilize the
 test data in the package to become familiar with the concepts before
 attempting on their own data. Please get in touch with us using one of
-the recommended approaches listed below.
+the recommended approaches listed below:
 
-[Slack](oakgarden.slack.com)
+- [Slack](https://oakgarden.slack.com/)
+- [GitHub](https://github.com/pharmaverse/sdtm.oak/issues)
 
-[GitHub](https://github.com/pharmaverse/sdtm.oak/issues)
+## Acknowledgments
+
+We thank the contributors and authors of the package. We also thank the
+CDISC COSA for sponsoring the {sdtm.oak}. Additionally, we would like to
+sincerely thank the volunteers from Roche, Pfizer, GSK, Vertex, and
+Merck for their valuable input as integral members of the CDISC COSA -
+OAK leadership team.
