@@ -34,6 +34,8 @@ Description: An EDC-agnostic and data standard-agnostic SDTM data transformation
     CDISC <https://www.cdisc.org/standards/foundational/sdtmig>.
 Language: en-US
 License: Apache License (>= 2)
+Copyright: F. Hoffmann-La Roche AG, Pattern Institute,
+    Atorus Research LLC and Transition Technologies Science sp. z o.o.
 BugReports: https://github.com/pharmaverse/sdtm.oak/issues/
 URL: https://pharmaverse.github.io/sdtm.oak/
 Encoding: UTF-8
