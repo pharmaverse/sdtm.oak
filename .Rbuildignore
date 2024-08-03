@@ -15,3 +15,4 @@
 ^staged_dependencies.yaml$
 ^vignettes/articles$
 ^inst/ct/README.md$
+^NOTICE.md$
