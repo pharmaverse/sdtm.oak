@@ -14,7 +14,6 @@
 #'   `"from"` or `"to"`.
 #'
 #' @keywords internal
-#' @export
 ct_spec_vars <- function(set = c("all", "ct_clst", "from", "to")) {
   admiraldev::assert_character_vector(set)
 

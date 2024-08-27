@@ -241,6 +241,9 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #'   interpretation of the formats.
 #' @param .warn Whether to warn about parsing failures.
 #'
+#' @return A vector of dates, times or date-times in [ISO
+#' 8601](https://en.wikipedia.org/wiki/ISO_8601) format
+#'
 #' @examples
 #' # Converting dates
 #' create_iso8601(c("2020-01-01", "20200102"), .format = "y-m-d")

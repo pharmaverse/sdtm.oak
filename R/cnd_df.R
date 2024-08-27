@@ -177,6 +177,8 @@ rm_cnd_df <- function(dat) {
 #'
 #' @seealso [ctl_new_rowid_pillar.cnd_df()].
 #'
+#' @return A character vector with header values of the conditioned data frame.
+#'
 #' @examples
 #' df <- data.frame(x = c(1L, NA_integer_, 3L))
 #' (cnd_df <- condition_add(dat = df, x >= 2L))
@@ -199,6 +201,8 @@ lgl_to_chr <- function(x) {
 #'
 #' @inheritParams pillar::ctl_new_rowid_pillar
 #' @importFrom pillar ctl_new_rowid_pillar
+#'
+#' @return A character vector to print the tibble which is a conditioned dataframe.
 #'
 #' @seealso [tbl_sum.cnd_df()].
 #'
@@ -340,6 +344,7 @@ condition_add <- function(dat, ..., .na = NA, .dat2 = rlang::env()) {
 #'
 #' @inheritParams dplyr::mutate
 #' @importFrom dplyr mutate
+#' @return A conditioned data frame, meaning a tibble with mutated values.
 #' @export
 mutate.cnd_df <- function(.data,
                           ...,
