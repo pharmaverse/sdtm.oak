@@ -11,6 +11,9 @@
 
 \item{...}{Additional arguments passed to the default print method.}
 }
+\value{
+A character vector with header values of the conditioned data frame.
+}
 \description{
 Conditioned tibble header print method. This S3 method adds an extra line
 in the header of a tibble that indicates the tibble is a conditioned tibble

@@ -15,6 +15,9 @@
 
 \item{...}{These dots are for future extensions and must be empty.}
 }
+\value{
+A character vector to print the tibble which is a conditioned dataframe.
+}
 \description{
 Conditioned tibble pillar print method
 }

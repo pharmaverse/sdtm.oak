@@ -47,11 +47,11 @@ Imports:
     admiraldev (>= 1.1.0),
     dplyr (>= 1.0.0),
     purrr (>= 1.0.1),
+    tidyr (>= 1.2.0),
     rlang (>= 1.0.2),
     tibble (>= 3.2.0),
     vctrs (>= 0.5.0),
     stringr (>= 1.4.0),
-    memoise (>= 2.0.1),
     assertthat,
     pillar,
     cli

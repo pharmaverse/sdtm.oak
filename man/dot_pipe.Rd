@@ -12,6 +12,9 @@ lhs \%.>\% rhs
 \item{rhs}{A function call that utilizes the dot (\code{.}) placeholder to specify
 where \code{lhs} should be placed.}
 }
+\value{
+No Return Value.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 

@@ -49,6 +49,9 @@ variables and columns created by \code{...} are kept.
 \item{.after}{Control where new columns should appear, i.e. after which
 columns.}
 }
+\value{
+A conditioned data frame, meaning a tibble with mutated values.
+}
 \description{
 \code{\link[=mutate.cnd_df]{mutate.cnd_df()}} is an S3 method to be dispatched by \link[dplyr:mutate]{mutate}
 generic on conditioned data frames. This function implements a conditional

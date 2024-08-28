@@ -47,6 +47,8 @@
 #' the dot placeholder, even when piping to the first argument of the
 #' right-hand side (`rhs`).
 #'
+#' @return No Return Value.
+#'
 #' @examples
 #'
 #' # Equivalent to `subset(head(iris), 1:nrow(head(iris)) %% 2 == 0)`
