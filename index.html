@@ -100,14 +100,14 @@
 </div>
 <!-- badges: start -->
 
-<p>An EDC and Data Standard agnostic solution that enables the pharmaceutical programming community to develop SDTM datasets in R. The reusable algorithms concept in <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> provides a framework for modular programming and also can automate SDTM creation based on the standard SDTM spec.</p>
+<p>An EDC (Electronic Data Capture systems) and Data Standard agnostic solution that enables the pharmaceutical programming community to develop CDISC (Clinical Data Interchange Standards Consortium) SDTM (Study Data Tabulation Model) datasets in R. The reusable algorithms concept in ‘sdtm.oak’ provides a framework for modular programming and also can automate SDTM creation based on the standard SDTM spec.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>The package is available from CRAN and can be installed with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"sdtm.oak"</span><span class="op">)</span></span></code></pre></div>
-<p>You can install the development version of <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> from <a href="https://github.com/pharmaverse/sdtm.oak/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of ‘sdtm.oak’ from <a href="https://github.com/pharmaverse/sdtm.oak/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"pharmaverse/sdtm.oak"</span><span class="op">)</span></span></code></pre></div>
@@ -117,24 +117,24 @@
 </h2>
 <ul>
 <li><p>Raw Data Structure: Data from different EDC systems come in varying structures, with different variable names, dataset names, etc.</p></li>
-<li><p>Varying Data Collection Standards: Despite the availability of CDASH, pharmaceutical companies still create different eCRFs using CDASH standards.</p></li>
+<li><p>Varying Data Collection Standards: Despite the availability of CDASH (Clinical Data Acquisition Standards Harmonization), pharmaceutical companies still create different eCRFs using CDASH standards.</p></li>
 </ul>
 <p>Due to the differences in raw data structures and data collection standards, it may seem impossible to develop a common approach for programming SDTM datasets.</p>
 </div>
 <div class="section level2">
 <h2 id="goal">GOAL<a class="anchor" aria-label="anchor" href="#goal"></a>
 </h2>
-<p><a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> aims to address this issue by providing an EDC-agnostic, standards-agnostic solution. It is an open-source R package that offers a framework for the modular programming of SDTM in R. With future releases; it will also strive to automate the creation of SDTM datasets based on the metadata-driven approach using standard SDTM specifications.</p>
+<p>‘sdtm.oak’ aims to address this issue by providing an EDC-agnostic, standards-agnostic solution. It is an open-source R package that offers a framework for the modular programming of SDTM in R. With future releases; it will also strive to automate the creation of SDTM datasets based on the metadata-driven approach using standard SDTM specifications.</p>
 </div>
 <div class="section level2">
 <h2 id="scope">Scope<a class="anchor" aria-label="anchor" href="#scope"></a>
 </h2>
-<p>Our goal is to use <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> to program most of the domains specified in SDTMIG (Study Data Tabulation Model Implementation Guide: Human Clinical Trials) and SDTMIG-AP (Study Data Tabulation Model Implementation Guide: Associated Persons). This R package is based on the core concept of <code>algorithms</code>, implemented as functions capable of carrying out the SDTM mappings for any domains listed in the CDISC SDTMIG and across different versions of SDTM IGs. The design of these functions allows users to specify a raw dataset and a variable name(s) as parameters, making it EDC (Electronic Data Capture) agnostic. As long as the raw dataset and variable name(s) exist, <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> will execute the SDTM mapping using the selected function. It’s important to note that <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> may not handle sponsor-specific details related to managing metadata for LAB tests, unit conversions, and coding information, as many companies have unique business processes. With subsequent releases, strive to automate SDTM creation using a metadata-driven approach based on a standard SDTM specification format.</p>
+<p>Our goal is to use ‘sdtm.oak’ to program most of the domains specified in SDTMIG (Study Data Tabulation Model Implementation Guide: Human Clinical Trials) and SDTMIG-AP (Study Data Tabulation Model Implementation Guide: Associated Persons). This R package is based on the core concept of <code>algorithms</code>, implemented as functions capable of carrying out the SDTM mappings for any domains listed in the CDISC SDTMIG and across different versions of SDTM IGs. The design of these functions allows users to specify a raw dataset and a variable name(s) as parameters, making it EDC (Electronic Data Capture) agnostic. As long as the raw dataset and variable name(s) exist, ‘sdtm.oak’ will execute the SDTM mapping using the selected function. It’s important to note that ‘sdtm.oak’ may not handle sponsor-specific details related to managing metadata for LAB tests, unit conversions, and coding information, as many companies have unique business processes. With subsequent releases, strive to automate SDTM creation using a metadata-driven approach based on a standard SDTM specification format.</p>
 </div>
 <div class="section level2">
 <h2 id="road-map">Road Map<a class="anchor" aria-label="anchor" href="#road-map"></a>
 </h2>
-<p>This Release: The V0.1.0 release of <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> users can create the majority of the SDTM domains. Domains that are NOT in scope for the V0.1.0 release are DM, Trial Design Domains, SV, SE, RELREC, Associated Person domains, and EPOCH Variable across all domains.</p>
+<p>This Release: The V0.1.0 release of ‘sdtm.oak’ users can create the majority of the SDTM domains. Domains that are NOT in scope for the V0.1.0 release are DM (Demographics), Trial Design Domains, SV (Subject Visits), SE (Subject Elements), RELREC (Related Records), Associated Person domains, and EPOCH Variable across all domains.</p>
 <p>Subsequent Releases: We are planning to develop the below features in the subsequent releases.<br>
 - Functions required to derive reference date variables in the DM domain.<br>
 - Metadata driven automation based on the standardized SDTM specification.<br>
@@ -154,7 +154,7 @@
 <div class="section level2">
 <h2 id="feedback">Feedback<a class="anchor" aria-label="anchor" href="#feedback"></a>
 </h2>
-<p>We ask users to follow the mentioned approach and try <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a> to map any SDTM domains supported in this release. Users can also utilize the test data in the package to become familiar with the concepts before attempting on their own data. Please get in touch with us using one of the recommended approaches listed below:</p>
+<p>We ask users to follow the mentioned approach and try ‘sdtm.oak’ to map any SDTM domains supported in this release. Users can also utilize the test data in the package to become familiar with the concepts before attempting on their own data. Please get in touch with us using one of the recommended approaches listed below:</p>
 <ul>
 <li><a href="https://oakgarden.slack.com/" class="external-link">Slack</a></li>
 <li><a href="https://github.com/pharmaverse/sdtm.oak/issues" class="external-link">GitHub</a></li>
@@ -163,7 +163,7 @@
 <div class="section level2">
 <h2 id="acknowledgments">Acknowledgments<a class="anchor" aria-label="anchor" href="#acknowledgments"></a>
 </h2>
-<p>We thank the contributors and authors of the package. We also thank the CDISC COSA for sponsoring the <a href="https://pharmaverse.github.io/sdtm.oak/">sdtm.oak</a>. Additionally, we would like to sincerely thank the volunteers from Roche, Pfizer, GSK, Vertex, and Merck for their valuable input as integral members of the CDISC COSA - OAK leadership team.</p>
+<p>We thank the contributors and authors of the package. We also thank the CDISC COSA for sponsoring the ‘sdtm.oak’. Additionally, we would like to sincerely thank the volunteers from Roche, Pfizer, GSK, Vertex, and Merck for their valuable input as integral members of the CDISC COSA - OAK leadership team.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
