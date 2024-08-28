@@ -16,7 +16,7 @@
         "names": {
           "type": "character",
           "attributes": {},
-          "value": ["DOMAIN", "oak_id", "raw_source", "patient_number", "USUBJID", "VSDTC", "VSTESTCD", "VSORRES", "VSSTAT", "VISIT", "VSLOBXFL"]
+          "value": ["DOMAIN", "oak_id", "raw_source", "patient_number", "USUBJID", "VSDTC", "VSTESTCD", "VSORRES", "VSSTAT", "VISIT", "VSTPT", "VSLOBXFL"]
         }
       },
       "value": [
@@ -73,7 +73,13 @@
         {
           "type": "character",
           "attributes": {},
-          "value": ["Y", null, null, null, "Y", null, "Y", null, "Y", "Y", null]
+          "value": ["PRE-DOSE", "30 DAY POST-DOSE", "28 DAY POST-DOSE", "30 DAY POST-DOSE", "28 DAY POST-DOSE", "28 DAY POST-DOSE",
+          "PRE-DOSE", "PRE-DOSE", "PRE-DOSE", "PRE-DOSE", "1 DAY POST-DOSE"]
+        },
+        {
+          "type": "character",
+          "attributes": {},
+          "value": ["Y", null, null, null, null, "Y", "Y", null, "Y", "Y", null]
         }
       ]
     }
