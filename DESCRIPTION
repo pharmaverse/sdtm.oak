@@ -25,11 +25,11 @@ Authors@R: c(
     person("Transition Technologies Science", role = c("cph", "fnd"))
     )
 Maintainer: Rammprasad Ganapathy <ganapathy.rammprasad@gene.com>
-Description: An Electronic Data Capture systems (EDC) and Data Standard agnostic 
+Description: An Electronic Data Capture system (EDC) and Data Standard agnostic 
     solution that enables the pharmaceutical programming community to develop 
-     Clinical Data Interchange Standards Consortium (CDISC)
+    Clinical Data Interchange Standards Consortium (CDISC)
     Study Data Tabulation Model (SDTM) datasets in R. The reusable algorithms 
-    concept in 'sdtm.oak' provides a framework for modular programming and  can 
+    concept in 'sdtm.oak' provides a framework for modular programming and can 
     potentially automate the conversion of raw clinical data to SDTM through 
     standardized SDTM specifications. SDTM is one of the required standards for data 
     submission to the Food and Drug Administration (FDA) in the United States and 
