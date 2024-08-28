@@ -4,8 +4,7 @@ Title: SDTM Data Transformation Engine
 Version: 0.1.0
 Authors@R: c(
     person("Rammprasad", "Ganapathy", email = "ganapathy.rammprasad@gene.com",
-    role = c("aut", "cre"),
-    email = "ganapathy.rammprasad@gene.com"),
+    role = c("aut", "cre")),
     person("Adam", "Forys", role = "aut"),
     person("Edgar", "Manukyan", role = "aut"),
     person("Rosemary", "Li", role = "aut"),
