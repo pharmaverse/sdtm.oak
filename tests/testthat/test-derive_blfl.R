@@ -17,7 +17,7 @@ sdtm_in <-
     "VS", 1L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:10", "SYSBP", "120", NA, "SCREENING", "28 DAY POST-DOSE",
     "VS", 2L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:05", "SYSBP", "120", NA, "SCREENING", "28 DAY POST-DOSE",
     "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "DIABP", "75", NA, "SCREENING", "PRE-DOSE",
-    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", NA, "NOT DONE", "SCREENING", "PRE-DOSE",# nolint
+    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", NA, "NOT DONE", "SCREENING", "PRE-DOSE", # nolint
     "VS", 2L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", "110", NA, "SCREENING", "PRE-DOSE",
     "VS", 2L, "VTLS1", 378L, "test_study-378", "2020-01-20T10:00", "PULSE", "110", NA, "SCREENING", "PRE-DOSE",
     "VS", 3L, "VTLS1", 378L, "test_study-378", "2020-01-21T11:00", "PULSE", "105", NA, "SCREENING", "1 DAY POST-DOSE"
