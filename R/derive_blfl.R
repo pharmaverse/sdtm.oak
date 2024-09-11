@@ -260,6 +260,7 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'
 #' sdtm_in
 #'
+#' # Example 1:
 #' observed_output <- derive_blfl(
 #'   sdtm_in = sdtm_in,
 #'   dm_domain = dm,
@@ -268,6 +269,27 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
 #'   baseline_visits = c("SCREENING")
 #' )
 #' observed_output
+#'
+#' # Example 2:
+#' observed_output2 <- derive_blfl(
+#'   sdtm_in = sdtm_in,
+#'   dm_domain = dm,
+#'   tgt_var = "VSLOBXFL",
+#'   ref_var = "RFXSTDTC",
+#'   baseline_timepoints = c("PRE-DOSE")
+#' )
+#' observed_output2
+#'
+#' # Example 3: Output is the same as Example 2
+#' observed_output3 <- derive_blfl(
+#'   sdtm_in = sdtm_in,
+#'   dm_domain = dm,
+#'   tgt_var = "VSLOBXFL",
+#'   ref_var = "RFXSTDTC",
+#'   baseline_visits = c("SCREENING"),
+#'   baseline_timepoints = c("PRE-DOSE")
+#' )
+#' observed_output3
 #'
 derive_blfl <- function(sdtm_in,
                         dm_domain,
