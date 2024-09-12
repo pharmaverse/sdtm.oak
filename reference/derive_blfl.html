@@ -319,6 +319,7 @@ exposure flag (<code>--LOBXFL</code>) variable to these rows.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> VS          3 VTLS1                 378 test_s… 2020… PULSE    105     <span style="color: #BB0000;">NA</span>    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: VISIT &lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 1:</span></span></span>
 <span class="r-in"><span><span class="va">observed_output</span> <span class="op">&lt;-</span> <span class="fu">derive_blfl</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  sdtm_in <span class="op">=</span> <span class="va">sdtm_in</span>,</span></span>
 <span class="r-in"><span>  dm_domain <span class="op">=</span> <span class="va">dm</span>,</span></span>
@@ -327,6 +328,57 @@ exposure flag (<code>--LOBXFL</code>) variable to these rows.</p></li>
 <span class="r-in"><span>  baseline_visits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SCREENING"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">observed_output</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 11 × 11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    DOMAIN oak_id raw_source patient_number USUBJID VSDTC VSTESTCD VSORRES VSSTAT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> VS          1 VTLS1                 375 test_s… 2020… DIABP    90      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> VS          2 VTLS1                 375 test_s… 2020… DIABP    90      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> VS          1 VTLS1                 375 test_s… 2020… PULSE    ND      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> VS          2 VTLS1                 375 test_s… 2020… PULSE    85      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> VS          1 VTLS2                 375 test_s… 2020… SYSBP    120     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> VS          2 VTLS2                 375 test_s… 2020… SYSBP    120     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> VS          1 VTLS1                 376 test_s… 2020… DIABP    75      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> VS          1 VTLS1                 376 test_s… 2020… PULSE    <span style="color: #BB0000;">NA</span>      NOT D…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> VS          2 VTLS1                 376 test_s… 2020… PULSE    110     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> VS          2 VTLS1                 378 test_s… 2020… PULSE    110     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> VS          3 VTLS1                 378 test_s… 2020… PULSE    105     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: VISIT &lt;chr&gt;, VSLOBXFL &lt;chr&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 2:</span></span></span>
+<span class="r-in"><span><span class="va">observed_output2</span> <span class="op">&lt;-</span> <span class="fu">derive_blfl</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  sdtm_in <span class="op">=</span> <span class="va">sdtm_in</span>,</span></span>
+<span class="r-in"><span>  dm_domain <span class="op">=</span> <span class="va">dm</span>,</span></span>
+<span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"VSLOBXFL"</span>,</span></span>
+<span class="r-in"><span>  ref_var <span class="op">=</span> <span class="st">"RFXSTDTC"</span>,</span></span>
+<span class="r-in"><span>  baseline_timepoints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PRE-DOSE"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">observed_output2</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 11 × 11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    DOMAIN oak_id raw_source patient_number USUBJID VSDTC VSTESTCD VSORRES VSSTAT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> VS          1 VTLS1                 375 test_s… 2020… DIABP    90      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> VS          2 VTLS1                 375 test_s… 2020… DIABP    90      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> VS          1 VTLS1                 375 test_s… 2020… PULSE    ND      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> VS          2 VTLS1                 375 test_s… 2020… PULSE    85      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> VS          1 VTLS2                 375 test_s… 2020… SYSBP    120     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> VS          2 VTLS2                 375 test_s… 2020… SYSBP    120     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> VS          1 VTLS1                 376 test_s… 2020… DIABP    75      <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> VS          1 VTLS1                 376 test_s… 2020… PULSE    <span style="color: #BB0000;">NA</span>      NOT D…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> VS          2 VTLS1                 376 test_s… 2020… PULSE    110     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> VS          2 VTLS1                 378 test_s… 2020… PULSE    110     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> VS          3 VTLS1                 378 test_s… 2020… PULSE    105     <span style="color: #BB0000;">NA</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: VISIT &lt;chr&gt;, VSLOBXFL &lt;chr&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Example 3: Output is the same as Example 2</span></span></span>
+<span class="r-in"><span><span class="va">observed_output3</span> <span class="op">&lt;-</span> <span class="fu">derive_blfl</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  sdtm_in <span class="op">=</span> <span class="va">sdtm_in</span>,</span></span>
+<span class="r-in"><span>  dm_domain <span class="op">=</span> <span class="va">dm</span>,</span></span>
+<span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"VSLOBXFL"</span>,</span></span>
+<span class="r-in"><span>  ref_var <span class="op">=</span> <span class="st">"RFXSTDTC"</span>,</span></span>
+<span class="r-in"><span>  baseline_visits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SCREENING"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  baseline_timepoints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PRE-DOSE"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">observed_output3</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 11 × 11</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    DOMAIN oak_id raw_source patient_number USUBJID VSDTC VSTESTCD VSORRES VSSTAT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
