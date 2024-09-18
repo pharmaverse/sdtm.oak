@@ -9,18 +9,18 @@ dm <- tibble::tribble(
 
 sdtm_in <-
   tibble::tribble(
-    ~DOMAIN, ~oak_id, ~raw_source, ~patient_number, ~USUBJID, ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT, ~VISIT,
-    "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-01T13:31", "DIABP", "90", NA, "SCREENING",
-    "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T11:20", "DIABP", "90", NA, "SCREENING",
-    "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-28T10:10", "PULSE", "ND", NA, "SCREENING",
-    "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T13:31", "PULSE", "85", NA, "SCREENING",
-    "VS", 1L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:10", "SYSBP", "120", NA, "SCREENING",
-    "VS", 2L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:05", "SYSBP", "120", NA, "SCREENING",
-    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "DIABP", "75", NA, "SCREENING",
-    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", NA, "NOT DONE", "SCREENING", # nolint
-    "VS", 2L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", "110", NA, "SCREENING",
-    "VS", 2L, "VTLS1", 378L, "test_study-378", "2020-01-20T10:00", "PULSE", "110", NA, "SCREENING",
-    "VS", 3L, "VTLS1", 378L, "test_study-378", "2020-01-21T11:00", "PULSE", "105", NA, "SCREENING"
+    ~DOMAIN, ~oak_id, ~raw_source, ~patient_number, ~USUBJID, ~VSDTC, ~VSTESTCD, ~VSORRES, ~VSSTAT, ~VISIT, ~VSTPT,
+    "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-01T13:31", "DIABP", "90", NA, "SCREENING", "PRE-DOSE",
+    "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T11:20", "DIABP", "90", NA, "SCREENING", "30 DAY POST-DOSE",
+    "VS", 1L, "VTLS1", 375L, "test_study-375", "2020-09-28T10:10", "PULSE", "ND", NA, "SCREENING", "28 DAY POST-DOSE",
+    "VS", 2L, "VTLS1", 375L, "test_study-375", "2020-10-01T13:31", "PULSE", "85", NA, "SCREENING", "30 DAY POST-DOSE",
+    "VS", 1L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:10", "SYSBP", "120", NA, "SCREENING", "28 DAY POST-DOSE",
+    "VS", 2L, "VTLS2", 375L, "test_study-375", "2020-09-28T10:05", "SYSBP", "120", NA, "SCREENING", "28 DAY POST-DOSE",
+    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "DIABP", "75", NA, "SCREENING", "PRE-DOSE",
+    "VS", 1L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", NA, "NOT DONE", "SCREENING", "PRE-DOSE", # nolint
+    "VS", 2L, "VTLS1", 376L, "test_study-376", "2020-09-20", "PULSE", "110", NA, "SCREENING", "PRE-DOSE",
+    "VS", 2L, "VTLS1", 378L, "test_study-378", "2020-01-20T10:00", "PULSE", "110", NA, "SCREENING", "PRE-DOSE",
+    "VS", 3L, "VTLS1", 378L, "test_study-378", "2020-01-21T11:00", "PULSE", "105", NA, "SCREENING", "1 DAY POST-DOSE"
   )
 
 d <- list(sdtm_in = sdtm_in, dm = dm)
@@ -32,7 +32,8 @@ test_that("derive_blfl example works", {
     dm_domain = d$dm,
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC",
-    baseline_visits = c("SCREENING")
+    baseline_visits = c("SCREENING"),
+    baseline_timepoints = c("PRE-DOSE")
   )
   observed_output
 
