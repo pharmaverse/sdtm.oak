@@ -11,22 +11,35 @@
 #' @param date_format Format of source date variable
 #' @param time_format Format of source time variable
 #'
-#' @return Data frame with 2 columns: unique subject and datetime variable
+#' @return Data frame with 2 columns: unique patient_number and datetime variable
 #'   column storing the earliest/latest datetime.
 #'
 #' @export
 #' @examples
 #' EX <- tibble::tribble(
-#'   ~patient_number,    ~EX_ST_DT,      ~EX_EN_DT,   ~EX_ST_TM,
-#'             "001", "26-10-1990",   "10-01-1985",     "10:20",
-#'             "001", "26-10-1990",   "10-01-1985",     "10:15",
-#'             "001", "26-10-1990",   "10-01-1985",     "10:19",
-#'             "002", "26-10-1991",             NA,   "UNK:UNK"
+#'   ~patient_number,    ~EX_ST_DT,    ~EX_ST_TM,
+#'             "001", "26-04-2022",      "10:20",
+#'             "001", "25-04-2022",      "10:15",
+#'             "001", "25-04-2022",      "10:19",
+#'             "002", "26-05-2022",    "UNK:UNK",
+#'             "002", "26-05-2022",      "05:59"
 #'             )
 #'
-#'cal_min_max_date(EX, "EX_ST_DT",
-#'                 "EX_ST_TM", date_format = "dd-mmm-yyyy",
-#'                 time_format = "H:M")
+#'min <- cal_min_max_date(EX,
+#'                       "EX_ST_DT",
+#'                       "EX_ST_TM",
+#'                       val_type = "min",
+#'                       date_format = "dd-mmm-yyyy",
+#'                       time_format = "H:M"
+#'                       )
+#'
+#'max <- cal_min_max_date(EX,
+#'                       "EX_ST_DT",
+#'                       "EX_ST_TM",
+#'                       val_type = "max",
+#'                       date_format = "dd-mmm-yyyy",
+#'                       time_format = "H:M"
+#'                       )
 #'
 cal_min_max_date <- function(raw_dataset,
                              date_variable,
@@ -51,10 +64,10 @@ cal_min_max_date <- function(raw_dataset,
     return(empty_df)
   }
 
-  final_df <- raw_dataset
+  fin_df <- raw_dataset
   # Time variable is not used then use only date
   if (is.na(time_variable)) {
-    final_df$datetime <- create_iso8601(raw_dataset[[date_variable]],
+    fin_df$datetime <- create_iso8601(raw_dataset[[date_variable]],
                                         .format = date_format)
   } else {
     # If both date and time variables are presen use both date and time
@@ -62,16 +75,17 @@ cal_min_max_date <- function(raw_dataset,
                                     raw_dataset[[time_variable]])
     format = paste0(date_format,time_format)
 
-    final_df$datetime <- create_iso8601(raw_dataset$date_time,
+    fin_df$datetime <- as.character(create_iso8601(raw_dataset$date_time,
                                         .format = format,
-                                        .na = c("UNK", "NA", "U","unk", "u", "un", "UNK"))
+                                        .na = c("UNK", "NA", "U","unk",
+                                                "u", "un","UN")))
   }
 
-  final_df <- final_df |>
+  fin_df <- fin_df |>
     dplyr::select(c("patient_number", "datetime"))|>
     unique()
 
-  final_df <- final_df |>
+  fin_df <- fin_df |>
     dplyr::mutate(date_time = datetime) |>
     tidyr::separate(
       date_time,
@@ -88,17 +102,17 @@ cal_min_max_date <- function(raw_dataset,
     with(replace(x, x == "", NA))
 
   if (val_type == "min") {
-    final_df1 <- final_df |>
+    final_df <- fin_df |>
       dplyr::arrange(year, month, day, hour, minute)
   } else {
-    final_df1 <- final_df |>
+    final_df <- fin_df |>
       dplyr::arrange(dplyr::desc(year), dplyr::desc(month), dplyr::desc(day), dplyr::desc(hour), dplyr::desc(minute))
   }
 
   # Keep first appearance in the data frame since it is already sorted
-  final <- final_df1[!duplicated(final_df1$patient_number), c("patient_number", "datetime")]
+  final_df <- final_df[!duplicated(final_df$patient_number), c("patient_number", "datetime")]
 
-  final <- final |> dplyr::filter(!is.na(datetime))
+  final_df <- final_df |> dplyr::filter(!is.na(datetime))
 
-  return(final)
+  return(final_df)
 }
