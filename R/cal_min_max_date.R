@@ -56,8 +56,10 @@ cal_min_max_date <- function(raw_dataset,
   # If date/time variables not present return the empty data frame
   if (date_not_in_data || time_not_in_data) {
     # Return Empty data frame with patient_number and datetime columns
-    empty_df <- stats::setNames(data.frame(matrix(ncol = 2L, nrow = 0L)),
-                                c("patient_number", "datetime"))
+    empty_df <- stats::setNames(
+      data.frame(matrix(ncol = 2L, nrow = 0L)),
+      c("patient_number", "datetime")
+    )
     cli::cli_warn(paste(
       "Date variable", date_variable, "or Time variable", time_variable,
       "not present in source data"
