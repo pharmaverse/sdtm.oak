@@ -17,50 +17,51 @@
 #' @export
 #' @examples
 #' EX <- tibble::tribble(
-#'   ~patient_number,    ~EX_ST_DT,    ~EX_ST_TM,
-#'             "001", "26-04-2022",      "10:20",
-#'             "001", "25-04-2022",      "10:15",
-#'             "001", "25-04-2022",      "10:19",
-#'             "002", "26-05-2022",    "UNK:UNK",
-#'             "002", "26-05-2022",      "05:59"
-#'             )
+#'   ~patient_number,    ~EX_ST_DT, ~EX_ST_TM,
+#'   "001",           "26-04-2022",   "10:20",
+#'   "001",           "25-04-2022",   "10:15",
+#'   "001",           "25-04-2022",   "10:19",
+#'   "002",           "26-05-2022", "UNK:UNK",
+#'   "002",           "26-05-2022",   "05:59"
+#' )
 #'
-#'min <- cal_min_max_date(EX,
-#'                       "EX_ST_DT",
-#'                       "EX_ST_TM",
-#'                       val_type = "min",
-#'                       date_format = "dd-mmm-yyyy",
-#'                       time_format = "H:M"
-#'                       )
+#' min <- cal_min_max_date(EX,
+#'   "EX_ST_DT",
+#'   "EX_ST_TM",
+#'   val_type = "min",
+#'   date_format = "dd-mmm-yyyy",
+#'   time_format = "H:M"
+#' )
 #'
-#'max <- cal_min_max_date(EX,
-#'                       "EX_ST_DT",
-#'                       "EX_ST_TM",
-#'                       val_type = "max",
-#'                       date_format = "dd-mmm-yyyy",
-#'                       time_format = "H:M"
-#'                       )
+#' max <- cal_min_max_date(EX,
+#'   "EX_ST_DT",
+#'   "EX_ST_TM",
+#'   val_type = "max",
+#'   date_format = "dd-mmm-yyyy",
+#'   time_format = "H:M"
+#' )
 #'
 cal_min_max_date <- function(raw_dataset,
                              date_variable,
                              time_variable,
                              val_type = "min",
                              date_format,
-                             time_format
-) {
-
+                             time_format) {
   # Check if date is present in the raw data frame
   date_not_in_data <- !(date_variable %in% colnames(raw_dataset))
 
-  # Check if time variable is used and if present in the raw data frame
+  # Check if time variable is used and present in the raw data frame
   time_not_in_data <- !(time_variable %in% colnames(raw_dataset)) && !is.na(time_variable)
 
-  # If both date and time variables are not present return the empty data frame
+  # If date/time variables not present return the empty data frame
   if (date_not_in_data || time_not_in_data) {
     # Return Empty data frame with patient_number and datetime columns
-    empty_df <- setNames(data.frame(matrix(ncol = 2, nrow = 0)), c("patient_number", "datetime"))
-    cli::cli_warn(paste("Date variable",date_variable, "or Time variable", time_variable,
-                         "not present in source data"))
+    empty_df <- stats::setNames(data.frame(matrix(ncol = 2L, nrow = 0L)),
+                                c("patient_number", "datetime"))
+    cli::cli_warn(paste(
+      "Date variable", date_variable, "or Time variable", time_variable,
+      "not present in source data"
+    ))
     return(empty_df)
   }
 
@@ -68,21 +69,27 @@ cal_min_max_date <- function(raw_dataset,
   # Time variable is not used then use only date
   if (is.na(time_variable)) {
     fin_df$datetime <- create_iso8601(raw_dataset[[date_variable]],
-                                        .format = date_format)
+      .format = date_format
+    )
   } else {
     # If both date and time variables are presen use both date and time
-    raw_dataset$date_time <- paste0(raw_dataset[[date_variable]],
-                                    raw_dataset[[time_variable]])
-    format = paste0(date_format,time_format)
+    raw_dataset$date_time <- paste0(
+      raw_dataset[[date_variable]],
+      raw_dataset[[time_variable]]
+    )
+    format <- paste0(date_format, time_format)
 
     fin_df$datetime <- as.character(create_iso8601(raw_dataset$date_time,
-                                        .format = format,
-                                        .na = c("UNK", "NA", "U","unk",
-                                                "u", "un","UN")))
+      .format = format,
+      .na = c(
+        "UNK", "NA", "U", "unk",
+        "u", "un", "UN"
+      )
+    ))
   }
 
   fin_df <- fin_df |>
-    dplyr::select(c("patient_number", "datetime"))|>
+    dplyr::select(c("patient_number", "datetime")) |>
     unique()
 
   fin_df <- fin_df |>
@@ -93,12 +100,12 @@ cal_min_max_date <- function(raw_dataset,
       into = c("year", "month", "day", "hour", "minute"),
       fill = "right",
       extra = "drop"
-      )|>
+    ) |>
     list() |>
-    setNames("x") |>
+    stats::setNames("x") |>
     with(replace(x, x == "UNK", NA)) |>
     list() |>
-    setNames("x") |>
+    stats::setNames("x") |>
     with(replace(x, x == "", NA))
 
   if (val_type == "min") {

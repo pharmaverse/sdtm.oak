@@ -37,28 +37,28 @@ This function derives the earliest/latest ISO8601 datetime
 }
 \examples{
 EX <- tibble::tribble(
-  ~patient_number,    ~EX_ST_DT,    ~EX_ST_TM,
-            "001", "26-04-2022",      "10:20",
-            "001", "25-04-2022",      "10:15",
-            "001", "25-04-2022",      "10:19",
-            "002", "26-05-2022",    "UNK:UNK",
-            "002", "26-05-2022",      "05:59"
-            )
+  ~patient_number,    ~EX_ST_DT, ~EX_ST_TM,
+  "001",           "26-04-2022",   "10:20",
+  "001",           "25-04-2022",   "10:15",
+  "001",           "25-04-2022",   "10:19",
+  "002",           "26-05-2022", "UNK:UNK",
+  "002",           "26-05-2022",   "05:59"
+)
 
 min <- cal_min_max_date(EX,
-                      "EX_ST_DT",
-                      "EX_ST_TM",
-                      val_type = "min",
-                      date_format = "dd-mmm-yyyy",
-                      time_format = "H:M"
-                      )
+  "EX_ST_DT",
+  "EX_ST_TM",
+  val_type = "min",
+  date_format = "dd-mmm-yyyy",
+  time_format = "H:M"
+)
 
 max <- cal_min_max_date(EX,
-                      "EX_ST_DT",
-                      "EX_ST_TM",
-                      val_type = "max",
-                      date_format = "dd-mmm-yyyy",
-                      time_format = "H:M"
-                      )
+  "EX_ST_DT",
+  "EX_ST_TM",
+  val_type = "max",
+  date_format = "dd-mmm-yyyy",
+  time_format = "H:M"
+)
 
 }

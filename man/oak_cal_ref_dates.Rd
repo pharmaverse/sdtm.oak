@@ -15,7 +15,7 @@ oak_cal_ref_dates(
 \arguments{
 \item{ds_in}{Data frame. DM domain.}
 
-\item{der_var}{Character string. The SDTMv reference date to be derived.}
+\item{der_var}{Character string. The reference date to be derived.}
 
 \item{min_max}{Minimum or Maximum date to be calculated based on the input.
 Default set to Minimum. Values should be min or max.}
@@ -44,44 +44,44 @@ Populate RFSTDTC variable in demographic domain in ISO8601 character format.
 \examples{
 dm <- tibble::tribble(
   ~patient_number,   ~USUBJID, ~SUBJID, ~SEX,
-            "001", "XXXX-001",   "001",  "F",
-            "002", "XXXX-002",   "002",  "M",
-            "003", "XXXX-003",   "003",  "M"
-            )
+  "001",           "XXXX-001",   "001",  "F",
+  "002",           "XXXX-002",   "002",  "M",
+  "003",           "XXXX-003",   "003",  "M"
+)
 
- ref_date_config_df <- tibble::tribble(
- ~dataset_name,   ~date_var,   ~time_var,         ~dformat,  ~tformat, ~sdtm_var_name,
-         "EX1", "EX_ST_DT1", "EX_ST_TM1",     "dd-mm-yyyy",     "H:M",      "RFSTDTC",
-         "EX2", "EX_ST_DT2",          NA,    "dd-mmm-yyyy",        NA,      "RFSTDTC",
-         "EX1", "EX_EN_DT1", "EX_EN_TM1",     "dd-mm-yyyy",     "H:M",      "RFENDTC",
-         "EX2", "EX_ST_DT2",          NA,    "dd-mmm-yyyy",        NA,      "RFENDTC"
-         )
+ref_date_config_df <- tibble::tribble(
+  ~dataset_name,   ~date_var,   ~time_var,      ~dformat, ~tformat, ~sdtm_var_name,
+  "EX1",         "EX_ST_DT1", "EX_ST_TM1",  "dd-mm-yyyy",    "H:M",      "RFSTDTC",
+  "EX2",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFSTDTC",
+  "EX1",         "EX_EN_DT1", "EX_EN_TM1",  "dd-mm-yyyy",    "H:M",      "RFENDTC",
+  "EX2",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFENDTC"
+)
 
- EX1 <- tibble::tribble(
-   ~patient_number,   ~EX_ST_DT1,     ~EX_EN_DT1,  ~EX_ST_TM1, ~EX_EN_TM1,
-             "001", "15-05-2023",   "15-05-2023",     "10:20",    "11:00",
-             "001", "15-05-2023",   "15-05-2023",      "9:15",    "10:00",
-             "001", "15-05-2023",   "15-05-2023",      "8:19",    "09:00",
-             "002", "02-10-2023",   "02-10-2023",   "UNK:UNK",         NA,
-             "002", "03-11-2023",   "03-11-2023",     "11:19",         NA
-             )
+EX1 <- tibble::tribble(
+  ~patient_number, ~EX_ST_DT1,   ~EX_EN_DT1, ~EX_ST_TM1, ~EX_EN_TM1,
+  "001",         "15-05-2023", "15-05-2023",    "10:20",    "11:00",
+  "001",         "15-05-2023", "15-05-2023",     "9:15",    "10:00",
+  "001",         "15-05-2023", "15-05-2023",     "8:19",    "09:00",
+  "002",         "02-10-2023", "02-10-2023",  "UNK:UNK",         NA,
+  "002",         "03-11-2023", "03-11-2023",    "11:19",         NA
+)
 
- EX2 <-  tibble::tribble(
-   ~patient_number,    ~EX_ST_DT2,
-             "001", "11-JUN-2023",
-             "002", "24-OCT-2023",
-             "002", "25-JUL-2023",
-             "002", "30-OCT-2023",
-             "002", "UNK-OCT-2023"
-             )
+EX2 <- tibble::tribble(
+  ~patient_number,     ~EX_ST_DT2,
+  "001",            "11-JUN-2023",
+  "002",            "24-OCT-2023",
+  "002",            "25-JUL-2023",
+  "002",            "30-OCT-2023",
+  "002",           "UNK-OCT-2023"
+)
 
- raw_source <- list(EX1 = EX1, EX2 = EX2)
+raw_source <- list(EX1 = EX1, EX2 = EX2)
 
- dm_df <- oak_cal_ref_dates(dm,
-                         der_var = "RFSTDTC",
-                         min_max = "max",
-                         ref_date_config_df = ref_date_config_df,
-                         raw_source
-                         )
+dm_df <- oak_cal_ref_dates(dm,
+  der_var = "RFSTDTC",
+  min_max = "max",
+  ref_date_config_df = ref_date_config_df,
+  raw_source
+)
 
 }
