@@ -355,8 +355,8 @@ derive_blfl <- function(sdtm_in,
   # Filter out rows where --ORRES is missing. Filter out --ORRES in
   # ("ND", "NOT DONE") as well.
   ds_mod <- ds_mod |>
-  dplyr::filter(!(is.na(.data[[domain_prefixed_names["orres"]]]) |
-    trimws(.data[[domain_prefixed_names["orres"]]]) %in% c("ND", "NOT DONE", "")))
+    dplyr::filter(!(is.na(.data[[domain_prefixed_names["orres"]]]) |
+      trimws(.data[[domain_prefixed_names["orres"]]]) %in% c("ND", "NOT DONE", "")))
 
   # Filter out rows where --STAT is not equal to "NOT DONE"
   ds_mod <-
