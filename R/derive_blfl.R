@@ -58,6 +58,41 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
   return(tm)
 }
 
+#' This function is used to check if a --DTC variable is in ISO8601 format
+#'
+#' @param dtc_var A vector of the date and time values
+#'
+#' @return A logical value indicating if input is in ISO8601 format
+#' @keywords internal
+is_iso8601 <- function(dtc_var) {
+  # Remove missing DTC values
+  dtc_var <- dtc_var[!(is.na(dtc_var) | dtc_var %in% c(""))]
+
+  # Define ISO8601 precision map
+  ISO8601_precision_map <- list(
+    y = "%Y", # Year: YYYY
+    ym = "%Y-%m", # Year-Month: YYYY-MM
+    ymd = "%Y-%m-%d", # Full Date: YYYY-MM-DD
+    ymdh = "%Y-%m-%dT%H", # DateTime: YYYY-MM-DDThh
+    ymdhm = "%Y-%m-%dT%H:%M", # DateTime: YYYY-MM-DDThh:mm
+    ymdhms = "%Y-%m-%dT%H:%M:%S" # Full DateTime: YYYY-MM-DDThh:mm:ss
+  )
+
+  # Function to check if a single DTC value matches any of the formats
+  valid_iso8601 <- sapply(dtc_var, function(dtc_value) {
+    any(sapply(ISO8601_precision_map, function(fmt) {
+      parsed_date <- try(as.POSIXct(dtc_value, format = fmt, tz = "UTC"), silent = TRUE)
+      !inherits(parsed_date, "try-error") && !is.na(parsed_date)
+    }))
+  })
+
+  if (all(valid_iso8601)) {
+    return(TRUE)
+  }
+
+  return(FALSE)
+}
+
 #' Derive Baseline Flag or Last Observation Before Exposure Flag
 #'
 #' Derive the baseline flag variable (`--BLFL`) or the last observation before
@@ -346,6 +381,14 @@ derive_blfl <- function(sdtm_in,
       "testcd",
       "dtc"
     )]))
+  )
+
+  # Assert that the input "DTC" column follows iso_8601 format
+  assertthat::assert_that(is_iso8601(sdtm_in[[domain_prefixed_names["dtc"]]]),
+    msg = paste(
+      domain_prefixed_names["dtc"],
+      "column does not follow ISO8601 format, please check."
+    )
   )
 
   # End of assertions, work begins ------------------------------------------
