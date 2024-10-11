@@ -78,6 +78,16 @@ test_that("derive_blfl sdmt_in validations work", {
     tgt_var = "VSLOBXFL",
     ref_var = "RFXSTDTC"
   ))
+
+  sdmt_in_no_iso <- d$sdtm_in |>
+    dplyr::mutate(VSDTC = "DUMMY")
+
+  expect_snapshot_error(derive_blfl(
+    sdtm_in = sdmt_in_no_iso,
+    dm_domain = d$dm,
+    tgt_var = "VSLOBXFL",
+    ref_var = "RFXSTDTC"
+  ))
 })
 
 test_that("derive_blfl dm_domain validations work", {
@@ -208,4 +218,25 @@ test_that("`dtc_timepart`: basic usage", {
     ),
     c(NA, "", "", "12", "12:30", "12:30:59")
   )
+})
+
+test_that("`is_iso8601`: basic usage", {
+  dtc_var <- c(
+    NA,
+    "",
+    "2021-12-25",
+    "2021-12-25T12",
+    "2021-12-25T12:30",
+    "2021-12-25T12:30:59"
+  )
+
+  expect_true(is_iso8601(dtc_var))
+
+  dtc_var <- c(
+    NA,
+    "DUMMY",
+    "2021-12-25"
+  )
+
+  expect_false(is_iso8601(dtc_var))
 })
