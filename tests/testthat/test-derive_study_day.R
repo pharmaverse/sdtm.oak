@@ -59,7 +59,7 @@ test_that("`derive_study_day()` works as expected for invalid input", {
 test_that("`calculate_study_day()` works as expected for valid input", {
   res <- derive_study_day(ae, dm, "AESTDTC", "RFSTDTC", "AESTDY")
   expected <- c(-31L, 1L, NA)
-  expect_equal(res$AESTDY, expected, tolerance = "1.5e-08")
+  expect_equal(res$AESTDY, expected, tolerance = 1.5e-08)
 
   df <- data.frame(
     USUBJID = c("study123-123", "study123-124", "study123-125"),
@@ -68,5 +68,5 @@ test_that("`calculate_study_day()` works as expected for valid input", {
     stringsAsFactors = FALSE
   )
   res1 <- derive_study_day(df, df, "AESTDTC", "RFSTDTC", "AESTDY")
-  expect_equal(res1$AESTDY, expected, tolerance = "1.5e-08")
+  expect_equal(res1$AESTDY, expected, tolerance = 1.5e-08)
 })
