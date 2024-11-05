@@ -11,7 +11,7 @@
 #'        Default set to Minimum. Values should be min or max.
 #' @param ref_date_config_df Data frame which has the details of the variables to
 #'        be used for the calculation of reference dates.
-#'        Should has columns listed below:
+#'        Should have columns listed below:
 #'          dataset_name : Name of the raw dataset.
 #'          date_var : Date variable name from the raw dataset.
 #'          time_var : Time variable name from the raw dataset.
@@ -59,7 +59,7 @@
 #'
 #' dm_df <- oak_cal_ref_dates(dm,
 #'   der_var = "RFSTDTC",
-#'   min_max = "max",
+#'   min_max = "min",
 #'   ref_date_config_df = ref_date_config_df,
 #'   raw_source
 #' )
@@ -76,6 +76,8 @@ oak_cal_ref_dates <- function(ds_in = dm,
     tformat, sdtm_var_name
   ))
 
+  admiraldev::assert_list_of(raw_source, "data.frame")
+
   ds_out <- data.frame()
   for (i in seq_along(ref_date_config_df$dataset_name)) {
     raw_dataset_name <- ref_date_config_df$dataset_name[i]
@@ -86,7 +88,7 @@ oak_cal_ref_dates <- function(ds_in = dm,
     sdtm_var <- ref_date_config_df$sdtm_var_name[i]
     raw_dataset <- raw_source[[raw_dataset_name]]
 
-    if (der_var == sdtm_var) {
+    if (der_var == sdtm_var && !is.null(raw_dataset)) {
       ds_out1 <- cal_min_max_date(
         raw_dataset = raw_dataset,
         date_variable = date_variable,
@@ -96,6 +98,11 @@ oak_cal_ref_dates <- function(ds_in = dm,
         val_type = min_max
       )
       ds_out <- rbind(ds_out, ds_out1)
+    } else if (der_var == sdtm_var && is.null(raw_dataset)) {
+      warning(paste0(
+        raw_dataset_name,
+        " is not present in the source data list but referenced in ref_date_config_df"
+      ))
     }
   }
 

@@ -22,7 +22,7 @@ Default set to Minimum. Values should be min or max.}
 
 \item{ref_date_config_df}{Data frame which has the details of the variables to
 be used for the calculation of reference dates.
-Should has columns listed below:
+Should have columns listed below:
 dataset_name : Name of the raw dataset.
 date_var : Date variable name from the raw dataset.
 time_var : Time variable name from the raw dataset.
@@ -79,7 +79,7 @@ raw_source <- list(EX1 = EX1, EX2 = EX2)
 
 dm_df <- oak_cal_ref_dates(dm,
   der_var = "RFSTDTC",
-  min_max = "max",
+  min_max = "min",
   ref_date_config_df = ref_date_config_df,
   raw_source
 )

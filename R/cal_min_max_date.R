@@ -1,4 +1,4 @@
-#' Calculate minimum and maximum date and time in the dataframe
+#' Calculate minimum and maximum date and time in the data frame
 #'
 #' @description This function derives the earliest/latest ISO8601 datetime
 #'
@@ -18,7 +18,7 @@
 #' @examples
 #' EX <- tibble::tribble(
 #'   ~patient_number,    ~EX_ST_DT, ~EX_ST_TM,
-#'   "001",           "26-04-2022",   "10:20",
+#'   "001",           "25-04-2022",   "10:20",
 #'   "001",           "25-04-2022",   "10:15",
 #'   "001",           "25-04-2022",   "10:19",
 #'   "002",           "26-05-2022", "UNK:UNK",
@@ -26,16 +26,16 @@
 #' )
 #'
 #' min <- cal_min_max_date(EX,
-#'   "EX_ST_DT",
-#'   "EX_ST_TM",
+#'   date_variable = "EX_ST_DT",
+#'   time_variable = "EX_ST_TM",
 #'   val_type = "min",
 #'   date_format = "dd-mmm-yyyy",
 #'   time_format = "H:M"
 #' )
 #'
 #' max <- cal_min_max_date(EX,
-#'   "EX_ST_DT",
-#'   "EX_ST_TM",
+#'   date_variable = "EX_ST_DT",
+#'   time_variable = "EX_ST_TM",
 #'   val_type = "max",
 #'   date_format = "dd-mmm-yyyy",
 #'   time_format = "H:M"
@@ -47,13 +47,15 @@ cal_min_max_date <- function(raw_dataset,
                              val_type = "min",
                              date_format,
                              time_format) {
-  # Check if date is present in the raw data frame
-  date_not_in_data <- !(date_variable %in% colnames(raw_dataset))
+  # Check if date parameter is missing or date variable is present in the raw data frame
+  date_not_in_data <- is.na(date_variable) ||
+    !utils::hasName(raw_dataset, date_variable)
 
   # Check if time variable is used and present in the raw data frame
-  time_not_in_data <- !(time_variable %in% colnames(raw_dataset)) && !is.na(time_variable)
+  time_not_in_data <- !is.na(time_variable) &&
+    !utils::hasName(raw_dataset, time_variable)
 
-  # If date/time variables not present return the empty data frame
+  # If date/time variables not present return empty data frame
   if (date_not_in_data || time_not_in_data) {
     # Return Empty data frame with patient_number and datetime columns
     empty_df <- stats::setNames(
@@ -68,13 +70,14 @@ cal_min_max_date <- function(raw_dataset,
   }
 
   fin_df <- raw_dataset
-  # Time variable is not used then use only date
+
+  # Time is not used in reference date then use only date
   if (is.na(time_variable)) {
     fin_df$datetime <- create_iso8601(raw_dataset[[date_variable]],
       .format = date_format
     )
   } else {
-    # If both date and time variables are presen use both date and time
+    # If both date and time variables are present use both date and time
     raw_dataset$date_time <- paste0(
       raw_dataset[[date_variable]],
       raw_dataset[[time_variable]]

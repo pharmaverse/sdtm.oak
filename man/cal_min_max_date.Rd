@@ -2,7 +2,7 @@
 % Please edit documentation in R/cal_min_max_date.R
 \name{cal_min_max_date}
 \alias{cal_min_max_date}
-\title{Calculate minimum and maximum date and time in the dataframe}
+\title{Calculate minimum and maximum date and time in the data frame}
 \usage{
 cal_min_max_date(
   raw_dataset,
@@ -38,7 +38,7 @@ This function derives the earliest/latest ISO8601 datetime
 \examples{
 EX <- tibble::tribble(
   ~patient_number,    ~EX_ST_DT, ~EX_ST_TM,
-  "001",           "26-04-2022",   "10:20",
+  "001",           "25-04-2022",   "10:20",
   "001",           "25-04-2022",   "10:15",
   "001",           "25-04-2022",   "10:19",
   "002",           "26-05-2022", "UNK:UNK",
@@ -46,16 +46,16 @@ EX <- tibble::tribble(
 )
 
 min <- cal_min_max_date(EX,
-  "EX_ST_DT",
-  "EX_ST_TM",
+  date_variable = "EX_ST_DT",
+  time_variable = "EX_ST_TM",
   val_type = "min",
   date_format = "dd-mmm-yyyy",
   time_format = "H:M"
 )
 
 max <- cal_min_max_date(EX,
-  "EX_ST_DT",
-  "EX_ST_TM",
+  date_variable = "EX_ST_DT",
+  time_variable = "EX_ST_TM",
   val_type = "max",
   date_format = "dd-mmm-yyyy",
   time_format = "H:M"
