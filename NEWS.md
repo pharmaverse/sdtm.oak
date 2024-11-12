@@ -1,3 +1,7 @@
+# sdtm.oak V0.1.1
+
+Fixed the bug that was causing test cases to fail. Updated derive_blfl function to account for baseline_timepoints. Typo updates in the documention.
+
 # sdtm.oak V0.1.0
 
 The V0.1.0 release of {sdtm.oak} users can create the majority of the SDTM domains. Domains that are *NOT* in scope for the V0.1.0 release are DM, Trial Design Domains, SV, SE, RELREC, Associated Person domains, and EPOCH Variable across all domains.
@@ -20,7 +24,7 @@ The V0.1.0 release of {sdtm.oak} users can create the majority of the SDTM domai
     -  Functions to create conditioned dataframes to support if then else conditions in SDTM mappings
 -  Articles
     - Algorithms
-    - Creating an Events SDTM domain
+    - Creating an interventions SDTM domain
     - Creating a Findings SDTM domain
     - Conditioned Data Frames
     - Converting dates, times or date-times to ISO 8601

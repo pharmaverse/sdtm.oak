@@ -88,7 +88,7 @@ specification.
   [Algorithms](https://pharmaverse.github.io/sdtm.oak/articles/algorithms.html)
   article to learn about Algorithms.
 - Please go to [Create Events
-  Domain](https://pharmaverse.github.io/sdtm.oak/articles/events_domain.html)
+  Domain](https://pharmaverse.github.io/sdtm.oak/articles/interventions_domain.html)
   to learn about step by step process to create an Events domain.
 - Please go to [Create Findings
   Domain](https://pharmaverse.github.io/sdtm.oak/articles/findings_domain.html)
