@@ -57,7 +57,8 @@ Imports:
     stringr (>= 1.4.0),
     assertthat,
     pillar,
-    cli
+    cli,
+    styler
 Suggests:
     knitr,
     htmltools,
