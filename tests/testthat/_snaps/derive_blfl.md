@@ -96,6 +96,10 @@
 
     Required variables `VSORRES`, `VSSTAT`, `VSTESTCD`, and `VSDTC` are missing in `sdtm_in`
 
+---
+
+    VSDTC column does not follow ISO8601 format, please check.
+
 # derive_blfl dm_domain validations work
 
     Required variables `USUBJID` and `RFXSTDTC` are missing in `dm_domain`
