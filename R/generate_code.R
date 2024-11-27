@@ -27,14 +27,40 @@ generate_code <- function(spec, domain, out_dir = ".") {
     dplyr::filter(tolower(target_sdtm_domain) %in% tolower(domain)) |>
     # TODO
     # Doing only few variables
-    dplyr::filter(target_sdtm_variable %in% c("CMTRT", "CMINDC")) |>
+    dplyr::filter(target_sdtm_variable %in% c(
+      "CMTRT",
+      "CMINDC",
+      "CMDOSE"
+    )) |>
 
     dplyr::select(
       raw_dataset,
       raw_variable,
       target_sdtm_variable,
-      mapping_algorithm
+      mapping_algorithm,
+      entity_sub_algorithm,
+      condition_add_raw_dat,
     )
+
+  # For now swapping entity_sub_algorithm with mapping_algorithm since the
+  # algorithms like assign_no_ct are the mapping_algorithm and they are populated
+  # in the entity_sub_algorithm
+  spec_domain <- spec_domain |>
+    dplyr::mutate(
+      entity_sub_algorithm_temp = dplyr::if_else(
+        mapping_algorithm %in% "condition_add",
+        mapping_algorithm,
+        entity_sub_algorithm,
+      ),
+      mapping_algorithm = dplyr::if_else(
+        mapping_algorithm %in% "condition_add",
+        entity_sub_algorithm,
+        mapping_algorithm,
+      ),
+      entity_sub_algorithm = entity_sub_algorithm_temp
+    ) |>
+    dplyr::select(-entity_sub_algorithm_temp)
+
 
   n_rows <- nrow(spec_domain)
 
