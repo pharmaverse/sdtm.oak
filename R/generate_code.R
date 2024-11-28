@@ -1,3 +1,12 @@
+#' Temporary vector to control the vars we generate and the order
+tgt_vars <- c(
+  "CMTRT",
+  "CMINDC",
+  "CMDOSE",
+  "CMDOSTXT",
+  "CMDOSU"
+)
+
 #' Generate the code for the mapping SDTM specification
 #'
 #' @param spec The specification data frame.
@@ -27,11 +36,7 @@ generate_code <- function(spec, domain, out_dir = ".") {
     dplyr::filter(tolower(target_sdtm_domain) %in% tolower(domain)) |>
     # TODO
     # Doing only few variables
-    dplyr::filter(target_sdtm_variable %in% c(
-      "CMTRT",
-      "CMINDC",
-      "CMDOSE"
-    )) |>
+    dplyr::filter(target_sdtm_variable %in% tgt_vars) |>
 
     dplyr::select(
       raw_dataset,
@@ -40,6 +45,7 @@ generate_code <- function(spec, domain, out_dir = ".") {
       mapping_algorithm,
       entity_sub_algorithm,
       condition_add_raw_dat,
+      target_sdtm_variable_codelist_code,
     )
 
   # For now swapping entity_sub_algorithm with mapping_algorithm since the
@@ -92,16 +98,36 @@ generate_code <- function(spec, domain, out_dir = ".") {
 generate_one_var_code <- function(spec_var, last_var = FALSE) {
 
   admiraldev::assert_data_frame(spec_var)
+  assertthat::assert_that(identical(nrow(spec_var), 1L))
+
+  # Need to use the condition_add_raw_dat (if not missing) instead of raw_dataset
+  spec_var <- spec_var |>
+    dplyr::mutate(
+      raw_dataset = dplyr::if_else(
+        entity_sub_algorithm %in% "condition_add" & !is.na(condition_add_raw_dat),
+        condition_add_raw_dat,
+        raw_dataset
+      )
+    )
+
+  args <- list(
+    raw_dat = rlang::parse_expr(spec_var$raw_dataset),
+    raw_var = spec_var$raw_variable,
+    tgt_var = spec_var$target_sdtm_variable
+  )
+
+  is_ct <- spec_var$mapping_algorithm %in% c("assign_ct")
+
+  if (is_ct) {
+    args$ct_spec <- rlang::parse_expr("study_ct")
+    args$ct_clst <- spec_var$target_sdtm_variable_codelist_code
+  }
 
   # Generate the function call
-  generated_call <- with(spec_var, {
-    rlang::call2(
-      mapping_algorithm,
-      raw_dat = rlang::sym(raw_dataset),
-      raw_var = raw_variable,
-      tgt_var = target_sdtm_variable
-    )
-  })
+  generated_call <- rlang::call2(
+    spec_var$mapping_algorithm,
+    !!!args
+  )
 
   # Convert the call to code as a string. Intentionally limiting the width to 20
   # characters to force each parameter to be on a separate line.
