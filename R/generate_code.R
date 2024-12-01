@@ -23,6 +23,11 @@ tgt_vars <- c(
 #' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
 #' domain <- "cm"
 #' generate_code(spec, domain)
+#'
+#' # One can use option width to control the width of the code
+#' # Twenty will almost always place every parameter on a separate line
+#' options(width = 20)
+#' generate_code(spec, domain)
 #' }
 #'
 generate_code <- function(spec, domain, out_dir = ".") {
@@ -131,7 +136,7 @@ generate_one_var_code <- function(spec_var, last_var = FALSE) {
 
   # Convert the call to code as a string. Intentionally limiting the width to 20
   # characters to force each parameter to be on a separate line.
-  raw_code <- rlang::expr_deparse(generated_call, width = 20)
+  raw_code <- rlang::expr_deparse(generated_call)
 
   # Add the pipe operator if this is not the last variable
   if (!last_var) {
