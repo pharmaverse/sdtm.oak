@@ -18,13 +18,22 @@ directory.}
 Side effect: the code is generated and saved to a file.
 }
 \description{
-Generate the code for the mapping SDTM specification
+One can use the option \code{width} to control the width of the code. A width of
+twenty will almost always place every parameter on a separate line. This is
+useful for debugging and understanding the code. The higher the width, the
+more parameters will be placed on a single line and code will be shorter.
+See the examples for more details.
 }
 \examples{
 
 \dontrun{
 spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
 domain <- "cm"
+generate_code(spec, domain)
+
+# One can use option width to control the width of the code
+# Twenty will almost always place every parameter on a separate line
+options(width = 20)
 generate_code(spec, domain)
 }
 

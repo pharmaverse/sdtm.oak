@@ -1,5 +1,11 @@
 #' Generate the code for the mapping SDTM specification
 #'
+#' One can use the option `width` to control the width of the code. A width of
+#' twenty will almost always place every parameter on a separate line. This is
+#' useful for debugging and understanding the code. The higher the width, the
+#' more parameters will be placed on a single line and code will be shorter.
+#' See the examples for more details.
+#'
 #' @param spec The specification data frame.
 #' @param domain The SDTM domain to generate the code for.
 #' @param out_dir The directory to save the code file. Default is the current
@@ -28,24 +34,20 @@ generate_code <- function(spec, domain, out_dir = ".") {
 
   spec_domain <- get_domain_spec(spec, domain)
 
-  n_rows <- nrow(spec_domain)
-
   # Generate the code for each variable row in spec_domain
-  code_blocks <- purrr::map(
-    seq_len(n_rows),
-    \(row) generate_one_var_code(
-      spec_domain[row, ],
-      last_var = identical(row, n_rows)
-    )
+  styled_code <- purrr::map(
+    seq_len(nrow(spec_domain)),
+    \(row) generate_one_var_code(spec_domain[row, ])
   ) |>
-    unlist()
-
-  styled_code <- styler::style_text(code_blocks)
+    unlist() |>
+    remove_last_pipe() |>
+    styler::style_text()
 
   # Save the code to a file
   file_name <- paste0(domain, "_sdtm_oak_code.R")
   writeLines(styled_code, file.path(out_dir, file_name))
 }
+
 
 #' Generate the code for one variable
 #'
@@ -55,7 +57,7 @@ generate_code <- function(spec, domain, out_dir = ".") {
 #' @return The code for the variable as a string.
 #' @keywords internal
 #'
-generate_one_var_code <- function(spec_var, last_var = FALSE) {
+generate_one_var_code <- function(spec_var) {
 
   admiraldev::assert_data_frame(spec_var)
   assertthat::assert_that(identical(nrow(spec_var), 1L))
@@ -79,16 +81,47 @@ generate_one_var_code <- function(spec_var, last_var = FALSE) {
     !!!args
   )
 
-  # Convert the call to code as a string. Intentionally limiting the width to 20
-  # characters to force each parameter to be on a separate line.
-  raw_code <- rlang::expr_deparse(generated_call)
+  rlang::expr_deparse(generated_call) |>
+    add_pipe()
+}
 
-  # Add the pipe operator if this is not the last variable
-  if (!last_var) {
-    raw_code[length(raw_code)] <- paste0(raw_code[length(raw_code)], " %>%")
-  }
 
-  return(raw_code)
+#' Add a pipe operator to the last element of a character vector
+#'
+#' @param code_block A character vector.
+#'
+#' @return The character vector with a pipe operator added to the last element.
+#' @keywords internal
+#'
+add_pipe <- function(code_block) {
+
+  admiraldev::assert_character_vector(code_block)
+
+  i <- length(code_block)
+
+  # Add pipe operator to the last element of code block
+  code_block[i] <- paste0(code_block[i], " %>%")
+  code_block
+}
+
+#' Remove the pipe operator from the last element of a character vector
+#'
+#' @param code_blocks A character vector.
+#'
+#' @return The character vector with the pipe operator removed from the last element.
+#' @keywords internal
+#'
+remove_last_pipe <- function(code_blocks) {
+
+  admiraldev::assert_character_vector(code_blocks)
+
+  len_code_block <- length(code_blocks)
+
+  # The last code block should not have a pipe operator
+  code_blocks[len_code_block] <- code_blocks[len_code_block] |>
+    stringr::str_remove("%>%")
+
+  code_blocks
 }
 
 #' Get the specification for a domain and modify it
@@ -97,7 +130,7 @@ generate_one_var_code <- function(spec_var, last_var = FALSE) {
 #' @param domain The SDTM domain to get the specification for.
 #'
 #' @return
-#' @export
+#' @keywords internal
 #'
 #' @examples
 get_domain_spec <- function(spec, domain) {
@@ -161,7 +194,6 @@ get_domain_spec <- function(spec, domain) {
         raw_dataset
       )
     )
-
 }
 
 

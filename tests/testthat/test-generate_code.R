@@ -15,11 +15,11 @@ test_that("generate_code works", {
   unlink(out_dir, recursive = TRUE, force = TRUE)
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-  generate_code(spec, domain, out_dir)
+  withr::with_options(list(width = 20), {
+    generate_code(spec, domain, out_dir)
+    observed <- readLines(file.path(out_dir,  paste0(domain, "_sdtm_oak_code.R")))
 
-
-  observed <- readLines(file.path(out_dir,  paste0(domain, "_sdtm_oak_code.R")))
-
-  expect_true(identical(length(observed), 10L))
-  expect_true(grepl("CMTRT", observed[3]))
+    expect_true(identical(length(observed), 10L))
+    expect_true(grepl("CMTRT", observed[3]))
+  })
 })

@@ -4,7 +4,7 @@
 \alias{generate_one_var_code}
 \title{Generate the code for one variable}
 \usage{
-generate_one_var_code(spec_var, last_var = FALSE)
+generate_one_var_code(spec_var)
 }
 \arguments{
 \item{spec_var}{The specification for one variable.}
