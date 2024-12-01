@@ -1,12 +1,3 @@
-#' Temporary vector to control the vars we generate and the order
-tgt_vars <- c(
-  "CMTRT",
-  "CMINDC",
-  "CMDOSE",
-  "CMDOSTXT",
-  "CMDOSU"
-)
-
 #' Generate the code for the mapping SDTM specification
 #'
 #' @param spec The specification data frame.
@@ -32,46 +23,10 @@ tgt_vars <- c(
 #'
 generate_code <- function(spec, domain, out_dir = ".") {
 
-  admiraldev::assert_data_frame(spec, required_vars = rlang::parse_exprs(expected_columns))
+  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
   admiraldev::assert_character_scalar(domain)
 
-  # For now assuming that there is only one topic and the topic is the first one
-
-  spec_domain <- spec |>
-    dplyr::filter(tolower(target_sdtm_domain) %in% tolower(domain)) |>
-    # TODO
-    # Doing only few variables
-    dplyr::filter(target_sdtm_variable %in% tgt_vars) |>
-
-    dplyr::select(
-      raw_dataset,
-      raw_variable,
-      target_sdtm_variable,
-      mapping_algorithm,
-      entity_sub_algorithm,
-      condition_add_raw_dat,
-      target_sdtm_variable_codelist_code,
-    )
-
-  # For now swapping entity_sub_algorithm with mapping_algorithm since the
-  # algorithms like assign_no_ct are the mapping_algorithm and they are populated
-  # in the entity_sub_algorithm
-  spec_domain <- spec_domain |>
-    dplyr::mutate(
-      entity_sub_algorithm_temp = dplyr::if_else(
-        mapping_algorithm %in% "condition_add",
-        mapping_algorithm,
-        entity_sub_algorithm,
-      ),
-      mapping_algorithm = dplyr::if_else(
-        mapping_algorithm %in% "condition_add",
-        entity_sub_algorithm,
-        mapping_algorithm,
-      ),
-      entity_sub_algorithm = entity_sub_algorithm_temp
-    ) |>
-    dplyr::select(-entity_sub_algorithm_temp)
-
+  spec_domain <- get_domain_spec(spec, domain)
 
   n_rows <- nrow(spec_domain)
 
@@ -105,16 +60,6 @@ generate_one_var_code <- function(spec_var, last_var = FALSE) {
   admiraldev::assert_data_frame(spec_var)
   assertthat::assert_that(identical(nrow(spec_var), 1L))
 
-  # Need to use the condition_add_raw_dat (if not missing) instead of raw_dataset
-  spec_var <- spec_var |>
-    dplyr::mutate(
-      raw_dataset = dplyr::if_else(
-        entity_sub_algorithm %in% "condition_add" & !is.na(condition_add_raw_dat),
-        condition_add_raw_dat,
-        raw_dataset
-      )
-    )
-
   args <- list(
     raw_dat = rlang::parse_expr(spec_var$raw_dataset),
     raw_var = spec_var$raw_variable,
@@ -146,6 +91,79 @@ generate_one_var_code <- function(spec_var, last_var = FALSE) {
   return(raw_code)
 }
 
+#' Get the specification for a domain and modify it
+#'
+#' @param spec The specification data frame.
+#' @param domain The SDTM domain to get the specification for.
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_domain_spec <- function(spec, domain) {
+
+  expected_columns <- c(
+    "raw_dataset",
+    "raw_variable",
+    "target_sdtm_variable",
+    "mapping_algorithm",
+    "entity_sub_algorithm",
+    "condition_add_raw_dat",
+    "target_sdtm_variable_codelist_code"
+  )
+
+  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
+  admiraldev::assert_character_scalar(domain)
+
+  # TODO
+  # Temporary vector to control the vars we generate and the order
+  tgt_vars <- c(
+    "CMTRT",
+    "CMINDC",
+    "CMDOSE",
+    "CMDOSTXT",
+    "CMDOSU"
+  )
+
+  # For now assuming that there is only one topic and the topic is the first one
+
+  spec |>
+    dplyr::filter(tolower(target_sdtm_domain) %in% tolower(domain)) |>
+    # TODO
+    # Doing only few variables
+    dplyr::filter(target_sdtm_variable %in% tgt_vars) |>
+
+    dplyr::select(dplyr::all_of(expected_columns)) |>
+
+    # For now swapping entity_sub_algorithm with mapping_algorithm since the
+    # algorithms like assign_no_ct are the mapping_algorithm and they are populated
+    # in the entity_sub_algorithm
+    dplyr::mutate(
+      entity_sub_algorithm_temp = dplyr::if_else(
+        mapping_algorithm %in% "condition_add",
+        mapping_algorithm,
+        entity_sub_algorithm,
+      ),
+      mapping_algorithm = dplyr::if_else(
+        mapping_algorithm %in% "condition_add",
+        entity_sub_algorithm,
+        mapping_algorithm,
+      ),
+      entity_sub_algorithm = entity_sub_algorithm_temp
+    ) |>
+    dplyr::select(-entity_sub_algorithm_temp) |>
+
+    # Need to use the condition_add_raw_dat (if not missing) instead of raw_dataset
+    dplyr::mutate(
+      raw_dataset = dplyr::if_else(
+        entity_sub_algorithm %in% "condition_add" & !is.na(condition_add_raw_dat),
+        condition_add_raw_dat,
+        raw_dataset
+      )
+    )
+
+}
+
 
 #' Read the specification file
 #'
@@ -168,7 +186,7 @@ read_spec <- function(file) {
   spec <- utils::read.csv(file = file, na.strings = c("NA", ""), colClasses = "character") |>
     tibble::as_tibble()
 
-  admiraldev::assert_data_frame(spec, required_vars = rlang::parse_exprs(expected_columns))
+  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
 
   return(spec)
 }
