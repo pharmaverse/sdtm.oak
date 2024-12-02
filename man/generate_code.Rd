@@ -32,8 +32,11 @@ generate_code(spec, domain)
 
 # One can use option width to control the width of the code
 # Twenty will almost always place every parameter on a separate line
-options(width = 20)
+spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
+domain <- "cm"
+old_width <- options(width = 20)
 generate_code(spec, domain)
+options(width = old_width)
 }
 
 }
