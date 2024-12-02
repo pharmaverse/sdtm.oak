@@ -1,3 +1,88 @@
+# TODO Things I changed in specs
+# - Made sure that target_sdtm_domain is not missing
+# - Added raw_fmt for dates
+# - Added raw_unk for dates
+# - The algorithm for CMENRTPT in spec is hardcode_ct, but in the program assign_ct
+# is used. I kept the algorithm as hardcode_ct in the spec.
+# - I consolidated target_hardcoded_value and target_term_value into target_value
+# - In the spec we have cm_raw_data and I used it in the template as well
+# - Changed is.numeric/is.character into is_numeric/is_character
+# - I did not generate id_vars since the default values was enough, certainly we
+# can add it later when the customized id_vars are needed.
+
+
+# TODO
+# Temporary vector to control the vars we generate. For now we assume that the
+# order in the specs is the one we want to generate the code for.
+tgt_vars <- c(
+  "CMTRT",
+  "CMINDC",
+  "CMDOSE",
+  "CMDOSTXT",
+  "CMDOSU",
+  "CMDOSFRM",
+  "CMDOSFRQ",
+  "CMROUTE",
+  "CMSTDTC",
+  "CMENRTPT",
+  "CMENTPT",
+  "CMENDTC"
+)
+
+#' The template suffix for the cm code
+#'
+#' @keywords internal
+cm_template_prefix <- stringr::str_glue('
+library(sdtm.oak)
+library(dplyr)
+
+
+# Read CT Specification
+study_ct <- read.csv("./datasets/sdtm_ct.csv")
+
+# Read in raw data
+cm_raw_data <- read.csv("./datasets/cm_raw_data_cdash.csv")
+
+cm_raw_data <- admiral::convert_blanks_to_na(cm_raw_data)
+
+# derive oak_id_vars
+cm_raw_data <- cm_raw_data %>%
+  generate_oak_id_vars(
+    pat_var = "PATNUM",
+    raw_src = "cm_raw_data"
+  )
+
+# Read in DM domain to derive study day
+dm <- read.csv("./datasets/dm.csv")
+
+dm <- admiral::convert_blanks_to_na(dm)
+
+cm <-
+')
+
+#' Check if a variable is character
+#'
+#' @param var_in The variable to check.
+#'
+#' @return Logical indicating if the variable is character.
+#' @export
+#'
+is_numeric <- function(var_in) {
+  grepl("^-?\\d*(\\.\\d+)?(e[+-]?\\d+)?$", var_in)
+}
+
+#' Check if a variable is character
+#'
+#' @param var_in The variable to check.
+#'
+#' @return
+#' @export
+#'
+is_character <- function(var_in) {
+  grepl("[^0-9eE.-]", var_in)
+}
+
+
 #' Generate the code for the mapping SDTM specification
 #'
 #' One can use the option `width` to control the width of the code. A width of
@@ -41,6 +126,7 @@ generate_code <- function(spec, domain, out_dir = ".") {
   ) |>
     unlist() |>
     remove_last_pipe() |>
+    append(cm_template_prefix, after = 0) |>
     styler::style_text()
 
   # Save the code to a file
@@ -65,15 +151,21 @@ generate_one_var_code <- function(spec_var) {
   args <- list(
     raw_dat = rlang::parse_expr(spec_var$raw_dataset),
     raw_var = spec_var$raw_variable,
-    tgt_var = spec_var$target_sdtm_variable
+    tgt_var = spec_var$target_sdtm_variable,
+    tgt_val = spec_var$target_value,
+    ct_spec = rlang::parse_expr("study_ct"),
+    ct_clst = spec_var$target_sdtm_variable_codelist_code,
+    raw_fmt = spec_var$raw_fmt,
+    raw_unk = parse_into_c_call(spec_var$raw_unk)
   )
 
-  is_ct <- spec_var$mapping_algorithm %in% c("assign_ct")
-
-  if (is_ct) {
-    args$ct_spec <- rlang::parse_expr("study_ct")
-    args$ct_clst <- spec_var$target_sdtm_variable_codelist_code
+  # If the ct_clst is missing, then we must remove ct_spec
+  if (is.na(args$ct_clst)) {
+    args$ct_spec <- NA
   }
+
+  # Remove the arguments that are missing
+  args <- purrr::discard(args, \(x) is.vector(x) && any(is.na(x)))
 
   # Generate the function call
   generated_call <- rlang::call2(
@@ -83,6 +175,40 @@ generate_one_var_code <- function(spec_var) {
 
   rlang::expr_deparse(generated_call) |>
     add_pipe()
+}
+
+#' This function converts comma separated string into a character vector
+#'
+#' @param string A string with comma separated values.
+#'
+#' @return A character vector.
+#'
+#' @keywords internal
+#'
+#' @examples
+#'
+#' \dontrun{
+#' str_in <- "a, b, c"
+#' parse_into_c_call("a, b, c")
+#'
+#' str_in <- NA_character_
+#' parse_into_c_call(str_in)
+#' }
+#'
+parse_into_c_call <- function(str_in) {
+
+  admiraldev::assert_character_scalar(str_in)
+
+  str_out <- str_in |>
+    stringr::str_split(",") |>
+    unlist() |>
+    stringr::str_trim()
+
+  if (all(is.na(str_out))) {
+    return(NA)
+  }
+
+  rlang::call2("c", !!!str_out)
 }
 
 
@@ -142,21 +268,16 @@ get_domain_spec <- function(spec, domain) {
     "mapping_algorithm",
     "entity_sub_algorithm",
     "condition_add_raw_dat",
-    "target_sdtm_variable_codelist_code"
+    "target_sdtm_variable_codelist_code",
+    "raw_data_format",
+    "raw_fmt",
+    "raw_unk",
+    "target_term_value",
+    "target_value"
   )
 
   admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
   admiraldev::assert_character_scalar(domain)
-
-  # TODO
-  # Temporary vector to control the vars we generate and the order
-  tgt_vars <- c(
-    "CMTRT",
-    "CMINDC",
-    "CMDOSE",
-    "CMDOSTXT",
-    "CMDOSU"
-  )
 
   # For now assuming that there is only one topic and the topic is the first one
 
@@ -236,6 +357,8 @@ expected_columns <- c(
   "raw_variable_ordinal",
   "raw_variable_type",
   "raw_data_format",
+  "raw_fmt",
+  "raw_unk",
   "study_specific",
   "annotation_ordinal",
   "mapping_is_dataset",
@@ -274,5 +397,6 @@ expected_columns <- c(
   "unduplicate_keys",
   "groupby_keys",
   "target_resource_raw_dataset",
-  "target_resource_raw_variable"
+  "target_resource_raw_variable",
+  "target_value"
 )
