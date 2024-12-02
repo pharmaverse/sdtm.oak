@@ -16,7 +16,6 @@ A tibble with the specification.
 Read the specification file
 }
 \examples{
-
 \dontrun{
 file <- "cm_sdtm_oak_spec_cdash.csv"
 observed <- read_spec(file)

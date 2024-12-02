@@ -5,7 +5,7 @@
 \alias{expected_columns}
 \title{Expected columns in the specification file}
 \format{
-An object of class \code{character} of length 47.
+An object of class \code{character} of length 50.
 }
 \usage{
 expected_columns

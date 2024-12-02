@@ -75,7 +75,7 @@ is_numeric <- function(var_in) {
 #'
 #' @param var_in The variable to check.
 #'
-#' @return
+#' @return Logical indicating if the variable is character.
 #' @export
 #'
 is_character <- function(var_in) {
@@ -248,10 +248,9 @@ remove_last_pipe <- function(code_blocks) {
 #' @param spec The specification data frame.
 #' @param domain The SDTM domain to get the specification for.
 #'
-#' @return
+#' @return A tibble with the specification for the domain.
 #' @keywords internal
 #'
-#' @examples
 get_domain_spec <- function(spec, domain) {
   expected_columns <- c(
     "raw_dataset",

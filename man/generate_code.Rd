@@ -25,7 +25,6 @@ more parameters will be placed on a single line and code will be shorter.
 See the examples for more details.
 }
 \examples{
-
 \dontrun{
 spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
 domain <- "cm"

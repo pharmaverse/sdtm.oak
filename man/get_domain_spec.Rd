@@ -11,6 +11,9 @@ get_domain_spec(spec, domain)
 
 \item{domain}{The SDTM domain to get the specification for.}
 }
+\value{
+A tibble with the specification for the domain.
+}
 \description{
 Get the specification for a domain and modify it
 }
