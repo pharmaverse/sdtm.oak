@@ -10,12 +10,10 @@ test_that("generate_code works", {
 
   # Convert all NA to NA_character_
   spec <- spec |>
-    dplyr::mutate(
-      dplyr::across(
-        .cols = dplyr::everything(),
-        .fns = ~dplyr::if_else(is.na(.x), NA_character_, .x)
-    )
-  )
+    dplyr::mutate(dplyr::across(
+      .cols = dplyr::everything(),
+      .fns = ~ dplyr::if_else(is.na(.x), NA_character_, .x)
+    ))
 
   domain <- "cm"
 
@@ -24,12 +22,12 @@ test_that("generate_code works", {
   unlink(out_dir, recursive = TRUE, force = TRUE)
   dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-  withr::with_options(list(width = 20), {
+  withr::with_options(list(width = 20L), {
     generate_code(spec, domain, out_dir)
     observed <- readLines(file.path(out_dir,  paste0(domain, "_sdtm_oak_code.R")))
 
-    expect_true(length(observed) > 10L)
-    expect_true(grepl("generate_oak_id_vars", observed) |> any())
-    expect_true(grepl("assign_no_ct", observed) |> any())
+    expect_gt(length(observed), 10L)
+    expect_true(grepl("generate_oak_id_vars", observed, fixed = TRUE) |> any())
+    expect_true(grepl("assign_no_ct", observed, fixed = TRUE) |> any())
   })
 })

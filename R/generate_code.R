@@ -126,7 +126,7 @@ generate_code <- function(spec, domain, out_dir = ".") {
   ) |>
     unlist() |>
     remove_last_pipe() |>
-    append(cm_template_prefix, after = 0) |>
+    append(cm_template_prefix, after = 0L) |>
     styler::style_text()
 
   # Save the code to a file
@@ -165,7 +165,7 @@ generate_one_var_code <- function(spec_var) {
   }
 
   # Remove the arguments that are missing
-  args <- purrr::discard(args, \(x) is.vector(x) && any(is.na(x)))
+  args <- purrr::discard(args, \(x) is.vector(x) && anyNA(x))
 
   # Generate the function call
   generated_call <- rlang::call2(
@@ -200,7 +200,7 @@ parse_into_c_call <- function(str_in) {
   admiraldev::assert_character_scalar(str_in)
 
   str_out <- str_in |>
-    stringr::str_split(",") |>
+    stringr::str_split(stringr::fixed(",")) |>
     unlist() |>
     stringr::str_trim()
 
@@ -245,7 +245,7 @@ remove_last_pipe <- function(code_blocks) {
 
   # The last code block should not have a pipe operator
   code_blocks[len_code_block] <- code_blocks[len_code_block] |>
-    stringr::str_remove("%>%")
+    stringr::str_remove(stringr::fixed("%>%"))
 
   code_blocks
 }
@@ -296,12 +296,12 @@ get_domain_spec <- function(spec, domain) {
       entity_sub_algorithm_temp = dplyr::if_else(
         mapping_algorithm %in% "condition_add",
         mapping_algorithm,
-        entity_sub_algorithm,
+        entity_sub_algorithm
       ),
       mapping_algorithm = dplyr::if_else(
         mapping_algorithm %in% "condition_add",
         entity_sub_algorithm,
-        mapping_algorithm,
+        mapping_algorithm
       ),
       entity_sub_algorithm = entity_sub_algorithm_temp
     ) |>
