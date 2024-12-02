@@ -36,7 +36,8 @@ spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
 domain <- "cm"
 old_width <- options(width = 20)
 generate_code(spec, domain)
-options(width = old_width)
+# Restore original width
+options(width = old_width$width)
 }
 
 }

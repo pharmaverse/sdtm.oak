@@ -29,6 +29,61 @@ tgt_vars <- c(
   "CMENDTC"
 )
 
+#' Generate the code for the mapping SDTM specification
+#'
+#' One can use the option `width` to control the width of the code. A width of
+#' twenty will almost always place every parameter on a separate line. This is
+#' useful for debugging and understanding the code. The higher the width, the
+#' more parameters will be placed on a single line and code will be shorter.
+#' See the examples for more details.
+#'
+#' @param spec The specification data frame.
+#' @param domain The SDTM domain to generate the code for.
+#' @param out_dir The directory to save the code file. Default is the current
+#'   directory.
+#'
+#' @return Side effect: the code is generated and saved to a file.
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
+#' domain <- "cm"
+#' generate_code(spec, domain)
+#'
+#' # One can use option width to control the width of the code
+#' # Twenty will almost always place every parameter on a separate line
+#' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
+#' domain <- "cm"
+#' old_width <- options(width = 20)
+#' generate_code(spec, domain)
+#' # Restore original width
+#' options(width = old_width$width)
+#' }
+#'
+generate_code <- function(spec, domain, out_dir = ".") {
+  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
+  admiraldev::assert_character_scalar(domain)
+
+  spec_domain <- get_domain_spec(spec, domain)
+
+  # Generate the code for each variable row in spec_domain
+  styled_code <- purrr::map(
+    seq_len(nrow(spec_domain)),
+    \(row) generate_one_var_code(spec_domain[row, ])
+  ) |>
+    unlist() |>
+    # remove_last_pipe() |>
+    append(cm_template_prefix, after = 0L) |>
+    append(cm_template_suffix) |>
+    styler::style_text()
+
+  # Save the code to a file
+  file_name <- paste0(domain, "_sdtm_oak_code.R")
+  writeLines(styled_code, file.path(out_dir, file_name))
+}
+
+
 #' The template suffix for the cm code
 #'
 #' @keywords internal
@@ -108,60 +163,6 @@ is_numeric <- function(var_in) {
 #'
 is_character <- function(var_in) {
   grepl("[^0-9eE.-]", var_in)
-}
-
-
-#' Generate the code for the mapping SDTM specification
-#'
-#' One can use the option `width` to control the width of the code. A width of
-#' twenty will almost always place every parameter on a separate line. This is
-#' useful for debugging and understanding the code. The higher the width, the
-#' more parameters will be placed on a single line and code will be shorter.
-#' See the examples for more details.
-#'
-#' @param spec The specification data frame.
-#' @param domain The SDTM domain to generate the code for.
-#' @param out_dir The directory to save the code file. Default is the current
-#'   directory.
-#'
-#' @return Side effect: the code is generated and saved to a file.
-#' @export
-#'
-#' @examples
-#' \dontrun{
-#' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
-#' domain <- "cm"
-#' generate_code(spec, domain)
-#'
-#' # One can use option width to control the width of the code
-#' # Twenty will almost always place every parameter on a separate line
-#' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
-#' domain <- "cm"
-#' old_width <- options(width = 20)
-#' generate_code(spec, domain)
-#' options(width = old_width)
-#' }
-#'
-generate_code <- function(spec, domain, out_dir = ".") {
-  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
-  admiraldev::assert_character_scalar(domain)
-
-  spec_domain <- get_domain_spec(spec, domain)
-
-  # Generate the code for each variable row in spec_domain
-  styled_code <- purrr::map(
-    seq_len(nrow(spec_domain)),
-    \(row) generate_one_var_code(spec_domain[row, ])
-  ) |>
-    unlist() |>
-    # remove_last_pipe() |>
-    append(cm_template_prefix, after = 0L) |>
-    append(cm_template_suffix) |>
-    styler::style_text()
-
-  # Save the code to a file
-  file_name <- paste0(domain, "_sdtm_oak_code.R")
-  writeLines(styled_code, file.path(out_dir, file_name))
 }
 
 
