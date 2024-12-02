@@ -100,7 +100,6 @@ is_character <- function(var_in) {
 #' @export
 #'
 #' @examples
-#'
 #' \dontrun{
 #' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
 #' domain <- "cm"
@@ -113,7 +112,6 @@ is_character <- function(var_in) {
 #' }
 #'
 generate_code <- function(spec, domain, out_dir = ".") {
-
   admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
   admiraldev::assert_character_scalar(domain)
 
@@ -144,7 +142,6 @@ generate_code <- function(spec, domain, out_dir = ".") {
 #' @keywords internal
 #'
 generate_one_var_code <- function(spec_var) {
-
   admiraldev::assert_data_frame(spec_var)
   assertthat::assert_that(identical(nrow(spec_var), 1L))
 
@@ -186,7 +183,6 @@ generate_one_var_code <- function(spec_var) {
 #' @keywords internal
 #'
 #' @examples
-#'
 #' \dontrun{
 #' str_in <- "a, b, c"
 #' parse_into_c_call("a, b, c")
@@ -196,7 +192,6 @@ generate_one_var_code <- function(spec_var) {
 #' }
 #'
 parse_into_c_call <- function(str_in) {
-
   admiraldev::assert_character_scalar(str_in)
 
   str_out <- str_in |>
@@ -220,7 +215,6 @@ parse_into_c_call <- function(str_in) {
 #' @keywords internal
 #'
 add_pipe <- function(code_block) {
-
   admiraldev::assert_character_vector(code_block)
 
   i <- length(code_block)
@@ -238,7 +232,6 @@ add_pipe <- function(code_block) {
 #' @keywords internal
 #'
 remove_last_pipe <- function(code_blocks) {
-
   admiraldev::assert_character_vector(code_blocks)
 
   len_code_block <- length(code_blocks)
@@ -260,7 +253,6 @@ remove_last_pipe <- function(code_blocks) {
 #'
 #' @examples
 get_domain_spec <- function(spec, domain) {
-
   expected_columns <- c(
     "raw_dataset",
     "raw_variable",
@@ -286,9 +278,7 @@ get_domain_spec <- function(spec, domain) {
     # TODO
     # Doing only few variables
     dplyr::filter(target_sdtm_variable %in% tgt_vars) |>
-
     dplyr::select(dplyr::all_of(expected_columns)) |>
-
     # For now swapping entity_sub_algorithm with mapping_algorithm since the
     # algorithms like assign_no_ct are the mapping_algorithm and they are populated
     # in the entity_sub_algorithm
@@ -306,7 +296,6 @@ get_domain_spec <- function(spec, domain) {
       entity_sub_algorithm = entity_sub_algorithm_temp
     ) |>
     dplyr::select(-entity_sub_algorithm_temp) |>
-
     # Need to use the condition_add_raw_dat (if not missing) instead of raw_dataset
     dplyr::mutate(
       raw_dataset = dplyr::if_else(
@@ -326,14 +315,12 @@ get_domain_spec <- function(spec, domain) {
 #' @export
 #'
 #' @examples
-#'
 #' \dontrun{
 #' file <- "cm_sdtm_oak_spec_cdash.csv"
 #' observed <- read_spec(file)
 #' }
 #'
 read_spec <- function(file) {
-
   admiraldev::assert_character_scalar(file)
 
   spec <- utils::read.csv(file = file, na.strings = c("NA", ""), colClasses = "character") |>
