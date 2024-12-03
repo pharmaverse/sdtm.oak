@@ -11,24 +11,6 @@
 # can add it later when the customized id_vars are needed.
 
 
-# TODO
-# Temporary vector to control the vars we generate. For now we assume that the
-# order in the specs is the one we want to generate the code for.
-tgt_vars <- c(
-  "CMTRT",
-  "CMINDC",
-  "CMDOSE",
-  "CMDOSTXT",
-  "CMDOSU",
-  "CMDOSFRM",
-  "CMDOSFRQ",
-  "CMROUTE",
-  "CMSTDTC",
-  "CMENRTPT",
-  "CMENTPT",
-  "CMENDTC"
-)
-
 #' Generate the code for the mapping SDTM specification
 #'
 #' One can use the option `width` to control the width of the code. A width of
@@ -48,13 +30,19 @@ tgt_vars <- c(
 #' @examples
 #' \dontrun{
 #' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
+#'
+#' spec <- spec |>
+#'   dplyr::filter(
+#'     !is.na(target_sdtm_variable),
+#'     !is.na(mapping_algorithm),
+#'     !target_sdtm_variable %in% c("DOMAIN")
+#'   )
+#'
 #' domain <- "cm"
 #' generate_code(spec, domain)
 #'
 #' # One can use option width to control the width of the code
 #' # Twenty will almost always place every parameter on a separate line
-#' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
-#' domain <- "cm"
 #' old_width <- options(width = 20)
 #' generate_code(spec, domain)
 #' # Restore original width
@@ -307,9 +295,6 @@ get_domain_spec <- function(spec, domain) {
 
   spec |>
     dplyr::filter(tolower(target_sdtm_domain) %in% tolower(domain)) |>
-    # TODO
-    # Doing only few variables
-    dplyr::filter(target_sdtm_variable %in% tgt_vars) |>
     dplyr::select(dplyr::all_of(expected_columns)) |>
     # For now swapping entity_sub_algorithm with mapping_algorithm since the
     # algorithms like assign_no_ct are the mapping_algorithm and they are populated
