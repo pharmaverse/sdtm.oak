@@ -56,12 +56,13 @@ generate_code <- function(spec, domain, out_dir = ".") {
   spec_domain <- get_domain_spec(spec, domain)
 
   # Generate the code for each variable row in spec_domain
-  styled_code <- purrr::map(
-    seq_len(nrow(spec_domain)),
-    \(row) generate_one_var_code(spec_domain[row, ])
-  ) |>
+  styled_code <- spec_domain |>
+    dplyr::rowwise() |>
+    dplyr::mutate(
+      algorithm_code = list(generate_one_var_code(dplyr::pick(dplyr::everything()))),
+      .keep = "none"
+    ) |>
     unlist() |>
-    # remove_last_pipe() |>
     append(cm_template_prefix, after = 0L) |>
     append(cm_template_suffix) |>
     styler::style_text()
@@ -139,7 +140,7 @@ dplyr::select("STUDYID", "DOMAIN", "USUBJID", "CMSEQ", "CMTRT", "CMCAT", "CMINDC
 #' @export
 #'
 is_numeric <- function(var_in) {
-  grepl("^-?\\d*(\\.\\d+)?(e[+-]?\\d+)?$", var_in)
+  grepl(r"{^-?\d*(\.\d+)?(e[+-]?\d+)?$}", var_in)
 }
 
 #' Check if a variable is character
