@@ -9,6 +9,10 @@
 # - Changed is.numeric/is.character into is_numeric/is_character
 # - I did not generate id_vars since the default values was enough, certainly we
 # can add it later when the customized id_vars are needed.
+# - Some extra manipulations done in get_domain_spec()
+# - Moved VSTESTCD before qualifired, e.g. VSSTAT, VSPOS so that topic is created first
+# - Changed mapping_is_dataset to TRUE for VSTPT, VSDTC
+# - Added a new column topic, showing to which topic the mapping belongs to
 
 
 #' Generate the code for the mapping SDTM specification
@@ -29,6 +33,20 @@
 #'
 #' @examples
 #' \dontrun{
+#' # VS domain ----
+#' spec <- read_spec("vs_sdtm_oak_spec.csv")
+#' domain <- "vs"
+#'
+#' spec <- spec |>
+#'   dplyr::filter(
+#'     !is.na(target_sdtm_variable),
+#'     !is.na(mapping_algorithm),
+#'     !target_sdtm_variable %in% c("DOMAIN"),
+#'     !mapping_is_dataset %in% c("TRUE")
+#'   )
+#'
+#' # CM domain ----
+#'
 #' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
 #'
 #' spec <- spec |>

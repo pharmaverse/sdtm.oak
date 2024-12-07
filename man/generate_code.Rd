@@ -26,14 +26,34 @@ See the examples for more details.
 }
 \examples{
 \dontrun{
+# VS domain ----
+spec <- read_spec("vs_sdtm_oak_spec.csv")
+domain <- "vs"
+
+spec <- spec |>
+  dplyr::filter(
+    !is.na(target_sdtm_variable),
+    !is.na(mapping_algorithm),
+    !target_sdtm_variable \%in\% c("DOMAIN"),
+    !mapping_is_dataset \%in\% c("TRUE")
+  )
+
+# CM domain ----
+
 spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
+
+spec <- spec |>
+  dplyr::filter(
+    !is.na(target_sdtm_variable),
+    !is.na(mapping_algorithm),
+    !target_sdtm_variable \%in\% c("DOMAIN")
+  )
+
 domain <- "cm"
 generate_code(spec, domain)
 
 # One can use option width to control the width of the code
 # Twenty will almost always place every parameter on a separate line
-spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
-domain <- "cm"
 old_width <- options(width = 20)
 generate_code(spec, domain)
 # Restore original width
