@@ -41,7 +41,6 @@
 #'   dplyr::filter(
 #'     !is.na(target_sdtm_variable),
 #'     !is.na(mapping_algorithm),
-#'     !target_sdtm_variable %in% c("DOMAIN"),
 #'     !mapping_is_dataset %in% c("TRUE")
 #'   )
 #'
@@ -53,7 +52,7 @@
 #'   dplyr::filter(
 #'     !is.na(target_sdtm_variable),
 #'     !is.na(mapping_algorithm),
-#'     !target_sdtm_variable %in% c("DOMAIN")
+#'     !mapping_is_dataset %in% c("TRUE")
 #'   )
 #'
 #' domain <- "cm"
@@ -73,82 +72,44 @@ generate_code <- function(spec, domain, out_dir = ".") {
 
   spec_domain <- get_domain_spec(spec, domain)
 
-  # Generate the code for each variable row in spec_domain
-  styled_code <- spec_domain |>
-    dplyr::rowwise() |>
-    dplyr::mutate(
-      algorithm_code = list(generate_one_var_code(dplyr::pick(dplyr::everything()))),
-      .keep = "none"
-    ) |>
-    unlist() |>
-    append(cm_template_prefix, after = 0L) |>
-    append(cm_template_suffix) |>
-    styler::style_text()
+  topics <- unique(spec_domain$topic)
+
+  # Do by topic
+  code_by_topics <- purrr::map(topics, \(topic) {
+    spec_domain_topic <- spec_domain |>
+      dplyr::filter(topic %in% topic)
+
+    domain_topic <- paste(domain, topic, sep = "_") |>
+      tolower()
+
+    map_topic <- paste0("\n\n# Map topic ", domain_topic, " ----\n")
+
+    # Generate the code for each variable row in spec_domain
+    spec_domain_topic |>
+      dplyr::rowwise() |>
+      dplyr::mutate(
+        algorithm_code = list(generate_one_var_code(dplyr::pick(dplyr::everything()))),
+        .keep = "none"
+      ) |>
+      unlist() |>
+      append(paste0(domain_topic, " <-"), after = 0L) |>
+      append(map_topic, after = 0L)
+  })
+
+  one_topic <- identical(length(code_by_topics), 1L)
+
+  styled_code <- if (one_topic) {
+    code_by_topics |>
+      unlist() |>
+      append(cm_template_prefix, after = 0L) |>
+      append(cm_template_suffix) |>
+      styler::style_text()
+  }
 
   # Save the code to a file
   file_name <- paste0(domain, "_sdtm_oak_code.R")
   writeLines(styled_code, file.path(out_dir, file_name))
 }
-
-
-#' The template suffix for the cm code
-#'
-#' @keywords internal
-cm_template_prefix <- stringr::str_glue('
-library(sdtm.oak)
-library(dplyr)
-
-
-# Read CT Specification
-study_ct <- read.csv("./datasets/sdtm_ct.csv")
-
-# Read in raw data
-cm_raw_data <- read.csv("./datasets/cm_raw_data_cdash.csv")
-
-cm_raw_data <- admiral::convert_blanks_to_na(cm_raw_data)
-
-# derive oak_id_vars
-cm_raw_data <- cm_raw_data %>%
-  generate_oak_id_vars(
-    pat_var = "PATNUM",
-    raw_src = "cm_raw_data"
-  )
-
-# Read in DM domain to derive study day
-dm <- read.csv("./datasets/dm.csv")
-
-dm <- admiral::convert_blanks_to_na(dm)
-
-cm <-
-')
-
-cm_template_suffix <- stringr::str_glue('
-dplyr::mutate(
-  STUDYID = "test_study",
-  DOMAIN = "CM",
-  CMCAT = "GENERAL CONMED",
-  USUBJID = paste0("test_study", "-", cm_raw_data$PATNUM)
-) %>%
-derive_seq(tgt_var = "CMSEQ",
-           rec_vars= c("USUBJID", "CMTRT")) %>%
-derive_study_day(
-  sdtm_in = .,
-  dm_domain = dm,
-  tgdt = "CMENDTC",
-  refdt = "RFXSTDTC",
-  study_day_var = "CMENDY"
-) %>%
-derive_study_day(
-  sdtm_in = .,
-  dm_domain = dm,
-  tgdt = "CMSTDTC",
-  refdt = "RFXSTDTC",
-  study_day_var = "CMSTDY"
-) %>%
-dplyr::select("STUDYID", "DOMAIN", "USUBJID", "CMSEQ", "CMTRT", "CMCAT", "CMINDC",
-              "CMDOSE", "CMDOSTXT", "CMDOSU", "CMDOSFRM", "CMDOSFRQ", "CMROUTE",
-              "CMSTDTC", "CMENDTC","CMSTDY", "CMENDY", "CMENRTPT", "CMENTPT")
-')
 
 #' Check if a variable is character
 #'
@@ -296,6 +257,7 @@ get_domain_spec <- function(spec, domain) {
     "raw_dataset",
     "raw_variable",
     "target_sdtm_variable",
+    "topic",
     "mapping_algorithm",
     "entity_sub_algorithm",
     "condition_add_raw_dat",
@@ -421,5 +383,6 @@ expected_columns <- c(
   "groupby_keys",
   "target_resource_raw_dataset",
   "target_resource_raw_variable",
-  "target_value"
+  "target_value",
+  "topic"
 )
