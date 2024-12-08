@@ -104,7 +104,8 @@ vs_template_suffix <- stringr::str_glue('
 vs_combined <- dplyr::bind_rows(
   vs_asmntdn, vs_sys_bp, vs_dia_bp, vs_pulse, vs_temp,
   vs_resprt, vs_oxy_sat
-)
+) %>%
+  dplyr::filter(!is.na(.data$VSTESTCD))
 
 # Map qualifiers common to all topic variables ----
 
