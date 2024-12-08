@@ -44,6 +44,11 @@
 #'     !mapping_is_dataset %in% c("TRUE")
 #'   )
 #'
+#' old_width <- options(width = 20)
+#' generate_code(spec, domain)
+#' # Restore original width
+#' options(width = old_width$width)
+#'
 #' # CM domain ----
 #'
 #' spec <- read_spec("cm_sdtm_oak_spec_cdash.csv")
@@ -74,10 +79,10 @@ generate_code <- function(spec, domain, out_dir = ".") {
 
   topics <- unique(spec_domain$topic)
 
-  # Do by topic
   code_by_topics <- purrr::map(topics, \(topic) {
+
     spec_domain_topic <- spec_domain |>
-      dplyr::filter(topic %in% topic)
+      dplyr::filter(topic %in% {{topic}})
 
     domain_topic <- paste(domain, topic, sep = "_") |>
       tolower()
@@ -103,6 +108,13 @@ generate_code <- function(spec, domain, out_dir = ".") {
       unlist() |>
       append(cm_template_prefix, after = 0L) |>
       append(cm_template_suffix) |>
+      styler::style_text()
+  } else {
+    code_by_topics |>
+      purrr::map(remove_last_pipe) |>
+      unlist() |>
+      append(vs_template_prefix, after = 0L) |>
+      append(vs_template_suffix) |>
       styler::style_text()
   }
 
