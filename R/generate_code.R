@@ -13,7 +13,8 @@
 # - Moved VSTESTCD before qualifired, e.g. VSSTAT, VSPOS so that topic is created first
 # - Changed mapping_is_dataset to TRUE for VSTPT, VSDTC
 # - Added a new column topic, showing to which topic the mapping belongs to
-
+# - Some code list codes were populated in target_sdtm_variable_controlled_terms_or_format
+# I move them under target_sdtm_variable_codelist_code, e.g. VSPOS, VSLOC
 
 #' Generate the code for the mapping SDTM specification
 #'

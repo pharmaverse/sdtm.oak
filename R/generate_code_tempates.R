@@ -111,14 +111,14 @@ vs_combined <- dplyr::bind_rows(
 vs <- vs_combined %>%
   # Map VSDTC using assign_ct algorithm
   assign_datetime(
-    raw_dat = vitals_raw,
+    raw_dat = vitals_raw_data,
     raw_var = c("VTLD", "VTLTM"),
     tgt_var = "VSDTC",
     raw_fmt = c(list(c("d-m-y", "dd-mmm-yyyy")), "H:M")
   ) %>%
   # Map VSTPT from TMPTC using assign_ct
   assign_ct(
-    raw_dat = vitals_raw,
+    raw_dat = vitals_raw_data,
     raw_var = "TMPTC",
     tgt_var = "VSTPT",
     ct_spec = study_ct,
@@ -127,7 +127,7 @@ vs <- vs_combined %>%
   ) %>%
   # Map VSTPTNUM from TMPTC using assign_ct
   assign_ct(
-    raw_dat = vitals_raw,
+    raw_dat = vitals_raw_data,
     raw_var = "TMPTC",
     tgt_var = "VSTPTNUM",
     ct_spec = study_ct,
@@ -136,7 +136,7 @@ vs <- vs_combined %>%
   ) %>%
   # Map VISIT from VISIT_NAME using assign_ct
   assign_ct(
-    raw_dat = vitals_raw,
+    raw_dat = vitals_raw_data,
     raw_var = "VISIT_NAME",
     tgt_var = "VISIT",
     ct_spec = study_ct,
@@ -145,7 +145,7 @@ vs <- vs_combined %>%
   ) %>%
   # Map VISITNUM from VISIT_NAME using assign_ct
   assign_ct(
-    raw_dat = vitals_raw,
+    raw_dat = vitals_raw_data,
     raw_var = "VISIT_NAME",
     tgt_var = "VISITNUM",
     ct_spec = study_ct,
