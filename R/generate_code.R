@@ -89,6 +89,9 @@ generate_code <- function(spec, domain, out_dir = ".") {
 
   one_topic <- identical(length(code_by_topics), 1L)
 
+  # TODO
+  # - refactor into function
+  # - dynamically select the templates based on domain
   styled_code <- if (one_topic) {
     code_by_topics |>
       unlist() |>
