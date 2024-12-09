@@ -130,6 +130,7 @@ generate_one_topic_code <- function(topic, domain, spec) {
     tolower()
 
   map_topic <- paste0("\n\n# Map topic ", domain_topic, " ----\n")
+  assign_to_domain_topic <- paste0(domain_topic, " <-")
 
   # Generate the code for each variable row in spec
   spec_topic |>
@@ -139,7 +140,7 @@ generate_one_topic_code <- function(topic, domain, spec) {
       .keep = "none"
     ) |>
     unlist() |>
-    append(paste0(domain_topic, " <-"), after = 0L) |>
+    append(assign_to_domain_topic, after = 0L) |>
     append(map_topic, after = 0L)
 }
 
