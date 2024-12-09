@@ -1,4 +1,3 @@
-
 #' The template suffix for the cm code
 #'
 #' @noRd

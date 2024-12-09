@@ -81,9 +81,8 @@ generate_code <- function(spec, domain, out_dir = ".") {
   topics <- unique(spec_domain$topic)
 
   code_by_topics <- purrr::map(topics, \(topic) {
-
     spec_domain_topic <- spec_domain |>
-      dplyr::filter(topic %in% {{topic}})
+      dplyr::filter(topic %in% {{ topic }})
 
     domain_topic <- paste(domain, topic, sep = "_") |>
       tolower()
