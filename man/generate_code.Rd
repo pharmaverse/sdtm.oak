@@ -34,9 +34,13 @@ spec <- spec |>
   dplyr::filter(
     !is.na(target_sdtm_variable),
     !is.na(mapping_algorithm),
-    !target_sdtm_variable \%in\% c("DOMAIN"),
     !mapping_is_dataset \%in\% c("TRUE")
   )
+
+old_width <- options(width = 20)
+generate_code(spec, domain)
+# Restore original width
+options(width = old_width$width)
 
 # CM domain ----
 
@@ -46,7 +50,7 @@ spec <- spec |>
   dplyr::filter(
     !is.na(target_sdtm_variable),
     !is.na(mapping_algorithm),
-    !target_sdtm_variable \%in\% c("DOMAIN")
+    !mapping_is_dataset \%in\% c("TRUE")
   )
 
 domain <- "cm"

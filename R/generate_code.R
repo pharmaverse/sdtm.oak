@@ -14,7 +14,7 @@
 # - Changed mapping_is_dataset to TRUE for VSTPT, VSDTC
 # - Added a new column topic, showing to which topic the mapping belongs to
 # - Some code list codes were populated in target_sdtm_variable_controlled_terms_or_format
-# I move them under target_sdtm_variable_codelist_code, e.g. VSPOS, VSLOC
+# I moved them under target_sdtm_variable_codelist_code, e.g. VSPOS, VSLOC
 
 #' Generate the code for the mapping SDTM specification
 #'
@@ -73,33 +73,19 @@
 #' }
 #'
 generate_code <- function(spec, domain, out_dir = ".") {
-  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
+  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns()))
   admiraldev::assert_character_scalar(domain)
 
   spec_domain <- get_domain_spec(spec, domain)
 
   topics <- unique(spec_domain$topic)
 
-  code_by_topics <- purrr::map(topics, \(topic) {
-    spec_domain_topic <- spec_domain |>
-      dplyr::filter(topic %in% {{ topic }})
-
-    domain_topic <- paste(domain, topic, sep = "_") |>
-      tolower()
-
-    map_topic <- paste0("\n\n# Map topic ", domain_topic, " ----\n")
-
-    # Generate the code for each variable row in spec_domain
-    spec_domain_topic |>
-      dplyr::rowwise() |>
-      dplyr::mutate(
-        algorithm_code = list(generate_one_var_code(dplyr::pick(dplyr::everything()))),
-        .keep = "none"
-      ) |>
-      unlist() |>
-      append(paste0(domain_topic, " <-"), after = 0L) |>
-      append(map_topic, after = 0L)
-  })
+  code_by_topics <- purrr::map(
+    topics,
+    generate_one_topic_code,
+    domain = domain,
+    spec = spec_domain
+  )
 
   one_topic <- identical(length(code_by_topics), 1L)
 
@@ -123,50 +109,61 @@ generate_code <- function(spec, domain, out_dir = ".") {
   writeLines(styled_code, file.path(out_dir, file_name))
 }
 
-#' Check if a variable is character
+#' Generate the code for one topic
 #'
-#' @param var_in The variable to check.
+#' @param topic The topic to generate the code for.
+#' @param domain The SDTM domain.
+#' @param spec The specification data frame.
 #'
-#' @return Logical indicating if the variable is character.
-#' @export
+#' @return The code for the topic as a string.
+#' @keywords internal
 #'
-is_numeric <- function(var_in) {
-  grepl(r"{^-?\d*(\.\d+)?(e[+-]?\d+)?$}", var_in)
-}
+generate_one_topic_code <- function(topic, domain, spec) {
+  admiraldev::assert_character_scalar(topic)
+  admiraldev::assert_character_scalar(domain)
+  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns_min()))
 
-#' Check if a variable is character
-#'
-#' @param var_in The variable to check.
-#'
-#' @return Logical indicating if the variable is character.
-#' @export
-#'
-is_character <- function(var_in) {
-  grepl("[^0-9eE.-]", var_in)
-}
+  spec_topic <- spec |>
+    dplyr::filter(topic %in% {{ topic }})
 
+  domain_topic <- paste(domain, topic, sep = "_") |>
+    tolower()
+
+  map_topic <- paste0("\n\n# Map topic ", domain_topic, " ----\n")
+
+  # Generate the code for each variable row in spec
+  spec_topic |>
+    dplyr::rowwise() |>
+    dplyr::mutate(
+      algorithm_code = list(generate_one_var_code(dplyr::pick(dplyr::everything()))),
+      .keep = "none"
+    ) |>
+    unlist() |>
+    append(paste0(domain_topic, " <-"), after = 0L) |>
+    append(map_topic, after = 0L)
+}
 
 #' Generate the code for one variable
 #'
-#' @param spec_var The specification for one variable.
+#' @param spec The specification data frame.
 #' @param last_var Logical indicating if this is the last variable in the domain.
 #'
 #' @return The code for the variable as a string.
 #' @keywords internal
 #'
-generate_one_var_code <- function(spec_var) {
-  admiraldev::assert_data_frame(spec_var)
-  assertthat::assert_that(identical(nrow(spec_var), 1L))
+generate_one_var_code <- function(spec) {
+  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns_min()))
+  assertthat::assert_that(identical(nrow(spec), 1L))
 
   args <- list(
-    raw_dat = rlang::parse_expr(spec_var$raw_dataset),
-    raw_var = spec_var$raw_variable,
-    tgt_var = spec_var$target_sdtm_variable,
-    tgt_val = spec_var$target_value,
+    raw_dat = rlang::parse_expr(spec$raw_dataset),
+    raw_var = spec$raw_variable,
+    tgt_var = spec$target_sdtm_variable,
+    tgt_val = spec$target_value,
     ct_spec = rlang::parse_expr("study_ct"),
-    ct_clst = spec_var$target_sdtm_variable_codelist_code,
-    raw_fmt = spec_var$raw_fmt,
-    raw_unk = parse_into_c_call(spec_var$raw_unk)
+    ct_clst = spec$target_sdtm_variable_codelist_code,
+    raw_fmt = spec$raw_fmt,
+    raw_unk = parse_into_c_call(spec$raw_unk)
   )
 
   # If the ct_clst is missing, then we must remove ct_spec
@@ -179,7 +176,7 @@ generate_one_var_code <- function(spec_var) {
 
   # Generate the function call
   generated_call <- rlang::call2(
-    spec_var$mapping_algorithm,
+    spec$mapping_algorithm,
     !!!args
   )
 
@@ -218,7 +215,6 @@ parse_into_c_call <- function(str_in) {
 
   rlang::call2("c", !!!str_out)
 }
-
 
 #' Add a pipe operator to the last element of a character vector
 #'
@@ -265,30 +261,15 @@ remove_last_pipe <- function(code_blocks) {
 #' @keywords internal
 #'
 get_domain_spec <- function(spec, domain) {
-  expected_columns <- c(
-    "raw_dataset",
-    "raw_variable",
-    "target_sdtm_variable",
-    "topic",
-    "mapping_algorithm",
-    "entity_sub_algorithm",
-    "condition_add_raw_dat",
-    "target_sdtm_variable_codelist_code",
-    "raw_data_format",
-    "raw_fmt",
-    "raw_unk",
-    "target_term_value",
-    "target_value"
-  )
 
-  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
+  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns_min()))
   admiraldev::assert_character_scalar(domain)
 
   # For now assuming that there is only one topic and the topic is the first one
 
   spec |>
     dplyr::filter(tolower(target_sdtm_domain) %in% tolower(domain)) |>
-    dplyr::select(dplyr::all_of(expected_columns)) |>
+    dplyr::select(dplyr::all_of(expected_columns_min())) |>
     # For now swapping entity_sub_algorithm with mapping_algorithm since the
     # algorithms like assign_no_ct are the mapping_algorithm and they are populated
     # in the entity_sub_algorithm
@@ -316,6 +297,27 @@ get_domain_spec <- function(spec, domain) {
     )
 }
 
+#' Check if a variable is character
+#'
+#' @param var_in The variable to check.
+#'
+#' @return Logical indicating if the variable is character.
+#' @export
+#'
+is_numeric <- function(var_in) {
+  grepl(r"{^-?\d*(\.\d+)?(e[+-]?\d+)?$}", var_in)
+}
+
+#' Check if a variable is character
+#'
+#' @param var_in The variable to check.
+#'
+#' @return Logical indicating if the variable is character.
+#' @export
+#'
+is_character <- function(var_in) {
+  grepl("[^0-9eE.-]", var_in)
+}
 
 #' Read the specification file
 #'
@@ -336,65 +338,89 @@ read_spec <- function(file) {
   spec <- utils::read.csv(file = file, na.strings = c("NA", ""), colClasses = "character") |>
     tibble::as_tibble()
 
-  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns))
+  admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns()))
 
   return(spec)
+}
+
+#' Expected columns in the specification for the domain
+#'
+#' @keywords internal
+#' @noRd
+expected_columns_min <- function() {
+  c(
+    "raw_dataset",
+    "raw_variable",
+    "target_sdtm_variable",
+    "topic",
+    "mapping_algorithm",
+    "entity_sub_algorithm",
+    "condition_add_raw_dat",
+    "target_sdtm_variable_codelist_code",
+    "raw_data_format",
+    "raw_fmt",
+    "raw_unk",
+    "target_term_value",
+    "target_value"
+  )
 }
 
 #' Expected columns in the specification file
 #'
 #' @keywords internal
-#'
-expected_columns <- c(
-  "study_number",
-  "raw_dataset",
-  "raw_dataset_label",
-  "raw_variable",
-  "raw_variable_label",
-  "raw_variable_ordinal",
-  "raw_variable_type",
-  "raw_data_format",
-  "raw_fmt",
-  "raw_unk",
-  "study_specific",
-  "annotation_ordinal",
-  "mapping_is_dataset",
-  "annotation_text",
-  "target_sdtm_domain",
-  "target_sdtm_variable",
-  "target_sdtm_variable_role",
-  "target_sdtm_variable_codelist_code",
-  "target_sdtm_variable_controlled_terms_or_format",
-  "target_sdtm_variable_ordinal",
-  "origin",
-  "mapping_algorithm",
-  "entity_sub_algorithm",
-  "target_hardcoded_value",
-  "target_term_value",
-  "target_term_code",
-  "condition_ordinal",
-  "condition_group_ordinal",
-  "condition_add_raw_dat",
-  "condition_add_tgt_dat",
-  "condition_left_raw_dataset",
-  "condition_left_raw_variable",
-  "condition_left_sdtm_domain",
-  "condition_left_sdtm_variable",
-  "condition_operator",
-  "condition_right_text_value",
-  "condition_right_sdtm_domain",
-  "condition_right_sdtm_variable",
-  "condition_right_raw_dataset",
-  "condition_right_raw_variable",
-  "condition_next_logical_operator",
-  "merge_type",
-  "merge_left",
-  "merge_right",
-  "merge_condition",
-  "unduplicate_keys",
-  "groupby_keys",
-  "target_resource_raw_dataset",
-  "target_resource_raw_variable",
-  "target_value",
-  "topic"
-)
+#' @noRd
+expected_columns <- function() {
+  c(
+    "study_number",
+    "raw_dataset",
+    "raw_dataset_label",
+    "raw_variable",
+    "raw_variable_label",
+    "raw_variable_ordinal",
+    "raw_variable_type",
+    "raw_data_format",
+    "raw_fmt",
+    "raw_unk",
+    "study_specific",
+    "annotation_ordinal",
+    "mapping_is_dataset",
+    "annotation_text",
+    "target_sdtm_domain",
+    "target_sdtm_variable",
+    "target_sdtm_variable_role",
+    "target_sdtm_variable_codelist_code",
+    "target_sdtm_variable_controlled_terms_or_format",
+    "target_sdtm_variable_ordinal",
+    "origin",
+    "mapping_algorithm",
+    "entity_sub_algorithm",
+    "target_hardcoded_value",
+    "target_term_value",
+    "target_term_code",
+    "condition_ordinal",
+    "condition_group_ordinal",
+    "condition_add_raw_dat",
+    "condition_add_tgt_dat",
+    "condition_left_raw_dataset",
+    "condition_left_raw_variable",
+    "condition_left_sdtm_domain",
+    "condition_left_sdtm_variable",
+    "condition_operator",
+    "condition_right_text_value",
+    "condition_right_sdtm_domain",
+    "condition_right_sdtm_variable",
+    "condition_right_raw_dataset",
+    "condition_right_raw_variable",
+    "condition_next_logical_operator",
+    "merge_type",
+    "merge_left",
+    "merge_right",
+    "merge_condition",
+    "unduplicate_keys",
+    "groupby_keys",
+    "target_resource_raw_dataset",
+    "target_resource_raw_variable",
+    "target_value",
+    "topic"
+  )
+}

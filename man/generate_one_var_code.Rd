@@ -4,10 +4,10 @@
 \alias{generate_one_var_code}
 \title{Generate the code for one variable}
 \usage{
-generate_one_var_code(spec_var)
+generate_one_var_code(spec)
 }
 \arguments{
-\item{spec_var}{The specification for one variable.}
+\item{spec}{The specification data frame.}
 
 \item{last_var}{Logical indicating if this is the last variable in the domain.}
 }
