@@ -10,11 +10,11 @@
 # - I did not generate id_vars since the default values was enough, certainly we
 # can add it later when the customized id_vars are needed.
 # - Some extra manipulations done in get_domain_spec()
-# - Moved VSTESTCD before qualifired, e.g. VSSTAT, VSPOS so that topic is created first
+# - Moved VSTESTCD before qualifiers, e.g. VSSTAT, VSPOS so that topic is created first
 # - Changed mapping_is_dataset to TRUE for VSTPT, VSDTC
 # - Added a new column topic, showing to which topic the mapping belongs to
 # - Some code list codes were populated in target_sdtm_variable_controlled_terms_or_format
-# I moved them under target_sdtm_variable_codelist_code, e.g. VSPOS, VSLOC
+#   I moved them under target_sdtm_variable_codelist_code, e.g. VSPOS, VSLOC
 
 #' Generate the code for the mapping SDTM specification
 #'
