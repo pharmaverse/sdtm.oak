@@ -18,7 +18,7 @@ cm_raw_data <- admiral::convert_blanks_to_na(cm_raw_data)
 
 # derive oak_id_vars
 cm_raw_data <- cm_raw_data %>%
-  generate_oak_id_vars(
+  sdtm.oak::generate_oak_id_vars(
     pat_var = "PATNUM",
     raw_src = "cm_raw_data"
   )
@@ -43,16 +43,16 @@ dplyr::mutate(
   CMCAT = "GENERAL CONMED",
   USUBJID = paste0("test_study", "-", cm_raw_data$PATNUM)
 ) %>%
-derive_seq(tgt_var = "CMSEQ",
+sdtm.oak::derive_seq(tgt_var = "CMSEQ",
            rec_vars= c("USUBJID", "CMTRT")) %>%
-derive_study_day(
+sdtm.oak::derive_study_day(
   sdtm_in = .,
   dm_domain = dm,
   tgdt = "CMENDTC",
   refdt = "RFXSTDTC",
   study_day_var = "CMENDY"
 ) %>%
-derive_study_day(
+sdtm.oak::derive_study_day(
   sdtm_in = .,
   dm_domain = dm,
   tgdt = "CMSTDTC",
@@ -89,7 +89,7 @@ vitals_raw_data <- admiral::convert_blanks_to_na(vitals_raw_data)
 
 # derive oak_id_vars
 vitals_raw_data <- vitals_raw_data %>%
-  generate_oak_id_vars(
+  sdtm.oak::generate_oak_id_vars(
     pat_var = "PATNUM",
     raw_src = "vitals_raw_data"
   )
@@ -117,15 +117,15 @@ vs_combined <- dplyr::bind_rows(
 # Map qualifiers common to all topic variables ----
 
 vs <- vs_combined %>%
-  # Map VSDTC using assign_ct algorithm
-  assign_datetime(
+  # Map VSDTC using sdtm.oak::assign_ct algorithm
+  sdtm.oak::assign_datetime(
     raw_dat = vitals_raw_data,
     raw_var = c("VTLD", "VTLTM"),
     tgt_var = "VSDTC",
     raw_fmt = c(list(c("d-m-y", "dd-mmm-yyyy")), "H:M")
   ) %>%
-  # Map VSTPT from TMPTC using assign_ct
-  assign_ct(
+  # Map VSTPT from TMPTC using sdtm.oak::assign_ct
+  sdtm.oak::assign_ct(
     raw_dat = vitals_raw_data,
     raw_var = "TMPTC",
     tgt_var = "VSTPT",
@@ -133,8 +133,8 @@ vs <- vs_combined %>%
     ct_clst = "TPT",
     id_vars = oak_id_vars()
   ) %>%
-  # Map VSTPTNUM from TMPTC using assign_ct
-  assign_ct(
+  # Map VSTPTNUM from TMPTC using sdtm.oak::assign_ct
+  sdtm.oak::assign_ct(
     raw_dat = vitals_raw_data,
     raw_var = "TMPTC",
     tgt_var = "VSTPTNUM",
@@ -142,8 +142,8 @@ vs <- vs_combined %>%
     ct_clst = "TPTNUM",
     id_vars = oak_id_vars()
   ) %>%
-  # Map VISIT from VISIT_NAME using assign_ct
-  assign_ct(
+  # Map VISIT from VISIT_NAME using sdtm.oak::assign_ct
+  sdtm.oak::assign_ct(
     raw_dat = vitals_raw_data,
     raw_var = "VISIT_NAME",
     tgt_var = "VISIT",
@@ -151,8 +151,8 @@ vs <- vs_combined %>%
     ct_clst = "VISIT",
     id_vars = oak_id_vars()
   ) %>%
-  # Map VISITNUM from VISIT_NAME using assign_ct
-  assign_ct(
+  # Map VISITNUM from VISIT_NAME using sdtm.oak::assign_ct
+  sdtm.oak::assign_ct(
     raw_dat = vitals_raw_data,
     raw_var = "VISIT_NAME",
     tgt_var = "VISITNUM",
@@ -166,10 +166,10 @@ vs <- vs_combined %>%
     VSCAT = "VITAL SIGNS",
     USUBJID = paste0("test_study", "-", .data$patient_number)
   ) %>%
-  derive_seq(tgt_var = "VSSEQ",
+  sdtm.oak::derive_seq(tgt_var = "VSSEQ",
              rec_vars= c("USUBJID", "VISITNUM", "VSTPTNUM", "VSTESTCD")) %>%
-  # A bug in derive_study_day V0.1 that clears the time values in VSDTC
-  derive_study_day(
+  # A bug in sdtm.oak::derive_study_day V0.1 that clears the time values in VSDTC
+  sdtm.oak::derive_study_day(
     sdtm_in = .,
     dm_domain = dm,
     tgdt = "VSDTC",
