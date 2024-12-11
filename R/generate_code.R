@@ -177,8 +177,20 @@ generate_one_var_code <- function(spec) {
   admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns_min()))
   assertthat::assert_that(identical(nrow(spec), 1L))
 
+  raw_dat_value <- rlang::parse_expr(spec$raw_dataset)
+  is_cond_add <- stringr::str_starts(spec$raw_dataset, stringr::fixed("condition_add"))
+
+  # We want name-spaced functions to be used in the code, e.g. sdtm.oak::condition_add
+  if (is_cond_add) {
+    raw_dat_value <- paste0("sdtm.oak::", spec$raw_dataset) |> rlang::parse_expr()
+  }
+
+  # We want name-spaced functions to be used in the code, e.g. sdtm.oak::hardcode_ct
+  function_name <- paste0("sdtm.oak::", spec$mapping_algorithm) |>
+    rlang::parse_expr()
+
   args <- list(
-    raw_dat = rlang::parse_expr(spec$raw_dataset),
+    raw_dat = raw_dat_value,
     raw_var = spec$raw_variable,
     tgt_var = spec$target_sdtm_variable,
     tgt_val = spec$target_value,
@@ -196,9 +208,10 @@ generate_one_var_code <- function(spec) {
   # Remove the arguments that are missing
   args <- purrr::discard(args, \(x) is.vector(x) && anyNA(x))
 
+
   # Generate the function call
   generated_call <- rlang::call2(
-    spec$mapping_algorithm,
+    function_name,
     !!!args
   )
 
