@@ -104,7 +104,6 @@ generate_code <- function(spec, domain, out_dir = ".") {
 #' @keywords internal
 #'
 style_the_code <- function(code_by_topics, domain) {
-
   admiraldev::assert_list_of(code_by_topics, "character")
 
   prefix_f <- paste0(domain, "_template_prefix")
@@ -296,7 +295,6 @@ remove_last_pipe <- function(code_blocks) {
 #' @keywords internal
 #'
 get_domain_spec <- function(spec, domain) {
-
   admiraldev::assert_data_frame(spec, required_vars = rlang::syms(expected_columns_min()))
   admiraldev::assert_character_scalar(domain)
 
