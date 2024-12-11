@@ -80,36 +80,42 @@ generate_code <- function(spec, domain, out_dir = ".") {
 
   topics <- unique(spec_domain$topic)
 
-  code_by_topics <- purrr::map(
+  styled_code <- purrr::map(
     topics,
     generate_one_topic_code,
     domain = domain,
     spec = spec_domain
-  )
+  ) |>
+    style_the_code()
+
+  file_name <- paste0(domain, "_sdtm_oak_code.R")
+  writeLines(styled_code, file.path(out_dir, file_name))
+}
+
+style_the_code <- function(code_by_topics) {
+
+  admiraldev::assert_list_of(code_by_topics, "character")
 
   one_topic <- identical(length(code_by_topics), 1L)
 
   # TODO
-  # - refactor into function
   # - dynamically select the templates based on domain
-  styled_code <- if (one_topic) {
-    code_by_topics |>
+  if (one_topic) {
+    styled_code <- code_by_topics |>
       unlist() |>
       append(cm_template_prefix, after = 0L) |>
       append(cm_template_suffix) |>
       styler::style_text()
-  } else {
-    code_by_topics |>
-      purrr::map(remove_last_pipe) |>
-      unlist() |>
-      append(vs_template_prefix, after = 0L) |>
-      append(vs_template_suffix) |>
-      styler::style_text()
+
+    return(styled_code)
   }
 
-  # Save the code to a file
-  file_name <- paste0(domain, "_sdtm_oak_code.R")
-  writeLines(styled_code, file.path(out_dir, file_name))
+  code_by_topics |>
+    purrr::map(remove_last_pipe) |>
+    unlist() |>
+    append(vs_template_prefix, after = 0L) |>
+    append(vs_template_suffix) |>
+    styler::style_text()
 }
 
 #' Generate the code for one topic
