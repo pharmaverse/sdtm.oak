@@ -2,7 +2,8 @@
 #'
 #' @noRd
 #' @keywords internal
-cm_template_prefix <- stringr::str_glue('
+cm_template_prefix <- function() {
+  stringr::str_glue('
 library(sdtm.oak)
 library(dplyr)
 
@@ -27,12 +28,15 @@ dm <- read.csv("./datasets/dm.csv")
 
 dm <- admiral::convert_blanks_to_na(dm)
 ')
+}
+
 
 #' The template suffix for the cm code
 #'
 #' @noRd
 #' @keywords internal
-cm_template_suffix <- stringr::str_glue('
+cm_template_suffix <- function() {
+  stringr::str_glue('
 dplyr::mutate(
   STUDYID = "test_study",
   DOMAIN = "CM",
@@ -59,12 +63,14 @@ dplyr::select("STUDYID", "DOMAIN", "USUBJID", "CMSEQ", "CMTRT", "CMCAT", "CMINDC
               "CMDOSE", "CMDOSTXT", "CMDOSU", "CMDOSFRM", "CMDOSFRQ", "CMROUTE",
               "CMSTDTC", "CMENDTC","CMSTDY", "CMENDY", "CMENRTPT", "CMENTPT")
 ')
+}
 
 #' The template suffix for the vs code
 #'
 #' @noRd
 #' @keywords internal
-vs_template_prefix <- stringr::str_glue('
+vs_template_prefix <- function() {
+  stringr::str_glue('
 library(sdtm.oak)
 library(dplyr)
 
@@ -93,12 +99,14 @@ dm <- read.csv("./datasets/dm.csv")
 
 dm <- admiral::convert_blanks_to_na(dm)
 ')
+}
 
 #' The template suffix for the vs code
 #'
 #' @noRd
 #' @keywords internal
-vs_template_suffix <- stringr::str_glue('
+vs_template_suffix <- function() {
+  stringr::str_glue('
 # Combine all the topic variables into a single data frame. ----
 vs_combined <- dplyr::bind_rows(
   vs_asmntdn, vs_sys_bp, vs_dia_bp, vs_pulse, vs_temp,
@@ -173,3 +181,4 @@ vs <- vs_combined %>%
                 "VSORRES", "VSORRESU", "VSLOC", "VSLAT",
                 "VISIT", "VISITNUM", "VSDY", "VSTPT", "VSTPTNUM", "VSDTC" )
 ')
+}

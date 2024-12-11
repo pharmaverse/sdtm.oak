@@ -86,35 +86,47 @@ generate_code <- function(spec, domain, out_dir = ".") {
     domain = domain,
     spec = spec_domain
   ) |>
-    style_the_code()
+    style_the_code(domain)
 
   file_name <- paste0(domain, "_sdtm_oak_code.R")
   writeLines(styled_code, file.path(out_dir, file_name))
 }
 
-style_the_code <- function(code_by_topics) {
+#' Style the code
+#'
+#' This function styles the code using the styler package and adds the necessary
+#' templates to the code (e.g. cm_template_prefix, cm_template_suffix).
+#'
+#' @param code_by_topics A list of character vectors.
+#' @inheritParams generate_code
+#'
+#' @return The styled code as a string.
+#' @keywords internal
+#'
+style_the_code <- function(code_by_topics, domain) {
 
   admiraldev::assert_list_of(code_by_topics, "character")
 
-  one_topic <- identical(length(code_by_topics), 1L)
+  prefix_f <- paste0(domain, "_template_prefix")
+  suffix_f <- paste0(domain, "_template_suffix")
 
-  # TODO
-  # - dynamically select the templates based on domain
-  if (one_topic) {
-    styled_code <- code_by_topics |>
-      unlist() |>
-      append(cm_template_prefix, after = 0L) |>
-      append(cm_template_suffix) |>
-      styler::style_text()
+  assertthat::assert_that(exists(prefix_f), msg = paste0("The function ", prefix_f, " does not exist."))
+  assertthat::assert_that(exists(suffix_f), msg = paste0("The function ", suffix_f, " does not exist."))
 
-    return(styled_code)
+  prefix <- do.call(prefix_f, list())
+  suffix <- do.call(suffix_f, list())
+
+  multiple_topics <- !identical(length(code_by_topics), 1L)
+
+  if (multiple_topics) {
+    code_by_topics <- code_by_topics |>
+      purrr::map(remove_last_pipe)
   }
 
   code_by_topics |>
-    purrr::map(remove_last_pipe) |>
     unlist() |>
-    append(vs_template_prefix, after = 0L) |>
-    append(vs_template_suffix) |>
+    append(prefix, after = 0L) |>
+    append(suffix) |>
     styler::style_text()
 }
 
