@@ -92,7 +92,7 @@ specification.
   to learn about step by step process to create an Events domain.
 - Please go to [Create Findings
   Domain](https://pharmaverse.github.io/sdtm.oak/articles/findings_domain.html)
-  to learn about step by step process to create an Events domain.
+  to learn about step by step process to create a Findings domain.
 - Please go to [Path to
   Automation](https://pharmaverse.github.io/sdtm.oak/articles/study_sdtm_spec.html)
   to learn about how the foundational release sets up the stage for
