@@ -33,7 +33,7 @@
       "Package": "R.cache",
       "Version": "0.16.0",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R.methodsS3",
@@ -48,7 +48,7 @@
       "Package": "R.methodsS3",
       "Version": "1.8.2",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "utils"
@@ -57,22 +57,22 @@
     },
     "R.oo": {
       "Package": "R.oo",
-      "Version": "1.27.0",
+      "Version": "1.25.0",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R.methodsS3",
         "methods",
         "utils"
       ],
-      "Hash": "6ac79ff194202248cf946fe3a5d6d498"
+      "Hash": "a0900a114f4f0194cf4aa8cd4a700681"
     },
     "R.utils": {
       "Package": "R.utils",
-      "Version": "2.12.3",
+      "Version": "2.12.2",
       "Source": "Repository",
-      "Repository": "CRAN",
+      "Repository": "repos",
       "Requirements": [
         "R",
         "R.methodsS3",
@@ -81,7 +81,7 @@
         "tools",
         "utils"
       ],
-      "Hash": "3dc2829b790254bfba21e60965787651"
+      "Hash": "325f01db13da12c04d8f6e7be36ff514"
     },
     "R6": {
       "Package": "R6",
