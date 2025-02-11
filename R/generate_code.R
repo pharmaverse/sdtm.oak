@@ -179,12 +179,19 @@ generate_one_var_code <- function(spec) {
   raw_dat_value <- rlang::parse_expr(spec$raw_dataset)
   is_cond_add <- stringr::str_starts(spec$raw_dataset, stringr::fixed("condition_add"))
 
-  # We want name-spaced functions to be used in the code, e.g. sdtm.oak::condition_add
+  package_name <- utils::packageName()
+
+  # Need a call if condition_add is used, we swapped the algorithm with
+  # entity_sub_algorithm in get_domain_spec()
   if (is_cond_add) {
-    raw_dat_value <- paste0("sdtm.oak::", spec$raw_dataset) |> rlang::parse_expr()
+    rlang::call2(
+      .fn = rlang::call_name(raw_dat_value),
+      # We want name-spaced functions to be used in the code, e.g. sdtm.oak::condition_add
+      .ns = package_name,
+      !!!rlang::call_args(raw_dat_value)
+    )
   }
 
-  # We want name-spaced functions to be used in the code, e.g. sdtm.oak::hardcode_ct
   function_name <- paste0("sdtm.oak::", spec$mapping_algorithm) |>
     rlang::parse_expr()
 
@@ -211,6 +218,8 @@ generate_one_var_code <- function(spec) {
   # Generate the function call
   generated_call <- rlang::call2(
     function_name,
+    # We want name-spaced functions to be used in the code, e.g. sdtm.oak::hardcode_ct
+    .ns = package_name,
     !!!args
   )
 
