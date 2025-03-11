@@ -26,7 +26,14 @@ apsc <- tibble::tribble(
   "ABC123", "ABC123-212", "JOBCLAS",  "APSC",  "SPOUSE",  "CAREGIVERSTUDY"
 )
 
+suppdm <- pharmaversesdtm::suppdm |>
+  dplyr::select(USUBJID, QNAM, QVAL) |>
+  tidyr::pivot_wider(names_from = QNAM, values_from = QVAL)
+
+dm <- dplyr::left_join(pharmaversesdtm::dm, suppdm)
+
 readr::write_rds(x = pharmaversesdtm::ae, file = file.path(path, "ae.rds"), compress = "xz")
 readr::write_rds(x = pharmaversesdtm::cm, file = file.path(path, "cm.rds"), compress = "xz")
 readr::write_rds(x = vs, file = file.path(path, "vs.rds"), compress = "xz")
 readr::write_rds(x = apsc, file = file.path(path, "apsc.rds"), compress = "xz")
+readr::write_rds(x = dm, file = file.path(path, "dm.rds"), compress = "xz")

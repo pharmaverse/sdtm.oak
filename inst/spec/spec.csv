@@ -1,0 +1,7 @@
+Domain,Variable,Label,Type,Length,Codelist,Role,Core,Origin
+DM,COMPLT16,Completers of Week 16 Population Flag,char,1,,Record Qualifier,Permissible,DERIVED
+DM,COMPLT24,Completers of Week 24 Population Flag,char,1,,Record Qualifier,Permissible,DERIVED
+DM,COMPLT8,Completers of Week 8 Population Flag,char,1,,Record Qualifier,Permissible,DERIVED
+DM,EFFICACY,Efficacy Population Flag,char,1,,Record Qualifier,Permissible,DERIVED
+DM,ITT,Intent to Treat Population Flag,char,1,,Record Qualifier,Permissible,DERIVED
+DM,SAFETY,Safety Population Flag,char,1,,Record Qualifier,Permissible,DERIVED
