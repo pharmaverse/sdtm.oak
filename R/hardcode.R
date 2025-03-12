@@ -64,8 +64,11 @@ sdtm_hardcode <- function(tgt_dat = NULL,
   # Recode the hardcoded value following terminology.
   tgt_val <- ct_map(tgt_val, ct_spec = ct_spec, ct_clst = ct_clst)
 
+  # Current target values
+  cur_tgt_val <- join_dat[[tgt_var]] %||% NA_character_
+
   join_dat |>
-    mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |> # nolint object_name_linter()
+    mutate("{tgt_var}" := dplyr::coalesce(cur_tgt_val, recode(x = !!rlang::sym(raw_var), to = tgt_val))) |> # nolint object_name_linter()
     dplyr::select(-dplyr::any_of(setdiff(raw_var, tgt_var))) |>
     dplyr::relocate(dplyr::all_of(tgt_var), .after = dplyr::last_col())
 }
