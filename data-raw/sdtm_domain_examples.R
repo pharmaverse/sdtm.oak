@@ -30,7 +30,8 @@ suppdm <- pharmaversesdtm::suppdm |>
   dplyr::select(USUBJID, QNAM, QVAL) |>
   tidyr::pivot_wider(names_from = QNAM, values_from = QVAL)
 
-dm <- dplyr::left_join(pharmaversesdtm::dm, suppdm)
+dm <- dplyr::left_join(pharmaversesdtm::dm, suppdm) |>
+  dplyr::relocate(COMPLT16, COMPLT24, COMPLT8, EFFICACY, ITT, SAFETY, .after = DTHFL)
 
 readr::write_rds(x = pharmaversesdtm::ae, file = file.path(path, "ae.rds"), compress = "xz")
 readr::write_rds(x = pharmaversesdtm::cm, file = file.path(path, "cm.rds"), compress = "xz")

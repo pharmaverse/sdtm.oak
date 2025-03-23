@@ -1,0 +1,7 @@
+Order,Dataset,Variable,Label,Length,Origin,Role
+1,DM,COMPLT16,Completers of Week 16 Population Flag,1,DERIVED,Record Qualifier
+2,DM,COMPLT24,Completers of Week 16 Population Flag,1,DERIVED,Record Qualifier
+3,DM,COMPLT8,Completers of Week 16 Population Flag,1,DERIVED,Record Qualifier
+4,DM,EFFICACY,Efficacy Population Flag,1,DERIVED,Record Qualifier
+5,DM,ITT,Intent to Treat Population Flag,1,DERIVED,Record Qualifier
+6,DM,SAFETY,Safety Population Flag,1,DERIVED,Record Qualifier
