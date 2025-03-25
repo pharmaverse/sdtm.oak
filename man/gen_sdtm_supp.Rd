@@ -30,5 +30,13 @@ Function to generate final SDTM domain and supplemental domain SUPP--
 path <- here::here("inst")
 dm <- readRDS(paste0(path, "/domain/dm.rds"))
 spec <- read.csv(paste0(path, "/spec/suppqual_spec.csv"))
-final <- gen_sdtm_supp(dm, idvar = NULL, spec = spec, qnam_var = "Variable", label_var = "Label", orig_var = "Origin")
+final <-
+  gen_sdtm_supp(
+    dm,
+    idvar = NULL,
+    spec = spec,
+    qnam_var = "Variable",
+    label_var = "Label",
+    orig_var = "Origin"
+  )
 }

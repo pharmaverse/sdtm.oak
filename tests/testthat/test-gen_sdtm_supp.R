@@ -1,6 +1,6 @@
 path <- here::here("inst")
-dm <- readRDS(paste0(path, "/domain/dm.rds"))[1:5, ]
-spec <- read.csv(paste0(path, "/spec/suppqual_spec.csv"))
+dm <- readRDS(file.path(path, "/domain/dm.rds"))[1L:5L, ]
+spec <- read.csv(file.path(path, "/spec/suppqual_spec.csv"))
 
 test_that("`gen_sdtm_supp` works as expected", {
   final <-
@@ -20,7 +20,7 @@ test_that("`gen_sdtm_supp` input validation works", {
   expect_snapshot_error(
     gen_sdtm_supp(
       dm,
-      idvar = 123,
+      idvar = 123L,
       spec = spec,
       qnam = "Variable",
       label_var = "Label",
