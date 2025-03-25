@@ -15,7 +15,15 @@
 #' path <- here::here("inst")
 #' dm <- readRDS(paste0(path, "/domain/dm.rds"))
 #' spec <- read.csv(paste0(path, "/spec/suppqual_spec.csv"))
-#' final <- gen_sdtm_supp(dm, idvar = NULL, spec = spec, qnam_var = "Variable", label_var = "Label", orig_var = "Origin")
+#' final <-
+#'   gen_sdtm_supp(
+#'     dm,
+#'     idvar = NULL,
+#'     spec = spec,
+#'     qnam_var = "Variable",
+#'     label_var = "Label",
+#'     orig_var = "Origin"
+#'   )
 gen_sdtm_supp <-
   function(sdtm_dataset,
            idvar = NULL,
@@ -55,7 +63,9 @@ gen_sdtm_supp <-
       dplyr::select(dplyr::all_of(qnam_var)) |>
       dplyr::pull()
 
-    admiraldev::assert_data_frame(sdtm_dataset, required_vars = rlang::syms(c(idvar, supp_cols, "STUDYID", "DOMAIN", "USUBJID")))
+    admiraldev::assert_data_frame(sdtm_dataset, required_vars = rlang::syms(c(
+      idvar, supp_cols, "STUDYID", "DOMAIN", "USUBJID"
+    )))
 
     supp <- sdtm_dataset |>
       tidyr::pivot_longer(
@@ -129,7 +139,7 @@ gen_sdtm_supp <-
       {{ supp_domain }} := supp
     )
 
-    cli::cli_inform("QEVAL should be manually programmed in supplemental domain.")
+    cli::cli_alert_info("QEVAL should be manually programmed in supplemental domain.")
 
     return(final)
   }
