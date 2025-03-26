@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' dm <- readRDS(system.file("domain/dm.rds", package = "sdtm.oak"))
+#' dm <- read_domain_example("dm")
 #' spec <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
 #' final <-
 #'   gen_sdtm_supp(

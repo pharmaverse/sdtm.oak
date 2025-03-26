@@ -54,6 +54,10 @@ reference:
   contents:
   - "%.>%"
 
+- title: Supplemental Qualifiers
+  contents:
+  - gen_sdtm_supp
+
 authors:
   Ramiro Magno:
     href: https://www.pattern.institute/team/rmagno/

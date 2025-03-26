@@ -1,4 +1,4 @@
-dm <- readRDS(system.file("domain/dm.rds", package = "sdtm.oak"))[1L:5L, ]
+dm <- read_domain_example("dm")[1L:5L, ]
 spec <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
 
 test_that("`gen_sdtm_supp` works as expected", {
