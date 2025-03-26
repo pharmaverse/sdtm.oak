@@ -1,6 +1,5 @@
-path <- here::here("inst")
-dm <- readRDS(file.path(path, "/domain/dm.rds"))[1L:5L, ]
-spec <- read.csv(file.path(path, "/spec/suppqual_spec.csv"))
+dm <- readRDS(system.file("domain/dm.rds", package = "sdtm.oak"))[1L:5L, ]
+spec <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
 
 test_that("`gen_sdtm_supp` works as expected", {
   final <-
