@@ -27,9 +27,8 @@ List of SDTM domain with suppquals dropped and corresponding supplemental domain
 Function to generate final SDTM domain and supplemental domain SUPP--
 }
 \examples{
-path <- here::here("inst")
-dm <- readRDS(paste0(path, "/domain/dm.rds"))
-spec <- read.csv(paste0(path, "/spec/suppqual_spec.csv"))
+dm <- readRDS(system.file("domain/dm.rds", package = "sdtm.oak"))
+spec <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
 final <-
   gen_sdtm_supp(
     dm,
