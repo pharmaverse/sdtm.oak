@@ -138,4 +138,37 @@ assign_ct(
   ct_clst = "C66729"
 )
 
+# Variables are derived in sequence from multiple input sources.
+# For each target variable, only missing (`NA`) values are filled
+# during each step—previously assigned (non-missing) values are retained.
+
+cm_raw <-
+  tibble::tibble(
+    oak_id = 1:4,
+    raw_source = "cm_raw",
+    patient_number = 370L + oak_id,
+    PATNUM = patient_number,
+    IT.CMTRT = c("BABY ASPIRIN", "CORTISPORIN", NA, NA),
+    IT.CMTRTOTH = c("Other Treatment - ", NA, "Other Treatment - Baby Aspirin", NA)
+  )
+
+cm_raw
+
+# Derivation of `CMTRT` first from `IT.CMTRT` and then from `IT.CMTRTOTH`.
+assign_no_ct(raw_dat = cm_raw,
+             raw_var = "IT.CMTRT",
+             tgt_var = "CMTRT") |>
+  assign_no_ct(raw_dat = cm_raw,
+               raw_var = "IT.CMTRTOTH",
+               tgt_var = "CMTRT")
+
+# Derivation of `CMTRT` first from `IT.CMTRTOTH` and then from `IT.CMTRT`.
+assign_no_ct(raw_dat = cm_raw,
+             raw_var = "IT.CMTRTOTH",
+             tgt_var = "CMTRT") |>
+  assign_no_ct(raw_dat = cm_raw,
+               raw_var = "IT.CMTRT",
+               tgt_var = "CMTRT")
+
+
 }
