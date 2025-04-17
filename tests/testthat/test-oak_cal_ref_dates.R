@@ -13,11 +13,11 @@ expected <- tibble::tribble(
 )
 
 ref_date_conf_df <- tibble::tribble(
-  ~raw_dataset_name,    ~date_var,     ~time_var,      ~dformat,      ~tformat, ~sdtm_var_name,
-  "EX1",          "EX_ST_DT1",   "EX_ST_TM1",  "dd-mm-yyyy",         "H:M",      "RFSTDTC",
-  "EX2",          "EX_ST_DT2", NA_character_, "dd-mmm-yyyy", NA_character_,      "RFSTDTC",
-  "EX1",          "EX_EN_DT1",   "EX_EN_TM1",  "dd-mm-yyyy",         "H:M",      "RFENDTC",
-  "EX2",          "EX_ST_DT2", NA_character_, "dd-mmm-yyyy", NA_character_,      "RFENDTC"
+  ~raw_dataset_name, ~date_var, ~time_var, ~dformat, ~tformat, ~sdtm_var_name,
+  "EX1", "EX_ST_DT1", "EX_ST_TM1", "dd-mm-yyyy", "H:M", "RFSTDTC",
+  "EX2", "EX_ST_DT2", NA_character_, "dd-mmm-yyyy", NA_character_, "RFSTDTC",
+  "EX1", "EX_EN_DT1", "EX_EN_TM1", "dd-mm-yyyy", "H:M", "RFENDTC",
+  "EX2", "EX_ST_DT2", NA_character_, "dd-mmm-yyyy", NA_character_, "RFENDTC"
 )
 
 EX1 <- tibble::tribble(
