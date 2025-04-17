@@ -1,8 +1,8 @@
 #' Calculate Reference dates in ISO8601 character format.
 #'
-#' Populate RFSTDTC variable in demographic domain in ISO8601 character format.
+#' Populate Reference date variables in demographic domain in ISO8601 character format.
 #'
-#' @description Derive RFSTDTC, RFENDTC, RFXENDTC, RFXSTDTC based on the input dates and time.
+#' @description Derive RFSTDTC, RFENDTC, RFXENDTC, RFXSTDTC, etc. based on the input dates and time.
 #'
 #'
 #' @param ds_in Data frame. DM domain.
@@ -12,7 +12,7 @@
 #' @param ref_date_config_df Data frame which has the details of the variables to
 #'        be used for the calculation of reference dates.
 #'        Should have columns listed below:
-#'          dataset_name : Name of the raw dataset.
+#'          raw_dataset_name : Name of the raw dataset.
 #'          date_var : Date variable name from the raw dataset.
 #'          time_var : Time variable name from the raw dataset.
 #'          dformat : Format of the date collected in raw data.
@@ -30,14 +30,14 @@
 #' )
 #'
 #' ref_date_config_df <- tibble::tribble(
-#'   ~dataset_name,   ~date_var,   ~time_var,      ~dformat, ~tformat, ~sdtm_var_name,
-#'   "EX1",         "EX_ST_DT1", "EX_ST_TM1",  "dd-mm-yyyy",    "H:M",      "RFSTDTC",
-#'   "EX2",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFSTDTC",
-#'   "EX1",         "EX_EN_DT1", "EX_EN_TM1",  "dd-mm-yyyy",    "H:M",      "RFENDTC",
-#'   "EX2",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFENDTC"
+#'   ~raw_dataset_name,   ~date_var,   ~time_var,      ~dformat, ~tformat, ~sdtm_var_name,
+#'   "ex1_raw",         "EX_ST_DT1", "EX_ST_TM1",  "dd-mm-yyyy",    "H:M",      "RFSTDTC",
+#'   "ex2_raw",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFSTDTC",
+#'   "ex1_raw",         "EX_EN_DT1", "EX_EN_TM1",  "dd-mm-yyyy",    "H:M",      "RFENDTC",
+#'   "ex2_raw",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFENDTC"
 #' )
 #'
-#' EX1 <- tibble::tribble(
+#' ex1_raw <- tibble::tribble(
 #'   ~patient_number, ~EX_ST_DT1,   ~EX_EN_DT1, ~EX_ST_TM1, ~EX_EN_TM1,
 #'   "001",         "15-05-2023", "15-05-2023",    "10:20",    "11:00",
 #'   "001",         "15-05-2023", "15-05-2023",     "9:15",    "10:00",
@@ -46,7 +46,7 @@
 #'   "002",         "03-11-2023", "03-11-2023",    "11:19",         NA
 #' )
 #'
-#' EX2 <- tibble::tribble(
+#' ex2_raw <- tibble::tribble(
 #'   ~patient_number,     ~EX_ST_DT2,
 #'   "001",            "11-JUN-2023",
 #'   "002",            "24-OCT-2023",
@@ -55,7 +55,7 @@
 #'   "002",           "UNK-OCT-2023"
 #' )
 #'
-#' raw_source <- list(EX1 = EX1, EX2 = EX2)
+#' raw_source <- list(ex1_raw = ex1_raw, ex2_raw = ex2_raw)
 #'
 #' dm_df <- oak_cal_ref_dates(dm,
 #'   der_var = "RFSTDTC",
@@ -71,7 +71,7 @@ oak_cal_ref_dates <- function(ds_in = dm,
                               raw_source) {
   # Check if ref_date_config_df is a data frame and has all required variables
   admiraldev::assert_data_frame(ref_date_config_df, required_vars = exprs(
-    dataset_name, date_var,
+    raw_dataset_name, date_var,
     time_var, dformat,
     tformat, sdtm_var_name
   ))
@@ -79,8 +79,8 @@ oak_cal_ref_dates <- function(ds_in = dm,
   admiraldev::assert_list_of(raw_source, "data.frame")
 
   ds_out <- data.frame()
-  for (i in seq_along(ref_date_config_df$dataset_name)) {
-    raw_dataset_name <- ref_date_config_df$dataset_name[i]
+  for (i in seq_along(ref_date_config_df$raw_dataset_name)) {
+    raw_dataset_name <- ref_date_config_df$raw_dataset_name[i]
     date_variable <- ref_date_config_df$date_var[i]
     date_format <- ref_date_config_df$dformat[i]
     time_var <- ref_date_config_df$time_var[i]

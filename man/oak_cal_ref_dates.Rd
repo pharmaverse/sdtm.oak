@@ -23,7 +23,7 @@ Default set to Minimum. Values should be min or max.}
 \item{ref_date_config_df}{Data frame which has the details of the variables to
 be used for the calculation of reference dates.
 Should have columns listed below:
-dataset_name : Name of the raw dataset.
+raw_dataset_name : Name of the raw dataset.
 date_var : Date variable name from the raw dataset.
 time_var : Time variable name from the raw dataset.
 dformat : Format of the date collected in raw data.
@@ -36,10 +36,10 @@ sdtm_var_name : Reference variable name.}
 DM data frame with the reference dates populated.
 }
 \description{
-Derive RFSTDTC, RFENDTC, RFXENDTC, RFXSTDTC based on the input dates and time.
+Derive RFSTDTC, RFENDTC, RFXENDTC, RFXSTDTC, etc. based on the input dates and time.
 }
 \details{
-Populate RFSTDTC variable in demographic domain in ISO8601 character format.
+Populate Reference date variables in demographic domain in ISO8601 character format.
 }
 \examples{
 dm <- tibble::tribble(
@@ -50,14 +50,14 @@ dm <- tibble::tribble(
 )
 
 ref_date_config_df <- tibble::tribble(
-  ~dataset_name,   ~date_var,   ~time_var,      ~dformat, ~tformat, ~sdtm_var_name,
-  "EX1",         "EX_ST_DT1", "EX_ST_TM1",  "dd-mm-yyyy",    "H:M",      "RFSTDTC",
-  "EX2",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFSTDTC",
-  "EX1",         "EX_EN_DT1", "EX_EN_TM1",  "dd-mm-yyyy",    "H:M",      "RFENDTC",
-  "EX2",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFENDTC"
+  ~raw_dataset_name,   ~date_var,   ~time_var,      ~dformat, ~tformat, ~sdtm_var_name,
+  "ex1_raw",         "EX_ST_DT1", "EX_ST_TM1",  "dd-mm-yyyy",    "H:M",      "RFSTDTC",
+  "ex2_raw",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFSTDTC",
+  "ex1_raw",         "EX_EN_DT1", "EX_EN_TM1",  "dd-mm-yyyy",    "H:M",      "RFENDTC",
+  "ex2_raw",         "EX_ST_DT2",          NA, "dd-mmm-yyyy",       NA,      "RFENDTC"
 )
 
-EX1 <- tibble::tribble(
+ex1_raw <- tibble::tribble(
   ~patient_number, ~EX_ST_DT1,   ~EX_EN_DT1, ~EX_ST_TM1, ~EX_EN_TM1,
   "001",         "15-05-2023", "15-05-2023",    "10:20",    "11:00",
   "001",         "15-05-2023", "15-05-2023",     "9:15",    "10:00",
@@ -66,7 +66,7 @@ EX1 <- tibble::tribble(
   "002",         "03-11-2023", "03-11-2023",    "11:19",         NA
 )
 
-EX2 <- tibble::tribble(
+ex2_raw <- tibble::tribble(
   ~patient_number,     ~EX_ST_DT2,
   "001",            "11-JUN-2023",
   "002",            "24-OCT-2023",
@@ -75,7 +75,7 @@ EX2 <- tibble::tribble(
   "002",           "UNK-OCT-2023"
 )
 
-raw_source <- list(EX1 = EX1, EX2 = EX2)
+raw_source <- list(ex1_raw = ex1_raw, ex2_raw = ex2_raw)
 
 dm_df <- oak_cal_ref_dates(dm,
   der_var = "RFSTDTC",

@@ -33,10 +33,10 @@ Data frame with 2 columns: unique patient_number and datetime variable
 column storing the earliest/latest datetime.
 }
 \description{
-This function derives the earliest/latest ISO8601 datetime
+This function derives the earliest/latest date as ISO8601 datetime
 }
 \examples{
-EX <- tibble::tribble(
+ex_raw <- tibble::tribble(
   ~patient_number,    ~EX_ST_DT, ~EX_ST_TM,
   "001",           "25-04-2022",   "10:20",
   "001",           "25-04-2022",   "10:15",
@@ -45,7 +45,7 @@ EX <- tibble::tribble(
   "002",           "26-05-2022",   "05:59"
 )
 
-min <- cal_min_max_date(EX,
+min <- cal_min_max_date(ex_raw,
   date_variable = "EX_ST_DT",
   time_variable = "EX_ST_TM",
   val_type = "min",
@@ -53,7 +53,7 @@ min <- cal_min_max_date(EX,
   time_format = "H:M"
 )
 
-max <- cal_min_max_date(EX,
+max <- cal_min_max_date(ex_raw,
   date_variable = "EX_ST_DT",
   time_variable = "EX_ST_TM",
   val_type = "max",
