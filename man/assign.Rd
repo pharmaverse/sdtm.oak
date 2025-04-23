@@ -155,20 +155,28 @@ cm_raw <-
 cm_raw
 
 # Derivation of `CMTRT` first from `IT.CMTRT` and then from `IT.CMTRTOTH`.
-assign_no_ct(raw_dat = cm_raw,
-             raw_var = "IT.CMTRT",
-             tgt_var = "CMTRT") |>
-  assign_no_ct(raw_dat = cm_raw,
-               raw_var = "IT.CMTRTOTH",
-               tgt_var = "CMTRT")
+assign_no_ct(
+  raw_dat = cm_raw,
+  raw_var = "IT.CMTRT",
+  tgt_var = "CMTRT"
+) |>
+  assign_no_ct(
+    raw_dat = cm_raw,
+    raw_var = "IT.CMTRTOTH",
+    tgt_var = "CMTRT"
+  )
 
 # Derivation of `CMTRT` first from `IT.CMTRTOTH` and then from `IT.CMTRT`.
-assign_no_ct(raw_dat = cm_raw,
-             raw_var = "IT.CMTRTOTH",
-             tgt_var = "CMTRT") |>
-  assign_no_ct(raw_dat = cm_raw,
-               raw_var = "IT.CMTRT",
-               tgt_var = "CMTRT")
+assign_no_ct(
+  raw_dat = cm_raw,
+  raw_var = "IT.CMTRTOTH",
+  tgt_var = "CMTRT"
+) |>
+  assign_no_ct(
+    raw_dat = cm_raw,
+    raw_var = "IT.CMTRT",
+    tgt_var = "CMTRT"
+  )
 
 # Another example of variables derived in sequence from multiple input
 # sources but now with controlled terminology remapping, in this case,
@@ -200,6 +208,5 @@ assign_ct(
     ct_clst = "C71620",
     id_vars = oak_id_vars()
   )
-
 
 }
