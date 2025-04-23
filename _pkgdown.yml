@@ -49,10 +49,18 @@ reference:
   - dtc_formats
   - problems
 
+- title: Calculation of reference dates in DM
+  contents:
+  - oak_cal_ref_dates
+
 - title: Explicit dot pipe operator
   desc: A simple alternative to `%>% {...}`
   contents:
   - "%.>%"
+
+- title: Calculation of minimum/maximum ISO8601 dates
+  contents:
+  - cal_min_max_date
 
 authors:
   Ramiro Magno:
@@ -63,3 +71,5 @@ authors:
     href: https://www.linkedin.com/in/edgar-manukyan-20987927
   Shiyu Chen:
     href: https://www.linkedin.com/in/shiyu-chen-55a55410a/
+  Mohsin Uzzama:
+    href: https://www.linkedin.com/in/mohsin-uzzama-34066741/
