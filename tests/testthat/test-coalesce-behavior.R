@@ -22,10 +22,12 @@ cm_raw <- tibble::tibble(
     NA, "NAUSEA", "ANEMIA", "NAUSEA", "PYREXIA", "VOMITINGS", NA,
     "COLD", "FEVER", NA, "FEVER", "COLD", "COLD", "PAIN"
   ),
-  `IT.CMINDCOTH` = c("Other Indication - Vomitting", "Other Indication Fever", rep(NA, 7L),
-                     "Other Indication - Diarrhoea", rep(NA, 4L)),
+  `IT.CMINDCOTH` = c(
+    "Other Indication - Vomitting", "Other Indication Fever", rep(NA, 7L),
+    "Other Indication - Diarrhoea", rep(NA, 4L)
+  ),
   `IT.CMDSTXT` = c("10", "50", NA, "50", NA, "One", NA, "12", "100", "Two", "10", "12", "3", "5"),
-  `IT.CMDSTXTO` = c("Other Dose - 100", NA, "Other Dose - 300", NA, "Other Dose - 500", "Other Dose - 600", rep(NA, 8L)), #nolint line_length_linter
+  `IT.CMDSTXTO` = c("Other Dose - 100", NA, "Other Dose - 300", NA, "Other Dose - 500", "Other Dose - 600", rep(NA, 8L)), # nolint line_length_linter
   `IT.CMDOSU` = c("mg", "Gram", NA, "mg", "mg", "Tablet", NA, "g", "mg", NA, "mg", "IU", "mL", "%"),
   `IT.DOSUO` = c(rep(NA, 8L), "Other Dose Unit", "cap", rep(NA, 4L))
 )
@@ -51,7 +53,7 @@ cm_actual <-
     raw_var = "IT.CMTRT",
     tgt_var = "CMTRT"
   ) |>
-  #example for assign_no_ct
+  # example for assign_no_ct
   # Map CMTRT using assign_no_ct, raw_var=IT.CMTRTOTH,tgt_var=CMTRT
   assign_no_ct(
     raw_dat = cm_raw,
@@ -99,7 +101,7 @@ cm_actual <-
     tgt_var = "CMINDC",
     id_vars = oak_id_vars()
   ) |>
-  #example for assign_no_ct
+  # example for assign_no_ct
   # Map CMINDC using assign_no_ct, raw_var=IT.CMINDCOTH,tgt_var=CMINDC
   assign_no_ct(
     raw_dat = cm_raw,
@@ -151,21 +153,21 @@ cm_actual <-
 
 cm_expected <-
   tibble::tribble(
-    ~oak_id, ~raw_source, ~patient_number, ~CMTRT,                         ~CMCAT,                                    ~CMOCCUR, ~CMPRESP, ~CMINDC,                        ~CMDOS, ~CMDOSTXT,          ~CMDOSU, # nolint: line_length_linter
-    1L,      "cm_raw",    375L,            "BABY ASPIRIN",                   "General Concomitant Medications",       "Y",      "Y",      "Other Indication - Vomitting", "10",   "Other Dose - 100", "mg", # nolint: line_length_linter
-    2L,      "cm_raw",    375L,            "CORTISPORIN",                    "General Concomitant Medications",       "Y",       NA,      "NAUSEA",                       "50",   NA,                 "g", # nolint: line_length_linter
-    3L,      "cm_raw",    376L,            "ASPIRIN",                        "General Concomitant Medications",       "Y",       NA,      "ANEMIA",                       NA,     "Other Dose - 300", NA, # nolint: line_length_linter
-    4L,      "cm_raw",    377L,            "DIPHENHYDRAMINE HCL",            "General Concomitant Medications",       "Y",       NA,      "NAUSEA",                       "50",   NA,                 "mg", # nolint: line_length_linter
-    5L,      "cm_raw",    377L,            "PARCETEMOL",                     "General Concomitant Medications",       "Y",       NA,      "PYREXIA",                      NA,     "Other Dose - 500", "mg", # nolint: line_length_linter
-    6L,      "cm_raw",    377L,            "VOMIKIND",                       "General Concomitant Medications",       "Y",       NA,      "VOMITINGS",                    NA,     "One",              "TABLET", # nolint: line_length_linter
-    7L,      "cm_raw",    377L,            "Other Treatment - Baby Aspirin", "Other General Concomitant Medications", NA,       "Y",      NA,                             NA,      NA,                NA, # nolint: line_length_linter
-    8L,      "cm_raw",    378L,            "AMITRYPTYLINE",                  "General Concomitant Medications",       "Y",       NA,      "COLD",                         "12",    NA,                "g", # nolint: line_length_linter
-    9L,      "cm_raw",    378L,            "BENADRYL",                       "General Concomitant Medications",       "Y",       NA,      "FEVER",                        "100",   NA,                "OTHER DOSE UNIT", # nolint: line_length_linter
-    10L,     "cm_raw",    378L,            "DIPHENHYDRAMINE HYDROCHLORIDE",  "General Concomitant Medications",       "Y",       NA,      "Other Indication - Diarrhoea", NA,      NA,                "CAPSULE", # nolint: line_length_linter
-    11L,     "cm_raw",    378L,            "TETRACYCLINE",                   "General Concomitant Medications",       "Y",       NA,      "FEVER",                        "10",    NA,                "mg", # nolint: line_length_linter
-    12L,     "cm_raw",    379L,            "BENADRYL",                       "General Concomitant Medications",       "Y",       NA,      "COLD",                         "12",    NA,                "IU", # nolint: line_length_linter
-    13L,     "cm_raw",    379L,            "SOMINEX",                        "General Concomitant Medications",       "Y",       NA,      "COLD",                         "3",     NA,                "mL", # nolint: line_length_linter
-    14L,     "cm_raw",    379L,            "ZQUILL",                         "General Concomitant Medications",       "Y",       NA,      "PAIN",                         "5",     NA,                "%" # nolint: line_length_linter
+    ~oak_id, ~raw_source, ~patient_number, ~CMTRT, ~CMCAT, ~CMOCCUR, ~CMPRESP, ~CMINDC, ~CMDOS, ~CMDOSTXT, ~CMDOSU, # nolint: line_length_linter
+    1L, "cm_raw", 375L, "BABY ASPIRIN", "General Concomitant Medications", "Y", "Y", "Other Indication - Vomitting", "10", "Other Dose - 100", "mg", # nolint: line_length_linter
+    2L, "cm_raw", 375L, "CORTISPORIN", "General Concomitant Medications", "Y", NA, "NAUSEA", "50", NA, "g", # nolint: line_length_linter
+    3L, "cm_raw", 376L, "ASPIRIN", "General Concomitant Medications", "Y", NA, "ANEMIA", NA, "Other Dose - 300", NA, # nolint: line_length_linter
+    4L, "cm_raw", 377L, "DIPHENHYDRAMINE HCL", "General Concomitant Medications", "Y", NA, "NAUSEA", "50", NA, "mg", # nolint: line_length_linter
+    5L, "cm_raw", 377L, "PARCETEMOL", "General Concomitant Medications", "Y", NA, "PYREXIA", NA, "Other Dose - 500", "mg", # nolint: line_length_linter
+    6L, "cm_raw", 377L, "VOMIKIND", "General Concomitant Medications", "Y", NA, "VOMITINGS", NA, "One", "TABLET", # nolint: line_length_linter
+    7L, "cm_raw", 377L, "Other Treatment - Baby Aspirin", "Other General Concomitant Medications", NA, "Y", NA, NA, NA, NA, # nolint: line_length_linter
+    8L, "cm_raw", 378L, "AMITRYPTYLINE", "General Concomitant Medications", "Y", NA, "COLD", "12", NA, "g", # nolint: line_length_linter
+    9L, "cm_raw", 378L, "BENADRYL", "General Concomitant Medications", "Y", NA, "FEVER", "100", NA, "OTHER DOSE UNIT", # nolint: line_length_linter
+    10L, "cm_raw", 378L, "DIPHENHYDRAMINE HYDROCHLORIDE", "General Concomitant Medications", "Y", NA, "Other Indication - Diarrhoea", NA, NA, "CAPSULE", # nolint: line_length_linter
+    11L, "cm_raw", 378L, "TETRACYCLINE", "General Concomitant Medications", "Y", NA, "FEVER", "10", NA, "mg", # nolint: line_length_linter
+    12L, "cm_raw", 379L, "BENADRYL", "General Concomitant Medications", "Y", NA, "COLD", "12", NA, "IU", # nolint: line_length_linter
+    13L, "cm_raw", 379L, "SOMINEX", "General Concomitant Medications", "Y", NA, "COLD", "3", NA, "mL", # nolint: line_length_linter
+    14L, "cm_raw", 379L, "ZQUILL", "General Concomitant Medications", "Y", NA, "PAIN", "5", NA, "%" # nolint: line_length_linter
   )
 
 test_that("coalesce behavior works", {
