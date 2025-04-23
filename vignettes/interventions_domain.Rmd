@@ -1,9 +1,9 @@
 ---
-title: "Creating an Events SDTM domain"
+title: "Creating an Interventions SDTM domain"
 output: 
   rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Creating an Events SDTM domain}
+  %\VignetteIndexEntry{Creating an Interventions SDTM domain}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---
@@ -22,7 +22,7 @@ library(dplyr, warn.conflicts = FALSE)
 
 # Introduction
 
-This article describes creating an Events SDTM domain using the `sdtm.oak` package. Examples are currently presented and tested in the context of the CM domain.
+This article describes creating an Interventions SDTM domain using the `sdtm.oak` package. Examples are currently presented and tested in the context of the CM domain.
 
 # Raw data
 
