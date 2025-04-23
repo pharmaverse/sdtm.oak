@@ -170,5 +170,36 @@ assign_no_ct(raw_dat = cm_raw,
                raw_var = "IT.CMTRT",
                tgt_var = "CMTRT")
 
+# Another example of variables derived in sequence from multiple input
+# sources but now with controlled terminology remapping, in this case,
+# CDISC Dose Unit (C71620) recoding.
+
+cm_raw2 <- tibble::tibble(
+  oak_id = c(1:3, 6, 8:10, 12:14),
+  raw_source = "cm_raw",
+  patient_number = c(rep(375L, 2), 376:377, rep(378L, 3), rep(379L, 3)),
+  PATNUM = patient_number,
+  `IT.DOSUO` = c(NA, NA, NA, NA, NA, "Other Dose Unit", "cap", NA, NA, NA),
+  `IT.CMDOSU` = c("mg", "Gram", NA, "Tablet", "g", "mg", NA, "IU", "mL", "\%")
+)
+
+assign_ct(
+  raw_dat = cm_raw2,
+  raw_var = "IT.DOSUO",
+  tgt_var = "CMDOSU",
+  ct_spec = ct_spec,
+  ct_clst = "C71620",
+  # Dose Unit
+  id_vars = oak_id_vars()
+) |>
+  assign_ct(
+    raw_dat = cm_raw2,
+    raw_var = "IT.CMDOSU",
+    tgt_var = "CMDOSU",
+    ct_spec = ct_spec,
+    ct_clst = "C71620",
+    id_vars = oak_id_vars()
+  )
+
 
 }

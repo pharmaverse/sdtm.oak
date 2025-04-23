@@ -65,7 +65,7 @@ sdtm_hardcode <- function(tgt_dat = NULL,
   tgt_val <- ct_map(tgt_val, ct_spec = ct_spec, ct_clst = ct_clst)
 
   # Current target values
-  cur_tgt_val <- join_dat[[tgt_var]] %||% NA_character_
+  cur_tgt_val <- join_dat[[tgt_var]] %||% as.vector(NA, mode = typeof(tgt_val))
 
   join_dat |>
     mutate("{tgt_var}" := dplyr::coalesce(cur_tgt_val, recode(x = !!rlang::sym(raw_var), to = tgt_val))) |> # nolint object_name_linter()
