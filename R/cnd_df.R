@@ -160,7 +160,7 @@ rm_cnd_df <- function(dat) {
     attr(dat, "cnd") <- NULL
     attr(dat, "cnd_sum") <- NULL
   }
-  return(dat)
+  dat
 }
 
 #' Conditioned tibble header print method

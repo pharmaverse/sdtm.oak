@@ -1,33 +1,33 @@
 #
 # Unit test for testing coalescing behavior in:
 #
-#  - `harcode_no_ct()`
-#  - `harcode_ct()`
-#  - `assign_no_ct()`
-#  - `assign_ct()`
+#  - `harcode_no_ct()` # nolint
+#  - `harcode_ct()` # nolint
+#  - `assign_no_ct()` # nolint
+#  - `assign_ct()` # nolint
 #
 # Issue 110: https://github.com/pharmaverse/sdtm.oak/issues/110
 #
 
 cm_raw <- tibble::tibble(
-  PATNUM = c(rep(375L, 2), 376L, rep(377L, 4), rep(378L, 4), rep(379L, 3)),
+  PATNUM = c(rep(375L, 2L), 376L, rep(377L, 4L), rep(378L, 4L), rep(379L, 3L)),
   `IT.CMTRT` = c(
     "BABY ASPIRIN", "CORTISPORIN", "ASPIRIN", "DIPHENHYDRAMINE HCL",
     "PARCETEMOL", "VOMIKIND", NA, "AMITRYPTYLINE", "BENADRYL",
     "DIPHENHYDRAMINE HYDROCHLORIDE", "TETRACYCLINE", "BENADRYL", "SOMINEX",
     "ZQUILL"
   ),
-  `IT.CMTRTOTH` = c("Other Treatment - ", rep(NA, 5), "Other Treatment - Baby Aspirin", rep(NA, 7)),
+  `IT.CMTRTOTH` = c("Other Treatment - ", rep(NA, 5L), "Other Treatment - Baby Aspirin", rep(NA, 7L)),
   `IT.CMINDC` = c(
     NA, "NAUSEA", "ANEMIA", "NAUSEA", "PYREXIA", "VOMITINGS", NA,
     "COLD", "FEVER", NA, "FEVER", "COLD", "COLD", "PAIN"
   ),
-  `IT.CMINDCOTH` = c("Other Indication - Vomitting", "Other Indication Fever", rep(NA, 7),
-                     "Other Indication - Diarrhoea", rep(NA, 4)),
+  `IT.CMINDCOTH` = c("Other Indication - Vomitting", "Other Indication Fever", rep(NA, 7L),
+                     "Other Indication - Diarrhoea", rep(NA, 4L)),
   `IT.CMDSTXT` = c("10", "50", NA, "50", NA, "One", NA, "12", "100", "Two", "10", "12", "3", "5"),
-  `IT.CMDSTXTO` = c("Other Dose - 100", NA, "Other Dose - 300", NA, "Other Dose - 500", "Other Dose - 600", rep(NA, 8)),
+  `IT.CMDSTXTO` = c("Other Dose - 100", NA, "Other Dose - 300", NA, "Other Dose - 500", "Other Dose - 600", rep(NA, 8L)), #nolint line_length_linter
   `IT.CMDOSU` = c("mg", "Gram", NA, "mg", "mg", "Tablet", NA, "g", "mg", NA, "mg", "IU", "mL", "%"),
-  `IT.DOSUO` = c(rep(NA, 8), "Other Dose Unit", "cap", rep(NA, 4))
+  `IT.DOSUO` = c(rep(NA, 8L), "Other Dose Unit", "cap", rep(NA, 4L))
 )
 
 cm_raw <- sdtm.oak:::generate_oak_id_vars(cm_raw, pat_var = "PATNUM", raw_src = "cm_raw")
@@ -151,23 +151,23 @@ cm_actual <-
 
 cm_expected <-
   tibble::tribble(
-    ~oak_id, ~raw_source, ~patient_number, ~CMTRT,                         ~CMCAT,                                    ~CMOCCUR, ~CMPRESP, ~CMINDC,                        ~CMDOS, ~CMDOSTXT,          ~CMDOSU,
-    1L,      "cm_raw",    375L,            "BABY ASPIRIN",                   "General Concomitant Medications",       "Y",      "Y",      "Other Indication - Vomitting", "10",   "Other Dose - 100", "mg",
-    2L,      "cm_raw",    375L,            "CORTISPORIN",                    "General Concomitant Medications",       "Y",       NA,      "NAUSEA",                       "50",   NA,                 "g",
-    3L,      "cm_raw",    376L,            "ASPIRIN",                        "General Concomitant Medications",       "Y",       NA,      "ANEMIA",                       NA,     "Other Dose - 300", NA,
-    4L,      "cm_raw",    377L,            "DIPHENHYDRAMINE HCL",            "General Concomitant Medications",       "Y",       NA,      "NAUSEA",                       "50",   NA,                 "mg",
-    5L,      "cm_raw",    377L,            "PARCETEMOL",                     "General Concomitant Medications",       "Y",       NA,      "PYREXIA",                      NA,     "Other Dose - 500", "mg",
-    6L,      "cm_raw",    377L,            "VOMIKIND",                       "General Concomitant Medications",       "Y",       NA,      "VOMITINGS",                    NA,     "One",              "TABLET",
-    7L,      "cm_raw",    377L,            "Other Treatment - Baby Aspirin", "Other General Concomitant Medications", NA,       "Y",      NA,                             NA,      NA,                NA,
-    8L,      "cm_raw",    378L,            "AMITRYPTYLINE",                  "General Concomitant Medications",       "Y",       NA,      "COLD",                         "12",    NA,                "g",
-    9L,      "cm_raw",    378L,            "BENADRYL",                       "General Concomitant Medications",       "Y",       NA,      "FEVER",                        "100",   NA,                "OTHER DOSE UNIT",
-    10L,     "cm_raw",    378L,            "DIPHENHYDRAMINE HYDROCHLORIDE",  "General Concomitant Medications",       "Y",       NA,      "Other Indication - Diarrhoea", NA,      NA,                "CAPSULE",
-    11L,     "cm_raw",    378L,            "TETRACYCLINE",                   "General Concomitant Medications",       "Y",       NA,      "FEVER",                        "10",    NA,                "mg",
-    12L,     "cm_raw",    379L,            "BENADRYL",                       "General Concomitant Medications",       "Y",       NA,      "COLD",                         "12",    NA,                "IU",
-    13L,     "cm_raw",    379L,            "SOMINEX",                        "General Concomitant Medications",       "Y",       NA,      "COLD",                         "3",     NA,                "mL",
-    14L,     "cm_raw",    379L,            "ZQUILL",                         "General Concomitant Medications",       "Y",       NA,      "PAIN",                         "5",     NA,                "%"
+    ~oak_id, ~raw_source, ~patient_number, ~CMTRT,                         ~CMCAT,                                    ~CMOCCUR, ~CMPRESP, ~CMINDC,                        ~CMDOS, ~CMDOSTXT,          ~CMDOSU, # nolint: line_length_linter
+    1L,      "cm_raw",    375L,            "BABY ASPIRIN",                   "General Concomitant Medications",       "Y",      "Y",      "Other Indication - Vomitting", "10",   "Other Dose - 100", "mg", # nolint: line_length_linter
+    2L,      "cm_raw",    375L,            "CORTISPORIN",                    "General Concomitant Medications",       "Y",       NA,      "NAUSEA",                       "50",   NA,                 "g", # nolint: line_length_linter
+    3L,      "cm_raw",    376L,            "ASPIRIN",                        "General Concomitant Medications",       "Y",       NA,      "ANEMIA",                       NA,     "Other Dose - 300", NA, # nolint: line_length_linter
+    4L,      "cm_raw",    377L,            "DIPHENHYDRAMINE HCL",            "General Concomitant Medications",       "Y",       NA,      "NAUSEA",                       "50",   NA,                 "mg", # nolint: line_length_linter
+    5L,      "cm_raw",    377L,            "PARCETEMOL",                     "General Concomitant Medications",       "Y",       NA,      "PYREXIA",                      NA,     "Other Dose - 500", "mg", # nolint: line_length_linter
+    6L,      "cm_raw",    377L,            "VOMIKIND",                       "General Concomitant Medications",       "Y",       NA,      "VOMITINGS",                    NA,     "One",              "TABLET", # nolint: line_length_linter
+    7L,      "cm_raw",    377L,            "Other Treatment - Baby Aspirin", "Other General Concomitant Medications", NA,       "Y",      NA,                             NA,      NA,                NA, # nolint: line_length_linter
+    8L,      "cm_raw",    378L,            "AMITRYPTYLINE",                  "General Concomitant Medications",       "Y",       NA,      "COLD",                         "12",    NA,                "g", # nolint: line_length_linter
+    9L,      "cm_raw",    378L,            "BENADRYL",                       "General Concomitant Medications",       "Y",       NA,      "FEVER",                        "100",   NA,                "OTHER DOSE UNIT", # nolint: line_length_linter
+    10L,     "cm_raw",    378L,            "DIPHENHYDRAMINE HYDROCHLORIDE",  "General Concomitant Medications",       "Y",       NA,      "Other Indication - Diarrhoea", NA,      NA,                "CAPSULE", # nolint: line_length_linter
+    11L,     "cm_raw",    378L,            "TETRACYCLINE",                   "General Concomitant Medications",       "Y",       NA,      "FEVER",                        "10",    NA,                "mg", # nolint: line_length_linter
+    12L,     "cm_raw",    379L,            "BENADRYL",                       "General Concomitant Medications",       "Y",       NA,      "COLD",                         "12",    NA,                "IU", # nolint: line_length_linter
+    13L,     "cm_raw",    379L,            "SOMINEX",                        "General Concomitant Medications",       "Y",       NA,      "COLD",                         "3",     NA,                "mL", # nolint: line_length_linter
+    14L,     "cm_raw",    379L,            "ZQUILL",                         "General Concomitant Medications",       "Y",       NA,      "PAIN",                         "5",     NA,                "%" # nolint: line_length_linter
   )
 
 test_that("coalesce behavior works", {
-  expect_equal(cm_actual, cm_expected)
+  expect_identical(cm_actual, cm_expected)
 })
