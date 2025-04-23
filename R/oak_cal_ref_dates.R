@@ -55,13 +55,13 @@
 #'   "002",           "UNK-OCT-2023"
 #' )
 #'
-#' raw_source <- list(ex1_raw = ex1_raw, ex2_raw = ex2_raw)
+#' raw_data_list <- list(ex1_raw = ex1_raw, ex2_raw = ex2_raw)
 #'
 #' dm_df <- oak_cal_ref_dates(dm,
 #'   der_var = "RFSTDTC",
 #'   min_max = "min",
 #'   ref_date_config_df = ref_date_config_df,
-#'   raw_source
+#'   raw_source = raw_data_list
 #' )
 #'
 oak_cal_ref_dates <- function(ds_in = dm,
