@@ -163,7 +163,7 @@ cm_expected <-
     7L, "cm_raw", 377L, "Other Treatment - Baby Aspirin", "Other General Concomitant Medications", NA, "Y", NA, NA, NA, NA, # nolint: line_length_linter
     8L, "cm_raw", 378L, "AMITRYPTYLINE", "General Concomitant Medications", "Y", NA, "COLD", "12", NA, "g", # nolint: line_length_linter
     9L, "cm_raw", 378L, "BENADRYL", "General Concomitant Medications", "Y", NA, "FEVER", "100", NA, "OTHER DOSE UNIT", # nolint: line_length_linter
-    10L, "cm_raw", 378L, "DIPHENHYDRAMINE HYDROCHLORIDE", "General Concomitant Medications", "Y", NA, "Other Indication - Diarrhoea", NA, NA, "CAPSULE", # nolint: line_length_linter
+    10L, "cm_raw", 378L, "DIPHENHYDRAMINE HYDROCHLORIDE", "General Concomitant Medications", "Y", NA, "Other Indication - Diarrhoea", NA, "Two", "CAPSULE", # nolint: line_length_linter
     11L, "cm_raw", 378L, "TETRACYCLINE", "General Concomitant Medications", "Y", NA, "FEVER", "10", NA, "mg", # nolint: line_length_linter
     12L, "cm_raw", 379L, "BENADRYL", "General Concomitant Medications", "Y", NA, "COLD", "12", NA, "IU", # nolint: line_length_linter
     13L, "cm_raw", 379L, "SOMINEX", "General Concomitant Medications", "Y", NA, "COLD", "3", NA, "mL", # nolint: line_length_linter
