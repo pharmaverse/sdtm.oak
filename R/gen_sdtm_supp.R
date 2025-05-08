@@ -129,7 +129,7 @@ gen_sdtm_supp <-
     }
 
     sdtm_output <- sdtm_dataset |>
-      dplyr::select(-dplyr::all_of(supp_cols))
+      dplyr::select(-dplyr::all_of(supp_cols), -dplyr::any_of("DMSEQ"))
 
     domain <- toupper(domain)
     supp_domain <- paste0("SUPP", domain)

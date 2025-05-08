@@ -12,11 +12,46 @@ test_that("`gen_sdtm_supp` works as expected", {
       orig_var = "Origin"
     )
 
-  expect_snapshot(jsonlite::toJSON(final, pretty = TRUE, auto_unbox = TRUE))
+  expected_dm_output <- dm |> dplyr::select(-dplyr::all_of((spec$Variable)))
+
+  expect_equal(final$DM, expected_dm_output)
+
+  # nolint start
+  expected_suppdm_output <- tibble::tribble(
+    ~STUDYID, ~RDOMAIN,      ~USUBJID, ~IDVAR, ~IDVARVAL,      ~QNAM,                                 ~QLABEL, ~QVAL,    ~QORIG, ~QEVAL,
+    "CDISCPILOT01",     "DM", "01-701-1015",     NA,        NA, "COMPLT16", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1015",     NA,        NA, "COMPLT24", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1015",     NA,        NA,  "COMPLT8", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1015",     NA,        NA, "EFFICACY",              "Efficacy Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1015",     NA,        NA,      "ITT",       "Intent to Treat Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1015",     NA,        NA,   "SAFETY",                "Safety Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1023",     NA,        NA, "EFFICACY",              "Efficacy Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1023",     NA,        NA,      "ITT",       "Intent to Treat Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1023",     NA,        NA,   "SAFETY",                "Safety Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1028",     NA,        NA, "COMPLT16", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1028",     NA,        NA, "COMPLT24", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1028",     NA,        NA,  "COMPLT8", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1028",     NA,        NA, "EFFICACY",              "Efficacy Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1028",     NA,        NA,      "ITT",       "Intent to Treat Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1028",     NA,        NA,   "SAFETY",                "Safety Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1033",     NA,        NA, "EFFICACY",              "Efficacy Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1033",     NA,        NA,      "ITT",       "Intent to Treat Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1033",     NA,        NA,   "SAFETY",                "Safety Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1034",     NA,        NA, "COMPLT16", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1034",     NA,        NA, "COMPLT24", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1034",     NA,        NA,  "COMPLT8", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1034",     NA,        NA, "EFFICACY",              "Efficacy Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1034",     NA,        NA,      "ITT",       "Intent to Treat Population Flag",   "Y", "DERIVED",     NA,
+    "CDISCPILOT01",     "DM", "01-701-1034",     NA,        NA,   "SAFETY",                "Safety Population Flag",   "Y", "DERIVED",     NA
+  )
+  # nolint end
+
+  expect_equal(final$SUPPDM, expected_suppdm_output)
+
 })
 
 test_that("`gen_sdtm_supp` input validation works", {
-  expect_snapshot_error(
+  expect_error(
     gen_sdtm_supp(
       dm,
       idvar = 123L,
@@ -24,10 +59,11 @@ test_that("`gen_sdtm_supp` input validation works", {
       qnam = "Variable",
       label_var = "Label",
       orig_var = "Origin"
-    )
+    ),
+    "Argument `idvar` must be a scalar"
   )
 
-  expect_snapshot_error(
+  expect_error(
     gen_sdtm_supp(
       dm,
       idvar = NULL,
@@ -35,10 +71,11 @@ test_that("`gen_sdtm_supp` input validation works", {
       qnam = "Variable",
       label_var = "Label",
       orig_var = "Origin"
-    )
+    ),
+    "Argument `spec` must be class"
   )
 
-  expect_snapshot_error(
+  expect_error(
     gen_sdtm_supp(
       dm,
       idvar = NULL,
@@ -46,10 +83,11 @@ test_that("`gen_sdtm_supp` input validation works", {
       qnam = "Var",
       label_var = "Label",
       orig_var = "Origin"
-    )
+    ),
+    "Required variable `Var`"
   )
 
-  expect_snapshot_error(
+  expect_error(
     gen_sdtm_supp(
       dm,
       idvar = NULL,
@@ -57,10 +95,11 @@ test_that("`gen_sdtm_supp` input validation works", {
       qnam = "Variable",
       label_var = c("label", "qlabel"),
       orig_var = "Origin"
-    )
+    ),
+    "Argument `label_var` must be a scalar"
   )
 
-  expect_snapshot_error(
+  expect_error(
     gen_sdtm_supp(
       dm |> dplyr::select(-COMPLT16),
       idvar = NULL,
@@ -68,6 +107,7 @@ test_that("`gen_sdtm_supp` input validation works", {
       qnam = "Variable",
       label_var = "Label",
       orig_var = "Origin"
-    )
+    ),
+    "Required variable `COMPLT16` is missing"
   )
 })
