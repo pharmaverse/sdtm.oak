@@ -272,6 +272,111 @@ derived variable, as indicated in <code>tgt_var</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span>     13 MD1                   113 SOMINEX                       TRANSD… COLD  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">14</span>     14 MD1                   114 ZQUILL                        OPHTHA… PAIN  </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Variables are derived in sequence from multiple input sources.</span></span></span>
+<span class="r-in"><span><span class="co"># For each target variable, only missing (`NA`) values are filled</span></span></span>
+<span class="r-in"><span><span class="co"># during each step—previously assigned (non-missing) values are retained.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cm_raw</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    oak_id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,</span></span>
+<span class="r-in"><span>    raw_source <span class="op">=</span> <span class="st">"cm_raw"</span>,</span></span>
+<span class="r-in"><span>    patient_number <span class="op">=</span> <span class="fl">370L</span> <span class="op">+</span> <span class="va">oak_id</span>,</span></span>
+<span class="r-in"><span>    PATNUM <span class="op">=</span> <span class="va">patient_number</span>,</span></span>
+<span class="r-in"><span>    IT.CMTRT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BABY ASPIRIN"</span>, <span class="st">"CORTISPORIN"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    IT.CMTRTOTH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Other Treatment - "</span>, <span class="cn">NA</span>, <span class="st">"Other Treatment - Baby Aspirin"</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cm_raw</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   oak_id raw_source patient_number PATNUM IT.CMTRT     IT.CMTRTOTH              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>      1 cm_raw                371    371 BABY ASPIRIN <span style="color: #949494;">"</span>Other Treatment - <span style="color: #949494;">"</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>      2 cm_raw                372    372 CORTISPORIN   <span style="color: #BB0000;">NA</span>                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>      3 cm_raw                373    373 <span style="color: #BB0000;">NA</span>           <span style="color: #949494;">"</span>Other Treatment - Baby …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>      4 cm_raw                374    374 <span style="color: #BB0000;">NA</span>            <span style="color: #BB0000;">NA</span>                      </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Derivation of `CMTRT` first from `IT.CMTRT` and then from `IT.CMTRTOTH`.</span></span></span>
+<span class="r-in"><span><span class="fu">assign_no_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  raw_dat <span class="op">=</span> <span class="va">cm_raw</span>,</span></span>
+<span class="r-in"><span>  raw_var <span class="op">=</span> <span class="st">"IT.CMTRT"</span>,</span></span>
+<span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"CMTRT"</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">assign_no_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    raw_dat <span class="op">=</span> <span class="va">cm_raw</span>,</span></span>
+<span class="r-in"><span>    raw_var <span class="op">=</span> <span class="st">"IT.CMTRTOTH"</span>,</span></span>
+<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMTRT"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   oak_id raw_source patient_number CMTRT                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>      1 cm_raw                371 BABY ASPIRIN                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>      2 cm_raw                372 CORTISPORIN                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>      3 cm_raw                373 Other Treatment - Baby Aspirin</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>      4 cm_raw                374 <span style="color: #BB0000;">NA</span>                            </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Derivation of `CMTRT` first from `IT.CMTRTOTH` and then from `IT.CMTRT`.</span></span></span>
+<span class="r-in"><span><span class="fu">assign_no_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  raw_dat <span class="op">=</span> <span class="va">cm_raw</span>,</span></span>
+<span class="r-in"><span>  raw_var <span class="op">=</span> <span class="st">"IT.CMTRTOTH"</span>,</span></span>
+<span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"CMTRT"</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">assign_no_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    raw_dat <span class="op">=</span> <span class="va">cm_raw</span>,</span></span>
+<span class="r-in"><span>    raw_var <span class="op">=</span> <span class="st">"IT.CMTRT"</span>,</span></span>
+<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMTRT"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   oak_id raw_source patient_number CMTRT                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>      1 cm_raw                371 <span style="color: #949494;">"</span>Other Treatment - <span style="color: #949494;">"</span>            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>      2 cm_raw                372 <span style="color: #949494;">"</span>CORTISPORIN<span style="color: #949494;">"</span>                   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>      3 cm_raw                373 <span style="color: #949494;">"</span>Other Treatment - Baby Aspirin<span style="color: #949494;">"</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>      4 cm_raw                374  <span style="color: #BB0000;">NA</span>                             </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Another example of variables derived in sequence from multiple input</span></span></span>
+<span class="r-in"><span><span class="co"># sources but now with controlled terminology remapping, in this case,</span></span></span>
+<span class="r-in"><span><span class="co"># CDISC Dose Unit (C71620) recoding.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cm_raw2</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  oak_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">6</span>, <span class="fl">8</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">12</span><span class="op">:</span><span class="fl">14</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  raw_source <span class="op">=</span> <span class="st">"cm_raw"</span>,</span></span>
+<span class="r-in"><span>  patient_number <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">375L</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">376</span><span class="op">:</span><span class="fl">377</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">378L</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">379L</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  PATNUM <span class="op">=</span> <span class="va">patient_number</span>,</span></span>
+<span class="r-in"><span>  `IT.DOSUO` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="st">"Other Dose Unit"</span>, <span class="st">"cap"</span>, <span class="cn">NA</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  `IT.CMDOSU` <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mg"</span>, <span class="st">"Gram"</span>, <span class="cn">NA</span>, <span class="st">"Tablet"</span>, <span class="st">"g"</span>, <span class="st">"mg"</span>, <span class="cn">NA</span>, <span class="st">"IU"</span>, <span class="st">"mL"</span>, <span class="st">"%"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">assign_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  raw_dat <span class="op">=</span> <span class="va">cm_raw2</span>,</span></span>
+<span class="r-in"><span>  raw_var <span class="op">=</span> <span class="st">"IT.DOSUO"</span>,</span></span>
+<span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"CMDOSU"</span>,</span></span>
+<span class="r-in"><span>  ct_spec <span class="op">=</span> <span class="va">ct_spec</span>,</span></span>
+<span class="r-in"><span>  ct_clst <span class="op">=</span> <span class="st">"C71620"</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># Dose Unit</span></span></span>
+<span class="r-in"><span>  id_vars <span class="op">=</span> <span class="fu"><a href="oak_id_vars.html">oak_id_vars</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">assign_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    raw_dat <span class="op">=</span> <span class="va">cm_raw2</span>,</span></span>
+<span class="r-in"><span>    raw_var <span class="op">=</span> <span class="st">"IT.CMDOSU"</span>,</span></span>
+<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMDOSU"</span>,</span></span>
+<span class="r-in"><span>    ct_spec <span class="op">=</span> <span class="va">ct_spec</span>,</span></span>
+<span class="r-in"><span>    ct_clst <span class="op">=</span> <span class="st">"C71620"</span>,</span></span>
+<span class="r-in"><span>    id_vars <span class="op">=</span> <span class="fu"><a href="oak_id_vars.html">oak_id_vars</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 10 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    oak_id raw_source patient_number CMDOSU         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>      1 cm_raw                375 mg             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>      2 cm_raw                375 g              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>      3 cm_raw                376 <span style="color: #BB0000;">NA</span>             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>      6 cm_raw                377 TABLET         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>      8 cm_raw                378 g              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>      9 cm_raw                378 OTHER DOSE UNIT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     10 cm_raw                378 CAPSULE        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     12 cm_raw                379 IU             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     13 cm_raw                379 mL             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>     14 cm_raw                379 %              </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -279,7 +384,7 @@ derived variable, as indicated in <code>tgt_var</code>.</p></li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Rammprasad Ganapathy, Adam Forys, <a href="https://www.linkedin.com/in/edgar-manukyan-20987927" class="external-link">Edgar Manukyan</a>, Rosemary Li, Preetesh Parikh, Lisa Houterloot, Yogesh Gupta, Omar Garcia, <a href="https://www.pattern.institute/team/rmagno/" class="external-link">Ramiro Magno</a>, Kamil Sijko, <a href="https://www.linkedin.com/in/shiyu-chen-55a55410a/" class="external-link">Shiyu Chen</a>, <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a>, F. Hoffmann-La Roche AG, Pfizer Inc, Transition Technologies Science.</p>
+  <p></p><p>Developed by Rammprasad Ganapathy, Adam Forys, <a href="https://www.linkedin.com/in/edgar-manukyan-20987927" class="external-link">Edgar Manukyan</a>, Rosemary Li, Preetesh Parikh, Lisa Houterloot, Yogesh Gupta, Omar Garcia, <a href="https://www.pattern.institute/team/rmagno/" class="external-link">Ramiro Magno</a>, Kamil Sijko, <a href="https://www.linkedin.com/in/shiyu-chen-55a55410a/" class="external-link">Shiyu Chen</a>, <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a>, F. Hoffmann-La Roche AG, Pfizer Inc, <a href="https://www.linkedin.com/in/mohsin-uzzama-34066741/" class="external-link">Mohsin Uzzama</a>, Transition Technologies Science.</p>
 </div>
 
 <div class="pkgdown-footer-right">

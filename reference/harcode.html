@@ -255,6 +255,74 @@ derived variable, as indicated in <code>tgt_var</code>.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>      4 MD1                   104 DIPHENHYDRAMINE HCL NAUSEA  GENERAL CONCOMIT…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>      5 MD1                   105 PARACETAMOL         PYREXIA <span style="color: #BB0000;">NA</span>               </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Variables are derived in sequence from multiple input sources.</span></span></span>
+<span class="r-in"><span><span class="co"># For each target variable, only missing (`NA`) values are filled</span></span></span>
+<span class="r-in"><span><span class="co"># during each step—previously assigned (non-missing) values are retained.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cm_raw</span> <span class="op">&lt;-</span></span></span>
+<span class="r-in"><span>  <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    oak_id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>,</span></span>
+<span class="r-in"><span>    raw_source <span class="op">=</span> <span class="st">"cm_raw"</span>,</span></span>
+<span class="r-in"><span>    patient_number <span class="op">=</span> <span class="fl">370</span> <span class="op">+</span> <span class="va">oak_id</span>,</span></span>
+<span class="r-in"><span>    PATNUM <span class="op">=</span> <span class="va">patient_number</span>,</span></span>
+<span class="r-in"><span>    IT.CMTRT <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BABY ASPIRIN"</span>, <span class="st">"CORTISPORIN"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    IT.CMTRTOTH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Other Treatment - "</span>, <span class="cn">NA</span>, <span class="st">"Other Treatment - Baby Aspirin"</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">cm_raw</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   oak_id raw_source patient_number PATNUM IT.CMTRT     IT.CMTRTOTH              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>      1 cm_raw                371    371 BABY ASPIRIN <span style="color: #949494;">"</span>Other Treatment - <span style="color: #949494;">"</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>      2 cm_raw                372    372 CORTISPORIN   <span style="color: #BB0000;">NA</span>                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>      3 cm_raw                373    373 <span style="color: #BB0000;">NA</span>           <span style="color: #949494;">"</span>Other Treatment - Baby …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>      4 cm_raw                374    374 <span style="color: #BB0000;">NA</span>            <span style="color: #BB0000;">NA</span>                      </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Hardcoding of values of `CMCAT` is based firstly on the presence of missing</span></span></span>
+<span class="r-in"><span><span class="co"># values (`NA`) in `IT.CMTRT` and only secondly on `IT.CMTRTOTH`.</span></span></span>
+<span class="r-in"><span><span class="fu">hardcode_no_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  tgt_val <span class="op">=</span> <span class="st">"General Concomitant Medications"</span>,</span></span>
+<span class="r-in"><span>  raw_dat <span class="op">=</span> <span class="va">cm_raw</span>,</span></span>
+<span class="r-in"><span>  raw_var <span class="op">=</span> <span class="st">"IT.CMTRT"</span>,</span></span>
+<span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"CMCAT"</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">hardcode_no_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tgt_val <span class="op">=</span> <span class="st">"Other General Concomitant Medications"</span>,</span></span>
+<span class="r-in"><span>    raw_dat <span class="op">=</span> <span class="va">cm_raw</span>,</span></span>
+<span class="r-in"><span>    raw_var <span class="op">=</span> <span class="st">"IT.CMTRTOTH"</span>,</span></span>
+<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMCAT"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   oak_id raw_source patient_number CMCAT                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>      1 cm_raw                371 General Concomitant Medications      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>      2 cm_raw                372 General Concomitant Medications      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>      3 cm_raw                373 Other General Concomitant Medications</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>      4 cm_raw                374 <span style="color: #BB0000;">NA</span>                                   </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Note that hardcoding application is reversed in this example, this impacts</span></span></span>
+<span class="r-in"><span><span class="co"># the result.</span></span></span>
+<span class="r-in"><span><span class="fu">hardcode_no_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  tgt_val <span class="op">=</span> <span class="st">"Other General Concomitant Medications"</span>,</span></span>
+<span class="r-in"><span>  raw_dat <span class="op">=</span> <span class="va">cm_raw</span>,</span></span>
+<span class="r-in"><span>  raw_var <span class="op">=</span> <span class="st">"IT.CMTRTOTH"</span>,</span></span>
+<span class="r-in"><span>  tgt_var <span class="op">=</span> <span class="st">"CMCAT"</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">hardcode_no_ct</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    tgt_val <span class="op">=</span> <span class="st">"General Concomitant Medications"</span>,</span></span>
+<span class="r-in"><span>    raw_dat <span class="op">=</span> <span class="va">cm_raw</span>,</span></span>
+<span class="r-in"><span>    raw_var <span class="op">=</span> <span class="st">"IT.CMTRT"</span>,</span></span>
+<span class="r-in"><span>    tgt_var <span class="op">=</span> <span class="st">"CMCAT"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   oak_id raw_source patient_number CMCAT                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>      1 cm_raw                371 Other General Concomitant Medications</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>      2 cm_raw                372 General Concomitant Medications      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>      3 cm_raw                373 Other General Concomitant Medications</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>      4 cm_raw                374 <span style="color: #BB0000;">NA</span>                                   </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -262,7 +330,7 @@ derived variable, as indicated in <code>tgt_var</code>.</p></li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p><p>Developed by Rammprasad Ganapathy, Adam Forys, <a href="https://www.linkedin.com/in/edgar-manukyan-20987927" class="external-link">Edgar Manukyan</a>, Rosemary Li, Preetesh Parikh, Lisa Houterloot, Yogesh Gupta, Omar Garcia, <a href="https://www.pattern.institute/team/rmagno/" class="external-link">Ramiro Magno</a>, Kamil Sijko, <a href="https://www.linkedin.com/in/shiyu-chen-55a55410a/" class="external-link">Shiyu Chen</a>, <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a>, F. Hoffmann-La Roche AG, Pfizer Inc, Transition Technologies Science.</p>
+  <p></p><p>Developed by Rammprasad Ganapathy, Adam Forys, <a href="https://www.linkedin.com/in/edgar-manukyan-20987927" class="external-link">Edgar Manukyan</a>, Rosemary Li, Preetesh Parikh, Lisa Houterloot, Yogesh Gupta, Omar Garcia, <a href="https://www.pattern.institute/team/rmagno/" class="external-link">Ramiro Magno</a>, Kamil Sijko, <a href="https://www.linkedin.com/in/shiyu-chen-55a55410a/" class="external-link">Shiyu Chen</a>, <a href="https://www.pattern.institute" class="external-link">Pattern Institute</a>, F. Hoffmann-La Roche AG, Pfizer Inc, <a href="https://www.linkedin.com/in/mohsin-uzzama-34066741/" class="external-link">Mohsin Uzzama</a>, Transition Technologies Science.</p>
 </div>
 
 <div class="pkgdown-footer-right">

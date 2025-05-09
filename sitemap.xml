@@ -76,6 +76,9 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/assign_datetime.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/cal_min_max_date.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/coalesce_capture_matrices.html</loc>
   </url>
   <url>
@@ -200,6 +203,9 @@
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/new_cnd_df.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/oak_cal_ref_dates.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/oak_id_vars.html</loc>
