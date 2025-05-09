@@ -25,7 +25,6 @@ linters: linters_with_defaults(
     strings_as_factors_linter(),
     undesirable_function_linter(c(Sys.setenv = NA_character_, mapply = NA_character_)),
     object_name_linter = NULL,
-    object_usage_linter = NULL,
-    return_linter = NULL
+    object_usage_linter = NULL
   )
 encoding: "UTF-8"

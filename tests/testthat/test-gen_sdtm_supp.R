@@ -14,7 +14,7 @@ test_that("`gen_sdtm_supp` works as expected", {
 
   expected_dm_output <- dm |> dplyr::select(-dplyr::all_of((spec$Variable)))
 
-  expect_equal(final$DM, expected_dm_output)
+  expect_identical(final$DM, expected_dm_output, ignore_attr = TRUE)
 
   # nolint start
   expected_suppdm_output <- tibble::tribble(
@@ -43,11 +43,12 @@ test_that("`gen_sdtm_supp` works as expected", {
     "CDISCPILOT01",     "DM", "01-701-1034",     NA,        NA, "EFFICACY",              "Efficacy Population Flag",   "Y", "DERIVED",     NA,
     "CDISCPILOT01",     "DM", "01-701-1034",     NA,        NA,      "ITT",       "Intent to Treat Population Flag",   "Y", "DERIVED",     NA,
     "CDISCPILOT01",     "DM", "01-701-1034",     NA,        NA,   "SAFETY",                "Safety Population Flag",   "Y", "DERIVED",     NA
-  )
+  ) |>
+    dplyr::mutate(dplyr::across(c("IDVAR", "QEVAL"), as.character),
+                  IDVARVAL = as.integer(IDVARVAL))
   # nolint end
 
-  expect_equal(final$SUPPDM, expected_suppdm_output)
-
+  expect_identical(final$SUPPDM, expected_suppdm_output, ignore_attr = TRUE)
 })
 
 test_that("`gen_sdtm_supp` input validation works", {
