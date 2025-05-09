@@ -160,7 +160,7 @@ test_that("assign_ct works as expected with conditions across both data sets", {
 
   expected_result <-
     cm_tgt_dat |>
-    tibble::add_column(CMMODIFY = c("ASPIRIN EC", "IBUPROFEN LYSINE", NA, NA, NA))
+    tibble::add_column(CMMODIFY = c("ASPIRIN EC", "IBUPROFEN LYSINE", "PARACETAMOL", "DICLOFENAC", "NAPROXEN"))
 
   expect_identical(result1, expected_result)
   expect_identical(result2, expected_result)

@@ -64,8 +64,11 @@ sdtm_hardcode <- function(tgt_dat = NULL,
   # Recode the hardcoded value following terminology.
   tgt_val <- ct_map(tgt_val, ct_spec = ct_spec, ct_clst = ct_clst)
 
+  # Current target values
+  cur_tgt_val <- join_dat[[tgt_var]] %||% as.vector(NA, mode = typeof(tgt_val))
+
   join_dat |>
-    mutate("{tgt_var}" := recode(x = !!rlang::sym(raw_var), to = tgt_val)) |> # nolint object_name_linter()
+    mutate("{tgt_var}" := dplyr::coalesce(cur_tgt_val, recode(x = !!rlang::sym(raw_var), to = tgt_val))) |> # nolint object_name_linter()
     dplyr::select(-dplyr::any_of(setdiff(raw_var, tgt_var))) |>
     dplyr::relocate(dplyr::all_of(tgt_var), .after = dplyr::last_col())
 }
@@ -164,6 +167,53 @@ sdtm_hardcode <- function(tgt_dat = NULL,
 #'   ct_spec = ct_spec,
 #'   ct_clst = "C66729"
 #' )
+#'
+#'
+#' # Variables are derived in sequence from multiple input sources.
+#' # For each target variable, only missing (`NA`) values are filled
+#' # during each step—previously assigned (non-missing) values are retained.
+#'
+#' cm_raw <-
+#'   tibble::tibble(
+#'     oak_id = 1:4,
+#'     raw_source = "cm_raw",
+#'     patient_number = 370 + oak_id,
+#'     PATNUM = patient_number,
+#'     IT.CMTRT = c("BABY ASPIRIN", "CORTISPORIN", NA, NA),
+#'     IT.CMTRTOTH = c("Other Treatment - ", NA, "Other Treatment - Baby Aspirin", NA)
+#'   )
+#'
+#' cm_raw
+#'
+#' # Hardcoding of values of `CMCAT` is based firstly on the presence of missing
+#' # values (`NA`) in `IT.CMTRT` and only secondly on `IT.CMTRTOTH`.
+#' hardcode_no_ct(
+#'   tgt_val = "General Concomitant Medications",
+#'   raw_dat = cm_raw,
+#'   raw_var = "IT.CMTRT",
+#'   tgt_var = "CMCAT"
+#' ) |>
+#'   hardcode_no_ct(
+#'     tgt_val = "Other General Concomitant Medications",
+#'     raw_dat = cm_raw,
+#'     raw_var = "IT.CMTRTOTH",
+#'     tgt_var = "CMCAT"
+#'   )
+#'
+#' # Note that hardcoding application is reversed in this example, this impacts
+#' # the result.
+#' hardcode_no_ct(
+#'   tgt_val = "Other General Concomitant Medications",
+#'   raw_dat = cm_raw,
+#'   raw_var = "IT.CMTRTOTH",
+#'   tgt_var = "CMCAT"
+#' ) |>
+#'   hardcode_no_ct(
+#'     tgt_val = "General Concomitant Medications",
+#'     raw_dat = cm_raw,
+#'     raw_var = "IT.CMTRT",
+#'     tgt_var = "CMCAT"
+#'   )
 #'
 #' @name harcode
 NULL

@@ -155,7 +155,7 @@ problems <- function(x = .Last.value) {
 n_problems <- function(x) {
   probs <- problems(x)
   if (is.null(probs)) {
-    return(0L)
+    0L
   } else {
     nrow(probs)
   }

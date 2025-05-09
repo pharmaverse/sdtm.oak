@@ -41,4 +41,4 @@ if (!Sys.getenv("RENV_AUTOLOADER_ENABLED") %in% c("false", "FALSE")) {
   }
 }
 
-source("renv/activate.R")
+# source("renv/activate.R")

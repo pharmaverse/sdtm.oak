@@ -330,7 +330,7 @@ ct_spec_example <- function(example) {
   } else {
     local_path <-
       system.file(path, package = "sdtm.oak", mustWork = TRUE)
-    return(local_path)
+    local_path
   }
 }
 
