@@ -81,8 +81,6 @@ gen_sdtm_supp <-
         names_transform = function(names_values) {
           # Replace DMSEQ with NA
           names_values <- gsub("^DMSEQ$", NA_character_, names_values)
-
-          return(names_values)
         },
         values_to = "IDVARVAL"
       ) |>
