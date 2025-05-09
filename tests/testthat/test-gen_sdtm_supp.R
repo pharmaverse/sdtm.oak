@@ -18,7 +18,7 @@ test_that("`gen_sdtm_supp` works as expected", {
 
   # nolint start
   expected_suppdm_output <- tibble::tribble(
-    ~STUDYID, ~RDOMAIN,      ~USUBJID, ~IDVAR, ~IDVARVAL,      ~QNAM,                                 ~QLABEL, ~QVAL,    ~QORIG, ~QEVAL,
+    ~STUDYID,       ~RDOMAIN,      ~USUBJID, ~IDVAR, ~IDVARVAL,      ~QNAM,                                 ~QLABEL, ~QVAL,    ~QORIG, ~QEVAL,
     "CDISCPILOT01",     "DM", "01-701-1015",     NA,        NA, "COMPLT16", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
     "CDISCPILOT01",     "DM", "01-701-1015",     NA,        NA, "COMPLT24", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
     "CDISCPILOT01",     "DM", "01-701-1015",     NA,        NA,  "COMPLT8", "Completers of Week 16 Population Flag",   "Y", "DERIVED",     NA,
