@@ -36,6 +36,7 @@ Function to generate final SDTM domain and supplemental domain SUPP--
 \examples{
 dm <- read_domain_example("dm")
 supp_qual_info <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
+
 dm_suppdm <-
   generate_sdtm_supp(
     dm,

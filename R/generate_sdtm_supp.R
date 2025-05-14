@@ -14,6 +14,7 @@
 #' @examples
 #' dm <- read_domain_example("dm")
 #' supp_qual_info <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
+#'
 #' dm_suppdm <-
 #'   generate_sdtm_supp(
 #'     dm,
@@ -37,12 +38,13 @@ generate_sdtm_supp <- function(sdtm_dataset,
 
   # Create vectors for later use
   domain <- unique(sdtm_dataset$DOMAIN)
+
   assertthat::assert_that(identical(length(domain), 1L),
     msg = "There are multiple domain names in the SDTM dataset"
   )
 
   # Add dummy SEQ variable for DM domain.
-  # The DMSEQ will be removed later.
+  # We are removing DMSEQ later in the code.
   if (identical(domain, "DM") && is.null(idvar)) {
     sdtm_dataset$DMSEQ <- NA_integer_
   }
@@ -51,6 +53,7 @@ generate_sdtm_supp <- function(sdtm_dataset,
   idvar <- if (is.null(idvar)) {
     paste0(domain, "SEQ")
   }
+
   admiraldev::assert_character_scalar(idvar)
 
   # Each supplemental variable should only be mapped to one unique label
@@ -107,19 +110,16 @@ generate_sdtm_supp <- function(sdtm_dataset,
   # Assign labels to SUPPQUAL
   labels <-
     c(
-      labels <-
-        c(
-          "Study Identifier",
-          "Related Domain Abbreviation",
-          "Unique Subject Identifier",
-          "Identifying Variable",
-          "Identifying Variable Value",
-          "Qualifier Variable Name",
-          "Qualifier Variable Label",
-          "Data Value",
-          "Origin",
-          "Evaluator"
-        )
+      "Study Identifier",
+      "Related Domain Abbreviation",
+      "Unique Subject Identifier",
+      "Identifying Variable",
+      "Identifying Variable Value",
+      "Qualifier Variable Name",
+      "Qualifier Variable Label",
+      "Data Value",
+      "Origin",
+      "Evaluator"
     )
 
   for (v in seq_len(length(labels))) {
@@ -131,6 +131,7 @@ generate_sdtm_supp <- function(sdtm_dataset,
 
   domain <- toupper(domain)
   supp_domain <- paste0("SUPP", domain)
+
   final <- rlang::list2(
     {{ domain }} := sdtm_output,
     {{ supp_domain }} := supp
