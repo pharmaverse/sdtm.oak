@@ -14,6 +14,7 @@
 #' @examples
 #' dm <- read_domain_example("dm")
 #' supp_qual_info <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
+#'
 #' final <-
 #'   gen_sdtm_supp(
 #'     dm,
@@ -38,12 +39,13 @@ gen_sdtm_supp <-
 
     # Create vectors for later use
     domain <- unique(sdtm_dataset$DOMAIN)
+
     assertthat::assert_that(identical(length(domain), 1L),
       msg = "There are multiple domain names in the SDTM dataset"
     )
 
     # Add dummy SEQ variable for DM domain.
-    # The DMSEQ will be removed later.
+    # We are removing DMSEQ later in the code.
     if (identical(domain, "DM") && is.null(idvar)) {
       sdtm_dataset$DMSEQ <- NA_integer_
     }
@@ -52,6 +54,7 @@ gen_sdtm_supp <-
     idvar <- if (is.null(idvar)) {
       paste0(domain, "SEQ")
     }
+
     admiraldev::assert_character_scalar(idvar)
 
     # Each supplemental variable should only be mapped to one unique label
@@ -80,7 +83,7 @@ gen_sdtm_supp <-
         names_to = "IDVAR",
         names_transform = function(names_values) {
           # Replace DMSEQ with NA
-          names_values <- gsub("^DMSEQ$", NA_character_, names_values)
+          gsub("^DMSEQ$", NA_character_, names_values)
         },
         values_to = "IDVARVAL"
       ) |>
@@ -105,22 +108,18 @@ gen_sdtm_supp <-
       )
 
     # Assign labels to SUPPQUAL
-    labels <-
-      c(
-        labels <-
-          c(
-            "Study Identifier",
-            "Related Domain Abbreviation",
-            "Unique Subject Identifier",
-            "Identifying Variable",
-            "Identifying Variable Value",
-            "Qualifier Variable Name",
-            "Qualifier Variable Label",
-            "Data Value",
-            "Origin",
-            "Evaluator"
-          )
-      )
+    labels <- c(
+      "Study Identifier",
+      "Related Domain Abbreviation",
+      "Unique Subject Identifier",
+      "Identifying Variable",
+      "Identifying Variable Value",
+      "Qualifier Variable Name",
+      "Qualifier Variable Label",
+      "Data Value",
+      "Origin",
+      "Evaluator"
+    )
 
     for (v in seq_len(length(labels))) {
       attr(supp[[v]], "label") <- labels[v]
@@ -131,6 +130,7 @@ gen_sdtm_supp <-
 
     domain <- toupper(domain)
     supp_domain <- paste0("SUPP", domain)
+
     final <- rlang::list2(
       {{ domain }} := sdtm_output,
       {{ supp_domain }} := supp
