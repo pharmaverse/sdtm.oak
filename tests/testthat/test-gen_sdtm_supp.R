@@ -1,9 +1,9 @@
 dm <- read_domain_example("dm")[1L:5L, ]
 supp_qual_info <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
 
-test_that("`gen_sdtm_supp` works as expected", {
-  final <-
-    gen_sdtm_supp(
+test_that("`generate_sdtm_supp` works as expected", {
+  dm_suppdm <-
+    generate_sdtm_supp(
       dm,
       idvar = NULL,
       supp_qual_info = supp_qual_info,
@@ -14,7 +14,7 @@ test_that("`gen_sdtm_supp` works as expected", {
 
   expected_dm_output <- dm |> dplyr::select(-dplyr::all_of((supp_qual_info$Variable)))
 
-  expect_identical(final$DM, expected_dm_output, ignore_attr = TRUE)
+  expect_identical(dm_suppdm$DM, expected_dm_output, ignore_attr = TRUE)
 
   # nolint start
   expected_suppdm_output <- tibble::tribble(
@@ -49,12 +49,12 @@ test_that("`gen_sdtm_supp` works as expected", {
     )
   # nolint end
 
-  expect_identical(final$SUPPDM, expected_suppdm_output, ignore_attr = TRUE)
+  expect_identical(dm_suppdm$SUPPDM, expected_suppdm_output, ignore_attr = TRUE)
 })
 
-test_that("`gen_sdtm_supp` input validation works", {
+test_that("`generate_sdtm_supp` input validation works", {
   expect_error(
-    gen_sdtm_supp(
+    generate_sdtm_supp(
       dm,
       idvar = 123L,
       supp_qual_info = supp_qual_info,
@@ -66,7 +66,7 @@ test_that("`gen_sdtm_supp` input validation works", {
   )
 
   expect_error(
-    gen_sdtm_supp(
+    generate_sdtm_supp(
       dm,
       idvar = NULL,
       supp_qual_info = "abc",
@@ -78,7 +78,7 @@ test_that("`gen_sdtm_supp` input validation works", {
   )
 
   expect_error(
-    gen_sdtm_supp(
+    generate_sdtm_supp(
       dm,
       idvar = NULL,
       supp_qual_info = supp_qual_info,
@@ -90,7 +90,7 @@ test_that("`gen_sdtm_supp` input validation works", {
   )
 
   expect_error(
-    gen_sdtm_supp(
+    generate_sdtm_supp(
       dm,
       idvar = NULL,
       supp_qual_info = supp_qual_info,
@@ -102,7 +102,7 @@ test_that("`gen_sdtm_supp` input validation works", {
   )
 
   expect_error(
-    gen_sdtm_supp(
+    generate_sdtm_supp(
       dm |> dplyr::select(-COMPLT16),
       idvar = NULL,
       supp_qual_info = supp_qual_info,

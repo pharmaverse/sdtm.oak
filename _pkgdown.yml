@@ -60,7 +60,7 @@ reference:
 
 - title: Supplemental Qualifiers
   contents:
-  - gen_sdtm_supp
+  - generate_sdtm_supp
 
 - title: Calculation of minimum/maximum ISO8601 dates
   contents:
