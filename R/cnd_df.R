@@ -160,7 +160,7 @@ rm_cnd_df <- function(dat) {
     attr(dat, "cnd") <- NULL
     attr(dat, "cnd_sum") <- NULL
   }
-  return(dat)
+  dat
 }
 
 #' Conditioned tibble header print method
@@ -366,7 +366,8 @@ mutate.cnd_df <- function(.data,
   derivations <- rlang::enquos(...)
   derived_vars <- names(derivations)
 
-  lst <- purrr::map(derivations, ~ rlang::expr(dplyr::if_else(!!cnd, !!.x, NA)))
+  default <- dplyr::if_else(derived_vars %in% colnames(.data), rlang::syms(derived_vars), list(NA))
+  lst <- purrr::map2(derivations, default, ~ rlang::expr(dplyr::if_else(!!cnd, !!.x, !!.y)))
   lst <- rlang::set_names(lst, derived_vars)
 
   dplyr::mutate(dat, !!!lst, .by = NULL, .keep = .keep, .after = dplyr::all_of(.after))

@@ -1,6 +1,7 @@
 # sdtm.oak V0.1.1
 
-Fixed the bug that was causing test cases to fail. Updated derive_blfl function to account for baseline_timepoints. Typo updates in the documention.
+Fixed the bug that was causing test cases to fail. Updated `derive_blfl()`
+function to account for baseline_timepoints. Typo updates in the documentation.
 
 # sdtm.oak V0.1.0
 
