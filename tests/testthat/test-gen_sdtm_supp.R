@@ -1,18 +1,18 @@
 dm <- read_domain_example("dm")[1L:5L, ]
-spec <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
+supp_qual_info <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
 
 test_that("`gen_sdtm_supp` works as expected", {
   final <-
     gen_sdtm_supp(
       dm,
       idvar = NULL,
-      spec = spec,
+      supp_qual_info = supp_qual_info,
       qnam = "Variable",
       label_var = "Label",
       orig_var = "Origin"
     )
 
-  expected_dm_output <- dm |> dplyr::select(-dplyr::all_of((spec$Variable)))
+  expected_dm_output <- dm |> dplyr::select(-dplyr::all_of((supp_qual_info$Variable)))
 
   expect_identical(final$DM, expected_dm_output, ignore_attr = TRUE)
 
@@ -57,7 +57,7 @@ test_that("`gen_sdtm_supp` input validation works", {
     gen_sdtm_supp(
       dm,
       idvar = 123L,
-      spec = spec,
+      supp_qual_info = supp_qual_info,
       qnam = "Variable",
       label_var = "Label",
       orig_var = "Origin"
@@ -69,19 +69,19 @@ test_that("`gen_sdtm_supp` input validation works", {
     gen_sdtm_supp(
       dm,
       idvar = NULL,
-      spec = "abc",
+      supp_qual_info = "abc",
       qnam = "Variable",
       label_var = "Label",
       orig_var = "Origin"
     ),
-    "Argument `spec` must be class"
+    "Argument `supp_qual_info` must be class"
   )
 
   expect_error(
     gen_sdtm_supp(
       dm,
       idvar = NULL,
-      spec = spec,
+      supp_qual_info = supp_qual_info,
       qnam = "Var",
       label_var = "Label",
       orig_var = "Origin"
@@ -93,7 +93,7 @@ test_that("`gen_sdtm_supp` input validation works", {
     gen_sdtm_supp(
       dm,
       idvar = NULL,
-      spec = spec,
+      supp_qual_info = supp_qual_info,
       qnam = "Variable",
       label_var = c("label", "qlabel"),
       orig_var = "Origin"
@@ -105,7 +105,7 @@ test_that("`gen_sdtm_supp` input validation works", {
     gen_sdtm_supp(
       dm |> dplyr::select(-COMPLT16),
       idvar = NULL,
-      spec = spec,
+      supp_qual_info = supp_qual_info,
       qnam = "Variable",
       label_var = "Label",
       orig_var = "Origin"

@@ -2,23 +2,23 @@
 #'
 #' @param sdtm_dataset SDTM output used to split supplemental domains.
 #' @param idvar Variable name for IDVAR variable.
-#' @param spec User-defined data frame of specifications which should contain
-#' `qnam_var`, `label_var` and `orig_var`.
-#' @param qnam_var Variable name in user-defined `spec` for QNAM variable.
-#' @param label_var Variable name in user-defined `spec` for QLABEL variable.
-#' @param orig_var Variable name in user-defined `spec` for QORIG variable.
+#' @param supp_qual_info User-defined data frame of specifications for suppquals
+#' which contains `qnam_var`, `label_var` and `orig_var`.
+#' @param qnam_var Variable name in user-defined `supp_qual_info` for QNAM variable.
+#' @param label_var Variable name in user-defined `supp_qual_info` for QLABEL variable.
+#' @param orig_var Variable name in user-defined `supp_qual_info` for QORIG variable.
 #'
 #' @return List of SDTM domain with suppquals dropped and corresponding supplemental domain.
 #' @export
 #'
 #' @examples
 #' dm <- read_domain_example("dm")
-#' spec <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
+#' supp_qual_info <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
 #' final <-
 #'   gen_sdtm_supp(
 #'     dm,
 #'     idvar = NULL,
-#'     spec = spec,
+#'     supp_qual_info = supp_qual_info,
 #'     qnam_var = "Variable",
 #'     label_var = "Label",
 #'     orig_var = "Origin"
@@ -26,7 +26,7 @@
 gen_sdtm_supp <-
   function(sdtm_dataset,
            idvar = NULL,
-           spec,
+           supp_qual_info,
            qnam_var,
            label_var,
            orig_var) {
@@ -34,7 +34,7 @@ gen_sdtm_supp <-
     admiraldev::assert_character_scalar(label_var)
     admiraldev::assert_character_scalar(orig_var)
 
-    admiraldev::assert_data_frame(spec, required_vars = rlang::syms(c(qnam_var, label_var, orig_var)))
+    admiraldev::assert_data_frame(supp_qual_info, required_vars = rlang::syms(c(qnam_var, label_var, orig_var)))
 
     # Create vectors for later use
     domain <- unique(sdtm_dataset$DOMAIN)
@@ -55,10 +55,10 @@ gen_sdtm_supp <-
     admiraldev::assert_character_scalar(idvar)
 
     # Each supplemental variable should only be mapped to one unique label
-    spec <- spec |>
+    supp_qual_info <- supp_qual_info |>
       dplyr::distinct(dplyr::across(dplyr::all_of(c(qnam_var, label_var, orig_var))), .keep_all = TRUE)
 
-    supp_cols <- spec |>
+    supp_cols <- supp_qual_info |>
       dplyr::select(dplyr::all_of(qnam_var)) |>
       dplyr::pull()
 
@@ -84,7 +84,7 @@ gen_sdtm_supp <-
         },
         values_to = "IDVARVAL"
       ) |>
-      dplyr::left_join(spec, by = c("QNAM" = qnam_var)) |>
+      dplyr::left_join(supp_qual_info, by = c("QNAM" = qnam_var)) |>
       dplyr::mutate(
         RDOMAIN = DOMAIN,
         QORIG = Origin,

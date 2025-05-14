@@ -4,21 +4,28 @@
 \alias{gen_sdtm_supp}
 \title{Function to generate final SDTM domain and supplemental domain SUPP--}
 \usage{
-gen_sdtm_supp(sdtm_dataset, idvar = NULL, spec, qnam_var, label_var, orig_var)
+gen_sdtm_supp(
+  sdtm_dataset,
+  idvar = NULL,
+  supp_qual_info,
+  qnam_var,
+  label_var,
+  orig_var
+)
 }
 \arguments{
 \item{sdtm_dataset}{SDTM output used to split supplemental domains.}
 
 \item{idvar}{Variable name for IDVAR variable.}
 
-\item{spec}{User-defined data frame of specifications which should contain
-\code{qnam_var}, \code{label_var} and \code{orig_var}.}
+\item{supp_qual_info}{User-defined data frame of specifications for suppquals
+which contains \code{qnam_var}, \code{label_var} and \code{orig_var}.}
 
-\item{qnam_var}{Variable name in user-defined \code{spec} for QNAM variable.}
+\item{qnam_var}{Variable name in user-defined \code{supp_qual_info} for QNAM variable.}
 
-\item{label_var}{Variable name in user-defined \code{spec} for QLABEL variable.}
+\item{label_var}{Variable name in user-defined \code{supp_qual_info} for QLABEL variable.}
 
-\item{orig_var}{Variable name in user-defined \code{spec} for QORIG variable.}
+\item{orig_var}{Variable name in user-defined \code{supp_qual_info} for QORIG variable.}
 }
 \value{
 List of SDTM domain with suppquals dropped and corresponding supplemental domain.
@@ -28,12 +35,12 @@ Function to generate final SDTM domain and supplemental domain SUPP--
 }
 \examples{
 dm <- read_domain_example("dm")
-spec <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
+supp_qual_info <- read.csv(system.file("spec/suppqual_spec.csv", package = "sdtm.oak"))
 final <-
   gen_sdtm_supp(
     dm,
     idvar = NULL,
-    spec = spec,
+    supp_qual_info = supp_qual_info,
     qnam_var = "Variable",
     label_var = "Label",
     orig_var = "Origin"
