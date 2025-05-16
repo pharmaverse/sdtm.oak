@@ -58,6 +58,10 @@ reference:
   contents:
   - "%.>%"
 
+- title: Supplemental Qualifiers
+  contents:
+  - generate_sdtm_supp
+
 - title: Calculation of minimum/maximum ISO8601 dates
   contents:
   - cal_min_max_date
