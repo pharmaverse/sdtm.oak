@@ -9,7 +9,7 @@
 status](https://www.r-pkg.org/badges/version/sdtm.oak)](https://CRAN.R-project.org/package=sdtm.oak)
 <!-- badges: end -->
 
-An EDC (Electronic Data Capture systems) and Data Standard agnostic solution that enables the pharmaceutical programming community to develop CDISC (Clinical Data Interchange Standards Consortium) SDTM (Study Data Tabulation Model) datasets in R. The reusable algorithms concept in 'sdtm.oak' provides a framework for modular programming and also can automate SDTM creation based on the standard SDTM spec.
+An EDC (Electronic Data Capture systems) and Data Standard agnostic solution that enables the pharmaceutical programming community to develop CDISC (Clinical Data Interchange Standards Consortium) SDTM (Study Data Tabulation Model) datasets in R. The reusable algorithms concept in 'sdtm.oak' provides a framework for modular programming. We plan to develop a code generation feature based on a standardized SDTM specification format, which has the potential to automate the creation of SDTM datasets.
 
 ## Installation
 
@@ -43,9 +43,7 @@ programming SDTM datasets.
 'sdtm.oak' aims to address this issue by providing an EDC-agnostic,
 standards-agnostic solution. It is an open-source R package that offers
 a framework for the modular programming of SDTM in R. With future
-releases; it will also strive to automate the creation of SDTM datasets
-based on the metadata-driven approach using standard SDTM
-specifications.
+releases; we plan to develop a code generation feature based on a standardized SDTM specification format, which has the potential to automate the creation of SDTM datasets.
 
 ## Scope
 
@@ -62,25 +60,19 @@ as the raw dataset and variable name(s) exist, 'sdtm.oak' will execute
 the SDTM mapping using the selected function. It’s important to note
 that 'sdtm.oak' may not handle sponsor-specific details related to
 managing metadata for LAB tests, unit conversions, and coding
-information, as many companies have unique business processes. With
-subsequent releases, strive to automate SDTM creation using a
-metadata-driven approach based on a standard SDTM specification format.
+information, as many companies have unique business processes.
 
 ## Road Map
 
-This Release: The V0.1.0 release of 'sdtm.oak' users can create the
-majority of the SDTM domains. Domains that are NOT in scope for the
-V0.1.0 release are DM (Demographics), Trial Design Domains, SV (Subject Visits), SE (Subject Elements), RELREC (Related Records), Associated
-Person domains, and EPOCH Variable across all domains.
+This Release: The V0.2.0 release of 'sdtm.oak' Users can now efficiently create the DM domain and various SDTM domains, encompassing Findings, Events, Findings About, and Intervention classes. Domains that are NOT in scope for the V0.2.0 release are Trial Design Domains, SV (Subject Visits), SE (Subject Elements), RELREC (Related Records), Associated Person domains, and EPOCH Variable across all domains.
 
 Subsequent Releases: We are planning to develop the below features in
 the subsequent releases.  
-- Functions required to derive reference date variables in the DM
-domain.  
-- Metadata driven automation based on the standardized SDTM
+- Metadata driven code generation based on the standardized SDTM
 specification.  
 - Functions required to program the EPOCH Variable.  
 - Functions to derive standard units and results based on metadata.
+- Additional features to be developed based on the user feedback.
 
 ## References and Documentation
 
@@ -97,6 +89,8 @@ specification.
   Automation](https://pharmaverse.github.io/sdtm.oak/articles/study_sdtm_spec.html)
   to learn about how the foundational release sets up the stage for
   automation.
+- Please watch this YouTube video to learn about using the package [YouTube Video]([https://www.youtube.com/watch?v=H0FdhG9_ttU&list=PLMtxz1fUYA5C67SvhSCINluOV2EmyjKql&index=3&ab_channel=RinPharma](https://www.youtube.com/watch?v=H0FdhG9_ttU&list=PLMtxz1fUYA5C67SvhSCINluOV2EmyjKql&index=3&ab_channel=RinPharma))
+- RinPharma Virtual workshop [slides](https://pharmaverse.github.io/rinpharma-2024-SDTM-workshop/)
 
 ## Feedback
 

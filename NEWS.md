@@ -1,3 +1,7 @@
+# sdtm.oak V0.2.0
+
+New functions have been introduced to enhance user capabilities, including `calc_min_max_date()` and `oak_calc_ref_dates()` for creation of the DM domain programming, and `generate_sdtm_supp()` to facilitate the creation of supplemental qualifier domains. Additionally, this update addresses bug fixes in mapping algorithms to prevent overwriting results. Users can now efficiently create the DM domain and various SDTM domains, encompassing Findings, Events, Findings About, and Intervention classes, thereby expanding the range of supported domains.
+
 # sdtm.oak V0.1.1
 
 Fixed the bug that was causing test cases to fail. Updated `derive_blfl()`
