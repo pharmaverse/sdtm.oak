@@ -76,5 +76,5 @@ generate_oak_id_vars <- function(raw_dat,
     ) |>
     dplyr::select(oak_id_vars(), dplyr::everything())
 
-  return(raw_oak_id_vars)
+  raw_oak_id_vars
 }

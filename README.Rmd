@@ -67,8 +67,8 @@ We are planning to develop the below features in the subsequent releases.\
 ## References and Documentation
 
 * Please go to [Algorithms](https://pharmaverse.github.io/sdtm.oak/articles/algorithms.html) article to learn about Algorithms.
-* Please go to [Create Events Domain](https://pharmaverse.github.io/sdtm.oak/articles/events_domain.html) to learn about step by step process to create an Events domain.
-* Please go to [Create Findings Domain](https://pharmaverse.github.io/sdtm.oak/articles/findings_domain.html) to learn about step by step process to create an Events domain.
+* Please go to [Create Interventions Domain](https://pharmaverse.github.io/sdtm.oak/articles/interventions_domain.html) to learn about step by step process to create an Events domain.
+* Please go to [Create Findings Domain](https://pharmaverse.github.io/sdtm.oak/articles/findings_domain.html) to learn about step by step process to create a Findings domain.
 * Please go to [Path to Automation](https://pharmaverse.github.io/sdtm.oak/articles/study_sdtm_spec.html)
   to learn about how the foundational release sets up the stage for automation.
 
@@ -82,8 +82,3 @@ We ask users to follow the mentioned approach and try `{sdtm.oak}` to map any SD
 ## Acknowledgments
 
 We thank the contributors and authors of the package. We also thank the CDISC COSA for sponsoring the `{sdtm.oak}`. Additionally, we would like to sincerely thank the volunteers from Roche, Pfizer, GSK, Vertex, and Merck for their valuable input as integral members of the CDISC COSA - OAK leadership team.
-
-
-
-
-
