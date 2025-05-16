@@ -52,6 +52,7 @@ reference:
 - title: Calculation of reference dates in DM
   contents:
   - oak_cal_ref_dates
+  - cal_min_max_date
 
 - title: Explicit dot pipe operator
   desc: A simple alternative to `%>% {...}`
@@ -61,10 +62,6 @@ reference:
 - title: Supplemental Qualifiers
   contents:
   - generate_sdtm_supp
-
-- title: Calculation of minimum/maximum ISO8601 dates
-  contents:
-  - cal_min_max_date
 
 authors:
   Ramiro Magno:
