@@ -12,20 +12,21 @@ test_that("`add_problems()`: basic usage", {
 })
 
 test_that("`any_problems()`: basic usage", {
-  expect_false(any_problems(list(parse_dttm("1980-06-18", "y-m-d"))))
+  expect_false(any_problems(list(parse_dttm("1980-06-18", "y-m-d")), dtc = "1980-06-18"))
 
-  expect_true(any_problems(list(parse_dttm("1980-06-18", "ymd"))))
+  expect_true(any_problems(list(parse_dttm("1980-06-18", "ymd")), dtc = "1980-06-18"))
 
   # Multiple records
   date <- c("2000-01-05", "2001/12/25", "1980-06-18", "1979-09-07")
   time <- c("00h12m21", "22:35:05", "03:00:15", "07:09:00")
+  dtc <- list(date = date, time = time)
 
   cap_matrix_date <- parse_dttm(date, "y-m-d")
   cap_matrix_time <- parse_dttm(time, "H:M:S")
 
   cap_matrices <- list(cap_matrix_date, cap_matrix_time)
   expect_identical(
-    any_problems(cap_matrices),
+    any_problems(cap_matrices, dtc = dtc),
     c(TRUE, TRUE, FALSE, FALSE)
   )
 })

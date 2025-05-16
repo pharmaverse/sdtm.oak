@@ -71,6 +71,9 @@ add_problems <- function(x, is_problem, dtc) {
 #'
 #' @param cap_matrices A list of capture matrices in the sense of the returned
 #' value by [parse_dttm()].
+#' @param dtc A list of `character` vectors of dates, times or date-times'
+#'   components. Typically, this parameter takes the value passed in `...` to
+#'   a [create_iso8601()] call.
 #' @param .cutoff_2000 An integer value. Two-digit years smaller or equal to
 #'   `.cutoff_2000` are parsed as though starting with `20`, otherwise parsed as
 #'   though starting with `19`.
@@ -80,12 +83,21 @@ add_problems <- function(x, is_problem, dtc) {
 #'   number of rows of the capture matrices in `cap_matrices`.
 #'
 #' @keywords internal
-any_problems <- function(cap_matrices, .cutoff_2000 = 68L) {
-  cap_matrices |>
+any_problems <- function(cap_matrices, dtc, .cutoff_2000 = 68L) {
+  dtc_is_missing <-
+    dtc |>
+    unlist() |>
+    matrix(ncol = length(cap_matrices)) |>
+    is.na()
+
+  parsing_is_na <-
+    cap_matrices |>
     purrr::map(~ format_iso8601(.x, .cutoff_2000 = .cutoff_2000)) |>
     unlist() |>
     matrix(ncol = length(cap_matrices)) |>
-    is.na() |>
+    is.na()
+
+  (parsing_is_na & !dtc_is_missing) |>
     rowSums() |>
     as.logical()
 }
