@@ -90,7 +90,7 @@ is_iso8601 <- function(dtc_var) {
     return(TRUE)
   }
 
-  return(FALSE)
+  FALSE
 }
 
 #' Derive Baseline Flag or Last Observation Before Exposure Flag
