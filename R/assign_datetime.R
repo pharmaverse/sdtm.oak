@@ -175,6 +175,8 @@ assign_datetime <-
       dplyr::select(dplyr::all_of(c(id_vars, raw_var))) |>
       sdtm_join(tgt_dat = tgt_dat, id_vars = id_vars)
 
+    join_dat[raw_var] <- purrr::map(join_dat[raw_var], ~ recode(.x, from = "", to = NA_character_))
+
     tgt_val <-
       create_iso8601(!!!join_dat[raw_var],
         .format = raw_fmt,
