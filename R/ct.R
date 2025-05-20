@@ -228,7 +228,7 @@ inform_on_ct_mappability <- function(x, from) {
   unmappable <- unique(x[!is_mappable])
 
   cli::cli_alert_info("These values could not be mapped to controlled terminology: {.val {unmappable}}.",
-    wrap = TRUE
+    wrap = FALSE
   )
 
   invisible(FALSE)
