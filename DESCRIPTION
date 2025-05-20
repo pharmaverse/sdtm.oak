@@ -69,7 +69,9 @@ Suggests:
     spelling,
     testthat (>= 3.1.7),
     DT,
-    readr
+    readr,
+    pharmaversesdtm,
+    pharmaverseraw
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Config/testthat/parallel: true
