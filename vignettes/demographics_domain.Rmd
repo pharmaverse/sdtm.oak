@@ -1,10 +1,11 @@
 ---
 title: "Creating a Demographics(DM) domain"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Creating a Demographics(DM) domain}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 ---
 
 ```{r, include = FALSE}
@@ -33,7 +34,9 @@ In this article, we will dive directly into programming and provide further expl
 * [Create oak_id_vars](#oakidvars)
 * [Read in CT](#readct)
 * [Create reference dates configuration file](#refdates)
-* [Map Variables](#mapvars)
+* [Map Topic Variable](#maptopic)
+* [Map Rest of the Variables](#maprest)
+* [Map Reference Date Variables](#mapvars)
 * [Create SDTM derived variables](#derivedvars)
 * [Add Labels and Attributes](#attributes)
 
@@ -47,6 +50,7 @@ ds_raw <- pharmaverseraw::ds_raw
 ec_raw <- pharmaverseraw::ec_raw
 ```
 
+Demographics Raw dataset. The mock up of the CRF can be viewed [here](https://github.com/pharmaverse/pharmaverseraw/blob/main/vignettes/articles/aCRFs/Demographics_aCRF.pdf):
 ```{r, eval=TRUE, echo=FALSE}
 sdtm.oak:::dataset_oak_vignette(
   dm_raw,
@@ -55,14 +59,20 @@ sdtm.oak:::dataset_oak_vignette(
     PLANNED_ARMCD, ACTUAL_ARM, ACTUAL_ARMCD, COL_DT, IC_DT
   )
 )
+```
 
+Disposition Raw dataset. The mock up of the CRF can be viewed [here](https://github.com/pharmaverse/pharmaverseraw/blob/main/vignettes/articles/aCRFs/Exposure_as_collected_aCRF.pdf)
+```{r, eval=TRUE, echo=FALSE}
 sdtm.oak:::dataset_oak_vignette(
   ds_raw,
   display_vars = exprs(
     PATNUM, INSTANCE, IT.DSTERM, OTHERSP, IT.DSSTDAT, DEATHDT
   )
 )
+```
 
+Study Drug Administration Raw dataset. The mock up of the CRF can be viewed [here](https://github.com/pharmaverse/pharmaverseraw/blob/main/vignettes/articles/aCRFs/Subject_Disposition_aCRF.pdf)
+```{r, eval=TRUE, echo=FALSE}
 sdtm.oak:::dataset_oak_vignette(
   ec_raw,
   display_vars = exprs(
@@ -70,6 +80,7 @@ sdtm.oak:::dataset_oak_vignette(
   )
 )
 ```
+
 ## Create oak_id_vars {#oakidvars}
 
 ```{r eval=TRUE}
@@ -92,6 +103,7 @@ ec_raw <- ec_raw %>%
   )
 ```
 
+For example, Demographics Raw dataset with `oak_id_vars`
 ```{r, eval=TRUE, echo=FALSE}
 sdtm.oak:::dataset_oak_vignette(
   dm_raw,
@@ -130,14 +142,14 @@ Create reference date configuration file, a data frame which has the details of 
 - **`time_var`**: Time variable name from the raw dataset.  
 - **`dformat`**: Format of the date collected in raw data.  
 - **`tformat`**: Format of the time collected in raw data.  
-- **`sdtm_var_name`**: Reference variable name.  
+- **`sdtm_var_name`**: Reference date variable name in DM domain where the raw variable is used.  
 
 ```{r eval=TRUE}
 ref_date_conf_df <- tibble::tribble(
   ~raw_dataset_name, ~date_var,     ~time_var,      ~dformat,      ~tformat, ~sdtm_var_name,
   "ec_raw",       "IT.ECSTDAT", NA_character_, "dd-mmm-yyyy", NA_character_,     "RFXSTDTC",
   "ec_raw",       "IT.ECENDAT", NA_character_, "dd-mmm-yyyy", NA_character_,     "RFXENDTC",
-  "ds_raw",       "IT.DSSTDAT", NA_character_,  "mm-dd-yyyy", NA_character_,      "RFSTDTC",
+  "ec_raw",       "IT.ECSTDAT", NA_character_, "dd-mmm-yyyy", NA_character_,      "RFSTDTC",
   "ec_raw",       "IT.ECENDAT", NA_character_, "dd-mmm-yyyy", NA_character_,      "RFENDTC",
   "dm_raw",            "IC_DT", NA_character_,  "mm/dd/yyyy", NA_character_,      "RFICDTC",
   "ds_raw",          "DSDTCOL",     "DSTMCOL",  "mm-dd-yyyy",         "H:M",     "RFPENDTC",
@@ -154,13 +166,36 @@ sdtm.oak:::dataset_oak_vignette(
 )
 ```
 
-## Map Variables {#mapvars}
 
-Map demographics variables using either `assign_no_ct` or `assign_ct` depending
+## Map Topic Variable {#maptopic}
+
+In DM domain SUBJID is the topic variable and it can be mapped from PATNUM using a simple mutate statement.
+
+```{r eval=TRUE}
+dm <- dm_raw %>%
+  mutate(
+    SUBJID = substr(PATNUM, 5, 8)
+  ) %>%
+  select(oak_id, raw_source, patient_number, SUBJID)
+```
+
+```{r, eval=TRUE, echo=FALSE}
+sdtm.oak:::dataset_oak_vignette(
+  dm,
+  display_vars = exprs(
+   oak_id, raw_source, patient_number, SUBJID
+  )
+)
+```
+
+
+## Map Rest of the Variables {#maprest}
+
+Map rest of the variables in DM domain using either `assign_no_ct` or `assign_ct` depending
 on if the variable has controlled terminologies associated.
 
 ```{r eval=TRUE}
-dm <-
+dm <- dm %>%
   # Map AGE using assign_no_ct
   assign_no_ct(
     raw_dat = dm_raw,
@@ -243,57 +278,19 @@ dm <-
 sdtm.oak:::dataset_oak_vignette(
   dm,
   display_vars = exprs(
-    oak_id, raw_source, patient_number, AGE, AGEU, SEX, ETHNIC, RACE,
+    oak_id, raw_source, patient_number, SUBJID, AGE, AGEU, SEX, ETHNIC, RACE,
     ARM, ARMCD, ACTARM, ACTARMCD
   )
 )
 ```
 
-## Create SDTM derived variables {#derivedvars}
-
-```{r eval=TRUE}
-dm <- dm %>%
-  mutate(
-    STUDYID = dm_raw$STUDY,
-    DOMAIN = "DM",
-    SUBJID = substr(dm_raw$PATNUM, 5, 8),
-    USUBJID = paste0("01-", dm_raw$PATNUM),
-    COUNTRY = dm_raw$COUNTRY
-  ) %>%
-  # Map DMDTC using assign_datetime
-  assign_datetime(
-    raw_dat = dm_raw,
-    raw_var = "COL_DT",
-    tgt_var = "DMDTC",
-    raw_fmt = c("m/d/y"),
-    id_vars = oak_id_vars()
-  )
-```
+## Map Reference Date Variables {#mapvars}
 
 Use `oak_cal_ref_dates` to calculate reference dates variables in ISO8601 format.
 The function takes the raw variable names from reference date configuration file,
 and calculated the minimum or maximum dates based upon the `min_max` parameter.
 
-```{r eval=TRUE}
-dm <- dm %>%
-  # Map DTHDTC using oak_cal_ref_dates
-  oak_cal_ref_dates(
-    ds_in = .,
-    der_var = "DTHDTC",
-    min_max = "min",
-    ref_date_config_df = ref_date_conf_df,
-    raw_source = list(
-      ec_raw = ec_raw,
-      ds_raw = ds_raw,
-      dm_raw = dm_raw
-    )
-  )
-```
-
-Variable `RFSTDTC` is the reference start date/time of study, so as specified in
-the reference date configuration file, we need to calculate the minumum date of 
-the `IT.DSSTDAT` for each subject from the `ds_raw` dataset. Therefore, in `min_max`
-parameter, "min" is selected for the calculation.
+Variable `RFSTDTC` is the reference Start Date/time for the subject in ISO 8601 character format. Usually equivalent to date/time when subject was first exposed to study treatment. So as specified in the reference date configuration file, we need to calculate the minumum date of  the `IT.ECSTDAT` for each subject from the `ec_raw` dataset. Therefore, in `min_max` parameter, "min" is selected for the calculation.
 
 ```{r eval=TRUE}
 dm <- dm %>%
@@ -311,9 +308,7 @@ dm <- dm %>%
   )
 ```
 
-Similarly, variable `RFENDTC` is the reference end date/time of study, so as 
-specified in the reference date configuration file, we need to calculate the 
-maximum date of the `IT.ECENDAT` for each subject from the `ec_raw` dataset. 
+Variable `RFENDTC` is the Reference end date/time for the subject in ISO 8601 character format. Usually equivalent to the date/time when subject was determined to have ended the trial, and often equivalent to date/time of last exposure to study treatment. As  specified in the reference date configuration file, we need to calculate the  maximum date of the `IT.ECENDAT` for each subject from the `ec_raw` dataset. 
 Therefore, in `min_max` parameter, "max" is selected for the calculation. 
 
 ```{r eval=TRUE}
@@ -332,10 +327,20 @@ dm <- dm %>%
   )
 ```
 
+```{r, eval=TRUE, echo=FALSE}
+sdtm.oak:::dataset_oak_vignette(
+  dm,
+  display_vars = exprs(
+    oak_id, raw_source, patient_number, SUBJID, AGE, AGEU, SEX, ETHNIC, RACE,
+    ARM, ARMCD, ACTARM, ACTARMCD, RFSTDTC, RFENDTC 
+  )
+)
+```
+
 The same derivation logic is applicable to other reference date/time variables.
 
 ```{r eval=TRUE}
-dm <- dm
+dm <- dm %>%
 # Derive RFXSTDTC using oak_cal_ref_dates
 oak_cal_ref_dates(
   ds_in = .,
@@ -384,71 +389,57 @@ oak_cal_ref_dates(
       dm_raw = dm_raw
     )
   ) %>%
-  # Derive study day and death flag
+  # Map DTHDTC using oak_cal_ref_dates
+  oak_cal_ref_dates(
+    ds_in = .,
+    der_var = "DTHDTC",
+    min_max = "min",
+    ref_date_config_df = ref_date_conf_df,
+    raw_source = list(
+      ec_raw = ec_raw,
+      ds_raw = ds_raw,
+      dm_raw = dm_raw
+    )
+  ) 
+```
+
+## Create SDTM derived variables {#derivedvars}
+
+```{r eval=TRUE}
+dm <- dm %>%
+  mutate(
+    STUDYID = dm_raw$STUDY,
+    DOMAIN = "DM",
+    USUBJID = paste0("01-", dm_raw$PATNUM),
+    COUNTRY = dm_raw$COUNTRY,
+    DTHFL = dplyr::if_else(is.na(DTHDTC), NA_character_, "Y") 
+  ) %>%
+  # Map DMDTC using assign_datetime
+  assign_datetime(
+    raw_dat = dm_raw,
+    raw_var = "COL_DT",
+    tgt_var = "DMDTC",
+    raw_fmt = c("m/d/y"),
+    id_vars = oak_id_vars()
+  ) %>%
+  # Derive study day
   derive_study_day(
     sdtm_in = .,
     dm_domain = .,
     tgdt = "DMDTC",
     refdt = "RFXSTDTC",
     study_day_var = "DMDY"
-  ) %>%
-  mutate(DTHFL = dplyr::if_else(is.na(DTHDTC), NA_character_, "Y")) %>%
-  select(
-    "STUDYID",
-    "DOMAIN",
-    "USUBJID",
-    "SUBJID",
-    "RFSTDTC",
-    "RFENDTC",
-    "RFXSTDTC",
-    "RFXENDTC",
-    "RFICDTC",
-    "RFPENDTC",
-    "DTHDTC",
-    "DTHFL",
-    "AGE",
-    "AGEU",
-    "SEX",
-    "RACE",
-    "ETHNIC",
-    "ARMCD",
-    "ARM",
-    "ACTARMCD",
-    "ACTARM",
-    "COUNTRY",
-    "DMDTC",
-    "DMDY"
   )
 ```
+
 
 ```{r, eval=TRUE, echo=FALSE}
 sdtm.oak:::dataset_oak_vignette(
   dm,
   display_vars = exprs(
-    STUDYID,
-    DOMAIN,
-    USUBJID,
-    SUBJID,
-    RFSTDTC,
-    RFENDTC,
-    RFXSTDTC,
-    RFXENDTC,
-    RFICDTC,
-    RFPENDTC,
-    DTHDTC,
-    DTHFL,
-    AGE,
-    AGEU,
-    SEX,
-    RACE,
-    ETHNIC,
-    ARMCD,
-    ARM,
-    ACTARMCD,
-    ACTARM,
-    COUNTRY,
-    DMDTC,
-    DMDY
+    STUDYID, DOMAIN, USUBJID, SUBJID, RFSTDTC, RFENDTC, RFXSTDTC, RFXENDTC,
+    RFICDTC, RFPENDTC, DTHDTC, DTHFL, AGE, AGEU, SEX, RACE, ETHNIC, ARMCD,
+    ARM, ACTARMCD, ACTARM, COUNTRY, DMDTC, DMDY
   )
 )
 ```
