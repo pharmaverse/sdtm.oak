@@ -80,7 +80,7 @@ source code and hence each capture matrix corresponds to one input to
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">any_problems</span><span class="op">(</span><span class="va">cap_matrices</span>, .cutoff_2000 <span class="op">=</span> <span class="fl">68L</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">any_problems</span><span class="op">(</span><span class="va">cap_matrices</span>, <span class="va">dtc</span>, .cutoff_2000 <span class="op">=</span> <span class="fl">68L</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -88,6 +88,12 @@ source code and hence each capture matrix corresponds to one input to
     <dl><dt>cap_matrices</dt>
 <dd><p>A list of capture matrices in the sense of the returned
 value by <code><a href="parse_dttm.html">parse_dttm()</a></code>.</p></dd>
+
+
+<dt>dtc</dt>
+<dd><p>A list of <code>character</code> vectors of dates, times or date-times'
+components. Typically, this parameter takes the value passed in <code>...</code> to
+a <code><a href="create_iso8601.html">create_iso8601()</a></code> call.</p></dd>
 
 
 <dt>.cutoff_2000</dt>
