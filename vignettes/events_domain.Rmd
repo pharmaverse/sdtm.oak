@@ -52,7 +52,7 @@ ae_raw <- pharmaverseraw::ae_raw
 sdtm.oak:::dataset_oak_vignette(
   ae_raw,
   display_vars = exprs(
-    PATNUM, FOLDER, IT.AETERM, AEOUTCOME, AEDECOD, IT.AESEV, 
+    PATNUM, FOLDER, IT.AETERM, AEOUTCOME, AEDECOD, IT.AESEV,
     IT.AESER, IT.AEREL, AEDTCOL, IT.AESTDAT, IT.AEENDAT
   )
 )
@@ -118,7 +118,7 @@ ae <-
     raw_var = "IT.AETERM",
     tgt_var = "AETERM",
     id_vars = oak_id_vars()
-  ) 
+  )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -153,7 +153,7 @@ ae <- ae %>%
     ct_spec = study_ct,
     ct_clst = "C66769",
     id_vars = oak_id_vars()
-  )  %>%
+  ) %>%
   # Map AESER using assign_no_ct, raw_var=IT.AESER, tgt_var=AESER
   assign_ct(
     raw_dat = ae_raw,
@@ -296,8 +296,10 @@ ae <- ae %>%
     AESOCCD = ae_raw$AESOCCD,
     AETERM = toupper(AETERM)
   ) %>%
-  derive_seq(tgt_var = "AESEQ",
-             rec_vars= c("USUBJID", "AETERM")) %>%
+  derive_seq(
+    tgt_var = "AESEQ",
+    rec_vars = c("USUBJID", "AETERM")
+  ) %>%
   derive_study_day(
     sdtm_in = .,
     dm_domain = dm,
@@ -312,9 +314,11 @@ ae <- ae %>%
     refdt = "RFXENDTC",
     study_day_var = "AEENDY"
   ) %>%
-  select("STUDYID", "DOMAIN", "USUBJID", "AESEQ", "AETERM", "AELLT", "AELLTCD", "AEDECOD", "AEPTCD", "AEHLT", "AEHLTCD", "AEHLGT",
-         "AEHLGTCD", "AEBODSYS", "AEBDSYCD", "AESOC", "AESOCCD", "AESEV", "AESER", "AEACN", "AEREL", "AEOUT", "AESCAN", "AESCONG",
-         "AESDISAB", "AESDTH", "AESHOSP", "AESLIFE", "AESOD", "AEDTC", "AESTDTC", "AEENDTC", "AESTDY", "AEENDY")
+  select(
+    "STUDYID", "DOMAIN", "USUBJID", "AESEQ", "AETERM", "AELLT", "AELLTCD", "AEDECOD", "AEPTCD", "AEHLT", "AEHLTCD", "AEHLGT",
+    "AEHLGTCD", "AEBODSYS", "AEBDSYCD", "AESOC", "AESOCCD", "AESEV", "AESER", "AEACN", "AEREL", "AEOUT", "AESCAN", "AESCONG",
+    "AESDISAB", "AESDTH", "AESHOSP", "AESLIFE", "AESOD", "AEDTC", "AESTDTC", "AEENDTC", "AESTDY", "AEENDY"
+  )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
