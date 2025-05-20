@@ -51,7 +51,7 @@ ec_raw <- pharmaverseraw::ec_raw
 sdtm.oak:::dataset_oak_vignette(
   dm_raw,
   display_vars = exprs(
-    PATNUM, IT.AGE, IT.SEX, IT.ETHNIC, IT.RACE, COUNTRY, PLANNED_ARM, 
+    PATNUM, IT.AGE, IT.SEX, IT.ETHNIC, IT.RACE, COUNTRY, PLANNED_ARM,
     PLANNED_ARMCD, ACTUAL_ARM, ACTUAL_ARMCD, COL_DT, IC_DT
   )
 )
@@ -59,7 +59,7 @@ sdtm.oak:::dataset_oak_vignette(
 sdtm.oak:::dataset_oak_vignette(
   ds_raw,
   display_vars = exprs(
-    PATNUM, INSTANCE, IT.DSTERM, OTHERSP, IT.DSSTDAT, DEATHDT 
+    PATNUM, INSTANCE, IT.DSTERM, OTHERSP, IT.DSSTDAT, DEATHDT
   )
 )
 
@@ -96,7 +96,7 @@ ec_raw <- ec_raw %>%
 sdtm.oak:::dataset_oak_vignette(
   dm_raw,
   display_vars = exprs(
-    oak_id, raw_source, patient_number, PATNUM, IT.SEX, IT.ETHNIC, IT.RACE, 
+    oak_id, raw_source, patient_number, PATNUM, IT.SEX, IT.ETHNIC, IT.RACE,
     COUNTRY, PLANNED_ARM
   )
 )
@@ -237,7 +237,6 @@ dm <-
     tgt_var = "ACTARMCD",
     id_vars = oak_id_vars()
   )
-
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
@@ -254,11 +253,13 @@ sdtm.oak:::dataset_oak_vignette(
 
 ```{r eval=TRUE}
 dm <- dm %>%
-  mutate(STUDYID = dm_raw$STUDY,
-         DOMAIN = "DM",
-         SUBJID = substr(dm_raw$PATNUM, 5, 8),
-         USUBJID = paste0("01-", dm_raw$PATNUM),
-         COUNTRY = dm_raw$COUNTRY) %>%
+  mutate(
+    STUDYID = dm_raw$STUDY,
+    DOMAIN = "DM",
+    SUBJID = substr(dm_raw$PATNUM, 5, 8),
+    USUBJID = paste0("01-", dm_raw$PATNUM),
+    COUNTRY = dm_raw$COUNTRY
+  ) %>%
   # Map DMDTC using assign_datetime
   assign_datetime(
     raw_dat = dm_raw,
@@ -276,15 +277,16 @@ and calculated the minimum or maximum dates based upon the `min_max` parameter.
 ```{r eval=TRUE}
 dm <- dm %>%
   # Map DTHDTC using oak_cal_ref_dates
-  oak_cal_ref_dates(ds_in = .,
-                    der_var = "DTHDTC",
-                    min_max = "min",
-                    ref_date_config_df = ref_date_conf_df,
-                    raw_source = list(
-                      ec_raw = ec_raw,
-                      ds_raw = ds_raw,
-                      dm_raw = dm_raw
-                    )
+  oak_cal_ref_dates(
+    ds_in = .,
+    der_var = "DTHDTC",
+    min_max = "min",
+    ref_date_config_df = ref_date_conf_df,
+    raw_source = list(
+      ec_raw = ec_raw,
+      ds_raw = ds_raw,
+      dm_raw = dm_raw
+    )
   )
 ```
 
@@ -296,15 +298,16 @@ parameter, "min" is selected for the calculation.
 ```{r eval=TRUE}
 dm <- dm %>%
   # Derive RFSTDTC using oak_cal_ref_dates
-  oak_cal_ref_dates(ds_in = .,
-                    der_var = "RFSTDTC",
-                    min_max = "min",
-                    ref_date_config_df = ref_date_conf_df,
-                    raw_source = list(
-                      ec_raw = ec_raw,
-                      ds_raw = ds_raw,
-                      dm_raw = dm_raw
-                    )
+  oak_cal_ref_dates(
+    ds_in = .,
+    der_var = "RFSTDTC",
+    min_max = "min",
+    ref_date_config_df = ref_date_conf_df,
+    raw_source = list(
+      ec_raw = ec_raw,
+      ds_raw = ds_raw,
+      dm_raw = dm_raw
+    )
   )
 ```
 
@@ -316,15 +319,16 @@ Therefore, in `min_max` parameter, "max" is selected for the calculation.
 ```{r eval=TRUE}
 dm <- dm %>%
   # Derive RFENDTC using oak_cal_ref_dates
-  oak_cal_ref_dates(ds_in = .,
-                    der_var = "RFENDTC",
-                    min_max = "max",
-                    ref_date_config_df = ref_date_conf_df,
-                    raw_source = list(
-                      ec_raw = ec_raw,
-                      ds_raw = ds_raw,
-                      dm_raw = dm_raw
-                    )
+  oak_cal_ref_dates(
+    ds_in = .,
+    der_var = "RFENDTC",
+    min_max = "max",
+    ref_date_config_df = ref_date_conf_df,
+    raw_source = list(
+      ec_raw = ec_raw,
+      ds_raw = ds_raw,
+      dm_raw = dm_raw
+    )
   )
 ```
 
@@ -332,49 +336,53 @@ The same derivation logic is applicable to other reference date/time variables.
 
 ```{r eval=TRUE}
 dm <- dm
-  # Derive RFXSTDTC using oak_cal_ref_dates
-  oak_cal_ref_dates(ds_in = .,
-                    der_var = "RFXSTDTC",
-                    min_max = "min",
-                    ref_date_config_df = ref_date_conf_df,
-                    raw_source = list(
-                      ec_raw = ec_raw,
-                      ds_raw = ds_raw,
-                      dm_raw = dm_raw
-                    )
-  ) %>%
+# Derive RFXSTDTC using oak_cal_ref_dates
+oak_cal_ref_dates(
+  ds_in = .,
+  der_var = "RFXSTDTC",
+  min_max = "min",
+  ref_date_config_df = ref_date_conf_df,
+  raw_source = list(
+    ec_raw = ec_raw,
+    ds_raw = ds_raw,
+    dm_raw = dm_raw
+  )
+) %>%
   # Derive RFXENDTC using oak_cal_ref_dates
-  oak_cal_ref_dates(ds_in = .,
-                    der_var = "RFXENDTC",
-                    min_max = "max",
-                    ref_date_config_df = ref_date_conf_df,
-                    raw_source = list(
-                      ec_raw = ec_raw,
-                      ds_raw = ds_raw,
-                      dm_raw = dm_raw
-                    )
+  oak_cal_ref_dates(
+    ds_in = .,
+    der_var = "RFXENDTC",
+    min_max = "max",
+    ref_date_config_df = ref_date_conf_df,
+    raw_source = list(
+      ec_raw = ec_raw,
+      ds_raw = ds_raw,
+      dm_raw = dm_raw
+    )
   ) %>%
   # Derive RFICDTC using oak_cal_ref_dates
-  oak_cal_ref_dates(ds_in = .,
-                    der_var = "RFICDTC",
-                    min_max = "min",
-                    ref_date_config_df = ref_date_conf_df,
-                    raw_source = list(
-                      ec_raw = ec_raw,
-                      ds_raw = ds_raw,
-                      dm_raw = dm_raw
-                    )
+  oak_cal_ref_dates(
+    ds_in = .,
+    der_var = "RFICDTC",
+    min_max = "min",
+    ref_date_config_df = ref_date_conf_df,
+    raw_source = list(
+      ec_raw = ec_raw,
+      ds_raw = ds_raw,
+      dm_raw = dm_raw
+    )
   ) %>%
   # Derive RFPENDTC using oak_cal_ref_dates
-  oak_cal_ref_dates(ds_in = .,
-                    der_var = "RFPENDTC",
-                    min_max = "max",
-                    ref_date_config_df = ref_date_conf_df,
-                    raw_source = list(
-                      ec_raw = ec_raw,
-                      ds_raw = ds_raw,
-                      dm_raw = dm_raw
-                    )
+  oak_cal_ref_dates(
+    ds_in = .,
+    der_var = "RFPENDTC",
+    min_max = "max",
+    ref_date_config_df = ref_date_conf_df,
+    raw_source = list(
+      ec_raw = ec_raw,
+      ds_raw = ds_raw,
+      dm_raw = dm_raw
+    )
   ) %>%
   # Derive study day and death flag
   derive_study_day(
