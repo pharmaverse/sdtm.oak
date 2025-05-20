@@ -124,7 +124,13 @@ sdtm.oak:::dataset_oak_vignette(
 
 ## Create reference dates configuration file {#refdates}
 
-Create reference date configuration file, a data frame which has the details of the variables to be used for the calculation of reference dates.
+Create reference date configuration file, a data frame which has the details of the variables to be used for the calculation of reference dates. The data frame should have columns listed below:
+- **`raw_dataset_name`**: Name of the raw dataset.  
+- **`date_var`**: Date variable name from the raw dataset.  
+- **`time_var`**: Time variable name from the raw dataset.  
+- **`dformat`**: Format of the date collected in raw data.  
+- **`tformat`**: Format of the time collected in raw data.  
+- **`sdtm_var_name`**: Reference variable name.  
 
 ```{r eval=TRUE}
 ref_date_conf_df <- tibble::tribble(
@@ -272,14 +278,23 @@ dm <- dm %>%
   # Map DTHDTC using oak_cal_ref_dates
   oak_cal_ref_dates(ds_in = .,
                     der_var = "DTHDTC",
-                    min_max = "max",
+                    min_max = "min",
                     ref_date_config_df = ref_date_conf_df,
                     raw_source = list(
                       ec_raw = ec_raw,
                       ds_raw = ds_raw,
                       dm_raw = dm_raw
                     )
-  ) %>%
+  )
+```
+
+Variable `RFSTDTC` is the reference start date/time of study, so as specified in
+the reference date configuration file, we need to calculate the minumum date of 
+the `IT.DSSTDAT` for each subject from the `ds_raw` dataset. Therefore, in `min_max`
+parameter, "min" is selected for the calculation.
+
+```{r eval=TRUE}
+dm <- dm %>%
   # Derive RFSTDTC using oak_cal_ref_dates
   oak_cal_ref_dates(ds_in = .,
                     der_var = "RFSTDTC",
@@ -290,7 +305,16 @@ dm <- dm %>%
                       ds_raw = ds_raw,
                       dm_raw = dm_raw
                     )
-  ) %>%
+  )
+```
+
+Similarly, variable `RFENDTC` is the reference end date/time of study, so as 
+specified in the reference date configuration file, we need to calculate the 
+maximum date of the `IT.ECENDAT` for each subject from the `ec_raw` dataset. 
+Therefore, in `min_max` parameter, "max" is selected for the calculation. 
+
+```{r eval=TRUE}
+dm <- dm %>%
   # Derive RFENDTC using oak_cal_ref_dates
   oak_cal_ref_dates(ds_in = .,
                     der_var = "RFENDTC",
@@ -301,7 +325,13 @@ dm <- dm %>%
                       ds_raw = ds_raw,
                       dm_raw = dm_raw
                     )
-  ) %>%
+  )
+```
+
+The same derivation logic is applicable to other reference date/time variables.
+
+```{r eval=TRUE}
+dm <- dm
   # Derive RFXSTDTC using oak_cal_ref_dates
   oak_cal_ref_dates(ds_in = .,
                     der_var = "RFXSTDTC",
