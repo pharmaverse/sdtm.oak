@@ -184,6 +184,56 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
   ct_mappings
 }
 
+#' Identify CT mappable terms
+#'
+#' @description
+#'
+#' [is_ct_mappable()] returns a logical vector indicating whether each element
+#' of `x` is found in the `from` values used for controlled terminology recoding.
+#'
+#' This function is useful for checking in advance which terms in a vector can be
+#' recoded given a specified controlled terminology mapping.
+#'
+#' @param x A character vector of terms to be evaluated for recoding.
+#' @param from A character vector of controlled terminology terms that `x` will
+#'   be compared against.
+#'
+#' @return A logical vector of the same length as `x`, where `TRUE` indicates the
+#'   corresponding term in `x` is found in `from`, and `FALSE` otherwise.
+#'
+#' @keywords internal
+is_ct_mappable <- function(x, from) {
+  !is.na(index_for_recode(x = x, from = from))
+}
+
+#' Inform on the mappability of terms to controlled terminology
+#'
+#' [inform_on_ct_mappability()] checks whether all values in `x` can be mapped
+#' using the controlled terminology terms in `from`. It raises an informative
+#' message if any values in `x` are not mappable.
+#'
+#' @param x A character vector of terms to be checked.
+#' @param from A character vector of valid controlled terminology terms.
+#'
+#' @returns Invisibly returns `TRUE` if all terms are mappable; otherwise,
+#'   prints an informative message and returns `FALSE` invisibly.
+#'
+#' @keywords internal
+inform_on_ct_mappability <- function(x, from) {
+  is_mappable <- is_ct_mappable(x, from)
+  if (all(is_mappable)) {
+    return(invisible(TRUE))
+  }
+
+  unmappable <- unique(x[!is_mappable])
+
+  cli::cli_alert_info("These values could not be mapped to controlled terminology: {.val {unmappable}}.",
+    wrap = TRUE
+  )
+
+  invisible(FALSE)
+}
+
 #' Recode according to controlled terminology
 #'
 #' [ct_map()] recodes a vector following a controlled terminology.
@@ -246,6 +296,7 @@ ct_map <-
     ct_spec <- dplyr::filter(ct_spec, .data[[ct_spec_vars("ct_clst")]] %in% ct_clst)
 
     mappings <- ct_mappings(ct_spec, from = from, to = to)
+    inform_on_ct_mappability(x, from = mappings$from)
     recode(
       x,
       from = mappings$from,
