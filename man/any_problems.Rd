@@ -4,11 +4,15 @@
 \alias{any_problems}
 \title{Detect problems with the parsing of date/times}
 \usage{
-any_problems(cap_matrices, .cutoff_2000 = 68L)
+any_problems(cap_matrices, dtc, .cutoff_2000 = 68L)
 }
 \arguments{
 \item{cap_matrices}{A list of capture matrices in the sense of the returned
 value by \code{\link[=parse_dttm]{parse_dttm()}}.}
+
+\item{dtc}{A list of \code{character} vectors of dates, times or date-times'
+components. Typically, this parameter takes the value passed in \code{...} to
+a \code{\link[=create_iso8601]{create_iso8601()}} call.}
 
 \item{.cutoff_2000}{An integer value. Two-digit years smaller or equal to
 \code{.cutoff_2000} are parsed as though starting with \code{20}, otherwise parsed as
