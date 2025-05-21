@@ -102,7 +102,7 @@ test_that("hardcode_ct informs about unmappable terms", {
 
   (ct_spec <- read_ct_spec_example("ct-01-cm"))
 
-  exp_msg <- "These values could not be mapped to controlled terminology: \"GENERAL CONCOMITANT MEDICATIONS\"."
+  exp_msg <- "These terms could not be mapped per the controlled terminology: \"GENERAL CONCOMITANT MEDICATIONS\"."
   expect_message(
     hardcode_ct(
       tgt_dat = cm_inter,
@@ -114,5 +114,52 @@ test_that("hardcode_ct informs about unmappable terms", {
       ct_clst = "C66729"
     ),
     exp_msg
+  )
+})
+
+test_that("hardcode_ct does not consider blanks or NAs to be CT unmappable", {
+  md1 <-
+    tibble::tribble(
+      ~oak_id, ~raw_source, ~patient_number, ~MDRAW,
+      1L,      "MD1",       101L,            "BABY ASPIRIN",
+      2L,      "MD1",       102L,            "CORTISPORIN",
+      3L,      "MD1",       103L,            NA_character_,
+      4L,      "MD1",       104L,            "DIPHENHYDRAMINE HCL"
+    )
+
+  cm_inter <-
+    tibble::tribble(
+      ~oak_id, ~raw_source, ~patient_number, ~CMTRT,                ~CMINDC,
+      1L,      "MD1",       101L,            "BABY ASPIRIN",        NA,
+      2L,      "MD1",       102L,            "CORTISPORIN",         "NAUSEA",
+      3L,      "MD1",       103L,            "ASPIRIN",             "ANEMIA",
+      4L,      "MD1",       104L,            "DIPHENHYDRAMINE HCL", "NAUSEA",
+      5L,      "MD1",       105L,            "PARACETAMOL",         "PYREXIA"
+    )
+
+  (ct_spec <- read_ct_spec_example("ct-01-cm"))
+
+  expect_silent(
+    hardcode_ct(
+      tgt_dat = cm_inter,
+      tgt_var = "CMCAT",
+      raw_dat = md1,
+      raw_var = "MDRAW",
+      tgt_val = "",
+      ct_spec = ct_spec,
+      ct_clst = "C66729"
+    )
+  )
+
+  expect_silent(
+    hardcode_ct(
+      tgt_dat = cm_inter,
+      tgt_var = "CMCAT",
+      raw_dat = md1,
+      raw_var = "MDRAW",
+      tgt_val = NA_character_,
+      ct_spec = ct_spec,
+      ct_clst = "C66729"
+    )
   )
 })

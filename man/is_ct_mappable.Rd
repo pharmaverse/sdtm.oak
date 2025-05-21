@@ -20,6 +20,9 @@ corresponding term in \code{x} is found in \code{from}, and \code{FALSE} otherwi
 \code{\link[=is_ct_mappable]{is_ct_mappable()}} returns a logical vector indicating whether each element
 of \code{x} is found in the \code{from} values used for controlled terminology recoding.
 
+Empty strings (blanks) and \code{NA} values are treatly specially and are
+considered mappable terms, even though they might not be.
+
 This function is useful for checking in advance which terms in a vector can be
 recoded given a specified controlled terminology mapping.
 }

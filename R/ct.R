@@ -191,6 +191,9 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
 #' [is_ct_mappable()] returns a logical vector indicating whether each element
 #' of `x` is found in the `from` values used for controlled terminology recoding.
 #'
+#' Empty strings (blanks) and `NA` values are treatly specially and are
+#' considered mappable terms, even though they might not be.
+#'
 #' This function is useful for checking in advance which terms in a vector can be
 #' recoded given a specified controlled terminology mapping.
 #'
@@ -203,7 +206,7 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
 #'
 #' @keywords internal
 is_ct_mappable <- function(x, from) {
-  !is.na(index_for_recode(x = x, from = from))
+  !is.na(index_for_recode(x = x, from = from)) | is.na(x) | x %in% ""
 }
 
 #' Inform on the mappability of terms to controlled terminology
@@ -227,7 +230,7 @@ inform_on_ct_mappability <- function(x, from) {
 
   unmappable <- unique(x[!is_mappable])
 
-  cli::cli_alert_info("These values could not be mapped to controlled terminology: {.val {unmappable}}.",
+  cli::cli_alert_info("These terms could not be mapped per the controlled terminology: {.val {unmappable}}.",
     wrap = FALSE
   )
 
