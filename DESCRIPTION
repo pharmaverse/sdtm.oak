@@ -41,8 +41,8 @@ Language: en-US
 License: Apache License (>= 2)
 Copyright: F. Hoffmann-La Roche AG, Pattern Institute,
     Atorus Research LLC and Transition Technologies Science sp. z o.o.
-BugReports: https://github.com/pharmaverse/sdtm.oak/issues/
-URL: https://pharmaverse.github.io/sdtm.oak/
+BugReports: https://github.com/pharmaverse/sdtm.oak/issues
+URL: https://pharmaverse.github.io/sdtm.oak/, https://github.com/pharmaverse/sdtm.oak
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
