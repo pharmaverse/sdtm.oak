@@ -183,7 +183,7 @@ dm <- dm_raw %>%
 sdtm.oak:::dataset_oak_vignette(
   dm,
   display_vars = exprs(
-   oak_id, raw_source, patient_number, SUBJID
+    oak_id, raw_source, patient_number, SUBJID
   )
 )
 ```
@@ -332,7 +332,7 @@ sdtm.oak:::dataset_oak_vignette(
   dm,
   display_vars = exprs(
     oak_id, raw_source, patient_number, SUBJID, AGE, AGEU, SEX, ETHNIC, RACE,
-    ARM, ARMCD, ACTARM, ACTARMCD, RFSTDTC, RFENDTC 
+    ARM, ARMCD, ACTARM, ACTARMCD, RFSTDTC, RFENDTC
   )
 )
 ```
@@ -341,18 +341,18 @@ The same derivation logic is applicable to other reference date/time variables.
 
 ```{r eval=TRUE}
 dm <- dm %>%
-# Derive RFXSTDTC using oak_cal_ref_dates
-oak_cal_ref_dates(
-  ds_in = .,
-  der_var = "RFXSTDTC",
-  min_max = "min",
-  ref_date_config_df = ref_date_conf_df,
-  raw_source = list(
-    ec_raw = ec_raw,
-    ds_raw = ds_raw,
-    dm_raw = dm_raw
-  )
-) %>%
+  # Derive RFXSTDTC using oak_cal_ref_dates
+  oak_cal_ref_dates(
+    ds_in = .,
+    der_var = "RFXSTDTC",
+    min_max = "min",
+    ref_date_config_df = ref_date_conf_df,
+    raw_source = list(
+      ec_raw = ec_raw,
+      ds_raw = ds_raw,
+      dm_raw = dm_raw
+    )
+  ) %>%
   # Derive RFXENDTC using oak_cal_ref_dates
   oak_cal_ref_dates(
     ds_in = .,
@@ -400,7 +400,7 @@ oak_cal_ref_dates(
       ds_raw = ds_raw,
       dm_raw = dm_raw
     )
-  ) 
+  )
 ```
 
 ## Create SDTM derived variables {#derivedvars}
@@ -412,7 +412,7 @@ dm <- dm %>%
     DOMAIN = "DM",
     USUBJID = paste0("01-", dm_raw$PATNUM),
     COUNTRY = dm_raw$COUNTRY,
-    DTHFL = dplyr::if_else(is.na(DTHDTC), NA_character_, "Y") 
+    DTHFL = dplyr::if_else(is.na(DTHDTC), NA_character_, "Y")
   ) %>%
   # Map DMDTC using assign_datetime
   assign_datetime(
