@@ -56,6 +56,17 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="sdtmoak-v020">sdtm.oak V0.2.0<a class="anchor" aria-label="anchor" href="#sdtmoak-v020"></a></h2>
+<ul><li>DM Domain: New functions <code>calc_min_max_date()</code> and <code>oak_calc_ref_dates()</code> to support DM domain programming.</li>
+<li>Supplementary Qualifier SUPP Domains - New function<code><a href="../reference/generate_sdtm_supp.html">generate_sdtm_supp()</a></code> to facilitate the programming of supplemental qualifier domains.</li>
+<li>Bug Fixes:
+<ul><li>Resolved an issue in mapping algorithms to prevent overwriting results.</li>
+<li>Fixed the <code><a href="../reference/problems.html">problems()</a></code> function to ensure blank values are excluded from warning messages when converting dates to ISO8601 format.</li>
+<li>Corrected controlled terminology functions to alert users when a value cannot be mapped according to the controlled terms in <code><a href="../reference/assign.html">assign_ct()</a></code> and <code><a href="../reference/harcode.html">hardcode_ct()</a></code> functions.</li>
+</ul></li>
+</ul><p>With this release, users can now efficiently create the DM domain as well as various SDTM domains across Findings, Events, Findings About, Supplemental qualifiers and Intervention classes, significantly broadening the range of supported domains.</p>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="sdtmoak-v011">sdtm.oak V0.1.1<a class="anchor" aria-label="anchor" href="#sdtmoak-v011"></a></h2><p class="text-muted">CRAN release: 2024-11-12</p>
 <p>Fixed the bug that was causing test cases to fail. Updated <code><a href="../reference/derive_blfl.html">derive_blfl()</a></code> function to account for baseline_timepoints. Typo updates in the documentation.</p>
 </div>

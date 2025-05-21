@@ -106,7 +106,8 @@
 </div>
 <!-- badges: start -->
 
-<p>An EDC (Electronic Data Capture systems) and Data Standard agnostic solution that enables the pharmaceutical programming community to develop CDISC (Clinical Data Interchange Standards Consortium) SDTM (Study Data Tabulation Model) datasets in R. The reusable algorithms concept in ‘sdtm.oak’ provides a framework for modular programming and also can automate SDTM creation based on the standard SDTM spec.</p>
+<!-- badges: end -->
+<p>An EDC (Electronic Data Capture systems) and Data Standard agnostic solution that enables the pharmaceutical programming community to develop CDISC (Clinical Data Interchange Standards Consortium) SDTM (Study Data Tabulation Model) datasets in R. The reusable algorithms concept in ‘sdtm.oak’ provides a framework for modular programming. We plan to develop a code generation feature based on a standardized SDTM specification format, which has the potential to automate the creation of SDTM datasets.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -130,22 +131,25 @@
 <div class="section level2">
 <h2 id="goal">GOAL<a class="anchor" aria-label="anchor" href="#goal"></a>
 </h2>
-<p>‘sdtm.oak’ aims to address this issue by providing an EDC-agnostic, standards-agnostic solution. It is an open-source R package that offers a framework for the modular programming of SDTM in R. With future releases; it will also strive to automate the creation of SDTM datasets based on the metadata-driven approach using standard SDTM specifications.</p>
+<p>‘sdtm.oak’ aims to address this issue by providing an EDC-agnostic, standards-agnostic solution. It is an open-source R package that offers a framework for the modular programming of SDTM in R. With future releases; we plan to develop a code generation feature based on a standardized SDTM specification format, which has the potential to automate the creation of SDTM datasets.</p>
 </div>
 <div class="section level2">
 <h2 id="scope">Scope<a class="anchor" aria-label="anchor" href="#scope"></a>
 </h2>
-<p>Our goal is to use ‘sdtm.oak’ to program most of the domains specified in SDTMIG (Study Data Tabulation Model Implementation Guide: Human Clinical Trials) and SDTMIG-AP (Study Data Tabulation Model Implementation Guide: Associated Persons). This R package is based on the core concept of <code>algorithms</code>, implemented as functions capable of carrying out the SDTM mappings for any domains listed in the CDISC SDTMIG and across different versions of SDTM IGs. The design of these functions allows users to specify a raw dataset and a variable name(s) as parameters, making it EDC (Electronic Data Capture) agnostic. As long as the raw dataset and variable name(s) exist, ‘sdtm.oak’ will execute the SDTM mapping using the selected function. It’s important to note that ‘sdtm.oak’ may not handle sponsor-specific details related to managing metadata for LAB tests, unit conversions, and coding information, as many companies have unique business processes. With subsequent releases, strive to automate SDTM creation using a metadata-driven approach based on a standard SDTM specification format.</p>
+<p>Our goal is to use ‘sdtm.oak’ to program most of the domains specified in SDTMIG (Study Data Tabulation Model Implementation Guide: Human Clinical Trials) and SDTMIG-AP (Study Data Tabulation Model Implementation Guide: Associated Persons). This R package is based on the core concept of <code>algorithms</code>, implemented as functions capable of carrying out the SDTM mappings for any domains listed in the CDISC SDTMIG and across different versions of SDTM IGs. The design of these functions allows users to specify a raw dataset and a variable name(s) as parameters, making it EDC (Electronic Data Capture) agnostic. As long as the raw dataset and variable name(s) exist, ‘sdtm.oak’ will execute the SDTM mapping using the selected function. It’s important to note that ‘sdtm.oak’ may not handle sponsor-specific details related to managing metadata for LAB tests, unit conversions, and coding information, as many companies have unique business processes.</p>
+</div>
+<div class="section level2">
+<h2 id="this-release">This Release<a class="anchor" aria-label="anchor" href="#this-release"></a>
+</h2>
+<p>With the V0.2.0 release of ‘sdtm.oak’ users can now efficiently create the DM domain and various SDTM domains, encompassing Findings, Events, Findings About, and Intervention classes. However, the V0.2.0 release does NOT cover Trial Design Domains, SV (Subject Visits), SE (Subject Elements), RELREC (Related Records), Associated Person domains, or the EPOCH Variable across all domains.</p>
 </div>
 <div class="section level2">
 <h2 id="road-map">Road Map<a class="anchor" aria-label="anchor" href="#road-map"></a>
 </h2>
-<p>This Release: The V0.1.0 release of ‘sdtm.oak’ users can create the majority of the SDTM domains. Domains that are NOT in scope for the V0.1.0 release are DM (Demographics), Trial Design Domains, SV (Subject Visits), SE (Subject Elements), RELREC (Related Records), Associated Person domains, and EPOCH Variable across all domains.</p>
 <p>Subsequent Releases: We are planning to develop the below features in the subsequent releases.<br>
-- Functions required to derive reference date variables in the DM domain.<br>
-- Metadata driven automation based on the standardized SDTM specification.<br>
-- Functions required to program the EPOCH Variable.<br>
-- Functions to derive standard units and results based on metadata.</p>
+- Metadata driven code generation based on the standardized SDTM specification.<br>
+- Functions required to program the Domains SV (Subject Visits), SE (Subject Elements) and the EPOCH Variable.<br>
+- Functions to derive standard units and results based on metadata. - Additional features to be developed based on the user feedback.</p>
 </div>
 <div class="section level2">
 <h2 id="references-and-documentation">References and Documentation<a class="anchor" aria-label="anchor" href="#references-and-documentation"></a>
@@ -155,6 +159,10 @@
 <li>Please go to <a href="https://pharmaverse.github.io/sdtm.oak/articles/interventions_domain.html">Create Events Domain</a> to learn about step by step process to create an Events domain.</li>
 <li>Please go to <a href="https://pharmaverse.github.io/sdtm.oak/articles/findings_domain.html">Create Findings Domain</a> to learn about step by step process to create a Findings domain.</li>
 <li>Please go to <a href="https://pharmaverse.github.io/sdtm.oak/articles/study_sdtm_spec.html">Path to Automation</a> to learn about how the foundational release sets up the stage for automation.</li>
+<li>Please watch this YouTube video to learn about using the package <a href="https://www.youtube.com/watch?v=H0FdhG9_ttU&amp;list=PLMtxz1fUYA5C67SvhSCINluOV2EmyjKql&amp;index=3&amp;ab_channel=RinPharma%5D" class="external-link">YouTube Video</a>
+</li>
+<li>RinPharma Virtual workshop <a href="https://pharmaverse.github.io/rinpharma-2024-SDTM-workshop/" class="external-link">slides</a>
+</li>
 </ul>
 </div>
 <div class="section level2">
