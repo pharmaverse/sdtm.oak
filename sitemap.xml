@@ -175,7 +175,13 @@
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/index_for_recode.html</loc>
   </url>
   <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/inform_on_ct_mappability.html</loc>
+  </url>
+  <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/is_cnd_df.html</loc>
+  </url>
+  <url>
+    <loc>https://pharmaverse.github.io/sdtm.oak/reference/is_ct_mappable.html</loc>
   </url>
   <url>
     <loc>https://pharmaverse.github.io/sdtm.oak/reference/is_iso8601.html</loc>
