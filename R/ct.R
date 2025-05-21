@@ -191,7 +191,7 @@ ct_mappings <- function(ct_spec, from = ct_spec_vars("from"), to = ct_spec_vars(
 #' [is_ct_mappable()] returns a logical vector indicating whether each element
 #' of `x` is found in the `from` values used for controlled terminology recoding.
 #'
-#' Empty strings (blanks) and `NA` values are treatly specially and are
+#' Empty strings (blanks) and `NA` values are treated specially and are
 #' considered mappable terms, even though they might not be.
 #'
 #' This function is useful for checking in advance which terms in a vector can be
