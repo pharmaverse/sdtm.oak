@@ -3,7 +3,7 @@ title: "Creating an Events SDTM domain"
 output:
   rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{events_domain}
+  %\VignetteIndexEntry{Creating an Events SDTM domain}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 ---

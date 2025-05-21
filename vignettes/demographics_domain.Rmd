@@ -1,6 +1,6 @@
 ---
 title: "Creating a Demographics(DM) domain"
-output: 
+output:
   rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Creating a Demographics(DM) domain}
