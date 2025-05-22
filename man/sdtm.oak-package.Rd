@@ -12,7 +12,8 @@ An Electronic Data Capture system (EDC) and Data Standard agnostic solution that
 Useful links:
 \itemize{
   \item \url{https://pharmaverse.github.io/sdtm.oak/}
-  \item Report bugs at \url{https://github.com/pharmaverse/sdtm.oak/issues/}
+  \item \url{https://github.com/pharmaverse/sdtm.oak}
+  \item Report bugs at \url{https://github.com/pharmaverse/sdtm.oak/issues}
 }
 
 }
