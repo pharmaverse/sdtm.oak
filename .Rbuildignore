@@ -17,3 +17,4 @@
 ^inst/ct/README.md$
 ^NOTICE.md$
 ^tmp$
+^cran-comments\.md$

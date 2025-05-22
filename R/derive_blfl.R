@@ -58,6 +58,41 @@ dtc_timepart <- function(dtc, partial_as_na = TRUE, ignore_seconds = TRUE) {
   return(tm)
 }
 
+#' This function is used to check if a --DTC variable is in ISO8601 format
+#'
+#' @param dtc_var A vector of the date and time values
+#'
+#' @return A logical value indicating if input is in ISO8601 format
+#' @keywords internal
+is_iso8601 <- function(dtc_var) {
+  # Remove missing DTC values
+  dtc_var <- dtc_var[!(is.na(dtc_var) | dtc_var %in% c(""))]
+
+  # Define ISO8601 precision map
+  ISO8601_precision_map <- list(
+    y = "%Y", # Year: YYYY
+    ym = "%Y-%m", # Year-Month: YYYY-MM
+    ymd = "%Y-%m-%d", # Full Date: YYYY-MM-DD
+    ymdh = "%Y-%m-%dT%H", # DateTime: YYYY-MM-DDThh
+    ymdhm = "%Y-%m-%dT%H:%M", # DateTime: YYYY-MM-DDThh:mm
+    ymdhms = "%Y-%m-%dT%H:%M:%S" # Full DateTime: YYYY-MM-DDThh:mm:ss
+  )
+
+  # Function to check if a single DTC value matches any of the formats
+  valid_iso8601 <- sapply(dtc_var, function(dtc_value) {
+    any(sapply(ISO8601_precision_map, function(fmt) {
+      parsed_date <- try(as.POSIXct(dtc_value, format = fmt, tz = "UTC"), silent = TRUE)
+      !inherits(parsed_date, "try-error") && !is.na(parsed_date)
+    }))
+  })
+
+  if (all(valid_iso8601)) {
+    return(TRUE)
+  }
+
+  FALSE
+}
+
 #' Derive Baseline Flag or Last Observation Before Exposure Flag
 #'
 #' Derive the baseline flag variable (`--BLFL`) or the last observation before
@@ -348,15 +383,23 @@ derive_blfl <- function(sdtm_in,
     )]))
   )
 
+  # Assert that the input "DTC" column follows iso_8601 format
+  assertthat::assert_that(is_iso8601(sdtm_in[[domain_prefixed_names["dtc"]]]),
+    msg = paste(
+      domain_prefixed_names["dtc"],
+      "column does not follow ISO8601 format, please check."
+    )
+  )
+
   # End of assertions, work begins ------------------------------------------
   # Create copy of input dataset for modification and processing
   ds_mod <- sdtm_in
 
   # Filter out rows where --ORRES is missing. Filter out --ORRES in
   # ("ND", "NOT DONE") as well.
-  bad_orres_rows <- is.na(ds_mod[[domain_prefixed_names["orres"]]]) |
-    trimws(ds_mod[[domain_prefixed_names["orres"]]]) %in% c("ND", "NOT DONE", "")
-  ds_mod <- ds_mod[!bad_orres_rows, ]
+  ds_mod <- ds_mod |>
+    dplyr::filter(!(is.na(.data[[domain_prefixed_names["orres"]]]))) |>
+    dplyr::filter(!(trimws(.data[[domain_prefixed_names["orres"]]]) %in% c("ND", "NOT DONE", "")))
 
   # Filter out rows where --STAT is not equal to "NOT DONE"
   ds_mod <-
@@ -374,10 +417,10 @@ derive_blfl <- function(sdtm_in,
   }
 
   # Checking for columns of interest
-  con_col <- c(domain_prefixed_names[c("testcd", "dtc", "var_tpt")], "VISIT")
+  con_col <- c(domain_prefixed_names[c("testcd", "dtc", "tpt")], "VISIT")
 
-  # Drop those columns from the list which are not present in ds_in
-  con_col <- con_col[con_col %in% names(sdtm_in)]
+  # Drop those columns from the list which are not present in ds_mod
+  con_col <- con_col[con_col %in% names(ds_mod)]
 
   # Check for any column which is all NA and removing it from con_col list
   h <- which(sapply(ds_mod, function(x) all(is.na(x))))
@@ -438,16 +481,17 @@ derive_blfl <- function(sdtm_in,
     dplyr::filter(
       dom_dt == ref_dt,
       is.na(dom_tm) | is.na(ref_tm) | dom_tm == ref_tm,
-      (VISIT %in% baseline_visits & get(domain_prefixed_names["tpt"]) %in% baseline_timepoints) |
+      (VISIT %in% baseline_visits & !!rlang::sym(domain_prefixed_names["tpt"]) %in% baseline_timepoints) |
         (VISIT %in% baseline_visits & length(baseline_timepoints) == 0L) |
-        (get(domain_prefixed_names["tpt"]) %in% baseline_timepoints & length(baseline_visits) == 0L)
+        (!!rlang::sym(domain_prefixed_names["tpt"]) %in% baseline_timepoints & length(baseline_visits) == 0L)
     )
 
   # Combine (*A) and (*B) and (*C)
-  ds_base <- rbind(ds_subset_lt, ds_subset_eq_1, ds_subset_eq_2)
+  ds_base <- dplyr::bind_rows(ds_subset_lt, ds_subset_eq_1, ds_subset_eq_2)
 
   # Sort the rows in ascending order with respect to columns from con_col
-  ds_base <- dplyr::arrange_at(ds_base, c("USUBJID", con_col))
+  ds_base <- ds_base |>
+    dplyr::arrange(USUBJID, !!!rlang::syms(con_col))
 
   if (nrow(ds_base) == 0L) {
     cli::cli_inform("There are no baseline records.")

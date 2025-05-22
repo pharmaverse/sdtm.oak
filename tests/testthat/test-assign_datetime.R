@@ -4,7 +4,7 @@ test_that("assign_datetime: date and time conversion", {
       ~oak_id, ~raw_source, ~patient_number, ~MDBDR,        ~MDEDR,        ~MDETM,
       1L,      "MD1",       375L,            NA,            NA,            NA,
       2L,      "MD1",       375L,            "15-Sep-20",   NA,            NA,
-      3L,      "MD1",       376L,            "17-Feb-21",   "17-Feb-21",   NA,
+      3L,      "MD1",       376L,            "17-Feb-21",   "17-Feb-21",   "10 hours and 5 minutes",
       4L,      "MD1",       377L,            "4-Oct-20",    NA,            NA,
       5L,      "MD1",       377L,            "20-Jan-20",   "20-Jan-20",   "10:00:00",
       6L,      "MD1",       377L,            "UN-UNK-2019", "UN-UNK-2019", NA,
@@ -14,12 +14,12 @@ test_that("assign_datetime: date and time conversion", {
       10L,     "MD1",       378L,            "28-Jan-20",   "1-Feb-20",    NA,
       11L,     "MD1",       378L,            "12-Feb-20",   "18-Feb-20",   NA,
       12L,     "MD1",       379L,            "10-UNK-2020", "20-UNK-2020", NA,
-      13L,     "MD1",       379L,            NA,            NA,            NA,
+      13L,     "MD1",       379L,            NA,            "2001-01-31",  NA,
       14L,     "MD1",       379L,            NA,            "17-Feb-20",   NA
     )
 
   warning_msg <-
-    r"{There were 12 parsing problems\. Run `problems\(\)` on parsed results for details\.}"
+    r"{There were 2 parsing problems\. Run `problems\(\)` on parsed results for details\.}"
   expect_warning(rlang::with_interactive(
     assign_datetime(
       tgt_var = "CMSTDTC",
@@ -41,7 +41,7 @@ test_that("assign_datetime: date and time conversion", {
     )
   )
 
-  problems_index <- seq(1L, 14L)[-c(5L, 9L)]
+  problems_index <- c(3L, 13L)
   problems <- tibble::tibble(
     ..i = problems_index,
     MDEDR = md1$MDEDR[problems_index],

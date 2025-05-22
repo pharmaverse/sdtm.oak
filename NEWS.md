@@ -1,3 +1,14 @@
+# sdtm.oak V0.2.0
+
+- DM Domain: New functions `calc_min_max_date()` and `oak_calc_ref_dates()` to support DM domain programming.
+- Supplementary Qualifier SUPP Domains - New function`generate_sdtm_supp()` to facilitate the programming of supplemental qualifier domains. 
+- Bug Fixes: 
+  - Resolved an issue in mapping algorithms to prevent overwriting results.
+  - Fixed the `problems()` function to ensure blank values are excluded from warning messages when converting dates to ISO8601 format.
+  - Corrected controlled terminology functions to alert users when a value cannot be mapped according to the controlled terms in `assign_ct()` and `hardcode_ct()` functions.
+
+With this release, users can now efficiently create the DM domain as well as various SDTM domains across Findings, Events, Findings About, Supplemental qualifiers and Intervention classes, significantly broadening the range of supported domains.
+
 # sdtm.oak V0.1.1
 
 Fixed the bug that was causing test cases to fail. Updated `derive_blfl()`
