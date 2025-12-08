@@ -96,13 +96,13 @@ test_that("Warning is displayed if date or time variables parameters passed are 
 
 test_that("cal_min_max_date works with Date and hms (time) objects", {
   EX <- tibble::tribble(
-    ~patient_number,    ~EX_ST_DT, ~EX_ST_TM,
-    "001",           as.Date("2022-04-26"), hms::hms(seconds = NULL, minutes = 20, hours = 10),
-    "001",           as.Date("2022-04-25"), hms::hms(seconds = NULL, minutes = 15, hours = 10),
-    "001",           as.Date("2022-04-25"), hms::hms(seconds = NULL, minutes = 19, hours = 10),
-    "002",           as.Date("2022-05-26"), hms::hms(seconds = NULL, minutes = 23, hours = 6),
-    "002",           as.Date("2022-05-26"), hms::hms(seconds = NULL, minutes = 59, hours = 4),
-    "002",           as.Date("2022-05-26"), hms::hms(seconds = NULL, minutes = 59, hours = 5)
+    ~patient_number,    ~EX_ST_DT,            ~EX_ST_TM,
+    "001",           as.Date("2022-04-26"), hms::hms(seconds = NULL, minutes = 20L, hours = 10L),
+    "001",           as.Date("2022-04-25"), hms::hms(seconds = NULL, minutes = 15L, hours = 10L),
+    "001",           as.Date("2022-04-25"), hms::hms(seconds = NULL, minutes = 19L, hours = 10L),
+    "002",           as.Date("2022-05-26"), hms::hms(seconds = NULL, minutes = 23L, hours = 6L),
+    "002",           as.Date("2022-05-26"), hms::hms(seconds = NULL, minutes = 59L, hours = 4L),
+    "002",           as.Date("2022-05-26"), hms::hms(seconds = NULL, minutes = 59L, hours = 5L)
   )
   expected_min <- tibble::tribble(
     ~patient_number,          ~datetime,
@@ -138,7 +138,6 @@ test_that("cal_min_max_date works with Date and hms (time) objects", {
 })
 
 test_that("cal_min_max_date works with Date objects (no time)", {
-  
   EX <- tibble::tribble(
     ~patient_number,    ~EX_ST_DT,
     "001",           as.Date("04-25-22", "%m-%d-%y"),
@@ -146,7 +145,7 @@ test_that("cal_min_max_date works with Date objects (no time)", {
     "002",           as.Date("05-26-22", "%m-%d-%y")
   )
   expected_min <- tibble::tribble(
-    ~patient_number,          ~datetime,
+    ~patient_number,    ~datetime,
     "001",           create_iso8601("04-25-22", .format = "m-d-y"),
     "002",           create_iso8601("05-26-22", .format = "m-d-y")
   )
@@ -161,4 +160,3 @@ test_that("cal_min_max_date works with Date objects (no time)", {
 
   expect_identical(observed_min, expected_min)
 })
-

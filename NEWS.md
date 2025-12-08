@@ -1,3 +1,7 @@
+# sdtm.oak V0.2.1
+
+Cal_min_max_date (and by extension oak_cal_ref_dates) now works with raw data containing Date objects and hms time objects (not just character date and time strings).
+
 # sdtm.oak V0.2.0
 
 - DM Domain: New functions `calc_min_max_date()` and `oak_calc_ref_dates()` to support DM domain programming.

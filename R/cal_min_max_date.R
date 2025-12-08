@@ -92,7 +92,7 @@ cal_min_max_date <- function(raw_dataset,
       )
     ))
   }
-  
+
   fin_df <- fin_df |>
     dplyr::select(c("patient_number", "datetime")) |>
     unique()
