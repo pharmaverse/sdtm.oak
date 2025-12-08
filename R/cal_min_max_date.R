@@ -73,7 +73,7 @@ cal_min_max_date <- function(raw_dataset,
 
   # Time is not used in reference date then use only date
   if (is.na(time_variable)) {
-    fin_df$datetime <- create_iso8601(raw_dataset[[date_variable]],
+    fin_df$datetime <- create_iso8601(as.character(raw_dataset[[date_variable]]),
       .format = date_format
     )
   } else {
