@@ -1,3 +1,8 @@
+# sdtm.oak (development version)
+
+- Bug Fixes:
+  - `generate_sdtm_supp()` now uses a caller-supplied `idvar` instead of discarding it, and takes `QLABEL` and `QORIG` from the columns named by `label_var` and `orig_var` instead of requiring columns literally named `Label` and `Origin` (#148).
+
 # sdtm.oak V0.2.0
 
 - DM Domain: New functions `calc_min_max_date()` and `oak_calc_ref_dates()` to support DM domain programming.
