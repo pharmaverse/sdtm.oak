@@ -52,6 +52,8 @@ generate_sdtm_supp <- function(sdtm_dataset,
   # The default setting is to use xxSEQ variable for IDVAR
   idvar <- if (is.null(idvar)) {
     paste0(domain, "SEQ")
+  } else {
+    idvar
   }
 
   admiraldev::assert_character_scalar(idvar)
@@ -89,8 +91,8 @@ generate_sdtm_supp <- function(sdtm_dataset,
     dplyr::left_join(supp_qual_info, by = c("QNAM" = qnam_var)) |>
     dplyr::mutate(
       RDOMAIN = DOMAIN,
-      QORIG = Origin,
-      QLABEL = Label,
+      QORIG = .data[[orig_var]],
+      QLABEL = .data[[label_var]],
       QEVAL = NA_character_
     ) |>
     dplyr::select(

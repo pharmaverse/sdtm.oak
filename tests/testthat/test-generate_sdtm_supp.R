@@ -113,3 +113,48 @@ test_that("`generate_sdtm_supp` input validation works", {
     "Required variable `COMPLT16` is missing"
   )
 })
+
+
+test_that("`generate_sdtm_supp` honours a supplied `idvar` and custom `label_var`/`orig_var` (#148)", {
+  vs <- data.frame(
+    STUDYID = "S1",
+    DOMAIN = "VS",
+    USUBJID = c("S1-1", "S1-1", "S1-2"),
+    VSSEQ = c(1L, 2L, 1L),
+    VSPOS = c("SITTING", NA, "STANDING"),
+    stringsAsFactors = FALSE
+  )
+  spec <- data.frame(
+    Variable = "VSPOS",
+    L = "Vital Signs Position of Subject",
+    O = "CRF",
+    stringsAsFactors = FALSE
+  )
+  expect_message(
+    vs_suppvs <-
+      generate_sdtm_supp(
+        vs,
+        idvar = "VSSEQ",
+        supp_qual_info = spec,
+        qnam_var = "Variable",
+        label_var = "L",
+        orig_var = "O"
+      ),
+    "QEVAL should be manually programmed"
+  )
+  expect_named(vs_suppvs, c("VS", "SUPPVS"))
+  expect_identical(vs_suppvs$VS, vs[, c("STUDYID", "DOMAIN", "USUBJID", "VSSEQ")], ignore_attr = TRUE)
+  expected_suppvs <- tibble::tibble(
+    STUDYID = "S1",
+    RDOMAIN = "VS",
+    USUBJID = c("S1-1", "S1-2"),
+    IDVAR = "VSSEQ",
+    IDVARVAL = c(1L, 1L),
+    QNAM = "VSPOS",
+    QLABEL = "Vital Signs Position of Subject",
+    QVAL = c("SITTING", "STANDING"),
+    QORIG = "CRF",
+    QEVAL = NA_character_
+  )
+  expect_identical(vs_suppvs$SUPPVS, expected_suppvs, ignore_attr = TRUE)
+})
