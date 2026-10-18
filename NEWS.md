@@ -1,3 +1,7 @@
+# sdtm.oak (development version)
+
+- `derive_study_day()` preserves original date columns, including partial dates and time components, when calculating study day (#127).
+
 # sdtm.oak V0.2.0
 
 - DM Domain: New functions `calc_min_max_date()` and `oak_calc_ref_dates()` to support DM domain programming.

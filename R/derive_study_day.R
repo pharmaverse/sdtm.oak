@@ -18,7 +18,7 @@
 #' `dm_domain`.
 #'
 #' @return Data frame that takes all columns from `sdtm_in` and a new variable
-#' to represent the calculated study day.
+#' to represent the calculated study day. Input columns are returned unchanged.
 #'
 #' @export
 #'
@@ -98,13 +98,13 @@ derive_study_day <- function(sdtm_in,
       )
   }
 
-  # convert to character to verify the iso format
-  sdtm_in[[refdt]] <- as.character(sdtm_in[[refdt]])
-  sdtm_in[[tgdt]] <- as.character(sdtm_in[[tgdt]])
+  # Convert dates in temporary vectors to preserve the input columns.
+  ref <- as.character(sdtm_in[[refdt]])
+  tgt <- as.character(sdtm_in[[tgdt]])
 
   # refdt/tgdt should be in ISO format, otherwise throw warning
-  sdtm_in[[refdt]] <- tryCatch(
-    as.Date(sdtm_in[[refdt]], "%Y-%m-%d"),
+  ref <- tryCatch(
+    as.Date(ref, "%Y-%m-%d"),
     error = function(e) {
       cli::cli_warn(
         paste(
@@ -114,11 +114,11 @@ derive_study_day <- function(sdtm_in,
         ),
         call = NULL
       )
-      sdtm_in[[refdt]]
+      ref
     }
   )
-  sdtm_in[[tgdt]] <- tryCatch(
-    as.Date(sdtm_in[[tgdt]], "%Y-%m-%d"),
+  tgt <- tryCatch(
+    as.Date(tgt, "%Y-%m-%d"),
     error = function(e) {
       cli::cli_warn(
         paste(
@@ -128,12 +128,12 @@ derive_study_day <- function(sdtm_in,
         ),
         call = NULL
       )
-      sdtm_in[[tgdt]]
+      tgt
     }
   )
 
-  ref <- as.Date(sdtm_in[[refdt]])
-  tgt <- as.Date(sdtm_in[[tgdt]])
+  ref <- as.Date(ref)
+  tgt <- as.Date(tgt)
 
   # SDTMIG 4.4.4 Use of the Study Day Variables
   res <- ifelse(tgt >= ref, tgt - ref + 1L, tgt - ref)

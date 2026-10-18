@@ -32,7 +32,7 @@ example, AESTDY for AE domain and CMSTDY for CM domain.}
 }
 \value{
 Data frame that takes all columns from \code{sdtm_in} and a new variable
-to represent the calculated study day.
+to represent the calculated study day. Input columns are returned unchanged.
 }
 \description{
 This function takes the an input data frame and a reference data frame (which
