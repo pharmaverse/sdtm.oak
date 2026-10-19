@@ -60,6 +60,11 @@ derived variable, as indicated in \code{tgt_var}.
 \description{
 \code{\link[=assign_datetime]{assign_datetime()}} maps one or more variables with date/time components in a
 raw dataset to a target SDTM variable following the ISO8601 format.
+Source date/time components must be character vectors. Convert numeric dates
+to character using their actual encoding before calling \code{assign_datetime()}.
+For example, an integer in \code{YYYYMMDD} form can be converted with
+\code{as.character()}, whereas a SAS date requires its origin (1960-01-01) to be
+applied before formatting.
 }
 \examples{
 # `md1`: an example raw data set.
@@ -99,6 +104,21 @@ cm1
 
 # Inspect parsing failures associated with derivation of CMSTDTC.
 problems(cm1$CMSTDTC)
+
+# A numeric YYYYMMDD date needs a character source column.
+numeric_md <- tibble::tibble(
+  oak_id = 1:2,
+  raw_source = "MD2",
+  patient_number = 375:376,
+  date_num = c(20200120L, 20200217L)
+) |>
+  dplyr::mutate(date_chr = as.character(date_num))
+assign_datetime(
+  tgt_var = "CMSTDTC",
+  raw_dat = numeric_md,
+  raw_var = "date_chr",
+  raw_fmt = "ymd"
+)
 
 # `cm_inter`: an example target data set.
 cm_inter <-

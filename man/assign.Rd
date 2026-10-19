@@ -65,6 +65,9 @@ derived variable, as indicated in \code{tgt_var}.
 variable that has no terminology restrictions.
 \item \code{\link[=assign_ct]{assign_ct()}} maps a variable in a raw dataset to a target SDTM variable
 following controlled terminology recoding.
+\code{assign_no_ct()} does not have arguments for transforming values or filtering
+rows. Apply these operations to \code{raw_dat} before calling it,
+retaining the variables in \code{id_vars} for the join.
 }
 }
 \examples{
@@ -84,6 +87,18 @@ md1 <-
 assign_no_ct(
   tgt_var = "CMINDC",
   raw_dat = md1,
+  raw_var = "MDIND"
+)
+
+# Uppercase source values and exclude blank rows before assignment.
+raw_to_prepare <- md1 |>
+  dplyr::mutate(MDIND = dplyr::if_else(oak_id == 2L, "", tolower(MDIND)))
+prepared_md1 <- raw_to_prepare |>
+  dplyr::filter(MDIND != "") |>
+  dplyr::mutate(MDIND = toupper(MDIND))
+assign_no_ct(
+  tgt_var = "CMINDC",
+  raw_dat = prepared_md1,
   raw_var = "MDIND"
 )
 

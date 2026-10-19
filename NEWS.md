@@ -1,3 +1,7 @@
+# sdtm.oak (development version)
+
+- Clarified preprocessing and numeric-date input requirements for `assign_no_ct()` and `assign_datetime()` (#126).
+
 # sdtm.oak V0.2.0
 
 - DM Domain: New functions `calc_min_max_date()` and `oak_calc_ref_dates()` to support DM domain programming.

@@ -78,6 +78,9 @@ sdtm_assign <- function(tgt_dat = NULL,
 #'
 #' - [assign_ct()] maps a variable in a raw dataset to a target SDTM variable
 #' following controlled terminology recoding.
+#' `assign_no_ct()` does not have arguments for transforming values or filtering
+#' rows. Apply these operations to `raw_dat` before calling it,
+#' retaining the variables in `id_vars` for the join.
 #'
 #' @param raw_dat The raw dataset (dataframe); must include the
 #'   variables passed in `id_vars` and `raw_var`.
@@ -121,6 +124,18 @@ sdtm_assign <- function(tgt_dat = NULL,
 #' assign_no_ct(
 #'   tgt_var = "CMINDC",
 #'   raw_dat = md1,
+#'   raw_var = "MDIND"
+#' )
+#'
+#' # Uppercase source values and exclude blank rows before assignment.
+#' raw_to_prepare <- md1 |>
+#'   dplyr::mutate(MDIND = dplyr::if_else(oak_id == 2L, "", tolower(MDIND)))
+#' prepared_md1 <- raw_to_prepare |>
+#'   dplyr::filter(MDIND != "") |>
+#'   dplyr::mutate(MDIND = toupper(MDIND))
+#' assign_no_ct(
+#'   tgt_var = "CMINDC",
+#'   raw_dat = prepared_md1,
 #'   raw_var = "MDIND"
 #' )
 #'
