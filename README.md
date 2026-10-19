@@ -98,9 +98,10 @@ Additional features to be developed based on the user feedback.
 - Please go to
   [Algorithms](https://pharmaverse.github.io/sdtm.oak/articles/algorithms.html)
   article to learn about Algorithms.
-- Please go to [Create Events
+- Please go to [Create Interventions
   Domain](https://pharmaverse.github.io/sdtm.oak/articles/interventions_domain.html)
-  to learn about step by step process to create an Events domain.
+  to learn the step-by-step process for creating an Interventions domain.
+  The same steps can generally be used to create an Events domain.
 - Please go to [Create Findings
   Domain](https://pharmaverse.github.io/sdtm.oak/articles/findings_domain.html)
   to learn about step by step process to create a Findings domain.
