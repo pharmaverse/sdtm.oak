@@ -19,18 +19,18 @@ test_that("`derive_seq()` works as expected", {
 
   expect_identical(observed_vsseq, expected_vsseq)
 
-  # Test for APSEQ derivation
+  # Test for SCSEQ derivation in an associated persons domain
   apsc <- read_domain_example("apsc")
 
-  observed_apseq <- derive_seq(
+  observed_scseq <- derive_seq(
     tgt_dat = apsc,
-    tgt_var = "APSEQ",
+    tgt_var = "SCSEQ",
     rec_vars = c("STUDYID", "RSUBJID", "SCTESTCD"),
     sbj_vars = c("STUDYID", "RSUBJID")
   )
 
-  expected_apseq <- tibble::tribble(
-    ~STUDYID,     ~RSUBJID,  ~SCTESTCD, ~DOMAIN,     ~SREL,           ~SCCAT, ~APSEQ,
+  expected_scseq <- tibble::tribble(
+    ~STUDYID,     ~RSUBJID,  ~SCTESTCD, ~DOMAIN,     ~SREL,           ~SCCAT, ~SCSEQ,
     "ABC123", "ABC123-210", "EDULEVEL",  "APSC",  "FRIEND", "CAREGIVERSTUDY",     1L,
     "ABC123", "ABC123-210", "LVSBJIND",  "APSC",  "FRIEND", "CAREGIVERSTUDY",     2L,
     "ABC123", "ABC123-210",   "TMSPPT",  "APSC",  "FRIEND", "CAREGIVERSTUDY",     3L,
@@ -39,7 +39,7 @@ test_that("`derive_seq()` works as expected", {
     "ABC123", "ABC123-212",  "JOBCLAS",  "APSC",  "SPOUSE", "CAREGIVERSTUDY",     1L
   )
 
-  expect_identical(observed_apseq, expected_apseq)
+  expect_identical(observed_scseq, expected_scseq)
 })
 
 test_that("`is_seq_name()`: basic usage", {

@@ -30,17 +30,6 @@
 #' # Derivation of VSSEQ
 #' rec_vars <- c("STUDYID", "USUBJID", "VSTESTCD", "VSDTC", "VSTPTNUM")
 #' derive_seq(tgt_dat = vs, tgt_var = "VSSEQ", rec_vars = rec_vars)
-#'
-#' # An APSC raw data set example
-#' (apsc <- read_domain_example("apsc"))
-#'
-#' # Derivation of APSEQ
-#' derive_seq(
-#'   tgt_dat = apsc,
-#'   tgt_var = "APSEQ",
-#'   rec_vars = c("STUDYID", "RSUBJID", "SCTESTCD"),
-#'   sbj_vars = c("STUDYID", "RSUBJID")
-#' )
 #' @export
 derive_seq <-
   function(tgt_dat,

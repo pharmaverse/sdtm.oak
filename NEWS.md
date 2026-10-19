@@ -1,3 +1,7 @@
+# sdtm.oak (development version)
+
+- Removed the incorrect APSC sequence variable example from `derive_seq()` documentation (#140).
+
 # sdtm.oak V0.2.0
 
 - DM Domain: New functions `calc_min_max_date()` and `oak_calc_ref_dates()` to support DM domain programming.
