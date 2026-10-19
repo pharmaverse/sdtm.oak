@@ -39,7 +39,8 @@ meaning to check against a selection of validated formats in
 \link[=dtc_formats]{dtc_formats}; or to have a more permissible
 interpretation of the formats.}
 
-\item{.warn}{Whether to warn about parsing failures.}
+\item{.warn}{Whether to warn about parsing failures, including in
+non-interactive sessions.}
 }
 \value{
 A vector of dates, times or date-times in \href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601} format

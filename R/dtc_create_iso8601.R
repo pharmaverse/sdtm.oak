@@ -239,7 +239,8 @@ format_iso8601 <- function(m, .cutoff_2000 = 68L) {
 #'   meaning to check against a selection of validated formats in
 #'   [dtc_formats][sdtm.oak::dtc_formats]; or to have a more permissible
 #'   interpretation of the formats.
-#' @param .warn Whether to warn about parsing failures.
+#' @param .warn Whether to warn about parsing failures, including in
+#'   non-interactive sessions.
 #'
 #' @return A vector of dates, times or date-times in [ISO
 #' 8601](https://en.wikipedia.org/wiki/ISO_8601) format
@@ -358,7 +359,7 @@ create_iso8601 <-
     iso8601 <- add_problems(iso8601, any_prob, dots)
     class(iso8601) <- "iso8601"
 
-    if (.warn && rlang::is_interactive()) {
+    if (.warn) {
       warn_problems(iso8601)
     }
 

@@ -27,17 +27,19 @@ test_that("assign_datetime: date and time conversion", {
       raw_var = c("MDEDR", "MDETM"),
       raw_fmt = c("d-m-y", "H:M:S"),
       raw_unk = c("UN", "UNK")
-    )
+    ),
+    value = FALSE
   ), regexp = warning_msg)
 
-  # If not run interactively then warnings should not be raised.
+  # The .warn argument suppresses parsing warnings in batch processing.
   expect_silent(
     cm1 <- assign_datetime(
       tgt_var = "CMSTDTC",
       raw_dat = md1,
       raw_var = c("MDEDR", "MDETM"),
       raw_fmt = c("d-m-y", "H:M:S"),
-      raw_unk = c("UN", "UNK")
+      raw_unk = c("UN", "UNK"),
+      .warn = FALSE
     )
   )
 

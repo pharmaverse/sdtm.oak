@@ -1,3 +1,7 @@
+# sdtm.oak (development version)
+
+- `create_iso8601()` now warns about parsing failures in non-interactive R sessions when `.warn = TRUE` (#147).
+
 # sdtm.oak V0.2.0
 
 - DM Domain: New functions `calc_min_max_date()` and `oak_calc_ref_dates()` to support DM domain programming.

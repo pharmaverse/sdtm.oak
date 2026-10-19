@@ -1,11 +1,11 @@
 test_that("`create_iso8601()`: individual date components", {
   x <- c("0", "50", "1950", "80", "1980", "2000")
-  y0 <- create_iso8601(x, .format = "y", .check_format = FALSE)
+  y0 <- create_iso8601(x, .format = "y", .check_format = FALSE, .warn = FALSE)
   y1 <- c(NA, "2050", "1950", "1980", "1980", "2000")
   expect_identical(as.character(y0), y1)
 
   x <- c("0", "jan", "JAN", "JaN", "1", "01")
-  y0 <- create_iso8601(x, .format = "m", .check_format = FALSE)
+  y0 <- create_iso8601(x, .format = "m", .check_format = FALSE, .warn = FALSE)
   y1 <- c(NA, "--01", "--01", "--01", NA, "--01")
   expect_identical(as.character(y0), y1)
 
@@ -78,7 +78,9 @@ test_that("`create_iso8601()`: dates and times", {
 test_that("`create_iso8601()`: expect problems", {
   dates <- c("999999999", "2000-01-01", "99-01-01", "99-12-31")
   times <- c("1520", "0010", "2301", "999999999999")
-  iso8601_dttm <- create_iso8601(dates, times, .format = c("y-m-d", "HM"), .check_format = FALSE)
+  iso8601_dttm <- create_iso8601(dates, times,
+    .format = c("y-m-d", "HM"), .check_format = FALSE, .warn = FALSE
+  )
   expectation <-
     structure(
       c(
@@ -105,4 +107,31 @@ test_that("`create_iso8601()`: expect problems", {
       class = "iso8601"
     )
   expect_identical(iso8601_dttm, expectation)
+})
+
+test_that("`create_iso8601()` warns about parsing problems outside interactive sessions", {
+  input <- c("2020-01-01", "bad", NA_character_)
+
+  expect_warning(
+    parsed <- rlang::with_interactive(
+      create_iso8601(input, .format = "y-m-d"),
+      value = FALSE
+    ),
+    "There were 1 parsing problems"
+  )
+  expect_identical(as.character(parsed), c("2020-01-01", NA_character_, NA_character_))
+  expect_identical(problems(parsed)$..i, 2L)
+
+  expect_silent(
+    quiet <- rlang::with_interactive(
+      create_iso8601(input, .format = "y-m-d", .warn = FALSE),
+      value = FALSE
+    )
+  )
+  expect_identical(quiet, parsed)
+
+  expect_silent(rlang::with_interactive(
+    create_iso8601("2020-01-01", .format = "y-m-d"),
+    value = FALSE
+  ))
 })

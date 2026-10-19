@@ -41,25 +41,43 @@ EX2 <- tibble::tribble(
 raw_source <- list(EX1 = EX1, EX2 = EX2)
 
 test_that("Calculate the Reference dates :RFSTDTC", {
-  observed_rfstdtc <- oak_cal_ref_dates(dm,
-    der_var = "RFSTDTC",
-    min_max = "min",
-    ref_date_config_df = ref_date_conf_df,
-    raw_source
+  observed_warnings <- character()
+  observed_rfstdtc <- withCallingHandlers(
+    oak_cal_ref_dates(dm,
+      der_var = "RFSTDTC",
+      min_max = "min",
+      ref_date_config_df = ref_date_conf_df,
+      raw_source
+    ),
+    warning = function(w) {
+      observed_warnings <<- c(observed_warnings, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
   )
   expected_rfstdtc <- expected |> dplyr::select(-"RFENDTC")
 
+  expect_length(observed_warnings, 2L)
+  expect_true(all(grepl("There were 1 parsing problems.", observed_warnings, fixed = TRUE)))
   expect_identical(observed_rfstdtc, expected_rfstdtc)
 })
 
 test_that("Calculate the Reference dates :RFENDTC", {
-  observed_rfendtc <- oak_cal_ref_dates(dm,
-    der_var = "RFENDTC",
-    min_max = "max",
-    ref_date_config_df = ref_date_conf_df,
-    raw_source
+  observed_warnings <- character()
+  observed_rfendtc <- withCallingHandlers(
+    oak_cal_ref_dates(dm,
+      der_var = "RFENDTC",
+      min_max = "max",
+      ref_date_config_df = ref_date_conf_df,
+      raw_source
+    ),
+    warning = function(w) {
+      observed_warnings <<- c(observed_warnings, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
   )
 
   expected_rfendtc <- expected |> dplyr::select(-"RFSTDTC")
+  expect_length(observed_warnings, 2L)
+  expect_true(all(grepl("There were 1 parsing problems.", observed_warnings, fixed = TRUE)))
   expect_identical(observed_rfendtc, expected_rfendtc)
 })
