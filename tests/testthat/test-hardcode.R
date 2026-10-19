@@ -163,3 +163,86 @@ test_that("hardcode_ct does not consider blanks or NAs to be CT unmappable", {
     )
   )
 })
+
+test_that("hardcode_ct handles the same raw and target variable name", {
+  raw <- tibble::tibble(
+    oak_id = 1L:3L,
+    raw_source = "cm_raw",
+    patient_number = 101L:103L,
+    CMSTRTPT = c(1L, 0L, NA_integer_)
+  )
+  ct_spec <- tibble::tibble(
+    codelist_code = "C66728",
+    term_code = "C1",
+    CodedData = "BEFORE",
+    term_value = "BEFORE",
+    collected_value = "BEFORE",
+    term_synonyms = "BEFORE"
+  )
+  conditioned <- condition_add(raw, CMSTRTPT == 1L)
+
+  actual <- hardcode_ct(
+    raw_dat = conditioned,
+    raw_var = "CMSTRTPT",
+    tgt_var = "CMSTRTPT",
+    tgt_val = "BEFORE",
+    ct_spec = ct_spec,
+    ct_clst = "C66728"
+  )
+
+  expect_identical(actual$CMSTRTPT, c("BEFORE", NA_character_, NA_character_))
+  expect_named(actual, names(raw))
+
+  without_ct <- hardcode_no_ct(
+    raw_dat = conditioned,
+    raw_var = "CMSTRTPT",
+    tgt_var = "CMSTRTPT",
+    tgt_val = "BEFORE"
+  )
+  expect_identical(without_ct$CMSTRTPT, actual$CMSTRTPT)
+
+  raw_char <- dplyr::mutate(raw, CMSTRTPT = as.character(CMSTRTPT))
+  actual_char <- hardcode_ct(
+    raw_dat = condition_add(raw_char, CMSTRTPT == "1"),
+    raw_var = "CMSTRTPT",
+    tgt_var = "CMSTRTPT",
+    tgt_val = "BEFORE",
+    ct_spec = ct_spec,
+    ct_clst = "C66728"
+  )
+
+  expect_identical(actual_char$CMSTRTPT, c("BEFORE", NA_character_, NA_character_))
+})
+
+test_that("hardcode_ct keeps existing target values with a same-name raw variable", {
+  raw <- tibble::tibble(
+    oak_id = 1L:3L,
+    raw_source = "cm_raw",
+    patient_number = 101L:103L,
+    CMSTRTPT = c("1", "0", NA_character_)
+  )
+  target <- dplyr::mutate(raw[c("oak_id", "raw_source", "patient_number")],
+    CMSTRTPT = c(NA_character_, "EXISTING", NA_character_)
+  )
+  ct_spec <- tibble::tibble(
+    codelist_code = "C66728",
+    term_code = "C1",
+    CodedData = "BEFORE",
+    term_value = "BEFORE",
+    collected_value = "BEFORE",
+    term_synonyms = "BEFORE"
+  )
+
+  actual <- hardcode_ct(
+    tgt_dat = target,
+    raw_dat = condition_add(raw, CMSTRTPT == "1"),
+    raw_var = "CMSTRTPT",
+    tgt_var = "CMSTRTPT",
+    tgt_val = "BEFORE",
+    ct_spec = ct_spec,
+    ct_clst = "C66728"
+  )
+
+  expect_identical(actual$CMSTRTPT, c("BEFORE", "EXISTING", NA_character_))
+  expect_named(actual, names(target))
+})

@@ -1,3 +1,7 @@
+# sdtm.oak (development version)
+
+- `hardcode_ct()` supports the same name for the raw and target variables, including numeric raw values and existing target data (#128).
+
 # sdtm.oak V0.2.0
 
 - DM Domain: New functions `calc_min_max_date()` and `oak_calc_ref_dates()` to support DM domain programming.

@@ -72,6 +72,8 @@ derived variable, as indicated in \code{tgt_var}.
 no terminology restrictions.
 \item \code{\link[=hardcode_ct]{hardcode_ct()}} maps a hardcoded value to a target SDTM variable with
 controlled terminology recoding.
+If \code{raw_var} and \code{tgt_var} have the same name, the raw value can be used
+for derivation while existing non-missing values in \code{tgt_dat} are retained.
 }
 }
 \examples{

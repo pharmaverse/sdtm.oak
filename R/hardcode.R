@@ -56,9 +56,19 @@ sdtm_hardcode <- function(tgt_dat = NULL,
   assert_ct_spec(ct_spec, optional = TRUE)
   assert_ct_clst(ct_spec = ct_spec, ct_clst = ct_clst, optional = TRUE)
 
+  # Keep a same-name raw variable separate from any existing target values.
+  raw_col <- raw_var
+  if (identical(raw_var, tgt_var)) {
+    raw_col <- paste0(raw_var, "_raw")
+    while (raw_col %in% c(names(raw_dat), names(tgt_dat))) {
+      raw_col <- paste0(raw_col, "_")
+    }
+    raw_dat <- dplyr::rename(raw_dat, "{raw_col}" := dplyr::all_of(raw_var))
+  }
+
   join_dat <-
     raw_dat |>
-    dplyr::select(dplyr::all_of(c(id_vars, raw_var))) |>
+    dplyr::select(dplyr::all_of(c(id_vars, raw_col))) |>
     sdtm_join(tgt_dat = tgt_dat, id_vars = id_vars)
 
   # Recode the hardcoded value following terminology.
@@ -68,8 +78,8 @@ sdtm_hardcode <- function(tgt_dat = NULL,
   cur_tgt_val <- join_dat[[tgt_var]] %||% as.vector(NA, mode = typeof(tgt_val))
 
   join_dat |>
-    mutate("{tgt_var}" := dplyr::coalesce(cur_tgt_val, recode(x = !!rlang::sym(raw_var), to = tgt_val))) |> # nolint object_name_linter()
-    dplyr::select(-dplyr::any_of(setdiff(raw_var, tgt_var))) |>
+    mutate("{tgt_var}" := dplyr::coalesce(cur_tgt_val, recode(x = !!rlang::sym(raw_col), to = tgt_val))) |> # nolint object_name_linter()
+    dplyr::select(-dplyr::any_of(setdiff(raw_col, tgt_var))) |>
     dplyr::relocate(dplyr::all_of(tgt_var), .after = dplyr::last_col())
 }
 
@@ -82,6 +92,8 @@ sdtm_hardcode <- function(tgt_dat = NULL,
 #'
 #' - [hardcode_ct()] maps a hardcoded value to a target SDTM variable with
 #' controlled terminology recoding.
+#' If `raw_var` and `tgt_var` have the same name, the raw value can be used
+#' for derivation while existing non-missing values in `tgt_dat` are retained.
 #'
 #' @param raw_dat The raw dataset (dataframe); must include the
 #'   variables passed in `id_vars` and `raw_var`.
