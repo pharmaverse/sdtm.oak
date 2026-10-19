@@ -1,3 +1,7 @@
+# sdtm.oak (development version)
+
+- `assign_ct()` now maps raw and target variables with the same name, including when a target dataset is supplied (#137).
+
 # sdtm.oak V0.2.0
 
 - DM Domain: New functions `calc_min_max_date()` and `oak_calc_ref_dates()` to support DM domain programming.

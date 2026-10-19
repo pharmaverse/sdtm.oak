@@ -165,3 +165,63 @@ test_that("assign_ct works as expected with conditions across both data sets", {
   expect_identical(result1, expected_result)
   expect_identical(result2, expected_result)
 })
+
+test_that("assign_ct maps same-name raw and target variables", {
+  ae_raw <- tibble::tibble(
+    oak_id = 1L:3L,
+    raw_source = "ae",
+    patient_number = 101L:103L,
+    AESHOSP = c("Yes", "No", NA_character_)
+  )
+  ct_spec <- tibble::tibble(
+    codelist_code = "TEST",
+    collected_value = c("Yes", "No"),
+    term_synonyms = NA_character_,
+    term_value = c("Y", "N")
+  )
+
+  result <- assign_ct(
+    raw_dat = ae_raw,
+    raw_var = "AESHOSP",
+    tgt_var = "AESHOSP",
+    ct_spec = ct_spec,
+    ct_clst = "TEST"
+  )
+  expected <- dplyr::mutate(ae_raw, AESHOSP = c("Y", "N", NA_character_))
+  expect_identical(result, expected)
+
+  raw_with_alias <- dplyr::mutate(ae_raw, AESHOSP_raw = "unrelated")
+  expect_identical(
+    assign_ct(
+      raw_dat = raw_with_alias,
+      raw_var = "AESHOSP",
+      tgt_var = "AESHOSP",
+      ct_spec = ct_spec,
+      ct_clst = "TEST"
+    ),
+    expected
+  )
+
+  ae_target <- dplyr::mutate(ae_raw, AESHOSP = c(NA_character_, "N", NA_character_))
+  result_with_target <- assign_ct(
+    tgt_dat = ae_target,
+    raw_dat = ae_raw,
+    raw_var = "AESHOSP",
+    tgt_var = "AESHOSP",
+    ct_spec = ct_spec,
+    ct_clst = "TEST"
+  )
+  expect_identical(result_with_target, expected)
+
+  conditioned_result <- assign_ct(
+    raw_dat = condition_add(ae_raw, AESHOSP == "Yes", .na = FALSE),
+    raw_var = "AESHOSP",
+    tgt_var = "AESHOSP",
+    ct_spec = ct_spec,
+    ct_clst = "TEST"
+  )
+  expect_identical(
+    conditioned_result,
+    dplyr::mutate(ae_raw, AESHOSP = c("Y", "No", NA_character_))
+  )
+})
